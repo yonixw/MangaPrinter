@@ -5,7 +5,8 @@ using System.Text;
 
 namespace MangaPrinter.Core
 {
-    public class Class1
+    class FileImporter
     {
+
     }
 }

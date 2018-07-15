@@ -5,8 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Manga printer and binder manager" Height="450" Width="800"
+        FontSize="9.75pt" WindowStartupLocation="CenterScreen">
+    <DockPanel>
+        <TabControl>
+            <TabItem Header="Chapter and Files">
+                <DockPanel>
+                    <Menu DockPanel.Dock="Top" Padding="5px">
+                        <MenuItem Header="Import folders"></MenuItem>
+                        <MenuItem Header="Create chapter"></MenuItem>
+                        <MenuItem Header="Add files"></MenuItem>
+                    </Menu>
+                    <TreeView>
+                        
+                    </TreeView>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Binder Manager">
+
+            </TabItem>
+            <TabItem Header="Print preview">
+
+            </TabItem>
+
+        </TabControl>
+    </DockPanel>
 </Window>
