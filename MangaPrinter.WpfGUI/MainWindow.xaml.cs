@@ -23,5 +23,15 @@ namespace MangaPrinter.WpfGUI
         {
             InitializeComponent();
         }
+
+        private void txtPageMaxWidth_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int value = 0;
+            if (!int.TryParse(txtPageMaxWidth.Text, out value))
+            {
+                MessageBox.Show("Can't convert " + txtPageMaxWidth.Text + " to integer, try again.");
+                txtPageMaxWidth.Text = 900.ToString();
+            }
+        }
     }
 }

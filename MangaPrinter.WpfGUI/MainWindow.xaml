@@ -11,20 +11,26 @@
         <TabControl>
             <TabItem Header="Chapter and Files">
                 <DockPanel>
-                    <Menu DockPanel.Dock="Top" Padding="5px">
-                        <MenuItem Header="Import folders"></MenuItem>
-                        <MenuItem Header="Create chapter"></MenuItem>
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                        <MenuItem Header="• Double-Page min width:" IsEnabled="False"></MenuItem>
+                        <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" TextChanged="txtPageMaxWidth_TextChanged"></TextBox>
+                        <MenuItem Header="px" IsEnabled="False"></MenuItem>
+                    </Menu>
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                        <MenuItem Header="Import folders" HorizontalAlignment="Right"></MenuItem>
+                        <MenuItem Header="Create chapter" HorizontalAlignment="Right"></MenuItem>
                         <MenuItem Header="Add files"></MenuItem>
                     </Menu>
+                    
                     <TreeView>
                         
                     </TreeView>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Binder Manager">
+            <TabItem Header="Binding">
 
             </TabItem>
-            <TabItem Header="Print preview">
+            <TabItem Header="Print and Export">
 
             </TabItem>
 
