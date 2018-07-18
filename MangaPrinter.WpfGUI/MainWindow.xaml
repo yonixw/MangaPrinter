@@ -7,19 +7,91 @@
         mc:Ignorable="d"
         Title="Manga printer and binder manager" Height="450" Width="800"
         FontSize="9.75pt" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="GeneralStyle" TargetType="{x:Type Control}">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
+                        <GradientStop Color="#FF2977FF" Offset="0"/>
+                        <GradientStop Color="#FF50D8FC" Offset="0.567"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="BtnStyle" TargetType="Button" BasedOn="{StaticResource GeneralStyle}" >
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="Margin" Value="10,10,0,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"
+                                BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.8" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Opacity" Value="0.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MenuItemBtnStyle" TargetType="MenuItem" BasedOn="{StaticResource GeneralStyle}" >
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Margin" Value="0,2,0,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border Name="border" CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"
+                                BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Header">
+                            </ContentPresenter>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.8" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Opacity" Value="0.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <DockPanel>
         <TabControl>
             <TabItem Header="Chapter and Files">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="• Double-Page min width:" IsEnabled="False"></MenuItem>
+                        <MenuItem Header="Double-Page width (px) cutoff:" IsEnabled="False"></MenuItem>
                         <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" TextChanged="txtPageMaxWidth_TextChanged"></TextBox>
-                        <MenuItem Header="px" IsEnabled="False"></MenuItem>
+
+
+                        <Label IsEnabled="False">Direction:</Label>
+                        <StackPanel Orientation="Horizontal" >
+                            <RadioButton IsChecked="True" Margin="0,0,10,0">RTL (→)</RadioButton>
+                            <RadioButton>LTR (←)</RadioButton>
+                        </StackPanel>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="Import folders" HorizontalAlignment="Right"></MenuItem>
-                        <MenuItem Header="Create chapter" HorizontalAlignment="Right"></MenuItem>
-                        <MenuItem Header="Add files"></MenuItem>
+                        <MenuItem Header="Import folders" Style="{StaticResource MenuItemBtnStyle}"/>
+                        <MenuItem Header="Create chapter" Style="{StaticResource MenuItemBtnStyle}"/>
+                        <MenuItem Header="Add files" Style="{StaticResource MenuItemBtnStyle}"/>
                     </Menu>
 
                     <TreeView>
@@ -30,27 +102,39 @@
             <TabItem Header="Binding">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False">Chapters: </Label>
+                        <Label IsEnabled="False">Chapter:</Label>
                         <CheckBox IsChecked="True">Add Start Page</CheckBox>
                         <CheckBox IsChecked="True">Add End Page</CheckBox>
 
-                        <StackPanel Orientation="Horizontal" >                        
-                            <Label IsEnabled="False">Binding: </Label>
-                            <RadioButton IsChecked="True">Duplex</RadioButton>
+                        <Label IsEnabled="False">Binding:</Label>
+                        <StackPanel Orientation="Horizontal" >
+                            <RadioButton IsChecked="True" Margin="0,0,10,0">Duplex</RadioButton>
                             <RadioButton>Booklet</RadioButton>
                         </StackPanel>
 
 
+
+
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="Bind!"></MenuItem>
+                        <MenuItem Header="Bind!" Style="{StaticResource MenuItemBtnStyle}"/>
                     </Menu>
                     <TreeView >
-                        
+
                     </TreeView>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Print and Export">
+                <DockPanel>
+                    <Menu DockPanel.Dock="Top" Padding="0,5">
+                        <MenuItem Header="Refresh Preview" Style="{StaticResource MenuItemBtnStyle}"/>
+                    </Menu>
+                    <Canvas>
+                        
+                    </Canvas>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="About">
 
             </TabItem>
 
