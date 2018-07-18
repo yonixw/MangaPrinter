@@ -33,5 +33,10 @@ namespace MangaPrinter.WpfGUI
                 txtPageMaxWidth.Text = 900.ToString();
             }
         }
+
+        public void myFunc(int go)
+        {
+
+        }
     }
 }

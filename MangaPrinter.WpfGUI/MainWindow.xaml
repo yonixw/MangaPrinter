@@ -21,14 +21,34 @@
                         <MenuItem Header="Create chapter" HorizontalAlignment="Right"></MenuItem>
                         <MenuItem Header="Add files"></MenuItem>
                     </Menu>
-                    
+
                     <TreeView>
-                        
+
                     </TreeView>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Binding">
+                <DockPanel>
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                        <Label IsEnabled="False">Chapters: </Label>
+                        <CheckBox IsChecked="True">Add Start Page</CheckBox>
+                        <CheckBox IsChecked="True">Add End Page</CheckBox>
 
+                        <StackPanel Orientation="Horizontal" >                        
+                            <Label IsEnabled="False">Binding: </Label>
+                            <RadioButton IsChecked="True">Duplex</RadioButton>
+                            <RadioButton>Booklet</RadioButton>
+                        </StackPanel>
+
+
+                    </Menu>
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                        <MenuItem Header="Bind!"></MenuItem>
+                    </Menu>
+                    <TreeView >
+                        
+                    </TreeView>
+                </DockPanel>
             </TabItem>
             <TabItem Header="Print and Export">
 
