@@ -78,7 +78,10 @@
             <TabItem Header="Chapter and Files">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="Double-Page width (px) cutoff:" IsEnabled="False"></MenuItem>
+                        <Label IsEnabled="False">Subfolders?</Label>
+                        <CheckBox IsChecked="True"></CheckBox>
+
+                        <Label IsEnabled="False" >Double-Page width (px) cutoff:</Label>
                         <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" TextChanged="txtPageMaxWidth_TextChanged"></TextBox>
 
 
@@ -89,8 +92,9 @@
                         </StackPanel>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="Import folders" Style="{StaticResource MenuItemBtnStyle}"/>
-                        <MenuItem Header="Create chapter" Style="{StaticResource MenuItemBtnStyle}"/>
+                        <MenuItem Header="Import folders" Style="{StaticResource MenuItemBtnStyle}"
+                                  Name="menuImprtFolders" Click="menuImprtFolders_Click"/>
+                        <MenuItem Header="Add empty chapter" Style="{StaticResource MenuItemBtnStyle}"/>
                         <MenuItem Header="Add files" Style="{StaticResource MenuItemBtnStyle}"/>
                     </Menu>
 
