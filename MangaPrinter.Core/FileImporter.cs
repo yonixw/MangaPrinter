@@ -59,6 +59,9 @@ namespace MangaPrinter.Core
                     } catch (Exception ex) { Debug.Print(ex.ToString()); }
                 }
 
+                if (ch.Pages.Count > 0)
+                    result.Add(ch);
+
                 if (subFodlers)
                 {
                     foreach (DirectoryInfo subdi in di.EnumerateDirectories())

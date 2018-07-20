@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Task progress" Height="85.333" Width="341.333" 
         ShowInTaskbar="False" ResizeMode="NoResize"  WindowStyle="None"
-        WindowStartupLocation="CenterOwner"
+        WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
     <Border BorderThickness="2px">
         <Border.BorderBrush>
