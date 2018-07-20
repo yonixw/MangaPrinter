@@ -79,7 +79,7 @@
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False">Subfolders?</Label>
-                        <CheckBox IsChecked="True"></CheckBox>
+                        <CheckBox IsChecked="True" Name="cbSubfolders"></CheckBox>
 
                         <Label IsEnabled="False" >Double-Page width (px) cutoff:</Label>
                         <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" TextChanged="txtPageMaxWidth_TextChanged"></TextBox>
@@ -87,7 +87,7 @@
 
                         <Label IsEnabled="False">Direction:</Label>
                         <StackPanel Orientation="Horizontal" >
-                            <RadioButton IsChecked="True" Margin="0,0,10,0">RTL (→)</RadioButton>
+                            <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (→)</RadioButton>
                             <RadioButton>LTR (←)</RadioButton>
                         </StackPanel>
                     </Menu>
@@ -98,7 +98,7 @@
                         <MenuItem Header="Add files" Style="{StaticResource MenuItemBtnStyle}"/>
                     </Menu>
 
-                    <TreeView>
+                    <TreeView Name="tvFiles">
 
                     </TreeView>
                 </DockPanel>

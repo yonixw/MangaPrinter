@@ -24,10 +24,12 @@ namespace MangaPrinter.WpfGUI
         private DispatcherTimer myUpdateTimer = new DispatcherTimer();
 
         Func<Action<string, int>, object> myWorkFunction = null;
+        bool myProgressKnown = false;
 
-        public winWorking(Func<Action<string, int>, object> WorkFunction)
+        public winWorking(Func<Action<string, int>, object> WorkFunction, bool isProgressKnown)
         {
             myWorkFunction = WorkFunction;
+            myProgressKnown = isProgressKnown;
             InitializeComponent();
         }
 
@@ -40,6 +42,8 @@ namespace MangaPrinter.WpfGUI
             myUpdateTimer.Interval = TimeSpan.FromSeconds(1);
             myUpdateTimer.Start();
 
+            if (!myProgressKnown) pbTask.IsIndeterminate = true;
+
             myWorker.RunWorkerAsync();
         }
 
@@ -48,7 +52,8 @@ namespace MangaPrinter.WpfGUI
         private void MyUpdateTimer_Tick(object sender, EventArgs e)
         {
             lblTask.Content = updateStateDesc;
-            pbTask.Value = Math.Min(100, Math.Max(0, nextPercent));
+            if (myProgressKnown)
+                pbTask.Value = Math.Min(100, Math.Max(0, nextPercent));
         }
 
         public object Result;
@@ -64,6 +69,12 @@ namespace MangaPrinter.WpfGUI
                 updateStateDesc = desc;
                 nextPercent = percent;
             });
+        }
+
+        public static T waitForTask<T>(Func<Action<string, int>, T> Task, bool isProgressKnwon) {
+            winWorking taskWindow = new winWorking((update)=> { return Task(update); }, isProgressKnwon);
+            taskWindow.ShowDialog();
+            return (T)taskWindow.Result;
         }
     }
 }

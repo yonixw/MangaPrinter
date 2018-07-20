@@ -95,5 +95,11 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MangaPrinter.Core\MangaPrinter.Core.csproj">
+      <Project>{3c34aef8-38d1-43a4-a629-5251b86951fa}</Project>
+      <Name>MangaPrinter.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

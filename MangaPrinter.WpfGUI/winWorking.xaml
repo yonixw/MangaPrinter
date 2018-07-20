@@ -9,12 +9,20 @@
         ShowInTaskbar="False" ResizeMode="NoResize"  WindowStyle="None"
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded">
-    <Grid>
-        <StackPanel Orientation="Vertical">
-            <Label>Current step:</Label>
-            <Label Name="lblTask" Height="26" />
-            <ProgressBar Name="pbTask" Height="20px" Margin="5,0" />
-        </StackPanel>
-        
-    </Grid>
+    <Border BorderThickness="2px">
+        <Border.BorderBrush>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF2343F5" Offset="0"/>
+                <GradientStop Color="#FF060B29" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Grid >
+            <StackPanel Orientation="Vertical">
+                <Label>Current step:</Label>
+                <Label Name="lblTask" Height="26" />
+                <ProgressBar Name="pbTask" Height="20px" Margin="5,0" />
+            </StackPanel>
+
+        </Grid>
+    </Border>
 </Window>

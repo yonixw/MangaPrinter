@@ -7,12 +7,14 @@ namespace MangaPrinter.Core
 {
     public class MangaPage
     {
+        public string Name { get; set; }
         public bool IsDouble { get; set; }
         public string ImagePath { get; set; }
     }
 
     public class MangaChapter
     {
+        public string Name { get; set; }
         public List<MangaPage> Pages { get; set; }
         public bool isRTL { get; set; }
     }
@@ -34,6 +36,7 @@ namespace MangaPrinter.Core
         public MangaPage LSourcePage { get; set; }
         public string LPageText;
 
+        public string Description { get; set; }
     }
 
     public class MangaChapterPrint
@@ -45,6 +48,7 @@ namespace MangaPrinter.Core
 
         public List<MangaDoublPagePrint> PrintPages { get; set; }
         public BindType PrintBind { get; set; }
+        public string Description { get; set; }
     }
 
 }

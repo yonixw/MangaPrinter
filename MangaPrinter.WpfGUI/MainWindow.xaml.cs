@@ -34,9 +34,33 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
-        public void myFunc(int go)
+        private void menuImprtFolders_Click(object sender, RoutedEventArgs e)
         {
+            Microsoft.Win32.OpenFileDialog dlgSaveFile = new Microsoft.Win32.OpenFileDialog();
+            dlgSaveFile.Filter = "Folder|_._";
+            dlgSaveFile.FileName = "Open here";
+            dlgSaveFile.CheckFileExists = false;
+            dlgSaveFile.Multiselect = false;
+            dlgSaveFile.ValidateNames = false;
+            dlgSaveFile.Title = "Choose folder to import from:";
 
+            if (dlgSaveFile.ShowDialog() == true)
+            {
+                Core.FileImporter fileImporter = new Core.FileImporter();
+
+                var DirPath = new System.IO.FileInfo(dlgSaveFile.FileName).Directory.FullName;
+                var subFolders = cbSubfolders.IsChecked ?? false;
+                int cutoff = int.Parse(txtPageMaxWidth.Text);
+                var rtl = rbRTL.IsChecked ?? false;
+
+                List<Core.MangaChapter> chapters = winWorking.waitForTask((updateFunc) =>
+                {
+                    return fileImporter.getChapters(DirPath,subFolders,cutoff,rtl, updateFunc);
+                }, 
+                isProgressKnwon: false);
+
+                tvFiles.ItemsSource = chapters;
+            }
         }
     }
 }
