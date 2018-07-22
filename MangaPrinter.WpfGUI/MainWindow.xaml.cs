@@ -53,9 +53,13 @@ namespace MangaPrinter.WpfGUI
                 int cutoff = int.Parse(txtPageMaxWidth.Text);
                 var rtl = rbRTL.IsChecked ?? false;
 
+                Func<System.IO.FileSystemInfo, object> orderFunc = (si) => si.CreationTime;
+                if (rbByName.IsChecked ?? false)
+                    orderFunc = (si) => si.Name;
+
                 List<Core.MangaChapter> chapters = winWorking.waitForTask((updateFunc) =>
                 {
-                    return fileImporter.getChapters(DirPath,subFolders,cutoff,rtl, updateFunc);
+                    return fileImporter.getChapters(DirPath,subFolders,cutoff,rtl, orderFunc, updateFunc);
                 }, 
                 isProgressKnwon: false);
 

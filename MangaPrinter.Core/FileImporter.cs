@@ -36,7 +36,7 @@ namespace MangaPrinter.Core
         }
 
         public List<MangaChapter> getChapters(DirectoryInfo di, bool subFodlers, int pageCutoff, bool RTL,
-            Action<string, int> updateFunc = null)
+            Func<FileSystemInfo,object> orderFunc ,Action<string, int> updateFunc = null)
         {
             List<MangaChapter> result = new List<MangaChapter>();
 
@@ -49,7 +49,7 @@ namespace MangaPrinter.Core
                     IsRTL = RTL
                 };
 
-                foreach (FileInfo fi in di.EnumerateFiles("*.jpg"))
+                foreach (FileInfo fi in di.EnumerateFiles("*.jpg").OrderBy(orderFunc))
                 {
                     if (updateFunc != null)
                         updateFunc(fi.Directory.Name + "/" + fi.Name, 0);
@@ -64,9 +64,9 @@ namespace MangaPrinter.Core
 
                 if (subFodlers)
                 {
-                    foreach (DirectoryInfo subdi in di.EnumerateDirectories())
+                    foreach (DirectoryInfo subdi in di.EnumerateDirectories().OrderBy(orderFunc))
                     {
-                        List<MangaChapter> subdiChapters = getChapters(subdi, subFodlers, pageCutoff, RTL);
+                        List<MangaChapter> subdiChapters = getChapters(subdi, subFodlers, pageCutoff, RTL,orderFunc, updateFunc);
                         result.AddRange(subdiChapters);
                     }
                 }
@@ -76,9 +76,9 @@ namespace MangaPrinter.Core
         }
 
         public List<MangaChapter> getChapters(string DirectoryPath, bool subFodlers, int pageCutoff, bool isRTL,
-            Action<string,int> updateFunc = null)
+            Func<FileSystemInfo, object> orderFunc, Action<string,int> updateFunc = null)
         {
-            return getChapters(new DirectoryInfo(DirectoryPath), subFodlers, pageCutoff, isRTL, updateFunc);
+            return getChapters(new DirectoryInfo(DirectoryPath), subFodlers, pageCutoff, isRTL,orderFunc, updateFunc);
         }
 
     }

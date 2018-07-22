@@ -78,13 +78,18 @@
             <TabItem Header="Chapter and Files">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False">Subfolders?</Label>
-                        <CheckBox IsChecked="True" Name="cbSubfolders"></CheckBox>
-
-                        <Label IsEnabled="False" >Double-Page width (px) cutoff:</Label>
+                         <Label IsEnabled="False" >Double-Page width (px) cutoff:</Label>
                         <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" TextChanged="txtPageMaxWidth_TextChanged"></TextBox>
-
-
+                    </Menu>
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                        <Label IsEnabled="False">Import by:</Label>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Name="rbByName" Margin="0,0,10,0">Name</RadioButton>
+                            <RadioButton IsChecked="True">Create Date</RadioButton>
+                        </StackPanel>
+                        
+                        <CheckBox IsChecked="True" Name="cbSubfolders">Include subfolders</CheckBox>
+                        
                         <Label IsEnabled="False">Direction:</Label>
                         <StackPanel Orientation="Horizontal" >
                             <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (↼)</RadioButton>
@@ -95,7 +100,6 @@
                         <MenuItem Header="Import folders" Style="{StaticResource MenuItemBtnStyle}"
                                   Name="menuImprtFolders" Click="menuImprtFolders_Click"/>
                         <MenuItem Header="Add empty chapter" Style="{StaticResource MenuItemBtnStyle}"/>
-                        <MenuItem Header="Add files" Style="{StaticResource MenuItemBtnStyle}"/>
                     </Menu>
 
                     <TreeView Name="tvFiles">
@@ -176,7 +180,8 @@
             <TabItem Header="Print and Export">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="0,5">
-                        <MenuItem Header="Refresh Preview" Style="{StaticResource MenuItemBtnStyle}"/>
+                        <MenuItem Header="Print Preview" Style="{StaticResource MenuItemBtnStyle}"/>
+                        <MenuItem Header="Read Preview" Style="{StaticResource MenuItemBtnStyle}"/>
                     </Menu>
                     <Canvas>
 
@@ -184,7 +189,18 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="About">
-
+                <RichTextBox IsReadOnly="True">
+                    <FlowDocument>
+                        <Paragraph>
+                            Manga Printer v1
+                        </Paragraph>
+                        <Paragraph>
+                            <Hyperlink NavigateUri="https://github.com/yonixw/MangaPrinter" >
+                            https://github.com/yonixw/MangaPrinter
+                            </Hyperlink>
+                        </Paragraph>
+                    </FlowDocument>
+                </RichTextBox>
             </TabItem>
 
         </TabControl>
