@@ -46,7 +46,7 @@ namespace MangaPrinter.Core
                 {
                     Pages = new List<MangaPage>(),
                     Name = di.Name,
-                    isRTL = RTL
+                    IsRTL = RTL
                 };
 
                 foreach (FileInfo fi in di.EnumerateFiles("*.jpg"))

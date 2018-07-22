@@ -16,7 +16,7 @@ namespace MangaPrinter.Core
     {
         public string Name { get; set; }
         public List<MangaPage> Pages { get; set; }
-        public bool isRTL { get; set; }
+        public bool IsRTL { get; set; }
     }
 
     public class MangaDoublPagePrint

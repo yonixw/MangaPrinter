@@ -87,8 +87,8 @@
 
                         <Label IsEnabled="False">Direction:</Label>
                         <StackPanel Orientation="Horizontal" >
-                            <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (⇀)</RadioButton>
-                            <RadioButton>LTR (↼)</RadioButton>
+                            <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (↼)</RadioButton>
+                            <RadioButton>LTR (⇀)</RadioButton>
                         </StackPanel>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
@@ -107,22 +107,32 @@
                         <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Pages}">
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Height="32px" Source="Icons/papers.png" />
+                                    <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
                                     <Label Content="{Binding Name}" />
                                 </StackPanel>
+                                <HierarchicalDataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsRTL}" Value="False">
+                                        <Setter TargetName="imgRTL" Property="Source" Value="Icons/LTR.png"/>
+                                    </DataTrigger>
+                                </HierarchicalDataTemplate.Triggers>
+                            
+                            
                                 <HierarchicalDataTemplate.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Name="MyImage" Source="Icons/1Page.png"/>
+                                            <Image Name="imgPage" Source="Icons/1Page.png"/>
                                             <Label Content="{Binding Name}" />
                                         </StackPanel>
+                                        
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding IsDouble}" Value="True">
-                                                <Setter TargetName="MyImage" Property="Source" Value="Icons/2Page.png"/>
+                                                <Setter TargetName="imgPage" Property="Source" Value="Icons/2Page.png"/>
                                             </DataTrigger>
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </HierarchicalDataTemplate.ItemTemplate>
+                            
+                            
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
                     </TreeView>
