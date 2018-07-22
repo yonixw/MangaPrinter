@@ -60,6 +60,7 @@ namespace MangaPrinter.WpfGUI
                 isProgressKnwon: false);
 
                 tvFiles.ItemsSource = chapters;
+                
             }
         }
     }

@@ -87,8 +87,8 @@
 
                         <Label IsEnabled="False">Direction:</Label>
                         <StackPanel Orientation="Horizontal" >
-                            <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (→)</RadioButton>
-                            <RadioButton>LTR (←)</RadioButton>
+                            <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (⇀)</RadioButton>
+                            <RadioButton>LTR (↼)</RadioButton>
                         </StackPanel>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
@@ -99,7 +99,32 @@
                     </Menu>
 
                     <TreeView Name="tvFiles">
-
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="{x:Type TreeViewItem}">
+                                <Setter Property="IsExpanded" Value="True" />
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                        <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Pages}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Height="32px" Source="Icons/papers.png" />
+                                    <Label Content="{Binding Name}" />
+                                </StackPanel>
+                                <HierarchicalDataTemplate.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Name="MyImage" Source="Icons/1Page.png"/>
+                                            <Label Content="{Binding Name}" />
+                                        </StackPanel>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsDouble}" Value="True">
+                                                <Setter TargetName="MyImage" Property="Source" Value="Icons/2Page.png"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </HierarchicalDataTemplate.ItemTemplate>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
                     </TreeView>
                 </DockPanel>
             </TabItem>
@@ -111,9 +136,19 @@
                         <CheckBox IsChecked="True">Add End Page</CheckBox>
 
                         <Label IsEnabled="False">Binding:</Label>
-                        <StackPanel Orientation="Horizontal" >
-                            <RadioButton IsChecked="True" Margin="0,0,10,0">Duplex</RadioButton>
-                            <RadioButton>Booklet</RadioButton>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton IsChecked="True" Margin="0,0,10,0" VerticalContentAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Icons/duplex.png" Height="32px" ></Image>
+                                    <Label>Duplex</Label>
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Margin="0,0,10,0" VerticalContentAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Icons/booklet.png" Height="32px" ></Image>
+                                    <Label>Booklet</Label>
+                                </StackPanel>
+                            </RadioButton>
                         </StackPanel>
 
 
@@ -134,7 +169,7 @@
                         <MenuItem Header="Refresh Preview" Style="{StaticResource MenuItemBtnStyle}"/>
                     </Menu>
                     <Canvas>
-                        
+
                     </Canvas>
                 </DockPanel>
             </TabItem>

@@ -101,5 +101,15 @@
       <Name>MangaPrinter.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\1Page.png" />
+    <Resource Include="Icons\2Page.png" />
+    <Resource Include="Icons\booklet.png" />
+    <Resource Include="Icons\Credits.txt" />
+    <Resource Include="Icons\duplex.png" />
+    <Resource Include="Icons\LTR.png" />
+    <Resource Include="Icons\papers.png" />
+    <Resource Include="Icons\RTL.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
