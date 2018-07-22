@@ -67,5 +67,13 @@ namespace MangaPrinter.WpfGUI
                 
             }
         }
+
+        private void tvFiles_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (tvFiles.SelectedItem is Core.MangaPage)
+                tvFiles.ContextMenu = tvFiles.Resources["menuPage"] as System.Windows.Controls.ContextMenu;
+            else
+                tvFiles.ContextMenu = tvFiles.Resources["menuChapter"] as System.Windows.Controls.ContextMenu;
+        }
     }
 }

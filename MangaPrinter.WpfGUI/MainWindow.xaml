@@ -78,7 +78,7 @@
             <TabItem Header="Chapter and Files">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                         <Label IsEnabled="False" >Double-Page width (px) cutoff:</Label>
+                        <Label IsEnabled="False" >Double-Page width (px) cutoff:</Label>
                         <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" TextChanged="txtPageMaxWidth_TextChanged"></TextBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
@@ -87,9 +87,9 @@
                             <RadioButton Name="rbByName" Margin="0,0,10,0">Name</RadioButton>
                             <RadioButton IsChecked="True">Create Date</RadioButton>
                         </StackPanel>
-                        
+
                         <CheckBox IsChecked="True" Name="cbSubfolders">Include subfolders</CheckBox>
-                        
+
                         <Label IsEnabled="False">Direction:</Label>
                         <StackPanel Orientation="Horizontal" >
                             <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (↼)</RadioButton>
@@ -102,14 +102,26 @@
                         <MenuItem Header="Add empty chapter" Style="{StaticResource MenuItemBtnStyle}"/>
                     </Menu>
 
-                    <TreeView Name="tvFiles">
+                    <TreeView Name="tvFiles" SelectedItemChanged="tvFiles_SelectedItemChanged">
+                        <TreeView.Resources>
+                            <ContextMenu x:Key="menuChapter" StaysOpen="True">
+                                <Menu>Rename name for show</Menu>
+                                <Separator/>
+                                <Menu>Change to RTL</Menu>
+                                <Menu>Change to LTR</Menu>
+                            </ContextMenu>
+                            <ContextMenu x:Key="menuPage" StaysOpen="True">
+                                <Menu>Change to single page</Menu>
+                                <Menu>Change to double page</Menu>
+                            </ContextMenu>
+                        </TreeView.Resources>
                         <TreeView.ItemContainerStyle>
                             <Style TargetType="{x:Type TreeViewItem}">
                                 <Setter Property="IsExpanded" Value="True" />
                             </Style>
                         </TreeView.ItemContainerStyle>
                         <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Pages}">
+                            <HierarchicalDataTemplate ItemsSource="{Binding Pages}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
                                     <Label Content="{Binding Name}" />
@@ -119,15 +131,15 @@
                                         <Setter TargetName="imgRTL" Property="Source" Value="Icons/LTR.png"/>
                                     </DataTrigger>
                                 </HierarchicalDataTemplate.Triggers>
-                            
-                            
+
+
                                 <HierarchicalDataTemplate.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Name="imgPage" Source="Icons/1Page.png"/>
                                             <Label Content="{Binding Name}" />
                                         </StackPanel>
-                                        
+
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding IsDouble}" Value="True">
                                                 <Setter TargetName="imgPage" Property="Source" Value="Icons/2Page.png"/>
@@ -135,8 +147,8 @@
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </HierarchicalDataTemplate.ItemTemplate>
-                            
-                            
+
+
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>
                     </TreeView>
@@ -196,7 +208,7 @@
                         </Paragraph>
                         <Paragraph>
                             <Hyperlink NavigateUri="https://github.com/yonixw/MangaPrinter" >
-                            https://github.com/yonixw/MangaPrinter
+                                https://github.com/yonixw/MangaPrinter
                             </Hyperlink>
                         </Paragraph>
                     </FlowDocument>
