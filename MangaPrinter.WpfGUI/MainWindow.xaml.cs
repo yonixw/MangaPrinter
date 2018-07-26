@@ -99,8 +99,27 @@ namespace MangaPrinter.WpfGUI
                 else
                     tvFiles.ContextMenu = tvFiles.Resources["menuChapter"] as System.Windows.Controls.ContextMenu;
 
+                
                 tvFiles.ContextMenu.IsOpen = true;
             }
+        }
+
+        void TreeAction<T>(TreeView tree, Action<T> action) where T: class {
+            T obj = tree.SelectedItem as T;
+            if (obj != null)
+            {
+                action(obj);
+            }
+        }
+
+        private void mnuToSingle_Click(object sender, RoutedEventArgs e)
+        {
+            TreeAction<Core.MangaPage>(tvFiles, (page) => page.IsDouble = false);
+        }
+
+        private void mnuToDouble_Click(object sender, RoutedEventArgs e)
+        {
+            TreeAction<Core.MangaPage>(tvFiles, (page) => page.IsDouble = true);
         }
     }
 }

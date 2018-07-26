@@ -111,9 +111,9 @@
                                 <Menu>Change to RTL</Menu>
                                 <Menu>Change to LTR</Menu>
                             </ContextMenu>
-                            <ContextMenu x:Key="menuPage" StaysOpen="True">
-                                <Menu>Change to single page</Menu>
-                                <Menu>Change to double page</Menu>
+                            <ContextMenu x:Key="menuPage" Name="menuPage" StaysOpen="True">
+                                <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Change to single page"/>
+                                <MenuItem Name="mnuToDouble" Click="mnuToDouble_Click" Header="Change to double page"/>
                             </ContextMenu>
                         </TreeView.Resources>
                         <TreeView.ItemContainerStyle>

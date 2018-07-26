@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MangaPrinter.Core
 {
-    public class MangaPage
+    public class MangaPage 
     {
         public string Name { get; set; }
         public bool IsDouble { get; set; }
