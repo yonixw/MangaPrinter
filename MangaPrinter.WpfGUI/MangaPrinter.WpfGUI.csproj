@@ -52,6 +52,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="IPropertyFactory.cs" />
     <Compile Include="winWorking.xaml.cs">
       <DependentUpon>winWorking.xaml</DependentUpon>
     </Compile>
