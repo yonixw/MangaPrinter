@@ -98,11 +98,12 @@
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <MenuItem Header="Import folders" Style="{StaticResource MenuItemBtnStyle}"
-                                  Name="menuImprtFolders" Click="menuImprtFolders_Click"/>
-                        <MenuItem Header="Add empty chapter" Style="{StaticResource MenuItemBtnStyle}"/>
+                                  Name="menuImprtFolders" Click="menuImprtFolders_Click" Foreground="Black"/>
+                        <MenuItem Header="Add empty chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
                     </Menu>
 
-                    <TreeView Name="tvFiles" SelectedItemChanged="tvFiles_SelectedItemChanged">
+                    <TreeView Name="tvFiles" SelectedItemChanged="tvFiles_SelectedItemChanged"
+                              PreviewMouseRightButtonUp="tvFiles_PreviewMouseRightButtonUp">
                         <TreeView.Resources>
                             <ContextMenu x:Key="menuChapter" StaysOpen="True">
                                 <Menu>Rename name for show</Menu>
@@ -182,7 +183,7 @@
 
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="Bind!" Style="{StaticResource MenuItemBtnStyle}"/>
+                        <MenuItem Header="Bind!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
                     </Menu>
                     <TreeView >
 
@@ -192,8 +193,8 @@
             <TabItem Header="Print and Export">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="0,5">
-                        <MenuItem Header="Print Preview" Style="{StaticResource MenuItemBtnStyle}"/>
-                        <MenuItem Header="Read Preview" Style="{StaticResource MenuItemBtnStyle}"/>
+                        <MenuItem Header="Print Preview" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
+                        <MenuItem Header="Read Preview" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
                     </Menu>
                     <Canvas>
 
