@@ -129,6 +129,14 @@ namespace MangaPrinter.WpfGUI
             TreeAction<Core.MangaPage>(tvFiles, page => page.IsDouble = true);
         }
 
-        
+        private void mnuToRTL_Click(object sender, RoutedEventArgs e)
+        {
+            TreeAction<Core.MangaChapter>(tvFiles, ch => ch.IsRTL = true);
+        }
+
+        private void mnuToLTR_Click(object sender, RoutedEventArgs e)
+        {
+            TreeAction<Core.MangaChapter>(tvFiles, ch => ch.IsRTL = false);
+        }
     }
 }

@@ -106,10 +106,11 @@
                               PreviewMouseRightButtonUp="tvFiles_PreviewMouseRightButtonUp">
                         <TreeView.Resources>
                             <ContextMenu x:Key="menuChapter" StaysOpen="True">
-                                <Menu>Rename name for show</Menu>
+                                <MenuItem Header="Change chapter title"/>
+                                <MenuItem Header="Add jpegs as pages..."/>
                                 <Separator/>
-                                <Menu>Change to RTL</Menu>
-                                <Menu>Change to LTR</Menu>
+                                <MenuItem Name="mnuToRTL" Click="mnuToRTL_Click" Header="Change to RTL"/>
+                                <MenuItem Name="mnuToLTR" Click="mnuToLTR_Click" Header="Change to LTR"/>
                             </ContextMenu>
                             <ContextMenu x:Key="menuPage" Name="menuPage" StaysOpen="True">
                                 <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Change to single page"/>
