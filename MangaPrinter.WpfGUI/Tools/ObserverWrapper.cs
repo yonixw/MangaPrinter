@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace MangaPrinter.WpfGUI.Tools
         public Observable(T original)
         {
             data = original;
+            inflateProperties();
         }
 
         void inflateProperties()
@@ -52,11 +54,26 @@ namespace MangaPrinter.WpfGUI.Tools
             if (myProperties.ContainsKey(binder.Name))
             {
                 myProperties[binder.Name].SetValue(data, value);
+                NotifyChange(binder.Name);
                 return true;
             }
             return false;
         }
 
+        public F Act<F>(Func<T,F> func )
+        {
+            return func((dynamic)this);
+        }
+
+        public void Act(Action<T> func)
+        {
+            func((dynamic)this);
+        }
+
+        public static explicit operator T(Observable<T> observable)
+        {
+            return (dynamic)observable;
+        }
 
         #region Update
 
@@ -139,5 +156,21 @@ namespace MangaPrinter.WpfGUI.Tools
 
         #endregion
 
+    }
+
+    public class ObservableFactory
+    {
+        public static ObservableCollection<dynamic> ToList<T>(IEnumerable<T> orginalList)
+        {
+            if (orginalList == null) return null;
+
+            ObservableCollection<dynamic> newList = new ObservableCollection<dynamic>();
+            foreach( T value in orginalList)
+            {
+                newList.Add((dynamic)new Observable<T>(value));
+            }
+
+            return newList;
+        }
     }
 }

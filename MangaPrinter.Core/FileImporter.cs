@@ -60,7 +60,9 @@ namespace MangaPrinter.Core
                 }
 
                 if (ch.Pages.Count > 0)
+                {
                     result.Add(ch);
+                }
 
                 if (subFodlers)
                 {

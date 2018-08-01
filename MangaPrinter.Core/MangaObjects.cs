@@ -15,7 +15,7 @@ namespace MangaPrinter.Core
     public class MangaChapter
     {
         public string Name { get; set; }
-        public List<MangaPage> Pages { get; set; }
+        public IList<MangaPage> Pages { get; set; }
         public bool IsRTL { get; set; }
     }
 
@@ -46,7 +46,7 @@ namespace MangaPrinter.Core
             BOOKLET, DUPLEX
         }
 
-        public List<MangaDoublPagePrint> PrintPages { get; set; }
+        public IList<MangaDoublPagePrint> PrintPages { get; set; }
         public BindType PrintBind { get; set; }
         public string Description { get; set; }
     }

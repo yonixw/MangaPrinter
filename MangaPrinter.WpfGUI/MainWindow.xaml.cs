@@ -59,18 +59,19 @@ namespace MangaPrinter.WpfGUI
 
                 List<Core.MangaChapter> chapters = winWorking.waitForTask((updateFunc) =>
                 {
-                    return fileImporter.getChapters(DirPath,subFolders,cutoff,rtl, orderFunc, updateFunc);
-                }, 
+                    return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl, orderFunc, updateFunc);
+                },
                 isProgressKnwon: false);
 
-                tvFiles.ItemsSource = chapters;
-                
+                chapters.ForEach((cp) => { cp.Pages = Tools.ObservableFactory.ToList(cp.Pages).Cast<Core.MangaPage>().ToList(); });
+                tvFiles.ItemsSource = Tools.ObservableFactory.ToList(chapters);
+
             }
         }
 
         private void tvFiles_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (tvFiles.SelectedItem is Core.MangaPage)
+            if (tvFiles.SelectedItem is Tools.Observable<Core.MangaPage>)
                 tvFiles.ContextMenu = tvFiles.Resources["menuPage"] as System.Windows.Controls.ContextMenu;
             else
                 tvFiles.ContextMenu = tvFiles.Resources["menuChapter"] as System.Windows.Controls.ContextMenu;
@@ -94,17 +95,18 @@ namespace MangaPrinter.WpfGUI
                 treeViewItem.Focus();
                 e.Handled = true;
 
-                if (tvFiles.SelectedItem is Core.MangaPage)
+                if (tvFiles.SelectedItem is Tools.Observable<Core.MangaPage>)
                     tvFiles.ContextMenu = tvFiles.Resources["menuPage"] as System.Windows.Controls.ContextMenu;
                 else
                     tvFiles.ContextMenu = tvFiles.Resources["menuChapter"] as System.Windows.Controls.ContextMenu;
 
-                
+
                 tvFiles.ContextMenu.IsOpen = true;
             }
         }
 
-        void TreeAction<T>(TreeView tree, Action<T> action) where T: class {
+        void TreeAction<T>(TreeView tree, Action<T> action) where T : class
+        {
             T obj = tree.SelectedItem as T;
             if (obj != null)
             {
@@ -114,12 +116,12 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuToSingle_Click(object sender, RoutedEventArgs e)
         {
-            TreeAction<Core.MangaPage>(tvFiles, (page) => page.IsDouble = false);
+            TreeAction<Tools.Observable<Core.MangaPage>>(tvFiles, (ob) => ob.Act(page => page.IsDouble = false));
         }
 
         private void mnuToDouble_Click(object sender, RoutedEventArgs e)
         {
-            TreeAction<Core.MangaPage>(tvFiles, (page) => page.IsDouble = true);
+            TreeAction<Tools.Observable<Core.MangaPage>>(tvFiles, (ob) => ob.Act(page => page.IsDouble = true));
         }
     }
 }
