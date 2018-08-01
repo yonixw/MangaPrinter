@@ -55,7 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Tools\ObserverWrapper.cs" />
     <Compile Include="winWorking.xaml.cs">
       <DependentUpon>winWorking.xaml</DependentUpon>
     </Compile>

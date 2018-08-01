@@ -24,6 +24,11 @@ namespace MangaPrinter.WpfGUI
             InitializeComponent();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+          
+        }
+
         private void txtPageMaxWidth_TextChanged(object sender, TextChangedEventArgs e)
         {
             int value = 0;
@@ -63,15 +68,15 @@ namespace MangaPrinter.WpfGUI
                 },
                 isProgressKnwon: false);
 
-                chapters.ForEach((cp) => { cp.Pages = Tools.ObservableFactory.ToList(cp.Pages).Cast<Core.MangaPage>().ToList(); });
-                tvFiles.ItemsSource = Tools.ObservableFactory.ToList(chapters);
+                
+                tvFiles.ItemsSource = chapters;
 
             }
         }
 
         private void tvFiles_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (tvFiles.SelectedItem is Tools.Observable<Core.MangaPage>)
+            if (tvFiles.SelectedItem is Core.MangaPage)
                 tvFiles.ContextMenu = tvFiles.Resources["menuPage"] as System.Windows.Controls.ContextMenu;
             else
                 tvFiles.ContextMenu = tvFiles.Resources["menuChapter"] as System.Windows.Controls.ContextMenu;
@@ -95,7 +100,7 @@ namespace MangaPrinter.WpfGUI
                 treeViewItem.Focus();
                 e.Handled = true;
 
-                if (tvFiles.SelectedItem is Tools.Observable<Core.MangaPage>)
+                if (tvFiles.SelectedItem is Core.MangaPage)
                     tvFiles.ContextMenu = tvFiles.Resources["menuPage"] as System.Windows.Controls.ContextMenu;
                 else
                     tvFiles.ContextMenu = tvFiles.Resources["menuChapter"] as System.Windows.Controls.ContextMenu;
@@ -116,12 +121,14 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuToSingle_Click(object sender, RoutedEventArgs e)
         {
-            TreeAction<Tools.Observable<Core.MangaPage>>(tvFiles, (ob) => ob.Act(page => page.IsDouble = false));
+            TreeAction<Core.MangaPage>(tvFiles, page => page.IsDouble = false);
         }
 
         private void mnuToDouble_Click(object sender, RoutedEventArgs e)
         {
-            TreeAction<Tools.Observable<Core.MangaPage>>(tvFiles, (ob) => ob.Act(page => page.IsDouble = true));
+            TreeAction<Core.MangaPage>(tvFiles, page => page.IsDouble = true);
         }
+
+        
     }
 }

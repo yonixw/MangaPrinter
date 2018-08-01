@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI"
         mc:Ignorable="d"
         Title="Manga printer and binder manager" Height="450" Width="800"
-        FontSize="9.75pt" WindowStartupLocation="CenterScreen">
+        FontSize="9.75pt" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Window.Resources>
         <Style x:Key="GeneralStyle" TargetType="{x:Type Control}">
             <Setter Property="OverridesDefaultStyle" Value="True" />

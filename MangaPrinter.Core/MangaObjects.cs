@@ -5,50 +5,50 @@ using System.Text;
 
 namespace MangaPrinter.Core
 {
-    public class MangaPage 
+    public class MangaPage : ModelBase
     {
-        public string Name { get; set; }
-        public bool IsDouble { get; set; }
-        public string ImagePath { get; set; }
+        public string Name { get { return _baseGet(); } set { _baseSet(value); } }
+        public bool IsDouble { get { return _baseGet(); } set { _baseSet(value); } }
+        public string ImagePath { get { return _baseGet(); } set { _baseSet(value); } }
     }
 
-    public class MangaChapter
+    public class MangaChapter : ModelBase
     {
-        public string Name { get; set; }
-        public IList<MangaPage> Pages { get; set; }
-        public bool IsRTL { get; set; }
+         public string Name { get { return _baseGet(); } set { _baseSet(value); } }
+        public IList<MangaPage> Pages { get { return _baseGet(); } set { _baseSet(value); } }
+        public bool IsRTL { get { return _baseGet(); } set { _baseSet(value); } }
     }
 
-    public class MangaDoublPagePrint
+    public enum PageType
     {
-        public enum PageType
-        {
-            INTRO, OUTRO,
-            SINGLE, DOUBLE,
-            BEFORE_DOUBLE, MAKE_EVEN
-        }
-
-        public PageType  RSourceType { get; set; }
-        public MangaPage RSourcePage { get; set; }
-        public string RPageText;
-
-        public PageType  LSourceType { get; set; }
-        public MangaPage LSourcePage { get; set; }
-        public string LPageText;
-
-        public string Description { get; set; }
+        INTRO, OUTRO,
+        SINGLE, DOUBLE,
+        BEFORE_DOUBLE, MAKE_EVEN
     }
 
-    public class MangaChapterPrint
+    public class MangaDoublPagePrint : ModelBase
     {
-        public enum BindType
-        {
-            BOOKLET, DUPLEX
-        }
+        public PageType  RSourceType { get { return _baseGet(); } set { _baseSet(value); } }
+        public MangaPage RSourcePage { get { return _baseGet(); } set { _baseSet(value); } }
+        public string RPageText { get { return _baseGet(); } set { _baseSet(value); } }
 
-        public IList<MangaDoublPagePrint> PrintPages { get; set; }
-        public BindType PrintBind { get; set; }
-        public string Description { get; set; }
+        public PageType  LSourceType { get { return _baseGet(); } set { _baseSet(value); } }
+        public MangaPage LSourcePage { get { return _baseGet(); } set { _baseSet(value); } }
+        public string LPageText { get { return _baseGet(); } set { _baseSet(value); } }
+        
+        public string Description { get { return _baseGet(); } set { _baseSet(value); } }
+    }
+
+    public enum BindType
+    {
+        BOOKLET, DUPLEX
+    }
+
+    public class MangaChapterPrint : ModelBase
+    {
+        public IList<MangaDoublPagePrint> PrintPages { get { return _baseGet(); } set { _baseSet(value); } }
+        public BindType PrintBind { get { return _baseGet(); } set { _baseSet(value); } }
+        public string Description { get { return _baseGet(); } set { _baseSet(value); } }
     }
 
 }
