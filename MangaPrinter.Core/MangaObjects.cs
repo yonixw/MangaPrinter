@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -14,8 +15,8 @@ namespace MangaPrinter.Core
 
     public class MangaChapter : ModelBase
     {
-         public string Name { get { return _baseGet(); } set { _baseSet(value); } }
-        public IList<MangaPage> Pages { get { return _baseGet(); } set { _baseSet(value); } }
+        public string Name { get { return _baseGet(); } set { _baseSet(value); } }
+        public ObservableCollection<MangaPage> Pages { get { return _baseGet(); } set { _baseSet(value); } }
         public bool IsRTL { get { return _baseGet(); } set { _baseSet(value); } }
     }
 
@@ -46,7 +47,7 @@ namespace MangaPrinter.Core
 
     public class MangaChapterPrint : ModelBase
     {
-        public IList<MangaDoublPagePrint> PrintPages { get { return _baseGet(); } set { _baseSet(value); } }
+        public ObservableCollection<MangaDoublPagePrint> PrintPages { get { return _baseGet(); } set { _baseSet(value); } }
         public BindType PrintBind { get { return _baseGet(); } set { _baseSet(value); } }
         public string Description { get { return _baseGet(); } set { _baseSet(value); } }
     }

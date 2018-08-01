@@ -44,7 +44,7 @@ namespace MangaPrinter.Core
             {
                 MangaChapter ch = new MangaChapter()
                 {
-                    Pages = new List<MangaPage>(),
+                    Pages = new System.Collections.ObjectModel.ObservableCollection<MangaPage>(),
                     Name = di.Name,
                     IsRTL = RTL
                 };
