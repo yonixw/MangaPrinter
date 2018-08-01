@@ -13,7 +13,8 @@ using System.Threading.Tasks;
 
 namespace MangaPrinter.Core
 {
-    public class ModelBase : INotifyPropertyChanged
+
+    public class ModelBaseShared 
     {
         Dictionary<string, object> myData = new Dictionary<string, object>();
 
@@ -25,9 +26,19 @@ namespace MangaPrinter.Core
         protected void _baseSet<T>(T value, [CallerMemberName] string propName = "")
         {
             myData[propName] = value;
-            NotifyChange(propName);
         }
 
+        // public long Yoni { get { return _baseGet(); } set { _baseSet(value); } }
+    }
+
+    public class ModelBasedWinform : ModelBaseShared
+    {
+
+    }
+
+
+    public class ModelBaseWpf : ModelBaseShared, INotifyPropertyChanged
+    {
         #region Update
 
         private readonly Dictionary<string, PropertyChangedEventArgs> _argsCache =
@@ -52,7 +63,5 @@ namespace MangaPrinter.Core
         }
 
         #endregion
-
-        // public long Yoni { get { return _baseGet(); } set { _baseSet(value); } }
     }
 }

@@ -6,14 +6,14 @@ using System.Text;
 
 namespace MangaPrinter.Core
 {
-    public class MangaPage : ModelBase
+    public class MangaPage : ModelBaseWpf
     {
         public string Name { get { return _baseGet(); } set { _baseSet(value); } }
         public bool IsDouble { get { return _baseGet(); } set { _baseSet(value); } }
         public string ImagePath { get { return _baseGet(); } set { _baseSet(value); } }
     }
 
-    public class MangaChapter : ModelBase
+    public class MangaChapter : ModelBaseWpf
     {
         public string Name { get { return _baseGet(); } set { _baseSet(value); } }
         public ObservableCollection<MangaPage> Pages { get { return _baseGet(); } set { _baseSet(value); } }
@@ -27,7 +27,7 @@ namespace MangaPrinter.Core
         BEFORE_DOUBLE, MAKE_EVEN
     }
 
-    public class MangaDoublPagePrint : ModelBase
+    public class MangaDoublPagePrint : ModelBaseWpf
     {
         public PageType  RSourceType { get { return _baseGet(); } set { _baseSet(value); } }
         public MangaPage RSourcePage { get { return _baseGet(); } set { _baseSet(value); } }
@@ -45,7 +45,7 @@ namespace MangaPrinter.Core
         BOOKLET, DUPLEX
     }
 
-    public class MangaChapterPrint : ModelBase
+    public class MangaChapterPrint : ModelBaseWpf
     {
         public ObservableCollection<MangaDoublPagePrint> PrintPages { get { return _baseGet(); } set { _baseSet(value); } }
         public BindType PrintBind { get { return _baseGet(); } set { _baseSet(value); } }
