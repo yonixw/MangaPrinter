@@ -33,14 +33,21 @@ namespace MangaPrinter.WpfGUI
             tvFiles.ItemsSource = mangaChapters;
         }
 
-        private void txtPageMaxWidth_TextChanged(object sender, TextChangedEventArgs e)
+        void verifyInteger(TextBox textBox, string fallbackValue)
         {
             int value = 0;
-            if (!int.TryParse(txtPageMaxWidth.Text, out value))
+            if (!int.TryParse(textBox.Text, out value))
             {
-                MessageBox.Show("Can't convert " + txtPageMaxWidth.Text + " to integer, try again.");
-                txtPageMaxWidth.Text = 900.ToString();
+                MessageBox.Show("Can't convert \"" + textBox.Text + "\" to integer, try again.");
+                textBox.Text = fallbackValue;
             }
+        }
+
+        #region FilesTab
+
+        private void txtPageMaxWidth_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            verifyInteger(txtPageMaxWidth, "900");
         }
 
         private void menuImprtFolders_Click(object sender, RoutedEventArgs e)
@@ -183,7 +190,7 @@ namespace MangaPrinter.WpfGUI
                 mangaChapters.Remove(ch);
             });
         }
-            
+
         private void mnuAddChapterPages_Click(object sender, RoutedEventArgs e)
         {
             TreeAction<Core.MangaChapter>(tvFiles, (ch) =>
@@ -213,6 +220,13 @@ namespace MangaPrinter.WpfGUI
                     .ForEach(page => ch.Pages.Add(page));
                 }
             });
+        }
+
+        #endregion
+
+        private void txtSpoilerPgNm_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            verifyInteger(txtSpoilerPgNm, "25");
         }
     }
 }

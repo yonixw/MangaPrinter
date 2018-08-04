@@ -168,7 +168,8 @@
                         <CheckBox IsChecked="True">Add End Page</CheckBox>
                         
                         <CheckBox IsChecked="True">Add Anti-spoiler every:</CheckBox>
-                        <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center">25</TextBox>
+                        <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
+                            25</TextBox>
                         <Label Content="pages" IsEnabled="False" />
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
