@@ -53,8 +53,8 @@ namespace MangaPrinter.WpfGUI
         private void menuImprtFolders_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlgSaveFile = new Microsoft.Win32.OpenFileDialog();
-            dlgSaveFile.Filter = "Folder|_._";
-            dlgSaveFile.FileName = "Open here";
+            dlgSaveFile.Filter = "Folder|_Choose.Here_";
+            dlgSaveFile.FileName = "_Choose.Here_";
             dlgSaveFile.CheckFileExists = false;
             dlgSaveFile.Multiselect = false;
             dlgSaveFile.ValidateNames = false;
