@@ -16,14 +16,14 @@ namespace MangaPrinter.Core
 
     public class ModelBaseShared 
     {
-        Dictionary<string, object> myData = new Dictionary<string, object>();
+        protected Dictionary<string, object> myData = new Dictionary<string, object>();
 
         protected dynamic _baseGet([CallerMemberName] string propName = "")
         {
             return myData[propName];
         }
 
-        protected void _baseSet<T>(T value, [CallerMemberName] string propName = "")
+        protected virtual void _baseSet<T>(T value, [CallerMemberName] string propName = "")
         {
             myData[propName] = value;
         }
@@ -39,6 +39,13 @@ namespace MangaPrinter.Core
 
     public class ModelBaseWpf : ModelBaseShared, INotifyPropertyChanged
     {
+        protected override void _baseSet<T>(T value, [CallerMemberName] string propName = "")
+        {
+            myData[propName] = value;
+            NotifyChange(propName);
+        }
+
+
         #region Update
 
         private readonly Dictionary<string, PropertyChangedEventArgs> _argsCache =
