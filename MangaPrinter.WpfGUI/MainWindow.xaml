@@ -108,7 +108,7 @@
                         <TreeView.Resources>
                             <ContextMenu x:Key="menuChapter" StaysOpen="True">
                                 <MenuItem Name="mnuRenameChapter" Click="mnuRenameChapter_Click" Header="Change chapter title"/>
-                                <MenuItem Name="mnuAddChapterPages" Click="mnuAddChapterPages_Click" Header="Add jpegs as pages..."/>
+                                <MenuItem Name="mnuAddChapterPages" Click="mnuAddChapterPages_Click" Header="Add images as pages..."/>
                                 <Separator/>
                                 <MenuItem Name="mnuToRTL" Click="mnuToRTL_Click" Header="Change to RTL"/>
                                 <MenuItem Name="mnuToLTR" Click="mnuToLTR_Click" Header="Change to LTR"/>

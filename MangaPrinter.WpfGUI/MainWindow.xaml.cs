@@ -70,7 +70,8 @@ namespace MangaPrinter.WpfGUI
                 {
                     return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl, orderFunc, updateFunc);
                 },
-                isProgressKnwon: false).ForEach(ch => mangaChapters.Add(ch));
+                isProgressKnwon: false)
+                .ForEach(ch => mangaChapters.Add(ch));
             }
         }
 
@@ -185,7 +186,33 @@ namespace MangaPrinter.WpfGUI
             
         private void mnuAddChapterPages_Click(object sender, RoutedEventArgs e)
         {
+            TreeAction<Core.MangaChapter>(tvFiles, (ch) =>
+            {
+                Microsoft.Win32.OpenFileDialog dlgOpenImages = new Microsoft.Win32.OpenFileDialog();
+                dlgOpenImages.Filter = "Images|" + Core.FileImporter.ImagesExtensions;
+                dlgOpenImages.FileName = "Open supported images";
+                dlgOpenImages.CheckFileExists = true;
+                dlgOpenImages.Multiselect = true;
+                dlgOpenImages.Title = "Choose images to import:";
 
+                if (dlgOpenImages.ShowDialog() == true)
+                {
+                    Core.FileImporter fileImporter = new Core.FileImporter();
+
+                    int cutoff = int.Parse(txtPageMaxWidth.Text);
+
+                    Func<System.IO.FileSystemInfo, object> orderFunc = (si) => si.CreationTime;
+                    if (rbByName.IsChecked ?? false)
+                        orderFunc = (si) => si.Name;
+
+                    winWorking.waitForTask((updateFunc) =>
+                    {
+                        return fileImporter.importImages(dlgOpenImages.FileNames, cutoff, orderFunc, updateFunc);
+                    },
+                    isProgressKnwon: true)
+                    .ForEach(page => ch.Pages.Add(page));
+                }
+            });
         }
     }
 }
