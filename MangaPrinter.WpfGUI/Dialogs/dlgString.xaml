@@ -1,0 +1,14 @@
+﻿<Window x:Class="MangaPrinter.WpfGUI.Dialogs.dlgString"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
+        mc:Ignorable="d"
+        Title="Text dialog" Height="122" Width="480" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+    <StackPanel>
+        <Label Name="lblDescription" Content="Enter new value:" />
+        <TextBox Name="txtData" Margin="10,0"></TextBox>
+        <Button Width="100px" Margin="10,10" Name="btnOk" Click="btnOk_Click">OK</Button>
+    </StackPanel>
+</Window>

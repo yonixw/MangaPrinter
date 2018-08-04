@@ -99,18 +99,21 @@
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <MenuItem Header="Import folders" Style="{StaticResource MenuItemBtnStyle}"
                                   Name="menuImprtFolders" Click="menuImprtFolders_Click" Foreground="Black"/>
-                        <MenuItem Header="Add empty chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
+                        <MenuItem Header="Add empty chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"
+                                  Name="mnuAddEmptyChapter" Click="mnuAddEmptyChapter_Click"/>
                     </Menu>
 
                     <TreeView Name="tvFiles" SelectedItemChanged="tvFiles_SelectedItemChanged"
                               PreviewMouseRightButtonUp="tvFiles_PreviewMouseRightButtonUp">
                         <TreeView.Resources>
                             <ContextMenu x:Key="menuChapter" StaysOpen="True">
-                                <MenuItem Header="Change chapter title"/>
-                                <MenuItem Header="Add jpegs as pages..."/>
+                                <MenuItem Name="mnuRenameChapter" Click="mnuRenameChapter_Click" Header="Change chapter title"/>
+                                <MenuItem Name="mnuAddChapterPages" Click="mnuAddChapterPages_Click" Header="Add jpegs as pages..."/>
                                 <Separator/>
                                 <MenuItem Name="mnuToRTL" Click="mnuToRTL_Click" Header="Change to RTL"/>
                                 <MenuItem Name="mnuToLTR" Click="mnuToLTR_Click" Header="Change to LTR"/>
+                                <Separator/>
+                                <MenuItem Name="mnuDeleteCh" Click="mnuDeleteCh_Click" Header="Delete" Background="LightSalmon" />
                             </ContextMenu>
                             <ContextMenu x:Key="menuPage" Name="menuPage" StaysOpen="True">
                                 <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Change to single page"/>

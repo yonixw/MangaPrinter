@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -19,6 +20,9 @@ namespace MangaPrinter.WpfGUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        ObservableCollection<Core.MangaChapter> mangaChapters = new ObservableCollection<Core.MangaChapter>();
+       
+
         public MainWindow()
         {
             InitializeComponent();
@@ -26,7 +30,7 @@ namespace MangaPrinter.WpfGUI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-          
+            tvFiles.ItemsSource = mangaChapters;
         }
 
         private void txtPageMaxWidth_TextChanged(object sender, TextChangedEventArgs e)
@@ -62,15 +66,11 @@ namespace MangaPrinter.WpfGUI
                 if (rbByName.IsChecked ?? false)
                     orderFunc = (si) => si.Name;
 
-                List<Core.MangaChapter> chapters = winWorking.waitForTask((updateFunc) =>
+                winWorking.waitForTask((updateFunc) =>
                 {
                     return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl, orderFunc, updateFunc);
                 },
-                isProgressKnwon: false);
-
-                
-                tvFiles.ItemsSource = chapters;
-
+                isProgressKnwon: false).ForEach(ch => mangaChapters.Add(ch));
             }
         }
 
@@ -110,7 +110,7 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
-        void TreeAction<T>(TreeView tree, Action<T> action) where T : class
+        public static void TreeAction<T>(TreeView tree, Action<T> action) where T : class
         {
             T obj = tree.SelectedItem as T;
             if (obj != null)
@@ -137,6 +137,55 @@ namespace MangaPrinter.WpfGUI
         private void mnuToLTR_Click(object sender, RoutedEventArgs e)
         {
             TreeAction<Core.MangaChapter>(tvFiles, ch => ch.IsRTL = false);
+        }
+
+        private void mnuRenameChapter_Click(object sender, RoutedEventArgs e)
+        {
+            TreeAction<Core.MangaChapter>(tvFiles, (ch) =>
+            {
+                Dialogs.dlgString dlgName = new Dialogs.dlgString()
+                {
+                    Title = "Enter name",
+                    Caption = "Enter new chapter title:",
+                    StringData = ch.Name
+                };
+                if (dlgName.ShowDialog() ?? false)
+                {
+                    ch.Name = dlgName.StringData;
+                }
+            });
+        }
+
+        private void mnuAddEmptyChapter_Click(object sender, RoutedEventArgs e)
+        {
+            Dialogs.dlgString dlgName = new Dialogs.dlgString()
+            {
+                Title = "Enter name",
+                Caption = "Enter empty chapter title:",
+                StringData = "Chapter Name"
+            };
+            if (dlgName.ShowDialog() ?? false)
+            {
+                mangaChapters.Add(new Core.MangaChapter()
+                {
+                    IsRTL = rbRTL.IsChecked ?? false,
+                    Pages = new ObservableCollection<Core.MangaPage>(),
+                    Name = dlgName.StringData
+                });
+            }
+        }
+
+        private void mnuDeleteCh_Click(object sender, RoutedEventArgs e)
+        {
+            TreeAction<Core.MangaChapter>(tvFiles, (ch) =>
+            {
+                mangaChapters.Remove(ch);
+            });
+        }
+            
+        private void mnuAddChapterPages_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
