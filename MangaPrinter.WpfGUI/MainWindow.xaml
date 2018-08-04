@@ -79,7 +79,8 @@
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" >Double-Page width (px) cutoff:</Label>
-                        <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" TextChanged="txtPageMaxWidth_TextChanged"></TextBox>
+                        <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" 
+                                TextChanged="txtPageMaxWidth_TextChanged" TextAlignment="Center"/>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False">Import by:</Label>
@@ -165,8 +166,13 @@
                         <Label IsEnabled="False">Chapter:</Label>
                         <CheckBox IsChecked="True">Add Start Page</CheckBox>
                         <CheckBox IsChecked="True">Add End Page</CheckBox>
-
-                        <Label IsEnabled="False">Binding:</Label>
+                        
+                        <CheckBox IsChecked="True">Add Anti-spoiler every:</CheckBox>
+                        <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center">25</TextBox>
+                        <Label Content="pages" IsEnabled="False" />
+                    </Menu>
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                        <Label IsEnabled="False">Default Binding:</Label>
                         <StackPanel Orientation="Horizontal">
                             <RadioButton IsChecked="True" Margin="0,0,10,0" VerticalContentAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
@@ -181,12 +187,6 @@
                                 </StackPanel>
                             </RadioButton>
                         </StackPanel>
-
-
-
-
-                    </Menu>
-                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <MenuItem Header="(Re-)Bind!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
                     </Menu>
                     <TreeView >
