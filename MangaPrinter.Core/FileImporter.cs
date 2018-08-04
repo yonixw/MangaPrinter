@@ -95,9 +95,23 @@ namespace MangaPrinter.Core
         public List<MangaPage> importImages(string[] imagePaths, int pageCutoff,
             Func<FileSystemInfo, object> orderFunc, Action<string, int> updateFunc = null)
         {
+            List<FileSystemInfo> files = new List<FileSystemInfo>();
             List<MangaPage> result = new List<MangaPage>();
 
-            for (int pageIndex = 0; pageIndex < imagePaths.Length; pageIndex++)
+
+            foreach (string path in imagePaths)
+            {
+                FileInfo fi = new FileInfo(path);
+                if (ImagesExtensions.Contains(fi.Extension))
+                {
+                    files.Add(fi);
+                }
+            }
+
+            files = files.OrderBy(orderFunc).ToList();
+
+            int pageCount = files.Count();
+            for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
             {
                 FileInfo fi = new FileInfo(imagePaths[pageIndex]);
 
@@ -105,7 +119,7 @@ namespace MangaPrinter.Core
                 {
 
                     if (updateFunc != null)
-                        updateFunc(fi.Directory.Name + "/" + fi.Name, (int)(100.0f * pageIndex / imagePaths.Length));
+                        updateFunc(fi.Directory.Name + "/" + fi.Name, (int)(100.0f * pageIndex / pageCount));
                     try
                     {
                         result.Add(getMangaPageFromPath(fi, pageCutoff));
