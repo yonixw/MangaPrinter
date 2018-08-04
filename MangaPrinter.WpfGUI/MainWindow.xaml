@@ -187,7 +187,7 @@
 
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="Bind!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
+                        <MenuItem Header="(Re-)Bind!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
                     </Menu>
                     <TreeView >
 
@@ -199,6 +199,7 @@
                     <Menu DockPanel.Dock="Top" Padding="0,5">
                         <MenuItem Header="Print Preview" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
                         <MenuItem Header="Read Preview" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
+                        <MenuItem Header="Export..." Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
                     </Menu>
                     <Canvas>
 
