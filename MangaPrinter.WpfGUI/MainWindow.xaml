@@ -195,7 +195,7 @@
                     </TreeView>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Print and Export">
+            <TabItem Header="Preview and Export">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="0,5">
                         <MenuItem Header="Print Preview" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
