@@ -55,12 +55,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dialogs\dlgBluredImage.xaml.cs">
+      <DependentUpon>dlgBluredImage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\dlgString.xaml.cs">
       <DependentUpon>dlgString.xaml</DependentUpon>
     </Compile>
     <Compile Include="winWorking.xaml.cs">
       <DependentUpon>winWorking.xaml</DependentUpon>
     </Compile>
+    <Page Include="Dialogs\dlgBluredImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\dlgString.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
