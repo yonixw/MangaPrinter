@@ -6,7 +6,22 @@
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
         mc:Ignorable="d"
         Title="dlgBluredImage" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <Label>Blur% level:</Label>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Slider Maximum="100" Width="150px" AutoToolTipPlacement="BottomRight" SmallChange="1" LargeChange="5"></Slider>
+            </StatusBarItem>
+
+            <StatusBarItem>
+                <Label>Zoom% level:</Label>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Slider Maximum="1000" Width="150px" AutoToolTipPlacement="BottomRight" SmallChange="1" LargeChange="5"></Slider>
+            </StatusBarItem>
+        </StatusBar>
+        <Image></Image>
+    </DockPanel>
 </Window>
