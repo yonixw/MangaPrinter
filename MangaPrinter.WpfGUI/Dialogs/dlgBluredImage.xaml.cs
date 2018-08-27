@@ -20,19 +20,20 @@ namespace MangaPrinter.WpfGUI.Dialogs
     /// </summary>
     public partial class dlgBluredImage : Window
     {
-        public dlgBluredImage()
+        public string _imageUrl;
+        public dlgBluredImage(string ImageUrl)
         {
+            _imageUrl = ImageUrl;
             InitializeComponent();
         }
 
         MyImageBind myImage;
+        public const double maxBlur = 40;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            BitmapImage bm = new BitmapImage(new Uri
-                (@"C:\Users\Yoni\source\repos\MangaPrinter\MangaPrinter.WpfGUI\Icons\1Page.png", UriKind.Absolute));
-            
-            imgMain.DataContext = myImage = new MyImageBind() { Image = bm, BlurRadius = 10 };
+            BitmapImage bm = new BitmapImage(new Uri(_imageUrl, UriKind.Absolute));
+            imgMain.DataContext = myImage = new MyImageBind() { Image = bm, BlurRadius = slideBlur.Value * maxBlur / 100 };
             Zoom(slideZoom.Value);
         }
 
@@ -69,7 +70,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
         private void slideBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (myImage != null)
-                myImage.BlurRadius = slideBlur.Value * 40 / 100;
+                myImage.BlurRadius = slideBlur.Value * maxBlur / 100;
         }
 
         private void cnvsImage_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -85,6 +86,13 @@ namespace MangaPrinter.WpfGUI.Dialogs
         private void slideZoom_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Zoom(slideZoom.Value);
+        }
+
+        private void btnRefit_Click(object sender, RoutedEventArgs e)
+        {
+            Canvas.SetLeft(imgMain, 0);
+            Canvas.SetTop(imgMain, 0);
+           slideZoom.Value = 100;
         }
 
         public void Zoom(double percent)

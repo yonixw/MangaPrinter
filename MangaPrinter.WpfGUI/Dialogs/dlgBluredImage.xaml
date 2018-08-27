@@ -9,13 +9,13 @@
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
-                <Button Padding="5px">Refit image</Button>
+                <Button Padding="5px" Name="btnRefit" Click="btnRefit_Click">Reset image</Button>
             </StatusBarItem>
             <StatusBarItem>
                 <Label>Blur% level:</Label>
             </StatusBarItem>
             <StatusBarItem>
-                <Slider Name="slideBlur" Maximum="100" Width="150px" AutoToolTipPlacement="BottomRight" SmallChange="1" LargeChange="5" Value="50"  ValueChanged="slideBlur_ValueChanged"></Slider>
+                <Slider Name="slideBlur" Maximum="100" Width="150px" AutoToolTipPlacement="BottomRight" SmallChange="1" LargeChange="5" Value="100"  ValueChanged="slideBlur_ValueChanged"></Slider>
             </StatusBarItem>
 
             <StatusBarItem>
