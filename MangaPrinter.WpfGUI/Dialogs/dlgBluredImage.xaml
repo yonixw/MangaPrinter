@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
         mc:Ignorable="d"
-        Title="dlgBluredImage" Height="450" Width="800">
+        Title="dlgBluredImage" Height="450" Width="800" Loaded="Window_Loaded">
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <Button Padding="5px">Refit image</Button>
+            </StatusBarItem>
             <StatusBarItem>
                 <Label>Blur% level:</Label>
             </StatusBarItem>
@@ -22,6 +25,10 @@
                 <Slider Maximum="1000" Width="150px" AutoToolTipPlacement="BottomRight" SmallChange="1" LargeChange="5"></Slider>
             </StatusBarItem>
         </StatusBar>
-        <Image></Image>
+        <Canvas Name="cnvsImage" MouseLeave="cnvsImage_MouseLeave" MouseMove="cnvsImage_MouseMove" MouseUp="imgMain_MouseUp">
+            <Image Name="imgMain" Canvas.Left="0" Canvas.Top="0"
+                   MouseDown="imgMain_MouseDown" MouseUp="imgMain_MouseUp" 
+                   ></Image>
+        </Canvas>
     </DockPanel>
 </Window>
