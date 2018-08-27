@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MangaPrinter.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,13 +25,15 @@ namespace MangaPrinter.WpfGUI.Dialogs
             InitializeComponent();
         }
 
+        MyImageBind myImage;
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             BitmapImage bm = new BitmapImage(new Uri
                 (@"C:\Users\Yoni\source\repos\MangaPrinter\MangaPrinter.WpfGUI\Icons\1Page.png", UriKind.Absolute));
-            imgMain.Width = bm.Width;
-            imgMain.Height = bm.Height;
-            imgMain.Source = bm;
+            
+            imgMain.DataContext = myImage = new MyImageBind() { Image = bm, BlurRadius = 10 };
+            Zoom(slideZoom.Value);
         }
 
         bool inMove = false;
@@ -57,15 +60,49 @@ namespace MangaPrinter.WpfGUI.Dialogs
             Point currentMouse = Mouse.GetPosition(cnvsImage);
             // only stop if leaving to outside (not back to image)
             if (currentMouse.X > 0 && currentMouse.X < cnvsImage.ActualWidth && currentMouse.Y > 0 && currentMouse.Y < cnvsImage.ActualHeight)
-            { }  
+            { }
             else
                 inMove = false;
 
+        }
+
+        private void slideBlur_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (myImage != null)
+                myImage.BlurRadius = slideBlur.Value * 40 / 100;
+        }
+
+        private void cnvsImage_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            slideZoom.Value += e.Delta / 10;
         }
 
         private void imgMain_MouseUp(object sender, MouseButtonEventArgs e)
         {
             inMove = false;
         }
+
+        private void slideZoom_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Zoom(slideZoom.Value);
+        }
+
+        public void Zoom(double percent)
+        {
+            if (myImage != null)
+            {
+                double _z =  percent / 100;
+
+                imgMain.Width = myImage.Image.Width * _z;
+                imgMain.Height = myImage.Image.Height * _z;
+            }
+        }
+    }
+
+    public class MyImageBind : ModelBaseWpf
+    {
+
+        public BitmapImage Image { get { return _baseGet(); } set { _baseSet(value); } }
+        public double BlurRadius { get { return _baseGet(); } set { _baseSet(value); } }
     }
 }
