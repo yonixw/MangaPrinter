@@ -20,10 +20,12 @@ namespace MangaPrinter.WpfGUI.Dialogs
     /// </summary>
     public partial class dlgBluredImage : Window
     {
-        public string _imageUrl;
-        public dlgBluredImage(string ImageUrl)
+        private string _imageUrl;
+
+        public dlgBluredImage(string ImageUrl, string DialogTitle)
         {
             _imageUrl = ImageUrl;
+            Title = DialogTitle;
             InitializeComponent();
         }
 
