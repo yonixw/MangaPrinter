@@ -32,11 +32,27 @@ namespace MangaPrinter.WpfGUI.Dialogs
         MyImageBind myImage;
         public const double maxBlur = 40;
 
+        void resetZoom()
+        {
+            int startZoom = 100;
+            if (myImage.Image.Width > myImage.Image.Height)
+            {
+                startZoom = (int)(100 * cnvsImage.ActualWidth / myImage.Image.Width);
+            }
+            else
+            {
+                startZoom = (int)(100 * cnvsImage.ActualHeight / myImage.Image.Height);
+            }
+
+            slideZoom.Value = startZoom;
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             BitmapImage bm = new BitmapImage(new Uri(_imageUrl, UriKind.Absolute));
             imgMain.DataContext = myImage = new MyImageBind() { Image = bm, BlurRadius = slideBlur.Value * maxBlur / 100 };
-            Zoom(slideZoom.Value);
+
+            resetZoom();
         }
 
         bool inMove = false;
@@ -94,7 +110,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
         {
             Canvas.SetLeft(imgMain, 0);
             Canvas.SetTop(imgMain, 0);
-           slideZoom.Value = 100;
+            resetZoom();
         }
 
         public void Zoom(double percent)

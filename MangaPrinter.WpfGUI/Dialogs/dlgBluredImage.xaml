@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
         mc:Ignorable="d"
-        Title="dlgBluredImage" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="dlgBluredImage" Height="450" Width="800" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
     <DockPanel>
-        <StatusBar DockPanel.Dock="Bottom">
+        <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2">
             <StatusBarItem>
                 <Button Padding="5px" Name="btnRefit" Click="btnRefit_Click">Reset image</Button>
             </StatusBarItem>
@@ -26,7 +26,7 @@
             </StatusBarItem>
         </StatusBar>
         <Canvas Name="cnvsImage" MouseLeave="cnvsImage_MouseLeave" MouseMove="cnvsImage_MouseMove" MouseUp="imgMain_MouseUp" MouseWheel="cnvsImage_MouseWheel">
-            <Image Name="imgMain" Canvas.Left="0" Canvas.Top="0"
+            <Image Name="imgMain" Canvas.Left="0" Canvas.Top="0" Panel.ZIndex="1"
                    MouseDown="imgMain_MouseDown" MouseUp="imgMain_MouseUp" 
                    Source="{Binding Image}">
                 <Image.Effect>

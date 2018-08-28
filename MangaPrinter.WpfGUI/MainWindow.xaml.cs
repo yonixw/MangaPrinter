@@ -193,5 +193,18 @@ namespace MangaPrinter.WpfGUI
         {
             verifyInteger(txtSpoilerPgNm, "25");
         }
+
+        private void stackFilePage_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                Core.MangaPage page = lstFilePages.SelectedValue as Core.MangaPage;
+                if (page != null)
+                {
+                    Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(page.ImagePath, "File: " + page.Name);
+                    dlgImage.ShowDialog();
+                }
+            }
+        }
     }
 }

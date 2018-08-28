@@ -112,7 +112,7 @@
                         <ListBox Name="lstFileChapters" Grid.Column="0">
                             <ListBox.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Name="mnuRenameChapter" Click="mnuRenameChapter_Click" Header="Change chapter title"/>
+                                    <MenuItem Name="mnuRenameChapter" Click="mnuRenameChapter_Click" Header="Rename chapter title"/>
                                     <MenuItem Name="mnuAddChapterPages" Click="mnuAddChapterPages_Click" Header="Add images as pages..."/>
                                     <Separator/>
                                     <MenuItem Name="mnuToRTL" Click="mnuToRTL_Click" Header="Change to RTL"/>
@@ -137,7 +137,7 @@
                         </ListBox>
                         
                         <ListBox Name="lstFilePages" Grid.Column="1" ItemsSource="{Binding ElementName=lstFileChapters, Path=SelectedValue.Pages}"
-                                 >
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal"/>
@@ -149,9 +149,9 @@
                                     <MenuItem Name="mnuToDouble" Click="mnuToDouble_Click" Header="Change to double page"/>
                                 </ContextMenu>
                             </ListBox.ContextMenu>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
+                            <ListBox.ItemTemplate >
+                                <DataTemplate >
+                                    <StackPanel Name="stackFilePage" Orientation="Horizontal" PreviewMouseLeftButtonDown="stackFilePage_PreviewMouseLeftButtonDown">
                                         <Image Name="imgPage" Source="Icons/1Page.png"/>
                                         <Label Content="{Binding Name}" />
                                     </StackPanel>
