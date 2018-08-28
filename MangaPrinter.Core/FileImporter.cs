@@ -49,9 +49,9 @@ namespace MangaPrinter.Core
             {
                 MangaChapter ch = new MangaChapter()
                 {
-                    Pages = new System.Collections.ObjectModel.ObservableCollection<MangaPage>(),
                     Name = di.Name,
-                    IsRTL = RTL
+                    IsRTL = RTL,
+                    autoUpdateMeta = false
                 };
 
                 foreach (FileInfo fi in di.EnumerateFiles("*.*").OrderBy(orderFunc))
@@ -68,10 +68,14 @@ namespace MangaPrinter.Core
                     catch (Exception ex) { Debug.Print(ex.ToString()); }
                 }
 
+                ch.autoUpdateMeta = true;
+                ch.updateMeta();
+
                 if (ch.Pages.Count > 0)
                 {
                     result.Add(ch);
                 }
+
 
                 if (subFodlers)
                 {

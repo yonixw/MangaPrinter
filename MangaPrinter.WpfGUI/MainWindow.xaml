@@ -152,6 +152,26 @@
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
                                     <StackPanel Name="stackFilePage" Orientation="Horizontal" PreviewMouseLeftButtonDown="stackFilePage_PreviewMouseLeftButtonDown">
+                                        <Label Name="lblDouble" FontWeight="Bold" Visibility="Collapsed">
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}-{1}) ">
+                                                        <Binding Path="ChildIndexStart"/>
+                                                        <Binding Path="ChildIndexEnd"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Label>
+                                        <Label Name="lblSingle" FontWeight="Bold" Visibility="Visible">
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}) ">
+                                                        <Binding Path="ChildIndexStart"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Label>
+                                        
                                         <Image Name="imgPage" Source="Icons/1Page.png"/>
                                         <Label Content="{Binding Name}" />
                                     </StackPanel>
@@ -159,6 +179,8 @@
                                     <DataTemplate.Triggers>
                                         <DataTrigger Binding="{Binding IsDouble}" Value="True">
                                             <Setter TargetName="imgPage" Property="Source" Value="Icons/2Page.png"/>
+                                            <Setter TargetName="lblDouble" Property="Visibility" Value="Visible"/>
+                                            <Setter TargetName="lblSingle" Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </DataTemplate.Triggers>
                                 </DataTemplate>
