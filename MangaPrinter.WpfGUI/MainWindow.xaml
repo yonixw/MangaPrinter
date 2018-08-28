@@ -83,7 +83,7 @@
                                 TextChanged="txtPageMaxWidth_TextChanged" TextAlignment="Center"/>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False">Import by:</Label>
+                        <Label IsEnabled="False">Import order:</Label>
                         <StackPanel Orientation="Horizontal">
                             <RadioButton Name="rbByName" Margin="0,0,10,0">Name</RadioButton>
                             <RadioButton IsChecked="True">Create Date</RadioButton>
@@ -104,60 +104,67 @@
                                   Name="mnuAddEmptyChapter" Click="mnuAddEmptyChapter_Click"/>
                     </Menu>
 
-                    <TreeView Name="tvFiles" SelectedItemChanged="tvFiles_SelectedItemChanged"
-                              PreviewMouseRightButtonUp="tvFiles_PreviewMouseRightButtonUp">
-                        <TreeView.Resources>
-                            <ContextMenu x:Key="menuChapter" StaysOpen="True">
-                                <MenuItem Name="mnuRenameChapter" Click="mnuRenameChapter_Click" Header="Change chapter title"/>
-                                <MenuItem Name="mnuAddChapterPages" Click="mnuAddChapterPages_Click" Header="Add images as pages..."/>
-                                <Separator/>
-                                <MenuItem Name="mnuToRTL" Click="mnuToRTL_Click" Header="Change to RTL"/>
-                                <MenuItem Name="mnuToLTR" Click="mnuToLTR_Click" Header="Change to LTR"/>
-                                <Separator/>
-                                <MenuItem Name="mnuDeleteCh" Click="mnuDeleteCh_Click" Header="Delete" Background="LightSalmon" />
-                            </ContextMenu>
-                            <ContextMenu x:Key="menuPage" Name="menuPage" StaysOpen="True">
-                                <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Change to single page"/>
-                                <MenuItem Name="mnuToDouble" Click="mnuToDouble_Click" Header="Change to double page"/>
-                            </ContextMenu>
-                        </TreeView.Resources>
-                        <TreeView.ItemContainerStyle>
-                            <Style TargetType="{x:Type TreeViewItem}">
-                                <Setter Property="IsExpanded" Value="True" />
-                            </Style>
-                        </TreeView.ItemContainerStyle>
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding Pages}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
-                                    <Label Content="{Binding Name}" />
-                                </StackPanel>
-                                <HierarchicalDataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding IsRTL}" Value="False">
-                                        <Setter TargetName="imgRTL" Property="Source" Value="Icons/LTR.png"/>
-                                    </DataTrigger>
-                                </HierarchicalDataTemplate.Triggers>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <ListBox Name="lstFileChapters" Grid.Column="0">
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Name="mnuRenameChapter" Click="mnuRenameChapter_Click" Header="Change chapter title"/>
+                                    <MenuItem Name="mnuAddChapterPages" Click="mnuAddChapterPages_Click" Header="Add images as pages..."/>
+                                    <Separator/>
+                                    <MenuItem Name="mnuToRTL" Click="mnuToRTL_Click" Header="Change to RTL"/>
+                                    <MenuItem Name="mnuToLTR" Click="mnuToLTR_Click" Header="Change to LTR"/>
+                                    <Separator/>
+                                    <MenuItem Name="mnuDeleteCh" Click="mnuDeleteCh_Click" Header="Delete" Background="LightSalmon" />
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
+                                        <Label Content="{Binding Name}" />
+                                    </StackPanel>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsRTL}" Value="False">
+                                            <Setter TargetName="imgRTL" Property="Source" Value="Icons/LTR.png"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        
+                        <ListBox Name="lstFilePages" Grid.Column="1" ItemsSource="{Binding ElementName=lstFileChapters, Path=SelectedValue.Pages}"
+                                 >
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Change to single page"/>
+                                    <MenuItem Name="mnuToDouble" Click="mnuToDouble_Click" Header="Change to double page"/>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Name="imgPage" Source="Icons/1Page.png"/>
+                                        <Label Content="{Binding Name}" />
+                                    </StackPanel>
 
-
-                                <HierarchicalDataTemplate.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Name="imgPage" Source="Icons/1Page.png"/>
-                                            <Label Content="{Binding Name}" />
-                                        </StackPanel>
-
-                                        <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding IsDouble}" Value="True">
-                                                <Setter TargetName="imgPage" Property="Source" Value="Icons/2Page.png"/>
-                                            </DataTrigger>
-                                        </DataTemplate.Triggers>
-                                    </DataTemplate>
-                                </HierarchicalDataTemplate.ItemTemplate>
-
-
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
-                    </TreeView>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsDouble}" Value="True">
+                                            <Setter TargetName="imgPage" Property="Source" Value="Icons/2Page.png"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Binding">
@@ -167,7 +174,7 @@
                         <CheckBox IsChecked="True">Add Start Page</CheckBox>
                         <CheckBox IsChecked="True">Add End Page</CheckBox>
                         
-                        <CheckBox IsChecked="True">Add Anti-spoiler every:</CheckBox>
+                        <CheckBox IsChecked="True">Ensure Anti-spoiler every:</CheckBox>
                         <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
                             25</TextBox>
                         <Label Content="pages" IsEnabled="False" />

@@ -30,7 +30,7 @@ namespace MangaPrinter.WpfGUI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            tvFiles.ItemsSource = mangaChapters;
+            lstFileChapters.ItemsSource = mangaChapters;
         }
 
         void verifyInteger(TextBox textBox, string fallbackValue)
@@ -82,43 +82,8 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
-        private void tvFiles_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            if (tvFiles.SelectedItem is Core.MangaPage)
-                tvFiles.ContextMenu = tvFiles.Resources["menuPage"] as System.Windows.Controls.ContextMenu;
-            else
-                tvFiles.ContextMenu = tvFiles.Resources["menuChapter"] as System.Windows.Controls.ContextMenu;
-        }
 
-        static TreeViewItem VisualUpwardSearch(DependencyObject source)
-        {
-            while (source != null && !(source is TreeViewItem))
-                source = VisualTreeHelper.GetParent(source);
-
-            return source as TreeViewItem;
-        }
-
-        private void tvFiles_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            //SO?592373
-            TreeViewItem treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
-
-            if (treeViewItem != null)
-            {
-                treeViewItem.Focus();
-                e.Handled = true;
-
-                if (tvFiles.SelectedItem is Core.MangaPage)
-                    tvFiles.ContextMenu = tvFiles.Resources["menuPage"] as System.Windows.Controls.ContextMenu;
-                else
-                    tvFiles.ContextMenu = tvFiles.Resources["menuChapter"] as System.Windows.Controls.ContextMenu;
-
-
-                tvFiles.ContextMenu.IsOpen = true;
-            }
-        }
-
-        public static void TreeAction<T>(TreeView tree, Action<T> action) where T : class
+        public static void ListBoxAction<T>(ListBox tree, Action<T> action) where T : class
         {
             T obj = tree.SelectedItem as T;
             if (obj != null)
@@ -129,27 +94,27 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuToSingle_Click(object sender, RoutedEventArgs e)
         {
-            TreeAction<Core.MangaPage>(tvFiles, page => page.IsDouble = false);
+            ListBoxAction<Core.MangaPage>(lstFilePages, page => page.IsDouble = false);
         }
 
         private void mnuToDouble_Click(object sender, RoutedEventArgs e)
         {
-            TreeAction<Core.MangaPage>(tvFiles, page => page.IsDouble = true);
+            ListBoxAction<Core.MangaPage>(lstFilePages, page => page.IsDouble = true);
         }
 
         private void mnuToRTL_Click(object sender, RoutedEventArgs e)
         {
-            TreeAction<Core.MangaChapter>(tvFiles, ch => ch.IsRTL = true);
+            ListBoxAction<Core.MangaChapter>(lstFileChapters, ch => ch.IsRTL = true);
         }
 
         private void mnuToLTR_Click(object sender, RoutedEventArgs e)
         {
-            TreeAction<Core.MangaChapter>(tvFiles, ch => ch.IsRTL = false);
+            ListBoxAction<Core.MangaChapter>(lstFileChapters, ch => ch.IsRTL = false);
         }
 
         private void mnuRenameChapter_Click(object sender, RoutedEventArgs e)
         {
-            TreeAction<Core.MangaChapter>(tvFiles, (ch) =>
+            ListBoxAction<Core.MangaChapter>(lstFileChapters, (ch) =>
             {
                 Dialogs.dlgString dlgName = new Dialogs.dlgString()
                 {
@@ -185,7 +150,7 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuDeleteCh_Click(object sender, RoutedEventArgs e)
         {
-            TreeAction<Core.MangaChapter>(tvFiles, (ch) =>
+            ListBoxAction<Core.MangaChapter>(lstFileChapters, (ch) =>
             {
                 mangaChapters.Remove(ch);
             });
@@ -193,7 +158,7 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuAddChapterPages_Click(object sender, RoutedEventArgs e)
         {
-            TreeAction<Core.MangaChapter>(tvFiles, (ch) =>
+            ListBoxAction<Core.MangaChapter>(lstFileChapters, (ch) =>
             {
                 Microsoft.Win32.OpenFileDialog dlgOpenImages = new Microsoft.Win32.OpenFileDialog();
                 dlgOpenImages.Filter = "Images|" + Core.FileImporter.ImagesExtensions;
