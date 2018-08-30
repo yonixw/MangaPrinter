@@ -106,8 +106,9 @@
 
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <ListBox Name="lstFileChapters" Grid.Column="0">
                             <ListBox.ContextMenu>
@@ -135,8 +136,10 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+
+                        <GridSplitter Grid.Column="1" Width="5"   HorizontalAlignment="Stretch"/>
                         
-                        <ListBox Name="lstFilePages" Grid.Column="1" ItemsSource="{Binding ElementName=lstFileChapters, Path=SelectedValue.Pages}"
+                        <ListBox Name="lstFilePages" Grid.Column="2" ItemsSource="{Binding ElementName=lstFileChapters, Path=SelectedValue.Pages}"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
