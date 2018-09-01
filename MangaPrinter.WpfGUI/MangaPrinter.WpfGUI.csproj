@@ -129,5 +129,19 @@
     <Resource Include="Icons\papers.png" />
     <Resource Include="Icons\RTL.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GitInfo.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>cd $(SolutionDir)
+
+::https://stackoverflow.com/a/48404829/1997873
+FOR /F "tokens=*" %25g IN ('git rev-parse --abbrev-ref HEAD') do (SET branch=%25g)
+FOR /F "tokens=*" %25g IN ('git rev-parse HEAD') do (SET commithash=%25g)
+FOR /F "tokens=*" %25g IN ('git show --no-patch --format=%25h-%25ci;%25f') do (SET commitinfo=%25g)
+
+
+</PreBuildEvent>
+  </PropertyGroup>
 </Project>
