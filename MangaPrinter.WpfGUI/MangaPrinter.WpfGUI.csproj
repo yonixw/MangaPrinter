@@ -108,6 +108,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Batch\GitInfo.bat" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -134,16 +135,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>cd $(SolutionDir)
+    <PreBuildEvent>SET solutiondir=$(SolutionDir)
+SET projectdir=$(ProjectDir)
 
-::https://stackoverflow.com/a/48404829/1997873
-FOR /F "tokens=*" %25g IN ('git rev-parse --abbrev-ref HEAD') do (SET branch=%25g)
-FOR /F "tokens=*" %25g IN ('git rev-parse HEAD') do (SET commithash=%25g)
-FOR /F "tokens=* usebackq" %25g IN (`git show --no-patch --format"=%25h, %25ci, %25f"`) do (SET commitinfo=%25g)
-FOR /F "tokens=* usebackq" %25g IN (`git describe --abbrev"=0" --tags`) do (SET latesttag=%25g)
-FOR /F "tokens=*" %25g IN ('git rev-list --count %25latesttag%25') do (SET commitsafter=%25g)
-
-
-echo %25latesttag%25+%25commitsafter%25 (%25branch%25) %25commitinfo%25 &gt; $(ProjectDir)Resources\GitInfo.txt</PreBuildEvent>
+cmd /c "$(ProjectDir)Batch\GitInfo.bat"</PreBuildEvent>
   </PropertyGroup>
 </Project>

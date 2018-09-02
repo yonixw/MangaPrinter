@@ -240,7 +240,7 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="About">
-                <RichTextBox IsReadOnly="True">
+                <RichTextBox Name="rtbInfo" IsReadOnly="True">
                     <FlowDocument>
                         <Paragraph>
                             Manga Printer v1
@@ -249,6 +249,9 @@
                             <Hyperlink NavigateUri="https://github.com/yonixw/MangaPrinter" >
                                 https://github.com/yonixw/MangaPrinter
                             </Hyperlink>
+                        </Paragraph>
+                        <Paragraph>
+                            Git build information:
                         </Paragraph>
                     </FlowDocument>
                 </RichTextBox>

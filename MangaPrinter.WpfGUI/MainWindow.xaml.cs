@@ -31,6 +31,7 @@ namespace MangaPrinter.WpfGUI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             lstFileChapters.ItemsSource = mangaChapters;
+            rtbInfo.AppendText("Git info:\n"+Properties.Resources.GitInfo);
         }
 
         void verifyInteger(TextBox textBox, string fallbackValue)
