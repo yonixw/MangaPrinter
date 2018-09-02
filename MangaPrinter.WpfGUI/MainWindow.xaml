@@ -138,7 +138,7 @@
                         </ListBox>
 
                         <GridSplitter Grid.Column="1" Width="5"   HorizontalAlignment="Stretch"/>
-                        
+
                         <ListBox Name="lstFilePages" Grid.Column="2" ItemsSource="{Binding ElementName=lstFileChapters, Path=SelectedValue.Pages}"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                             <ListBox.ItemsPanel>
@@ -174,7 +174,7 @@
                                                 </TextBlock.Text>
                                             </TextBlock>
                                         </Label>
-                                        
+
                                         <Image Name="imgPage" Source="Icons/1Page.png"/>
                                         <Label Content="{Binding Name}" />
                                     </StackPanel>
@@ -198,7 +198,7 @@
                         <Label IsEnabled="False">Chapter:</Label>
                         <CheckBox IsChecked="True">Add Start Page</CheckBox>
                         <CheckBox IsChecked="True">Add End Page</CheckBox>
-                        
+
                         <CheckBox IsChecked="True">Ensure Anti-spoiler every:</CheckBox>
                         <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
                             25</TextBox>
@@ -250,8 +250,14 @@
                                 https://github.com/yonixw/MangaPrinter
                             </Hyperlink>
                         </Paragraph>
-                        <Paragraph>
-                            Git build information:
+                        <Paragraph FontWeight="Bold" TextDecorations="Underline">
+                            <Paragraph.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FF00A2FF" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Paragraph.Background>
+                            Git build information: 
                         </Paragraph>
                     </FlowDocument>
                 </RichTextBox>
