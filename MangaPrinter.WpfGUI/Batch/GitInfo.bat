@@ -6,7 +6,7 @@ FOR /F "tokens=*" %%g IN ('git rev-parse --abbrev-ref HEAD') do (
 	SET branch=%%g
 )
 
-FOR /F "tokens=* usebackq" %%g IN (`git show --no-patch --format"=%h, %ci, %f"`) do (
+FOR /F "tokens=* usebackq" %%g IN (`git show --no-patch --format"=%%h, %%ci, %%f"`) do (
 	SET commitinfo=%%g
 )
 

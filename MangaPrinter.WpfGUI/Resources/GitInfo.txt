@@ -1,1 +1,1 @@
-alpha+1 (master)  
+alpha+1 (master) 829e3c1, 2018-09-03 01:17:26 +0300, multi-line-batch-works-only-from-outside-of-prebuild.-now-making-sure-all-info-is-present 
