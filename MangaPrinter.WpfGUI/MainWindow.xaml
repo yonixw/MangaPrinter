@@ -141,11 +141,6 @@
 
                         <ListBox Name="lstFilePages" Grid.Column="2" ItemsSource="{Binding ElementName=lstFileChapters, Path=SelectedValue.Pages}"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
                             <ListBox.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Change to single page"/>
