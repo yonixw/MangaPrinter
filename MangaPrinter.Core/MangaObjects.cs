@@ -51,24 +51,56 @@ namespace MangaPrinter.Core
         }
     }
 
-    public enum PageType
+
+    // Page (Physical) has 2 Faces that has 2 Sides.
+
+    public enum SingleSideType
     {
         INTRO, OUTRO,
-        SINGLE, DOUBLE,
-        BEFORE_DOUBLE, MAKE_EVEN
+        MANGA,
+        BEFORE_DOUBLE, MAKE_EVEN,
+        ANTI_SPOILER
     }
 
-    public class MangaDoublPagePrint : ModelBaseWpf
+    public enum SideMangaPageType
     {
-        public PageType  RSourceType { get { return _baseGet(); } set { _baseSet(value); } }
-        public MangaPage RSourcePage { get { return _baseGet(); } set { _baseSet(value); } }
-        public string RPageText { get { return _baseGet(); } set { _baseSet(value); } }
+        LEFT, RIGHT // For cutting original image file.
+    }
 
-        public PageType  LSourceType { get { return _baseGet(); } set { _baseSet(value); } }
-        public MangaPage LSourcePage { get { return _baseGet(); } set { _baseSet(value); } }
-        public string LPageText { get { return _baseGet(); } set { _baseSet(value); } }
-        
-        public string Description { get { return _baseGet(); } set { _baseSet(value); } }
+    public enum FaceType
+    {
+        SINGLES, DOUBLE
+    }
+
+    public class PrintSide
+    {
+        SingleSideType SideType;
+        int SideNumber;
+
+        // If Manga page:
+        MangaPage MangaPageSource;
+        SideMangaPageType MangaPageSourceType;
+    }
+
+    public class PrintFace
+    {
+        int FaceNumber;
+        FaceType PrintFaceType;
+
+        PrintSide Left;
+        PrintSide Right;
+        PrintSide Double; // If needed, ignores PrintSide type.
+
+        public void GetImage()
+        {
+
+        }
+    }
+
+    public class PrintPage
+    {
+        PrintFace Front;
+        PrintFace Back;
     }
 
     public enum BindType
@@ -76,11 +108,12 @@ namespace MangaPrinter.Core
         BOOKLET, DUPLEX
     }
 
-    public class MangaChapterPrint : ModelBaseWpf
+    public class PrintChapter : ModelBaseWpf
     {
-        public ObservableCollection<MangaDoublPagePrint> PrintPages { get { return _baseGet(); } set { _baseSet(value); } }
-        public BindType PrintBind { get { return _baseGet(); } set { _baseSet(value); } }
-        public string Description { get { return _baseGet(); } set { _baseSet(value); } }
+        BindType ChapterType;
+        ObservableCollection<PrintPage> Pages { get { return _baseGet(); } set { _baseSet(value); } }
+        MangaChapter SourceChapter;
     }
+
 
 }
