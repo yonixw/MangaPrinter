@@ -69,7 +69,7 @@ namespace MangaPrinter.Core
 
     public enum FaceType
     {
-        SINGLES, DOUBLE
+        SINGLES, /*Only in duplex: */DOUBLE
     }
 
     public class PrintSide : ModelBaseWpf
