@@ -133,6 +133,10 @@
   <ItemGroup>
     <None Include="Resources\GitInfo.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Booklet_plan.png" />
+    <Resource Include="Icons\duplex_plan.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>SET solutiondir=$(SolutionDir)
