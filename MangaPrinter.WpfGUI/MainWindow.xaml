@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI"
         mc:Ignorable="d"
-        Title="Manga printer and binder manager" Height="450" Width="800"
+        Title="Manga printer and binder manager" Height="900" Width="1000"
         FontSize="9.75pt" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Window.Resources>
         <Style x:Key="GeneralStyle" TargetType="{x:Type Control}">
@@ -150,10 +150,12 @@
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
                                     <StackPanel Name="stackFilePage" Orientation="Horizontal" PreviewMouseLeftButtonDown="stackFilePage_PreviewMouseLeftButtonDown">
+                                        <Image Name="imgPage" Source="Icons/1Page.png"/>
+                                        
                                         <Label Name="lblDouble" FontWeight="Bold" Visibility="Collapsed">
                                             <TextBlock>
                                                 <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0}-{1}) ">
+                                                    <MultiBinding StringFormat="{}(p{0}-p{1}) ">
                                                         <Binding Path="ChildIndexStart"/>
                                                         <Binding Path="ChildIndexEnd"/>
                                                     </MultiBinding>
@@ -163,14 +165,13 @@
                                         <Label Name="lblSingle" FontWeight="Bold" Visibility="Visible">
                                             <TextBlock>
                                                 <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0}) ">
+                                                    <MultiBinding StringFormat="{}(p{0}) ">
                                                         <Binding Path="ChildIndexStart"/>
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>
                                         </Label>
 
-                                        <Image Name="imgPage" Source="Icons/1Page.png"/>
                                         <Label Content="{Binding Name}" />
                                     </StackPanel>
 
