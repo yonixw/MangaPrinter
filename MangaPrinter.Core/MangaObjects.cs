@@ -89,9 +89,7 @@ namespace MangaPrinter.Core
 
         public PrintSide Left { get { return _baseGet(); } set { _baseSet(value); } }
         public PrintSide Right { get { return _baseGet(); } set { _baseSet(value); } }
-        // If needed, ignores PrintSide type.
-        public PrintSide Double { get { return _baseGet(); } set { _baseSet(value); } }
-
+       
         // You get the page to print from this class
     }
 

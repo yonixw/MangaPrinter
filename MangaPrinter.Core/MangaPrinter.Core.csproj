@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BinderTools.cs" />
     <Compile Include="FileImporter.cs" />
     <Compile Include="MangaObjects.cs" />
     <Compile Include="ObserverWrapper.cs" />
