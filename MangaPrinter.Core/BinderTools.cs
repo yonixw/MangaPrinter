@@ -19,11 +19,7 @@ namespace MangaPrinter.Core
 
     public interface IChapterBuilder
     {
-        void addCustomPage(SingleSideType pageType);
-        void addMangaPage(SideMangaPageType mangaSide);
-        void addDoubleMangaPage(SingleSideType fillPageType);
-
-        void Build();
+        List<PrintFace> Build(MangaChapter ch);
     }
 
     public abstract class ChapterBuilderBase

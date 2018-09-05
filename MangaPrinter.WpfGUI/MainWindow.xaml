@@ -216,7 +216,7 @@
                                 </StackPanel>
                             </RadioButton>
                         </StackPanel>
-                        <MenuItem Header="(Re-)Bind!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
+                        <MenuItem Header="Bind All!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
                     </Menu>
                     <TreeView >
 
