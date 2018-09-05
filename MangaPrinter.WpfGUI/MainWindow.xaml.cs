@@ -95,12 +95,12 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuToSingle_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxAction<Core.MangaPage>(lstFilePages, page => { page.IsDouble = false; page.Chapter.updateMeta(); });
+            ListBoxAction<Core.MangaPage>(lstFilePages, page => { page.IsDouble = false; page.Chapter.updatePageNumber(); });
         }
 
         private void mnuToDouble_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxAction<Core.MangaPage>(lstFilePages, page => { page.IsDouble = true; page.Chapter.updateMeta(); });
+            ListBoxAction<Core.MangaPage>(lstFilePages, page => { page.IsDouble = true; page.Chapter.updatePageNumber(); });
         }
 
         private void mnuToRTL_Click(object sender, RoutedEventArgs e)
@@ -179,7 +179,7 @@ namespace MangaPrinter.WpfGUI
                         orderFunc = (si) => si.Name;
 
 
-                    ch.autoUpdateMeta = false;
+                    ch.autoPageNumbering = false;
 
                     winWorking.waitForTask((updateFunc) =>
                     {
@@ -188,8 +188,8 @@ namespace MangaPrinter.WpfGUI
                     isProgressKnwon: true)
                     .ForEach(page => ch.Pages.Add(page));
 
-                    ch.autoUpdateMeta = true;
-                    ch.updateMeta();
+                    ch.autoPageNumbering = true;
+                    ch.updatePageNumber();
                 }
             });
         }

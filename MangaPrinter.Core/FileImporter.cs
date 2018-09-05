@@ -51,7 +51,7 @@ namespace MangaPrinter.Core
                 {
                     Name = di.Name,
                     IsRTL = RTL,
-                    autoUpdateMeta = false
+                    autoPageNumbering = false
                 };
 
                 foreach (FileInfo fi in di.EnumerateFiles("*.*").OrderBy(orderFunc))
@@ -68,8 +68,8 @@ namespace MangaPrinter.Core
                     catch (Exception ex) { Debug.Print(ex.ToString()); }
                 }
 
-                ch.autoUpdateMeta = true;
-                ch.updateMeta();
+                ch.autoPageNumbering = true;
+                ch.updatePageNumber();
 
                 if (ch.Pages.Count > 0)
                 {

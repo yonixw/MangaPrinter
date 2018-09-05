@@ -29,15 +29,15 @@ namespace MangaPrinter.Core
             Pages.CollectionChanged += Pages_CollectionChanged;
         }
 
-        public bool autoUpdateMeta = true; // set to false when adding many pages at once.
+        public bool autoPageNumbering = true; // set to false when adding many pages at once.
         private void Pages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            updateMeta();
+            updatePageNumber();
         }
 
-        public void updateMeta()
+        public void updatePageNumber()
         {
-            if (autoUpdateMeta)
+            if (autoPageNumbering)
             {
                 int index = 1;
                 foreach (MangaPage page in Pages)
