@@ -198,7 +198,7 @@
                         <CheckBox IsChecked="True">Ensure Anti-spoiler every:</CheckBox>
                         <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
                             25</TextBox>
-                        <Label Content="pages" IsEnabled="False" />
+                        <Label Content="pages (max)" IsEnabled="False" />
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False">Default Binding:</Label>
