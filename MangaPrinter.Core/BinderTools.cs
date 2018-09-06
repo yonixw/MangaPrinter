@@ -19,23 +19,12 @@ namespace MangaPrinter.Core
 
     public interface IChapterBuilder
     {
-        List<PrintFace> Build(MangaChapter ch);
-    }
-
-    public class DuplexChapterBuilder :  IChapterBuilder
-    {
-        public List<PrintFace> Build(MangaChapter ch)
-        {
-            // For loop from 1 to end and add pages as necessary.
-            // Double Template should have 0px between 2 pages.
-
-            return null;
-        }
+        PrintChapter Build(MangaChapter ch);
     }
 
     public class BookletChapterBuilder : IChapterBuilder
     {
-        public List<PrintFace> Build(MangaChapter ch)
+        public PrintChapter Build(MangaChapter ch)
         {
             // looping from both end\start sides .... so middle can have some blanks
             // No way to save doubles... become 2 signals
@@ -43,4 +32,8 @@ namespace MangaPrinter.Core
             return null;
         }
     }
+
+    
+
+   
 }

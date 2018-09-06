@@ -14,14 +14,34 @@ namespace MangaPrinter.Core.Tests
     public class DuplexChapterBuilder_Tests
     {
         
-
-       
-
-
         [TestMethod()]
-        public void Build_Test()
+        public void DuplexTest1_SimpleDouble_EvenPages_RTL()
         {
-            
+            MangaChapter ch = Utils.MockChapter(true, new bool[]
+            {
+                false, false, true
+            });
+
+            PrintChapter pc = new ChapterBuilders.DuplexChapterBuilder().Build(ch);
+
+            string error = Utils.VerifyChapter(ch, pc, new VerifyPage[] {
+                new VerifyPage()
+                {
+                    Front = new VerifyFace()
+                    {
+                         Left = new VerifySide() { type = SingleSideType.MANGA, MangaPageSourceIndex=0},
+                         Right = new VerifySide() {type = SingleSideType.MANGA, MangaPageSourceIndex = 1}
+                    },
+                     Back = new VerifyFace()
+                    {
+                         Left = new VerifySide() { type = SingleSideType.MANGA, MangaPageSourceIndex=2},
+                         Right = new VerifySide() {type = SingleSideType.MANGA, MangaPageSourceIndex = 2}
+                    }
+                }
+            });
+
+            if (Utils.isErorr(error))
+                Assert.Fail(error);
         }
     } 
 }

@@ -7,11 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
-namespace MangaPrinter.Core_Tests
+namespace MangaPrinter.Core.Tests
 {
-    class Utils
+    public class Utils
     {
-        public static MangaChapter MockChapter(bool isRTL, List<bool> isDouble)
+        public static MangaChapter MockChapter(bool isRTL, bool[] isDouble)
         {
             MangaChapter ch = new MangaChapter() { IsRTL = isRTL, Pages = new ObservableCollection<MangaPage>() };
             foreach (bool _b in isDouble)
@@ -31,7 +31,7 @@ namespace MangaPrinter.Core_Tests
         {
             if (vs.type != ps.SideType)
                 return "Side type mismatch";
-            if (vs.type == SingleSideType.MANGA && ps.MangaPageSource.ImagePath != ch.Pages[vs.PageIndex].ImagePath)
+            if (vs.type == SingleSideType.MANGA && ps.MangaPageSource.ImagePath != ch.Pages[vs.MangaPageSourceIndex].ImagePath)
                 return "Manga page mismatch";
 
             return NO_ERROR;
@@ -61,14 +61,14 @@ namespace MangaPrinter.Core_Tests
             return NO_ERROR;
         }
 
-        public static string VerifyChapter(MangaChapter ch, PrintChapter pch, List<VerifyPage> verifyPages)
+        public static string VerifyChapter(MangaChapter ch, PrintChapter pch, VerifyPage[] verifyPages)
         {
             string error = "";
 
-            if (pch.Pages.Count != verifyPages.Count)
+            if (pch.Pages.Count != verifyPages.Length)
                 return "Pages count mismatch";
 
-            for (int i = 0; i < verifyPages.Count; i++)
+            for (int i = 0; i < verifyPages.Length; i++)
             {
                 PrintPage pp = pch.Pages[i];
                 VerifyPage vp = verifyPages[i];
@@ -82,19 +82,19 @@ namespace MangaPrinter.Core_Tests
         }
     }
 
-    class VerifySide
+    public class VerifySide
     {
         public SingleSideType type;
-        public int PageIndex; // if from manga.
+        public int MangaPageSourceIndex; // if from manga.
     }
 
-    class VerifyFace
+    public class VerifyFace
     {
         public VerifySide Left;
         public VerifySide Right;
     }
 
-    class VerifyPage
+    public class VerifyPage
     {
         public VerifyFace Front;
         public VerifyFace Back;
