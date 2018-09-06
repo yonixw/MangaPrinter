@@ -14,9 +14,17 @@ namespace MangaPrinter.Core.Tests
         public static MangaChapter MockChapter(bool isRTL, bool[] isDouble)
         {
             MangaChapter ch = new MangaChapter() { IsRTL = isRTL, Pages = new ObservableCollection<MangaPage>() };
+            int pageIndex = 1;
+
             foreach (bool _b in isDouble)
             {
-                ch.Pages.Add(new MangaPage() { IsDouble = _b });
+                MangaPage p = new MangaPage() { IsDouble = _b, ChildIndexStart = pageIndex++ };
+                if (_b)
+                    p.ChildIndexEnd = pageIndex++;
+                else
+                    p.ChildIndexEnd = p.ChildIndexStart;
+
+                ch.Pages.Add(p);
             }
             return ch;
         }
@@ -31,7 +39,8 @@ namespace MangaPrinter.Core.Tests
         {
             if (vs.type != ps.SideType)
                 return "Side type mismatch";
-            if (vs.type == SingleSideType.MANGA && ps.MangaPageSource.ImagePath != ch.Pages[vs.MangaPageSourceIndex].ImagePath)
+            if (vs.type == SingleSideType.MANGA && 
+                 ps.MangaPageSource.ChildIndexStart != ch.Pages[vs.MangaPageSourceIndex].ChildIndexStart)
                 return "Manga page mismatch";
 
             return NO_ERROR;

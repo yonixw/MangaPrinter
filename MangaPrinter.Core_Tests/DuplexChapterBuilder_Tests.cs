@@ -29,13 +29,13 @@ namespace MangaPrinter.Core.Tests
                 {
                     Front = new VerifyFace()
                     {
-                         Left = new VerifySide() { type = SingleSideType.MANGA, MangaPageSourceIndex=0},
-                         Right = new VerifySide() {type = SingleSideType.MANGA, MangaPageSourceIndex = 1}
+                        Right = new VerifySide() {type = SingleSideType.MANGA, MangaPageSourceIndex = 0},
+                         Left = new VerifySide() { type = SingleSideType.MANGA, MangaPageSourceIndex=1},   
                     },
                      Back = new VerifyFace()
                     {
-                         Left = new VerifySide() { type = SingleSideType.MANGA, MangaPageSourceIndex=2},
-                         Right = new VerifySide() {type = SingleSideType.MANGA, MangaPageSourceIndex = 2}
+                         Right = new VerifySide() {type = SingleSideType.MANGA, MangaPageSourceIndex = 2},
+                         Left = new VerifySide() { type = SingleSideType.MANGA, MangaPageSourceIndex=2},   
                     }
                 }
             });
