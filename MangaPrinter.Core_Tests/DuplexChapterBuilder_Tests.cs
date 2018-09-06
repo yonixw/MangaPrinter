@@ -43,5 +43,35 @@ namespace MangaPrinter.Core.Tests
             if (Utils.isErorr(error))
                 Assert.Fail(error);
         }
+
+        [TestMethod()]
+        public void DuplexTest1_SimpleDouble_EvenPages_LTR()
+        {
+            MangaChapter ch = Utils.MockChapter(false, new bool[]
+            {
+                false, false, true
+            });
+
+            PrintChapter pc = new ChapterBuilders.DuplexChapterBuilder().Build(ch);
+
+            string error = Utils.VerifyChapter(ch, pc, new VerifyPage[] {
+                new VerifyPage()
+                {
+                    Front = new VerifyFace()
+                    {
+                        Right = new VerifySide() {type = SingleSideType.MANGA, MangaPageSourceIndex = 1},
+                         Left = new VerifySide() { type = SingleSideType.MANGA, MangaPageSourceIndex=0},
+                    },
+                     Back = new VerifyFace()
+                    {
+                         Right = new VerifySide() {type = SingleSideType.MANGA, MangaPageSourceIndex = 2},
+                         Left = new VerifySide() { type = SingleSideType.MANGA, MangaPageSourceIndex=2},
+                    }
+                }
+            });
+
+            if (Utils.isErorr(error))
+                Assert.Fail(error);
+        }
     } 
 }
