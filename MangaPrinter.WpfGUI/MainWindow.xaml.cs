@@ -216,5 +216,21 @@ namespace MangaPrinter.WpfGUI
                 }
             }
         }
+
+        private void mnuToDuplex_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxAction<Core.MangaChapter>(lstFileChapters, (ch) =>
+            {
+                ch.Bind = BindType.DUPLEX;
+            });
+        }
+
+        private void mnuToBooklet_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxAction<Core.MangaChapter>(lstFileChapters, (ch) =>
+            {
+                ch.Bind = BindType.BOOKLET;
+            });
+        }
     }
 }
