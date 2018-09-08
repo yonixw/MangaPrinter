@@ -78,12 +78,29 @@
             <TabItem Header="Chapter and Files">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False" >Double-Page width (px) cutoff:</Label>
+                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Default Binding:</Label>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton IsChecked="True" Margin="0,0,10,0" VerticalContentAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Icons/duplex.png" Height="32px" ></Image>
+                                    <Label>Duplex</Label>
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Margin="0,0,10,0" VerticalContentAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Icons/booklet.png" Height="32px" ></Image>
+                                    <Label>Booklet</Label>
+                                </StackPanel>
+                            </RadioButton>
+                        </StackPanel>
+                        
+                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold" >Double-Page width (px) cutoff:</Label>
                         <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" 
                                 TextChanged="txtPageMaxWidth_TextChanged" TextAlignment="Center"/>
+                        
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False">Import order:</Label>
+                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Import order:</Label>
                         <StackPanel Orientation="Horizontal">
                             <RadioButton Name="rbByName" Margin="0,0,10,0">Name</RadioButton>
                             <RadioButton IsChecked="True">Create Date</RadioButton>
@@ -91,7 +108,7 @@
 
                         <CheckBox IsChecked="True" Name="cbSubfolders">Include subfolders</CheckBox>
 
-                        <Label IsEnabled="False">Direction:</Label>
+                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Direction:</Label>
                         <StackPanel Orientation="Horizontal" >
                             <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (↼)</RadioButton>
                             <RadioButton>LTR (⇀)</RadioButton>
@@ -151,7 +168,7 @@
                                 <DataTemplate >
                                     <StackPanel Name="stackFilePage" Orientation="Horizontal" PreviewMouseLeftButtonDown="stackFilePage_PreviewMouseLeftButtonDown">
                                         <Image Name="imgPage" Source="Icons/1Page.png"/>
-                                        
+
                                         <Label Name="lblDouble" FontWeight="Bold" Visibility="Collapsed">
                                             <TextBlock>
                                                 <TextBlock.Text>
@@ -191,7 +208,7 @@
             <TabItem Header="Binding">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False">Chapter:</Label>
+                        <Label IsEnabled="False" FontWeight="Bold" FontStyle="Italic">Chapter:</Label>
                         <CheckBox IsChecked="True">Add Start Page</CheckBox>
                         <CheckBox IsChecked="True">Add End Page</CheckBox>
 
@@ -199,28 +216,44 @@
                         <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
                             25</TextBox>
                         <Label Content="pages (max)" IsEnabled="False" />
+                        <MenuItem Header="(Re)Bind All!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
                     </Menu>
-                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False">Default Binding:</Label>
-                        <StackPanel Orientation="Horizontal">
-                            <RadioButton IsChecked="True" Margin="0,0,10,0" VerticalContentAlignment="Center">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="Icons/duplex.png" Height="32px" ></Image>
-                                    <Label>Duplex</Label>
-                                </StackPanel>
-                            </RadioButton>
-                            <RadioButton Margin="0,0,10,0" VerticalContentAlignment="Center">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="Icons/booklet.png" Height="32px" ></Image>
-                                    <Label>Booklet</Label>
-                                </StackPanel>
-                            </RadioButton>
-                        </StackPanel>
-                        <MenuItem Header="Bind All!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
-                    </Menu>
-                    <TreeView >
 
-                    </TreeView>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ListBox Name="lstFileChaptersBinding" Grid.Column="0">
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
+                                        <Label Content="{Binding Name}" />
+                                    </StackPanel>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsRTL}" Value="False">
+                                            <Setter TargetName="imgRTL" Property="Source" Value="Icons/LTR.png"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <GridSplitter Grid.Column="1" Width="5"   HorizontalAlignment="Stretch"/>
+
+                        <ListBox Name="lstPrintPages" Grid.Column="2" ItemsSource="{Binding ElementName=lstFileChaptersBinding, Path=SelectedValue.PrintResult.Pages}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+
+                            <ListBox.ItemTemplate >
+                                <DataTemplate >
+
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Preview and Export">
@@ -253,7 +286,7 @@
                                     <GradientStop Color="White" Offset="1"/>
                                 </LinearGradientBrush>
                             </Paragraph.Background>
-                            Git build information: 
+                            Git build information:
                         </Paragraph>
                     </FlowDocument>
                 </RichTextBox>
