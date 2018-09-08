@@ -81,7 +81,7 @@
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Default Binding:</Label>
                         <StackPanel Orientation="Horizontal">
-                            <RadioButton IsChecked="True" Margin="0,0,10,0" VerticalContentAlignment="Center">
+                            <RadioButton Name="rbBindDuplex" IsChecked="True" Margin="0,0,10,0" VerticalContentAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="Icons/duplex.png" Height="32px" ></Image>
                                     <Label>Duplex</Label>

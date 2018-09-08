@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MangaPrinter.Core;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -69,6 +70,7 @@ namespace MangaPrinter.WpfGUI
                 var subFolders = cbSubfolders.IsChecked ?? false;
                 int cutoff = int.Parse(txtPageMaxWidth.Text);
                 var rtl = rbRTL.IsChecked ?? false;
+                BindType printBind = (rbBindDuplex.IsChecked ?? false) ? BindType.DUPLEX : BindType.DUPLEX;
 
                 Func<System.IO.FileSystemInfo, object> orderFunc = (si) => si.CreationTime;
                 if (rbByName.IsChecked ?? false)
@@ -76,7 +78,7 @@ namespace MangaPrinter.WpfGUI
 
                 winWorking.waitForTask((updateFunc) =>
                 {
-                    return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl, orderFunc, updateFunc);
+                    return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl, printBind, orderFunc, updateFunc);
                 },
                 isProgressKnwon: false)
                 .ForEach(ch => mangaChapters.Add(ch));
@@ -142,6 +144,7 @@ namespace MangaPrinter.WpfGUI
             {
                 mangaChapters.Add(new Core.MangaChapter()
                 {
+                    Bind = (rbBindDuplex.IsChecked ?? false) ? BindType.DUPLEX : BindType.DUPLEX,
                     IsRTL = rbRTL.IsChecked ?? false,
                     Pages = new ObservableCollection<Core.MangaPage>(),
                     Name = dlgName.StringData
