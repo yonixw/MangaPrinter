@@ -20,6 +20,8 @@ namespace MangaPrinter.Core
 
         protected dynamic _baseGet([CallerMemberName] string propName = "")
         {
+            if (!myData.ContainsKey(propName))
+                return null;
             return myData[propName];
         }
 

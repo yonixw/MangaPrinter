@@ -70,7 +70,7 @@ namespace MangaPrinter.WpfGUI
                 var subFolders = cbSubfolders.IsChecked ?? false;
                 int cutoff = int.Parse(txtPageMaxWidth.Text);
                 var rtl = rbRTL.IsChecked ?? false;
-                BindType printBind = (rbBindDuplex.IsChecked ?? false) ? BindType.DUPLEX : BindType.DUPLEX;
+                BindType printBind = (rbBindDuplex.IsChecked ?? false) ? BindType.DUPLEX : BindType.BOOKLET;
 
                 Func<System.IO.FileSystemInfo, object> orderFunc = (si) => si.CreationTime;
                 if (rbByName.IsChecked ?? false)
@@ -144,7 +144,7 @@ namespace MangaPrinter.WpfGUI
             {
                 mangaChapters.Add(new Core.MangaChapter()
                 {
-                    Bind = (rbBindDuplex.IsChecked ?? false) ? BindType.DUPLEX : BindType.DUPLEX,
+                    Bind = (rbBindDuplex.IsChecked ?? false) ? BindType.DUPLEX : BindType.BOOKLET,
                     IsRTL = rbRTL.IsChecked ?? false,
                     Pages = new ObservableCollection<Core.MangaPage>(),
                     Name = dlgName.StringData
