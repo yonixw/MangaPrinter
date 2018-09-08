@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI"
+        xmlns:mangaobj="clr-namespace:MangaPrinter.Core"
         mc:Ignorable="d"
         Title="Manga printer and binder manager" Height="900" Width="1000"
         FontSize="9.75pt" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
@@ -142,12 +143,16 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
+                                        <Image Name="imgRTL" Height="32px" Source="Icons/duplex.png" />
+                                        <Image Name="imgBinding" Height="32px" Source="Icons/RTL.png" />
                                         <Label Content="{Binding Name}" />
                                     </StackPanel>
                                     <DataTemplate.Triggers>
                                         <DataTrigger Binding="{Binding IsRTL}" Value="False">
                                             <Setter TargetName="imgRTL" Property="Source" Value="Icons/LTR.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Bind}" Value="mangaobj:BindType.BOOKLET">
+                                            <Setter TargetName="imgRTL" Property="Source" Value="Icons/booklet.png"/>
                                         </DataTrigger>
                                     </DataTemplate.Triggers>
                                 </DataTemplate>
