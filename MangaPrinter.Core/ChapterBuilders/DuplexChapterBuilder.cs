@@ -15,7 +15,7 @@ namespace MangaPrinter.Core.ChapterBuilders
             // For loop from 1 to end and add pages as necessary.
             // Double Template should have 0px between 2 pages.
 
-            PrintChapter pc = new PrintChapter() { ChapterType = BindType.DUPLEX, SourceChapter = ch, Pages = new ObservableCollection<PrintPage>() };
+            PrintChapter pc = new PrintChapter() {Pages = new ObservableCollection<PrintPage>() };
 
             int sideCounter = 1;
             bool isFirst = true; // Starting page
