@@ -234,20 +234,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <ListBox Name="lstFileChaptersBinding" Grid.Column="0">
-
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
-                                        <Label Content="{Binding Name}" />
-                                    </StackPanel>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding IsRTL}" Value="False">
-                                            <Setter TargetName="imgRTL" Property="Source" Value="Icons/LTR.png"/>
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
+                          
                         </ListBox>
 
                         <GridSplitter Grid.Column="1" Width="5"   HorizontalAlignment="Stretch"/>
