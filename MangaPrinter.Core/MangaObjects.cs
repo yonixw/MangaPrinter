@@ -115,6 +115,7 @@ namespace MangaPrinter.Core
 
     public class PrintPage : ModelBaseWpf
     {
+        public int PageNumber { get { return _baseGet(); } set { _baseSet(value); } }
         public PrintFace Front { get { return _baseGet(); } set { _baseSet(value); } }
         public PrintFace Back { get { return _baseGet(); } set { _baseSet(value); } }
     }

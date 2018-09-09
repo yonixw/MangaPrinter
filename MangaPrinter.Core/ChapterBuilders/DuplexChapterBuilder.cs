@@ -150,9 +150,10 @@ namespace MangaPrinter.Core.ChapterBuilders
                 face.Left = face.Right = side;
             }
 
+            int pageIndex = 1;
             for (int i=0;i<Faces.Count;i+=2)
             {
-                PrintPage pp = new PrintPage() { Front = Faces[i], Back = Faces[i + 1] };
+                PrintPage pp = new PrintPage() { PageNumber = pageIndex++,  Front = Faces[i], Back = Faces[i + 1] };
                 pc.Pages.Add(pp);
             }
 

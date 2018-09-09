@@ -94,11 +94,11 @@
                                 </StackPanel>
                             </RadioButton>
                         </StackPanel>
-                        
+
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold" >Double-Page min width (px):</Label>
                         <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" 
                                 TextChanged="txtPageMaxWidth_TextChanged" TextAlignment="Center"/>
-                        
+
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Import order:</Label>
@@ -116,9 +116,9 @@
                         </StackPanel>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="Import folders" Style="{StaticResource MenuItemBtnStyle}"
+                        <MenuItem Header="(1) Import folders" Style="{StaticResource MenuItemBtnStyle}"
                                   Name="menuImprtFolders" Click="menuImprtFolders_Click" Foreground="Black"/>
-                        <MenuItem Header="Add empty chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"
+                        <MenuItem Header="(1.1) Add empty chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="200px"
                                   Name="mnuAddEmptyChapter" Click="mnuAddEmptyChapter_Click"/>
                     </Menu>
 
@@ -226,8 +226,8 @@
                         <Label Content="pages (max)" IsEnabled="False" />
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="(Re)Bind All!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Click="MenuItem_Click"/>
-                        <MenuItem Header="Export PDF!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" />
+                        <MenuItem Header="(2) (Re)Bind All!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Click="MenuItem_Click"/>
+                        <MenuItem Header="(3) Export PDF!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" />
                     </Menu>
                     <Grid >
                         <Grid.ColumnDefinitions>
@@ -250,38 +250,44 @@
 
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
-                                    <Border BorderThickness="2" BorderBrush="Orange">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Horizontal" >
+                                        <Label Content="{Binding PageNumber, StringFormat='{}({0})'}" />
 
-                                            <Border BorderThickness="0 0 0 2" BorderBrush="Blue" Grid.Column="0" Grid.Row="0">
-                                                <Label Content="{Binding Front.Left}"  />  
-                                            </Border>
-                                            <Border BorderThickness="0 0 0 2" BorderBrush="Blue" Grid.Column="2" Grid.Row="0">
-                                                <Label Content="{Binding Front.Right}"  /> 
-                                            </Border>
+                                        <Border BorderThickness="2" BorderBrush="Orange">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+                                                <Border BorderThickness="0 0 0 2" Grid.Column="0" BorderBrush="Blue" Grid.Row="0">
+                                                    <Label Content="{Binding Front.Left}"  />
+                                                </Border>
+                                                <Border BorderThickness="0 0 0 2" BorderBrush="Blue" Grid.Column="2" Grid.Row="0">
+                                                    <Label Content="{Binding Front.Right}"  />
+                                                </Border>
 
-                                            <Image Source="Icons/papper_plan.png" Grid.Column="1" Grid.RowSpan="2"></Image>
+                                                <Image Source="Icons/papper_plan.png"  Width="182" Height="62"
+                                                       Grid.Column="1" Grid.RowSpan="2"/>
 
-                                            <Label Content="{Binding Back.Right}"  Grid.Column="2" Grid.Row="1" />
-                                            <Label Content="{Binding Back.Left}" Grid.Column="0" Grid.Row="1" />
-                                        </Grid>
-                                    </Border>
+                                                <Label  Content="{Binding Back.Right}" Grid.Row="1" Grid.Column="2" />
+                                                <Label Content="{Binding Back.Left}" Grid.Column="0" Grid.Row="1"/>
+
+
+                                            </Grid>
+                                        </Border>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
                 </DockPanel>
             </TabItem>
-            
+
             <TabItem Header="About">
                 <RichTextBox Name="rtbInfo" IsReadOnly="True">
                     <FlowDocument>
