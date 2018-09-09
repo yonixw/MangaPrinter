@@ -10,7 +10,7 @@ namespace MangaPrinter.Core.ChapterBuilders
     public class DuplexChapterBuilder : IChapterBuilder
     {
       
-        public PrintChapter Build(MangaChapter ch)
+        public PrintChapter Build(MangaChapter ch, bool startPage, bool endPage, int antiSpoiler = 0)
         {
             // For loop from 1 to end and add pages as necessary.
             // Double Template should have 0px between 2 pages.

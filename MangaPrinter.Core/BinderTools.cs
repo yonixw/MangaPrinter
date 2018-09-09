@@ -11,18 +11,20 @@ namespace MangaPrinter.Core
 
     public interface IChapterBuilder
     {
-        PrintChapter Build(MangaChapter ch);
+        PrintChapter Build(MangaChapter ch, bool startPage, bool endPage, int antiSpoiler = 0);
     }
 
     public class BookletChapterBuilder : IChapterBuilder
     {
-        public PrintChapter Build(MangaChapter ch)
+        public PrintChapter Build(MangaChapter ch, bool startPage, bool endPage, int antiSpoiler = 0)
         {
             // looping from both end\start sides .... so middle can have some blanks
             // No way to save doubles... become 2 signals
 
             return null;
         }
+
+       
     }
 
     

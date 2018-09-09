@@ -22,7 +22,7 @@ namespace MangaPrinter.Core.Tests
                 false, false, true
             });
 
-            PrintChapter pc = new ChapterBuilders.DuplexChapterBuilder().Build(ch);
+            PrintChapter pc = new ChapterBuilders.DuplexChapterBuilder().Build(ch, false, false, 0);
 
             string error = Utils.VerifyChapter(ch, pc, new VerifyPage[] {
                 new VerifyPage()
@@ -52,7 +52,7 @@ namespace MangaPrinter.Core.Tests
                 false, false, true
             });
 
-            PrintChapter pc = new ChapterBuilders.DuplexChapterBuilder().Build(ch);
+            PrintChapter pc = new ChapterBuilders.DuplexChapterBuilder().Build(ch,false,false,0);
 
             string error = Utils.VerifyChapter(ch, pc, new VerifyPage[] {
                 new VerifyPage()
@@ -82,7 +82,7 @@ namespace MangaPrinter.Core.Tests
                 false, true, false, true
             });
 
-            PrintChapter pc = new ChapterBuilders.DuplexChapterBuilder().Build(ch);
+            PrintChapter pc = new ChapterBuilders.DuplexChapterBuilder().Build(ch, false, false, 0);
 
             string error = Utils.VerifyChapter(ch, pc, new VerifyPage[] {
                 new VerifyPage()
@@ -125,7 +125,7 @@ namespace MangaPrinter.Core.Tests
                 false, false, false, true
             });
 
-            PrintChapter pc = new ChapterBuilders.DuplexChapterBuilder().Build(ch);
+            PrintChapter pc = new ChapterBuilders.DuplexChapterBuilder().Build(ch, false, false, 0);
 
             string error = Utils.VerifyChapter(ch, pc, new VerifyPage[] {
                 new VerifyPage()
@@ -168,7 +168,7 @@ namespace MangaPrinter.Core.Tests
                 false, false, false, true,false
             });
 
-            PrintChapter pc = new ChapterBuilders.DuplexChapterBuilder().Build(ch);
+            PrintChapter pc = new ChapterBuilders.DuplexChapterBuilder().Build(ch, false, false, 0);
 
             string error = Utils.VerifyChapter(ch, pc, new VerifyPage[] {
                 new VerifyPage()

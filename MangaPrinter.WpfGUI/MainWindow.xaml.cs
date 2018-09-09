@@ -236,12 +236,16 @@ namespace MangaPrinter.WpfGUI
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
+            bool startPage = false;
+            bool endPage = false;
+            int antiSpoiler = 0;
+
             winWorking.waitForTask<bool>((updateFunc) =>
             {
                 foreach (MangaChapter ch in mangaChapters)
                 {
                     updateFunc(ch.Name, 0);
-                    ch.PrintResult = (new Core.ChapterBuilders.DuplexChapterBuilder()).Build(ch);
+                    ch.PrintResult = (new Core.ChapterBuilders.DuplexChapterBuilder()).Build(ch,startPage,endPage,antiSpoiler);
                 }
                 return true;
             },
