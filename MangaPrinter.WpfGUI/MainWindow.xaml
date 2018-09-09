@@ -238,6 +238,11 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <ListBox Name="lstFileChaptersBinding" Grid.Column="0">
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Name="mnuBindChapter" Click="mnuBindChapter_Click" Header="Bind this chapter"/>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
                                     <Label Content="{Binding Name}" />
