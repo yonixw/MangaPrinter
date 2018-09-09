@@ -262,13 +262,17 @@
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
-                                            <Label Content="{Binding Front.Left}" Grid.Column="0" Grid.Row="0" />
-                                            <Label Content="{Binding Back.Left}" Grid.Column="0" Grid.Row="1" />
+                                            <Border BorderThickness="0 0 0 2" BorderBrush="Blue" Grid.Column="0" Grid.Row="0">
+                                                <Label Content="{Binding Front.Left}"  />  
+                                            </Border>
+                                            <Border BorderThickness="0 0 0 2" BorderBrush="Blue" Grid.Column="2" Grid.Row="0">
+                                                <Label Content="{Binding Front.Right}"  /> 
+                                            </Border>
 
                                             <Image Source="Icons/papper_plan.png" Grid.Column="1" Grid.RowSpan="2"></Image>
 
-                                            <Label Content="{Binding Front.Right}" Grid.Column="2" Grid.Row="0" />
                                             <Label Content="{Binding Back.Right}"  Grid.Column="2" Grid.Row="1" />
+                                            <Label Content="{Binding Back.Left}" Grid.Column="0" Grid.Row="1" />
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
