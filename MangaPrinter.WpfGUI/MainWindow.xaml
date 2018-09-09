@@ -95,7 +95,7 @@
                             </RadioButton>
                         </StackPanel>
                         
-                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold" >Double-Page width (px) cutoff:</Label>
+                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold" >Double-Page min width (px):</Label>
                         <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" 
                                 TextChanged="txtPageMaxWidth_TextChanged" TextAlignment="Center"/>
                         
@@ -109,7 +109,7 @@
 
                         <CheckBox IsChecked="True" Name="cbSubfolders">Include subfolders</CheckBox>
 
-                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Direction:</Label>
+                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Page Direction:</Label>
                         <StackPanel Orientation="Horizontal" >
                             <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (↼)</RadioButton>
                             <RadioButton>LTR (⇀)</RadioButton>
@@ -224,10 +224,12 @@
                         <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
                             25</TextBox>
                         <Label Content="pages (max)" IsEnabled="False" />
-                        <MenuItem Header="(Re)Bind All!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Click="MenuItem_Click"/>
                     </Menu>
-
-                    <Grid>
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                        <MenuItem Header="(Re)Bind All!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Click="MenuItem_Click"/>
+                        <MenuItem Header="Export PDF!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" />
+                    </Menu>
+                    <Grid >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="5"/>
@@ -248,43 +250,34 @@
 
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
+                                    <Border BorderThickness="2" BorderBrush="Orange">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
 
-                                        <Label Content="1" Grid.Column="0" Grid.Row="0" />
-                                        <Label Content="2" Grid.Column="0" Grid.Row="1" />
+                                            <Label Content="{Binding Front.Left}" Grid.Column="0" Grid.Row="0" />
+                                            <Label Content="{Binding Back.Left}" Grid.Column="0" Grid.Row="1" />
 
-                                        <Image Source="Icons/papper_plan.png" Grid.Column="1" Grid.RowSpan="2"></Image>
-                                        
-                                        <Label Content="3" Grid.Column="2" Grid.Row="0" />
-                                        <Label Content="4" Grid.Column="2" Grid.Row="1" />
-                                    </Grid>
+                                            <Image Source="Icons/papper_plan.png" Grid.Column="1" Grid.RowSpan="2"></Image>
+
+                                            <Label Content="{Binding Front.Right}" Grid.Column="2" Grid.Row="0" />
+                                            <Label Content="{Binding Back.Right}"  Grid.Column="2" Grid.Row="1" />
+                                        </Grid>
+                                    </Border>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Preview and Export">
-                <DockPanel>
-                    <Menu DockPanel.Dock="Top" Padding="0,5">
-                        <MenuItem Header="Print Preview" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
-                        <MenuItem Header="Read Preview" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
-                        <MenuItem Header="Export..." Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
-                    </Menu>
-                    <Canvas>
-
-                    </Canvas>
-                </DockPanel>
-            </TabItem>
+            
             <TabItem Header="About">
                 <RichTextBox Name="rtbInfo" IsReadOnly="True">
                     <FlowDocument>

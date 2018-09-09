@@ -89,6 +89,17 @@ namespace MangaPrinter.Core
         // If Manga page:
         public MangaPage MangaPageSource { get { return _baseGet(); } set { _baseSet(value); } }
         public SideMangaPageType MangaPageSourceType { get { return _baseGet(); } set { _baseSet(value); } }
+
+        public override string ToString()
+        {
+            string result = string.Format("({0}) {1}",SideNumber,SideType);
+            if (SideType == SingleSideType.MANGA)
+                if (MangaPageSource.IsDouble)
+                    result += string.Format(" (p{0}-{1})", MangaPageSource.ChildIndexStart, MangaPageSource.ChildIndexEnd);
+                else
+                    result += string.Format(" (p{0})", MangaPageSource.ChildIndexStart);
+            return result;
+        }
     }
 
     public class PrintFace : ModelBaseWpf
