@@ -9,6 +9,8 @@
         Title="Manga printer and binder manager" Height="900" Width="1000"
         FontSize="9.75pt" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Window.Resources>
+        <local:PrintSideLabelConvert x:Key="sideConvert"/>
+        
         <Style x:Key="GeneralStyle" TargetType="{x:Type Control}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Cursor" Value="Hand" />
@@ -265,17 +267,17 @@
                                                     <RowDefinition Height="*" />
                                                 </Grid.RowDefinitions>
                                                 <Border BorderThickness="0 0 0 2" Grid.Column="0" BorderBrush="Blue" Grid.Row="0">
-                                                    <Label Content="{Binding Front.Left}"  />
+                                                    <Label Content="{Binding Front.Left, Converter={StaticResource sideConvert}}"  />
                                                 </Border>
                                                 <Border BorderThickness="0 0 0 2" BorderBrush="Blue" Grid.Column="2" Grid.Row="0">
-                                                    <Label Content="{Binding Front.Right}"  />
+                                                    <Label Content="{Binding Front.Right, Converter={StaticResource sideConvert}}"  />
                                                 </Border>
 
                                                 <Image Source="Icons/papper_plan.png"  Width="182" Height="62"
                                                        Grid.Column="1" Grid.RowSpan="2"/>
 
-                                                <Label  Content="{Binding Back.Right}" Grid.Row="1" Grid.Column="2" />
-                                                <Label Content="{Binding Back.Left}" Grid.Column="0" Grid.Row="1"/>
+                                                <Label  Content="{Binding Back.Right, Converter={StaticResource sideConvert}}" Grid.Row="1" Grid.Column="2" />
+                                                <Label Content="{Binding Back.Left, Converter={StaticResource sideConvert}}" Grid.Column="0" Grid.Row="1"/>
 
 
                                             </Grid>

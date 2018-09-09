@@ -61,6 +61,7 @@
     <Compile Include="Dialogs\dlgString.xaml.cs">
       <DependentUpon>dlgString.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PrintSideLabelConvert.cs" />
     <Compile Include="winWorking.xaml.cs">
       <DependentUpon>winWorking.xaml</DependentUpon>
     </Compile>
