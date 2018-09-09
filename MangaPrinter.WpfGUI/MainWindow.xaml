@@ -217,10 +217,10 @@
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontWeight="Bold" FontStyle="Italic">Chapter:</Label>
-                        <CheckBox IsChecked="True">Add Start Page</CheckBox>
-                        <CheckBox IsChecked="True">Add End Page</CheckBox>
+                        <CheckBox Name="cbAddStart" IsChecked="True">Add Start Page</CheckBox>
+                        <CheckBox Name="cbAddEnd" IsChecked="True">Add End Page</CheckBox>
 
-                        <CheckBox IsChecked="True">Ensure Anti-spoiler every:</CheckBox>
+                        <CheckBox Name="cbUseAntiSpoiler" IsChecked="True">Ensure Anti-spoiler every:</CheckBox>
                         <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
                             25</TextBox>
                         <Label Content="pages (max)" IsEnabled="False" />

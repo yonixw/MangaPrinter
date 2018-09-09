@@ -236,9 +236,9 @@ namespace MangaPrinter.WpfGUI
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            bool startPage = false;
-            bool endPage = false;
-            int antiSpoiler = 0;
+            bool startPage = cbAddStart.IsChecked ?? false;
+            bool endPage = cbAddEnd.IsChecked ?? false;
+            int antiSpoiler = (cbUseAntiSpoiler.IsChecked ?? false) ? 0 :int.Parse(txtSpoilerPgNm.Text);
 
             winWorking.waitForTask<bool>((updateFunc) =>
             {
