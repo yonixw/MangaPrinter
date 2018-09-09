@@ -224,7 +224,7 @@
                         <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
                             25</TextBox>
                         <Label Content="pages (max)" IsEnabled="False" />
-                        <MenuItem Header="(Re)Bind All!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black"/>
+                        <MenuItem Header="(Re)Bind All!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Click="MenuItem_Click"/>
                     </Menu>
 
                     <Grid>
@@ -234,7 +234,11 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <ListBox Name="lstFileChaptersBinding" Grid.Column="0">
-                          
+                            <ListBox.ItemTemplate >
+                                <DataTemplate >
+                                    <Label Content="{Binding Name}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
 
                         <GridSplitter Grid.Column="1" Width="5"   HorizontalAlignment="Stretch"/>
@@ -244,7 +248,25 @@
 
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
 
+                                        <Label Content="1" Grid.Column="0" Grid.Row="0" />
+                                        <Label Content="2" Grid.Column="0" Grid.Row="1" />
+
+                                        <Image Source="Icons/papper_plan.png" Grid.Column="1" Grid.RowSpan="2"></Image>
+                                        
+                                        <Label Content="3" Grid.Column="2" Grid.Row="0" />
+                                        <Label Content="4" Grid.Column="2" Grid.Row="1" />
+                                    </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

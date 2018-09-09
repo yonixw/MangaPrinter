@@ -32,6 +32,7 @@ namespace MangaPrinter.WpfGUI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             lstFileChapters.ItemsSource = mangaChapters;
+            lstFileChaptersBinding.ItemsSource = mangaChapters;
             rtbInfo.AppendText(" " + Properties.Resources.GitInfo.Split(';')[0]);
         }
 
@@ -231,6 +232,17 @@ namespace MangaPrinter.WpfGUI
             {
                 ch.Bind = BindType.BOOKLET;
             });
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+           
+
+            foreach(MangaChapter ch in mangaChapters)
+            {
+              ch.PrintResult = (new Core.ChapterBuilders.DuplexChapterBuilder()).Build(ch);
+            }
+            
         }
     }
 }
