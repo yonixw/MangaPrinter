@@ -233,10 +233,10 @@
                             <ColumnDefinition Width="5"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <ListBox Name="lstFileChaptersBinding" Grid.Column="0">
+                        <ListBox Name="lstFileChaptersBinding" Grid.Column="0" SelectionChanged="LstFileChaptersBinding_SelectionChanged">
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
-                                    <Label Content="{Binding Name}" />
+                                    <Label Content="{Binding Name}"  />
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
@@ -244,7 +244,7 @@
                         <GridSplitter Grid.Column="1" Width="5"   HorizontalAlignment="Stretch"/>
 
                         <ListBox Name="lstPrintPages" Grid.Column="2" 
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"  SelectionChanged="LstPrintPages_SelectionChanged">
 
                             <ListBox.ItemTemplate >
                                 <DataTemplate >

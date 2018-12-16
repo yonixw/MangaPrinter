@@ -233,6 +233,18 @@ namespace MangaPrinter.WpfGUI
             isProgressKnwon: false);
         }
 
-       
+        private void LstFileChaptersBinding_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MangaChapter mc = lstFileChaptersBinding.SelectedItem as MangaChapter;
+        }
+
+        private void LstPrintPages_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            PrintPage pp = lstPrintPages.SelectedItem as PrintPage;
+            if (lstFileChaptersBinding.Items.Count > 0)
+            {
+                lstFileChaptersBinding.sele // TODO: Make 2 way multi selection
+            }
+        }
     }
 }
