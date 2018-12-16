@@ -229,7 +229,7 @@ namespace MangaPrinter.WpfGUI
                 foreach (MangaChapter ch in mangaChapters)
                 {
                     updateFunc(ch.Name, 0);
-                    ch.PrintResult = (new Core.ChapterBuilders.DuplexChapterBuilder()).Build(ch,startPage,endPage,antiSpoiler);
+                    ch.PrintResult = (new Core.ChapterBuilders.DuplexBuilder()).Build(ch,startPage,endPage,antiSpoiler);
                 }
                 return true;
             },
@@ -246,7 +246,7 @@ namespace MangaPrinter.WpfGUI
                 {
                     winWorking.waitForTask<bool>((updateFunc) =>
                     {
-                        ch.PrintResult = (new Core.ChapterBuilders.DuplexChapterBuilder()).Build(ch, startPage, endPage, antiSpoiler);
+                        ch.PrintResult = (new Core.ChapterBuilders.DuplexBuilder()).Build(ch, startPage, endPage, antiSpoiler);
                         return true;
                     }, isProgressKnwon: false);
                 });

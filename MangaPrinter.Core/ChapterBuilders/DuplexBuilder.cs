@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace MangaPrinter.Core.ChapterBuilders
 {
-    public class DuplexChapterBuilder : IChapterBuilder
+    public class DuplexBuilder : IChapterBuilder
     {
       
         public PrintChapter Build(MangaChapter ch, bool startPage, bool endPage, int antiSpoiler = 0)
