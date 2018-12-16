@@ -10,7 +10,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
 {
     class Utils
     {
-        //Input format:  R1,2,1,1,2,1,1,1,1 x L2,2,1,1,1 x ....
+        //Input format:  R1,2,1,1,2,1,1,1,1 / L2,2,1,1,1 / ....
 
         static Dictionary<string, MangaPrinter.Core.FaceType> FaceConsts = new Dictionary<string, Core.FaceType>()
         {
@@ -31,7 +31,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         //Output format(Per face Single - 3 items, Double 2 items)
         //      * MUST have faces for both sides
         //      * Front side first, Left face first
-        //  S,M,B x D,M x S,M,M x S,M,E x ....
+        //  S,M,B / D,M / S,M,M / S,M,E / ....
 
         public static void TestResult(string inputMangaChapters, string outputPrintFaces,
             bool startPage, bool endPage, int antiSpoiler=0)
@@ -39,7 +39,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             // ------------ REAL INPUT --------------
 
             List<MangaChapter> allChapters = new List<MangaChapter>();
-            string [] iCs = inputMangaChapters.Replace(" ", "").Split('x');
+            string [] iCs = inputMangaChapters.Replace(" ", "").Split('/');
             foreach(string iC in iCs)
             {
                 MangaChapter mc = new MangaChapter();
@@ -64,38 +64,29 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
 
             List<PrintFace>
                 resultFaces = resultPages.SelectMany<PrintPage, PrintFace>((p) => new[] { p.Front, p.Back }).ToList();
-            // ------------ MOCK OUTPUT --------------
 
-            List<PrintFace> allFaces = new List<PrintFace>();
-            string[] oFs = outputPrintFaces.Replace(" ", "").Split('x');
-            foreach (string oF in oFs)
-            {
-                PrintFace pf = new PrintFace();
-                string[] sides = oF.Split(',');
-
-                pf.PrintFaceType = FaceConsts[sides[0]];
-                if (pf.PrintFaceType == FaceType.SINGLES)
+            List<string> quickLookArr = new List<string>();
+            foreach (PrintFace face in resultFaces) {
+                if (face.PrintFaceType == FaceType.SINGLES)
                 {
-                    pf.Left = new PrintSide() { SideType = SideConsts[sides[1]] };
-                    pf.Right = new PrintSide() { SideType = SideConsts[sides[2]] };
+                    quickLookArr.Add("S," + reverseSide(face.Left.SideType) + "," + reverseSide(face.Right.SideType));
                 }
                 else
                 {
-                    pf.Left = pf.Right = new PrintSide() { SideType = SideConsts[sides[1]] };
+                    quickLookArr.Add("D," + reverseSide(face.Left.SideType) );
                 }
-
-                allFaces.Add(pf);
             }
 
-            // ------------ COMPARE --------------
+            string resultOutputString = string.Join("/", quickLookArr).ToUpper();
+            string testOutputString = outputPrintFaces.Replace(" ", "").ToUpper();
+            Console.WriteLine(resultOutputString);
 
-            Assert.AreEqual(allFaces.Count, resultFaces.Count);
+            Assert.AreEqual(testOutputString, resultOutputString);
+        }
 
-            for(int i = 0; i < allFaces.Count; i++)
-            {
-                Assert.AreEqual(allFaces[i].Left.SideType, resultFaces[i].Left.SideType);
-                Assert.AreEqual(allFaces[i].Right.SideType, resultFaces[i].Right.SideType);
-            }
+        static string reverseSide(SingleSideType type)
+        {
+            return SideConsts.FirstOrDefault(x => x.Value == type).Key;
         }
     }
 }

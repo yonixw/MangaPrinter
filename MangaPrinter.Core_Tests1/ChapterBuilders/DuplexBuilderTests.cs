@@ -12,12 +12,10 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
     public class DuplexBuilderTests
     {
         [TestMethod()]
-        public void BuildTest()
+        public void MakeEvenSimple()
         {
-            string input, output;
-
-            input = "R2,1,1,1 x R1,1";
-            output = "D,M x S,M,M x S,M,E x S,M,M";
+            var input = "L2,1,1,1 / L1,1";
+            var output = "D,M / S,M,M / S,M,E / S,M,M";
 
             Utils.TestResult(input, output, false, false, 0);
         }
