@@ -224,14 +224,11 @@ namespace MangaPrinter.WpfGUI
             bool endPage = cbAddEnd.IsChecked ?? false;
             int antiSpoiler = (cbUseAntiSpoiler.IsChecked ?? false) ? 0 :int.Parse(txtSpoilerPgNm.Text);
 
-            winWorking.waitForTask<bool>((updateFunc) =>
+            var allChapters = mangaChapters.ToList();
+
+            lstPrintPages.ItemsSource = winWorking.waitForTask<List<PrintPage>>((updateFunc) =>
             {
-                foreach (MangaChapter ch in mangaChapters)
-                {
-                    updateFunc(ch.Name, 0);
-                    ch.PrintResult = (new Core.ChapterBuilders.DuplexBuilder()).Build(ch,startPage,endPage,antiSpoiler);
-                }
-                return true;
+                return (new Core.ChapterBuilders.DuplexBuilder()).Build(allChapters, startPage, endPage, antiSpoiler);
             },
             isProgressKnwon: false);
         }

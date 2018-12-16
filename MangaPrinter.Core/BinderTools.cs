@@ -9,22 +9,22 @@ namespace MangaPrinter.Core
 {
    
 
-    public interface IChapterBuilder
+    public interface IBindBuilder
     {
-        PrintChapter Build(MangaChapter ch, bool startPage, bool endPage, int antiSpoiler = 0);
+        List<PrintPage> Build(List<MangaChapter> ch, bool startPage, bool endPage, int antiSpoiler = 0);
     }
 
-    public class BookletChapterBuilder : IChapterBuilder
+    public class BookletChapterBuilder : IBindBuilder
     {
-        public PrintChapter Build(MangaChapter ch, bool startPage, bool endPage, int antiSpoiler = 0)
+
+
+        List<PrintPage> IBindBuilder.Build(List<MangaChapter> ch, bool startPage, bool endPage, int antiSpoiler)
         {
             // looping from both end\start sides .... so middle can have some blanks
-            // No way to save doubles... become 2 signals
+            // No way to save doubles... splitted into 2 faces singles
 
-            return null;
+            throw new NotImplementedException();
         }
-
-       
     }
 
     
