@@ -40,7 +40,7 @@ namespace MangaPrinter.Core
             return page;
         }
 
-        public List<MangaChapter> getChapters(DirectoryInfo di, bool subFodlers, int pageCutoff, bool RTL, BindType PrintBind,
+        public List<MangaChapter> getChapters(DirectoryInfo di, bool subFodlers, int pageCutoff, bool RTL, 
             Func<FileSystemInfo, object> orderFunc, Action<string, int> updateFunc = null)
         {
             List<MangaChapter> result = new List<MangaChapter>();
@@ -49,7 +49,6 @@ namespace MangaPrinter.Core
             {
                 MangaChapter ch = new MangaChapter()
                 {
-                    Bind = PrintBind,
                     Name = di.Name,
                     IsRTL = RTL,
                     autoPageNumbering = false
@@ -82,7 +81,7 @@ namespace MangaPrinter.Core
                 {
                     foreach (DirectoryInfo subdi in di.EnumerateDirectories().OrderBy(orderFunc))
                     {
-                        List<MangaChapter> subdiChapters = getChapters(subdi, subFodlers, pageCutoff, RTL, PrintBind, orderFunc, updateFunc);
+                        List<MangaChapter> subdiChapters = getChapters(subdi, subFodlers, pageCutoff, RTL, orderFunc, updateFunc);
                         result.AddRange(subdiChapters);
                     }
                 }
@@ -91,10 +90,10 @@ namespace MangaPrinter.Core
             return result;
         }
 
-        public List<MangaChapter> getChapters(string DirectoryPath, bool subFodlers, int pageCutoff, bool isRTL, BindType PrintBind,
+        public List<MangaChapter> getChapters(string DirectoryPath, bool subFodlers, int pageCutoff, bool isRTL, 
             Func<FileSystemInfo, object> orderFunc, Action<string, int> updateFunc = null)
         {
-            return getChapters(new DirectoryInfo(DirectoryPath), subFodlers, pageCutoff, isRTL, PrintBind, orderFunc, updateFunc);
+            return getChapters(new DirectoryInfo(DirectoryPath), subFodlers, pageCutoff, isRTL,  orderFunc, updateFunc);
         }
 
         public List<MangaPage> importImages(string[] imagePaths, int pageCutoff,

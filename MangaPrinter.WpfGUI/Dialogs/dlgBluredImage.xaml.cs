@@ -21,11 +21,12 @@ namespace MangaPrinter.WpfGUI.Dialogs
     public partial class dlgBluredImage : Window
     {
         private string _imageUrl;
+        private string _title;
 
         public dlgBluredImage(string ImageUrl, string DialogTitle)
         {
             _imageUrl = ImageUrl;
-            Title = DialogTitle;
+            _title = DialogTitle;
             InitializeComponent();
         }
 
@@ -49,6 +50,8 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            Title = _title;
+
             BitmapImage bm = new BitmapImage(new Uri(_imageUrl, UriKind.Absolute));
             imgMain.DataContext = myImage = new MyImageBind() { Image = bm, BlurRadius = slideBlur.Value * maxBlur / 100 };
 

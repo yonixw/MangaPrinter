@@ -125,9 +125,6 @@
                                     <MenuItem Name="mnuToRTL" Click="mnuToRTL_Click" Header="Change to RTL"/>
                                     <MenuItem Name="mnuToLTR" Click="mnuToLTR_Click" Header="Change to LTR"/>
                                     <Separator/>
-                                    <MenuItem Name="mnuToDuplex" Click="mnuToDuplex_Click" Header="Change to Duplex"/>
-                                    <MenuItem Name="mnuToBooklet" Click="mnuToBooklet_Click" Header="Change to Booklet"/>
-                                    <Separator/>
                                     <MenuItem Name="mnuDeleteCh" Click="mnuDeleteCh_Click" Header="Delete" Background="LightSalmon" />
                                 </ContextMenu>
                             </ListBox.ContextMenu>
