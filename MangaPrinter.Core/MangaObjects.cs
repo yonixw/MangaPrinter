@@ -17,19 +17,13 @@ namespace MangaPrinter.Core
         public int ChildIndexEnd { get { return _baseGet(); } set { _baseSet(value); } }
     }
 
-    public enum BindType
-    {
-        BOOKLET, DUPLEX
-    }
-
-
+   
     public class MangaChapter : ModelBaseWpf
     {
         public string Name { get { return _baseGet(); } set { _baseSet(value); } }
         public ObservableCollection<MangaPage> Pages { get { return _baseGet(); } set { _baseSet(value); } }
         public bool IsRTL { get { return _baseGet(); } set { _baseSet(value); } }
 
-        public BindType Bind { get { return _baseGet(); } set { _baseSet(value); } }
         public PrintChapter PrintResult { get { return _baseGet(); } set { _baseSet(value); } }
 
         public MangaChapter()

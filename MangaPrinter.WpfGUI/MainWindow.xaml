@@ -81,21 +81,7 @@
             <TabItem Header="Chapter and Files">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Default Binding:</Label>
-                        <StackPanel Orientation="Horizontal">
-                            <RadioButton Name="rbBindDuplex" IsChecked="True" Margin="0,0,10,0" VerticalContentAlignment="Center">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="Icons/duplex.png" Height="32px" ></Image>
-                                    <Label>Duplex</Label>
-                                </StackPanel>
-                            </RadioButton>
-                            <RadioButton Margin="0,0,10,0" VerticalContentAlignment="Center">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="Icons/booklet.png" Height="32px" ></Image>
-                                    <Label>Booklet</Label>
-                                </StackPanel>
-                            </RadioButton>
-                        </StackPanel>
+                        
 
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold" >Double-Page min width (px):</Label>
                         <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" 
@@ -148,16 +134,12 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Name="imgBinding" Height="32px" Source="Icons/duplex.png" />
                                         <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
                                         <Label Content="{Binding Name}" />
                                     </StackPanel>
                                     <DataTemplate.Triggers>
                                         <DataTrigger Binding="{Binding IsRTL}" Value="False">
                                             <Setter TargetName="imgRTL" Property="Source" Value="Icons/LTR.png"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Bind}" Value="{x:Static mangaobj:BindType.BOOKLET}">
-                                            <Setter TargetName="imgBinding" Property="Source" Value="Icons/booklet.png"/>
                                         </DataTrigger>
                                     </DataTemplate.Triggers>
                                 </DataTemplate>
@@ -218,6 +200,23 @@
             <TabItem Header="Binding">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Target Binding:</Label>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Name="rbBindDuplex" IsChecked="True" Margin="0,0,10,0" VerticalContentAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Icons/duplex.png" Height="32px" ></Image>
+                                    <Label>Duplex</Label>
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Margin="0,0,10,0" VerticalContentAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Icons/booklet.png" Height="32px" ></Image>
+                                    <Label>Booklet</Label>
+                                </StackPanel>
+                            </RadioButton>
+                        </StackPanel>
+                    </Menu>
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontWeight="Bold" FontStyle="Italic">Chapter:</Label>
                         <CheckBox Name="cbAddStart" IsChecked="True">Add Start Page</CheckBox>
                         <CheckBox Name="cbAddEnd" IsChecked="True">Add End Page</CheckBox>
@@ -225,7 +224,7 @@
                         <CheckBox Name="cbUseAntiSpoiler" IsChecked="True">Ensure Anti-spoiler every:</CheckBox>
                         <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
                             25</TextBox>
-                        <Label Content="pages (max)" IsEnabled="False" />
+                        <Label Content="pages" IsEnabled="False" />
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <MenuItem Header="(2) (Re)Bind All!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Click="MenuItem_Click"/>
