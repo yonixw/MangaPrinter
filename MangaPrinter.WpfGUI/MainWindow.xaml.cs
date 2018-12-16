@@ -236,20 +236,6 @@ namespace MangaPrinter.WpfGUI
             isProgressKnwon: false);
         }
 
-        private void mnuBindChapter_Click(object sender, RoutedEventArgs e)
-        {
-            bool startPage = cbAddStart.IsChecked ?? false;
-            bool endPage = cbAddEnd.IsChecked ?? false;
-            int antiSpoiler = (cbUseAntiSpoiler.IsChecked ?? false) ? 0 : int.Parse(txtSpoilerPgNm.Text);
-
-                ListBoxAction<Core.MangaChapter>(lstFileChaptersBinding, (ch) =>
-                {
-                    winWorking.waitForTask<bool>((updateFunc) =>
-                    {
-                        ch.PrintResult = (new Core.ChapterBuilders.DuplexBuilder()).Build(ch, startPage, endPage, antiSpoiler);
-                        return true;
-                    }, isProgressKnwon: false);
-                });
-        }
+       
     }
 }
