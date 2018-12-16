@@ -10,7 +10,9 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
 {
     class Utils
     {
-        //Input format:  R1,2,1,1,2,1,1,1,1 / L2,2,1,1,1 / ....
+        //Input format:
+        //  [R]TL or [L]TR
+        //  R1,2,1,1,2,1,1,1,1 / L2,2,1,1,1 / ....
 
         static Dictionary<string, MangaPrinter.Core.FaceType> FaceConsts = new Dictionary<string, Core.FaceType>()
         {

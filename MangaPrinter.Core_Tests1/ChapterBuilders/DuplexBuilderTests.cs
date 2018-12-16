@@ -19,5 +19,23 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
 
             Utils.TestResult(input, output, false, false, 0);
         }
+
+        [TestMethod()]
+        public void DoubleDoubleSimple()
+        {
+            var input = "L1,2,1,2";
+            var output = "S,M,B/D,M/S,M,B/D,M";
+
+            Utils.TestResult(input, output, false, false, 0);
+        }
+
+        [TestMethod()]
+        public void DoubleDoubleSimpleRTL()
+        {
+            var input = "R1,2,1,2";
+            var output = "S,B,M/D,M/S,B,M/D,M";
+
+            Utils.TestResult(input, output, false, false, 0);
+        }
     }
 }
