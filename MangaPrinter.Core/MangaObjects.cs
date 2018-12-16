@@ -24,8 +24,6 @@ namespace MangaPrinter.Core
         public ObservableCollection<MangaPage> Pages { get { return _baseGet(); } set { _baseSet(value); } }
         public bool IsRTL { get { return _baseGet(); } set { _baseSet(value); } }
 
-        public ObservableCollection<PrintSide> PrintResult { get { return _baseGet(); } set { _baseSet(value); } }
-
         public MangaChapter()
         {
             Pages = new ObservableCollection<MangaPage>();
