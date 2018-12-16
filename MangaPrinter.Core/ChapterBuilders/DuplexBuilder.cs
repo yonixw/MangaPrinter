@@ -136,6 +136,8 @@ namespace MangaPrinter.Core.ChapterBuilders
                         face.Left = side;
                     else
                         face.Right = side;
+
+                    isFirst = true;
                 }
 
             }
