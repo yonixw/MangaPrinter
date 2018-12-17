@@ -82,7 +82,7 @@ namespace MangaPrinter.WpfGUI
                     return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl,  orderFunc, updateFunc);
                 },
                 isProgressKnwon: false)
-                .ForEach(ch => mangaChapters.Add((SelectableMangaChapter)ch));
+                .ForEach(ch => mangaChapters.Add(MangaChapter.Extend<SelectableMangaChapter>(ch)));
             }
         }
 
@@ -143,12 +143,12 @@ namespace MangaPrinter.WpfGUI
             };
             if (dlgName.ShowDialog() ?? false)
             {
-                mangaChapters.Add((SelectableMangaChapter)new Core.MangaChapter()
+                mangaChapters.Add(MangaChapter.Extend<SelectableMangaChapter>( new Core.MangaChapter()
                 {
                     IsRTL = rbRTL.IsChecked ?? false,
                     Pages = new ObservableCollection<Core.MangaPage>(),
                     Name = dlgName.StringData
-                });
+                }));
             }
         }
 
@@ -217,8 +217,8 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
-      
 
+        ObservableCollection<SelectablePrintPage> allPrintPages = new ObservableCollection<SelectablePrintPage>();
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             bool startPage = cbAddStart.IsChecked ?? false;
@@ -227,27 +227,93 @@ namespace MangaPrinter.WpfGUI
 
             var allChapters = mangaChapters.ToList();
 
-            lstPrintPages.ItemsSource = winWorking.waitForTask<List<SelectablePrintPage>>((updateFunc) =>
+            allPrintPages = winWorking.waitForTask<ObservableCollection<SelectablePrintPage>>((updateFunc) =>
             {
-                return (new Core.ChapterBuilders.DuplexBuilder())
+                ObservableCollection<SelectablePrintPage> result = new ObservableCollection<SelectablePrintPage>();
+
+                (new Core.ChapterBuilders.DuplexBuilder())
                     .Build(allChapters.Cast<MangaChapter>().ToList(), startPage, endPage, antiSpoiler)
-                    .Cast<SelectablePrintPage>().ToList();
+                    .ForEach((p) => result.Add(PrintPage.Extend<SelectablePrintPage>(p)));
+
+                return result;
             },
             isProgressKnwon: false);
+
+            lstPrintPages.ItemsSource = allPrintPages;
         }
+
+        bool selectPrintPages = true, selectPrintChapters = true;
 
         private void LstFileChaptersBinding_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MangaChapter mc = lstFileChaptersBinding.SelectedItem as MangaChapter;
+            if (!selectPrintChapters) return;
+            if (e.AddedItems.Count == 0) return;
+
+
+            SelectableMangaChapter c = (SelectableMangaChapter)e.AddedItems[0] ?? (SelectableMangaChapter)e.RemovedItems[0];
+            selectPrintChapters = false;
+            lstFileChaptersBinding.SelectedItem = c;
+            selectPrintChapters = true;
+
+            //unselect all
+            selectPrintPages = false;
+            foreach (var p in allPrintPages) p.Selected = false;
+
+            bool pSelected = false;
+            foreach (SelectablePrintPage p in allPrintPages)
+            {
+
+                if (
+                      p.Front.Left.MangaPageSource?.Chapter.Name == c.Name ||
+                     p.Front.Right.MangaPageSource?.Chapter.Name == c.Name ||
+                     p.Back.Left.MangaPageSource?.Chapter.Name == c.Name ||
+                     p.Back.Right.MangaPageSource?.Chapter.Name == c.Name
+                    )
+                {
+                    p.Selected = true;
+                    if (!pSelected)
+                    {
+                        pSelected = true;
+                        lstPrintPages.ScrollIntoView(p);
+                    }
+                }
+            }
+            selectPrintPages = true;
         }
 
         private void LstPrintPages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PrintPage pp = lstPrintPages.SelectedItem as PrintPage;
-            if (lstFileChaptersBinding.Items.Count > 0)
+            if (!selectPrintPages) return;
+            if (e.AddedItems.Count == 0) return;
+
+            SelectablePrintPage p = (SelectablePrintPage)e.AddedItems[0] ?? (SelectablePrintPage)e.RemovedItems;
+            selectPrintPages = false;
+            lstPrintPages.SelectedItem = p;
+            selectPrintPages = true;
+
+            //unselect all
+            selectPrintChapters = false;
+            foreach (var c in mangaChapters) c.Selected = false;
+
+            bool cSelected = false;
+            foreach(SelectableMangaChapter c in mangaChapters)
             {
-                
+                if (
+                     p.Front.Left.MangaPageSource?.Chapter.Name == c.Name ||
+                     p.Front.Right.MangaPageSource?.Chapter.Name == c.Name ||
+                     p.Back.Left.MangaPageSource?.Chapter.Name == c.Name ||
+                     p.Back.Right.MangaPageSource?.Chapter.Name == c.Name
+                    )
+                {
+                    c.Selected = true;
+                    if (!cSelected)
+                    {
+                        cSelected = true;
+                        lstFileChaptersBinding.ScrollIntoView(c);
+                    }
+                }
             }
+            selectPrintChapters = true;
         }
     }
 }

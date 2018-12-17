@@ -30,6 +30,7 @@ namespace MangaPrinter.Core
             Pages.CollectionChanged += Pages_CollectionChanged;
         }
 
+
         public bool autoPageNumbering = true; // set to false when adding many pages at once.
         private void Pages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -49,6 +50,17 @@ namespace MangaPrinter.Core
                         page.ChildIndexEnd = index++;
                 }
             }
+        }
+
+        public static T Extend<T>(MangaChapter input) where T : MangaChapter, new()
+        {
+            T result = new T();
+            result.autoPageNumbering = input.autoPageNumbering;
+            result.IsRTL = input.IsRTL;
+            result.Name = input.Name;
+            result.Pages = input.Pages;
+
+            return result;
         }
     }
 
@@ -110,6 +122,15 @@ namespace MangaPrinter.Core
         public int PageNumber { get { return _baseGet(); } set { _baseSet(value); } }
         public PrintFace Front { get { return _baseGet(); } set { _baseSet(value); } }
         public PrintFace Back { get { return _baseGet(); } set { _baseSet(value); } }
+
+        public static T Extend<T>(PrintPage input) where T:PrintPage, new()
+        {
+            T result = new T();
+            result.PageNumber = input.PageNumber;
+            result.Front = input.Front;
+            result.Back = input.Back;
+            return result;
+        }
     }
 
    

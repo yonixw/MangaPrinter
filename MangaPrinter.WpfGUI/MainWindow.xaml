@@ -75,6 +75,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
+        
     </Window.Resources>
     <DockPanel>
         <TabControl>
@@ -197,7 +199,24 @@
             <TabItem Header="Binding">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Target Binding:</Label>
+
+                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Chapter:</Label>
+                        <CheckBox Name="cbAddStart" IsChecked="True">Add Start Page</CheckBox>
+                        <CheckBox Name="cbAddEnd" IsChecked="True">Add End Page</CheckBox>
+
+                        <CheckBox Name="cbUseAntiSpoiler" IsChecked="True">Anti-spoiler every:</CheckBox>
+                        <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
+                            25</TextBox>
+                        <Label Content="pages" IsEnabled="False" />
+                    </Menu>
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                        <Label Content="Single Page Size:" IsEnabled="False" />
+                        <TextBox Width="100px" Name="txtPrintWidth" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
+                            794</TextBox>
+                        <Label Content="x" IsEnabled="False" />
+                        <TextBox Width="100px" Name="txtPrintHeight" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
+                            1123</TextBox>
+                        <Label Content="Target Binding:" IsEnabled="False" />
                         <StackPanel Orientation="Horizontal">
                             <RadioButton Name="rbBindDuplex" IsChecked="True" Margin="0,0,10,0" VerticalContentAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
@@ -214,16 +233,6 @@
                         </StackPanel>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False" FontWeight="Bold" FontStyle="Italic">Chapter:</Label>
-                        <CheckBox Name="cbAddStart" IsChecked="True">Add Start Page</CheckBox>
-                        <CheckBox Name="cbAddEnd" IsChecked="True">Add End Page</CheckBox>
-
-                        <CheckBox Name="cbUseAntiSpoiler" IsChecked="True">Ensure Anti-spoiler every:</CheckBox>
-                        <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
-                            25</TextBox>
-                        <Label Content="pages" IsEnabled="False" />
-                    </Menu>
-                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <MenuItem Header="(2) (Re)Bind All!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Click="MenuItem_Click"/>
                         <MenuItem Header="(3) Export PDF!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" />
                     </Menu>
@@ -233,7 +242,13 @@
                             <ColumnDefinition Width="5"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <ListBox Name="lstFileChaptersBinding" Grid.Column="0" SelectionChanged="LstFileChaptersBinding_SelectionChanged">
+                        <ListBox Name="lstFileChaptersBinding" Grid.Column="0" 
+                                 SelectionMode="Multiple"  SelectionChanged="LstFileChaptersBinding_SelectionChanged">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                    <Setter Property="IsSelected" Value="{Binding Selected, Mode=TwoWay}" />
+                                </Style>
+                            </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
                                     <Label Content="{Binding Name}"  />
@@ -244,8 +259,13 @@
                         <GridSplitter Grid.Column="1" Width="5"   HorizontalAlignment="Stretch"/>
 
                         <ListBox Name="lstPrintPages" Grid.Column="2" 
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"  SelectionChanged="LstPrintPages_SelectionChanged">
-
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"  
+                                 SelectionMode="Multiple" SelectionChanged="LstPrintPages_SelectionChanged">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                    <Setter Property="IsSelected" Value="{Binding Selected, Mode=TwoWay}" />
+                                </Style>
+                            </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
                                     <StackPanel Orientation="Horizontal" >

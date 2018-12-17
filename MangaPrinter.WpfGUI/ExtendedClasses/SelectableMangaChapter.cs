@@ -10,6 +10,9 @@ namespace MangaPrinter.WpfGUI.ExtendedClasses
     {
         public bool Selected { get { return _baseGet(); } set { _baseSet(value); } }
 
-        
+        public SelectableMangaChapter()
+        {
+            Selected = false;
+        }
     }
 }
