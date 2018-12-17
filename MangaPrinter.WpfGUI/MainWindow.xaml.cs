@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MangaPrinter.WpfGUI.ExtendedClasses;
 
 namespace MangaPrinter.WpfGUI
 {
@@ -21,7 +22,7 @@ namespace MangaPrinter.WpfGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        ObservableCollection<Core.MangaChapter> mangaChapters = new ObservableCollection<Core.MangaChapter>();
+        ObservableCollection<SelectableMangaChapter> mangaChapters = new ObservableCollection<SelectableMangaChapter>();
        
 
         public MainWindow()
@@ -81,7 +82,7 @@ namespace MangaPrinter.WpfGUI
                     return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl,  orderFunc, updateFunc);
                 },
                 isProgressKnwon: false)
-                .ForEach(ch => mangaChapters.Add(ch));
+                .ForEach(ch => mangaChapters.Add((SelectableMangaChapter)ch));
             }
         }
 
@@ -142,7 +143,7 @@ namespace MangaPrinter.WpfGUI
             };
             if (dlgName.ShowDialog() ?? false)
             {
-                mangaChapters.Add(new Core.MangaChapter()
+                mangaChapters.Add((SelectableMangaChapter)new Core.MangaChapter()
                 {
                     IsRTL = rbRTL.IsChecked ?? false,
                     Pages = new ObservableCollection<Core.MangaPage>(),
@@ -153,7 +154,7 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuDeleteCh_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxAction<Core.MangaChapter>(lstFileChapters, (ch) =>
+            ListBoxAction<SelectableMangaChapter>(lstFileChapters, (ch) =>
             {
                 mangaChapters.Remove(ch);
             });
@@ -226,9 +227,11 @@ namespace MangaPrinter.WpfGUI
 
             var allChapters = mangaChapters.ToList();
 
-            lstPrintPages.ItemsSource = winWorking.waitForTask<List<PrintPage>>((updateFunc) =>
+            lstPrintPages.ItemsSource = winWorking.waitForTask<List<SelectablePrintPage>>((updateFunc) =>
             {
-                return (new Core.ChapterBuilders.DuplexBuilder()).Build(allChapters, startPage, endPage, antiSpoiler);
+                return (new Core.ChapterBuilders.DuplexBuilder())
+                    .Build(allChapters.Cast<MangaChapter>().ToList(), startPage, endPage, antiSpoiler)
+                    .Cast<SelectablePrintPage>().ToList();
             },
             isProgressKnwon: false);
         }
@@ -243,7 +246,7 @@ namespace MangaPrinter.WpfGUI
             PrintPage pp = lstPrintPages.SelectedItem as PrintPage;
             if (lstFileChaptersBinding.Items.Count > 0)
             {
-                lstFileChaptersBinding.sele // TODO: Make 2 way multi selection
+                
             }
         }
     }
