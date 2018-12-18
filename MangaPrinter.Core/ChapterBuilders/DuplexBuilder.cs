@@ -9,7 +9,6 @@ namespace MangaPrinter.Core.ChapterBuilders
 {
     public class DuplexBuilder : IBindBuilder
     {
-        static MangaPage SinglePageNULL = new MangaPage() { IsDouble = false };
 
         public List<PrintPage> Build(List<MangaChapter> chapters, bool addStartPage, bool addEndPage, int addAntiSpoiler = 0)
         {
@@ -24,6 +23,8 @@ namespace MangaPrinter.Core.ChapterBuilders
 
             foreach (MangaChapter ch in chapters)
             {
+                MangaPage SinglePageNULL = new MangaPage() { IsDouble = false, Chapter = ch }; 
+
                 if (addStartPage)
                     HandleFace( ref isFirst, Faces, ch, SinglePageNULL, SingleSideType.INTRO);
 
@@ -59,7 +60,7 @@ namespace MangaPrinter.Core.ChapterBuilders
             }
 
             // ----------- Anti Spoiler
-            if (addAntiSpoiler > 0)
+            if (addAntiSpoiler > 1)
             {
                 int faceIndex = 0;
                 while (faceIndex < Faces.Count)
@@ -140,7 +141,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                 {
                     side = new PrintSide()
                     {
-                       
+                        MangaPageSource = p,
                         SideType = sideType,
                     };
                 }
@@ -189,8 +190,8 @@ namespace MangaPrinter.Core.ChapterBuilders
                 {
                     side = new PrintSide()
                     {
-                        
                         SideType = sideType,
+                        MangaPageSource = p,
                     };
                 }
 

@@ -82,5 +82,16 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
 
             Utils.TestResult(input, output, false,false, 0);
         }
+
+
+        [TestMethod()]
+        public void SimpleIntroOutroEvenAntiRTL()
+        {
+            var input = "R2,1,1,1,1 / R1,1";
+            var output = "D,A/s,b,i / D,M / S,M,M / S,M,M /  S,e,o / D,A/  S,m,i /  S,o,m / D,E";
+           
+
+            Utils.TestResult(input, output, true, true, 3 /* => 6 faces*/);
+        }
     }
 }
