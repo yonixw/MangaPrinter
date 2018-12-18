@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MangaPrinter.WpfGUI.ExtendedClasses;
+using System.IO;
 
 namespace MangaPrinter.WpfGUI
 {
@@ -197,13 +198,6 @@ namespace MangaPrinter.WpfGUI
             });
         }
 
-        #endregion
-
-        private void txtSpoilerPgNm_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            verifyInteger(txtSpoilerPgNm, "25");
-        }
-
         private void stackFilePage_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
@@ -216,7 +210,27 @@ namespace MangaPrinter.WpfGUI
                 }
             }
         }
+        #endregion
 
+        private void txtSpoilerPgNm_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            verifyInteger(txtSpoilerPgNm, "25");
+        }
+
+        private void TxtPrintWidth_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            verifyInteger(txtPrintWidth, "794");
+        }
+
+        private void TxtPrintHeight_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            verifyInteger(txtPrintHeight, "1123");
+        }
+
+        private void TxtPrintPadding_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            verifyInteger(txtPrintPadding, "25");
+        }
 
         ObservableCollection<SelectablePrintPage> allPrintPages = new ObservableCollection<SelectablePrintPage>();
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -314,6 +328,23 @@ namespace MangaPrinter.WpfGUI
                 }
             }
             selectPrintChapters = true;
+        }
+
+        private void LstPrintPages_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                SelectablePrintPage page = lstPrintPages.SelectedItem as SelectablePrintPage;
+                if (page != null)
+                {
+                    FileInfo tempImage = new FileInfo("_tmp_.png");
+
+
+                    Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
+                        "Print Page: " + page.PageNumber);
+                    dlgImage.ShowDialog();
+                }
+            }
         }
     }
 }

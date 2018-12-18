@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace MangaPrinter.Core.TemplateBuilders
 {
-    class GraphicsUtils
+    public class GraphicsUtils
     {
         //https://stackoverflow.com/questions/19674743/dynamically-resizing-font-to-fit-space-while-using-graphics-drawstring
         //This function checks the room size and your text and appropriate font for your text to fit in room
@@ -91,7 +91,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         public static Bitmap bitmapResize(Bitmap image, int width, int height)
         {
             float scale = Math.Min(width / image.Width, height / image.Height);
-            var brush = new SolidBrush(Color.Pink);
+            var brush = new SolidBrush(Color.White);
 
             var bmp = new Bitmap((int)width, (int)height);
             using (var graph = Graphics.FromImage(bmp))
