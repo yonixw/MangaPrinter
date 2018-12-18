@@ -93,10 +93,10 @@ namespace MangaPrinter.Core.ChapterBuilders
             {
                 for (int j=0;j<2;j++)
                 {
-                    if (Faces[i + j].Right == Faces[i + j].Left)
+                    if (Faces[i + j].Right == Faces[i + j].Left)//double
                     {
                         Faces[i + j].Right.SideNumber = sideCounter++;
-                        sideCounter++;
+                        sideCounter++; // count another for double
                     }
                     else
                     {
