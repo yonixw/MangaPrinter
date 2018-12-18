@@ -331,6 +331,45 @@ namespace MangaPrinter.WpfGUI
             selectPrintChapters = true;
         }
 
+        FileInfo tempImage = new FileInfo("_tmp_.png");
+        private void MnuPrvwFront_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxAction<SelectablePrintPage>(lstPrintPages, (p) =>
+            {
+                var b = (new DuplexTemplates()).BuildFace(p.Front, p.Back,
+                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text));
+
+                if (tempImage.Exists)
+                    tempImage.Delete();
+
+                b.Save(tempImage.FullName);
+
+                Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
+                        "Front face of page: " + p.PageNumber);
+                dlgImage.ShowDialog();
+
+            });
+        }
+
+        private void MnuPrvwBack_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxAction<SelectablePrintPage>(lstPrintPages, (p) =>
+            {
+                var b = (new DuplexTemplates()).BuildFace(p.Back, null,
+                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text));
+
+                if (tempImage.Exists)
+                    tempImage.Delete();
+
+                b.Save(tempImage.FullName);
+
+                Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
+                        "Back face of page: " + p.PageNumber);
+                dlgImage.ShowDialog();
+
+            });
+        }
+
         private void LstPrintPages_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
@@ -338,7 +377,7 @@ namespace MangaPrinter.WpfGUI
                 SelectablePrintPage page = lstPrintPages.SelectedItem as SelectablePrintPage;
                 if (page != null)
                 {
-                    FileInfo tempImage = new FileInfo("_tmp_.png");
+                    
                     if (tempImage.Exists)
                         tempImage.Delete();
 

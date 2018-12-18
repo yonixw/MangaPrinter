@@ -31,8 +31,8 @@ namespace MangaPrinter.Core.TemplateBuilders
         }
 
         public static Bitmap createImageWithText(string drawText,
-            int height, int width ,
-            string fontName = "Arial" )
+            int height, int width,
+            string fontName = "Arial")
         {
             Bitmap b = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(b);
@@ -49,7 +49,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         {
             try
             {
-                return sameAspectResize( (Bitmap)Image.FromFile(path), newHeight, newWidth);
+                return sameAspectResize((Bitmap)Image.FromFile(path), newHeight, newWidth);
                 // no stream because it has to stay open: https://stackoverflow.com/a/1053123/1997873
             }
             catch (OutOfMemoryException ex)
@@ -96,9 +96,9 @@ namespace MangaPrinter.Core.TemplateBuilders
         {
             float scale = Math.Min(1.0f * contentWidth / image.Width, 1.0f * contentHeight / image.Height);
             var fillBrush = new SolidBrush(Color.White);
-           
 
-            var bmp = new Bitmap(imageWidth,imageHeight);
+
+            var bmp = new Bitmap(imageWidth, imageHeight);
             using (var graph = Graphics.FromImage(bmp))
             {
 
@@ -113,7 +113,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                 graph.FillRectangle(fillBrush, new RectangleF(0, 0, imageWidth, imageHeight));
                 graph.DrawImage(image,
                     ((int)imageWidth - scaleWidth) / 2,
-                    ((int)imageHeight - scaleHeight) / 2, 
+                    ((int)imageHeight - scaleHeight) / 2,
                     scaleWidth,
                     scaleHeight);
                 graph.DrawRectangle(borderPen, new Rectangle(0, 0, imageWidth, imageHeight));
@@ -123,5 +123,46 @@ namespace MangaPrinter.Core.TemplateBuilders
             return bmp;
         }
 
+        // Draw an arrowhead at the given point
+        // in the normalizede direction <nx, ny>.
+        public static void DrawArrowhead(Graphics gr, Pen pen,
+            PointF p, float nx, float ny, float length)
+        {
+            float ax = length * (-ny - nx);
+            float ay = length * (nx - ny);
+            PointF[] points =
+            {
+                new PointF(p.X + ax, p.Y + ay),
+                p,
+                new PointF(p.X - ay, p.Y + ax)
+            };
+            gr.DrawLines(pen, points);
+        }
+
+        // Draw arrow heads or tails for the
+        // segment from p1 to p2.
+        public static void DrawArrow(Graphics gr, Pen pen, PointF p1, PointF p2,
+            float headLenth)
+        //http://csharphelper.com/blog/2014/12/draw-lines-with-arrowheads-in-c/
+        {
+            // Draw the shaft.
+            gr.DrawLine(pen, p1, p2);
+
+            // Find the arrow shaft unit vector.
+            float vx = p2.X - p1.X;
+            float vy = p2.Y - p1.Y;
+            float dist = (float)Math.Sqrt(vx * vx + vy * vy);
+            vx /= dist;
+            vy /= dist;
+
+            // Draw the start.
+            gr.FillEllipse(new SolidBrush(pen.Color), new Rectangle(
+                    new Point((int)p1.X, (int)p1.Y),
+                    new Size((int)pen.Width, (int)pen.Width)));
+
+            // Draw the end.
+            DrawArrowhead(gr, pen, p2, vx, vy, headLenth);
+        }
     }
+
 }

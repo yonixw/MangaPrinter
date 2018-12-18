@@ -275,6 +275,12 @@
                                     <Setter Property="IsSelected" Value="{Binding Selected, Mode=TwoWay}" />
                                 </Style>
                             </ListBox.ItemContainerStyle>
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Name="mnuPrvwFront" Click="MnuPrvwFront_Click" Header="Preview Front"/>
+                                    <MenuItem Name="mnuPrvwBack" Click="MnuPrvwBack_Click" Header="Preview Back"/>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
                                     <StackPanel Orientation="Horizontal" >
