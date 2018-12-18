@@ -163,6 +163,26 @@ namespace MangaPrinter.Core.TemplateBuilders
             // Draw the end.
             DrawArrowhead(gr, pen, p2, vx, vy, headLenth);
         }
+
+
+        public static void DrawArrowHeadRow(Graphics g, Pen pen, PointF p1, PointF p2,
+            float headLength)
+        {
+            float vx = p2.X - p1.X;
+            float vy = p2.Y - p1.Y;
+            float dist = (float)Math.Sqrt(vx * vx + vy * vy);
+            vx /= dist;
+            vy /= dist;
+
+            int count = (int)Math.Floor(dist / headLength);
+            float x = p1.X;
+            float y = p1.Y;
+            for (int i=1;i<count;i++)
+            {
+                DrawArrowhead(g,pen,new PointF(x + vx*i* headLength, y + vy *i* headLength),vx,vy, headLength/2);
+            }
+        }
+
     }
 
 }

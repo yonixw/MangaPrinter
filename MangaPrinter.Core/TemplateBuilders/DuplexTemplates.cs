@@ -73,23 +73,23 @@ namespace MangaPrinter.Core.TemplateBuilders
 
                     if (isRTL)
                     {
-                        GraphicsUtils.DrawArrow(g, blackPen,
-                        new Point(tmpW - padding, padding / 2),
-                        new Point(padding, padding / 2),
-                        padding /2);
+                        GraphicsUtils.DrawArrowHeadRow(g, blackPen,
+                            new Point(tmpW - padding, padding / 2),
+                            new Point(padding, padding / 2),
+                            padding);
 
                         g.DrawString(side1, side1Font, blackBrush, new PointF(tmpW/2,padding + contentH));
                         g.DrawString(side2, side2Font, blackBrush, new PointF(padding, padding + contentH));
                     }
                     else
                     {
-                        GraphicsUtils.DrawArrow(g, blackPen,
-                        new Point(padding, padding / 2),
-                        new Point(tmpW - padding, padding / 2),
-                        padding /2);
+                        GraphicsUtils.DrawArrowHeadRow(g, blackPen,
+                           new Point(padding, padding / 2),
+                           new Point(tmpW - padding, padding / 2),
+                           padding);
 
-                        g.DrawString(side2, side2Font, blackBrush, new PointF(padding, padding + contentH));
-                        g.DrawString(side1, side1Font, blackBrush, new PointF(tmpW / 2, padding + contentH));
+                        g.DrawString(side1, side1Font, blackBrush, new PointF(padding, padding + contentH) );
+                        g.DrawString(side2, side2Font, blackBrush, new PointF(tmpW / 2, padding + contentH));
                     }
 
                     switch(face.Left.SideType)
