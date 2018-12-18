@@ -39,7 +39,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         }
 
         [TestMethod()]
-        public void SimpleIntroOutroRTL()
+        public void SimpleIntroOutro()
         {
             var input = "L2,1,1,1 / L1,1";
             var output = "s,I,b / D,M / S,M,M / S,M,O / S,I,M / S,M,O";
@@ -48,12 +48,39 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         }
 
         [TestMethod()]
-        public void SimpleIntroOutroEvenRTL()
+        public void SimpleIntroOutroEven()
         {
             var input = "L2,1,1,1,1 / L1,1";
             var output = "s,I,b / D,M / S,M,M / S,M,M / S,O,E / S,I,M / S,M,O / D,E";
 
             Utils.TestResult(input, output, true, true, 0);
+        }
+
+        [TestMethod()]
+        public void SimpleIntroOutroEvenRTL()
+        {
+            var input = "R2,1,1,1,1 / R1,1";
+            var output = "s,b,i / D,M / S,M,M / S,M,M / S,e,o / S,m,i / S,o,m / D,E";
+
+            Utils.TestResult(input, output, true, true, 0);
+        }
+
+        [TestMethod()]
+        public void SimpleIntroEvenRTL()
+        {
+            var input = "R2,1,1,1,1 / R1,1";
+            var output = "s,b,i / D,M / S,M,M / S,M,M /  S,m,i / S,e,m ";
+
+            Utils.TestResult(input, output, true, false, 0);
+        }
+
+        [TestMethod()]
+        public void SimpleDouble_EvenPages_RTL()
+        {
+            var input = "R1,1,2";
+            var output = "s,m,m / d,m";
+
+            Utils.TestResult(input, output, false,false, 0);
         }
     }
 }
