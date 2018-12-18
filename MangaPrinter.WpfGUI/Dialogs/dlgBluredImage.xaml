@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
         mc:Ignorable="d"
-        Title="dlgBluredImage" Height="450" Width="800" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+        Title="dlgBluredImage" Height="450" Width="800" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2">
             <StatusBarItem>

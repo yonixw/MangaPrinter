@@ -1,6 +1,7 @@
 ﻿using MangaPrinter.Core;
 using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,11 +49,29 @@ namespace MangaPrinter.WpfGUI.Dialogs
             slideZoom.Value = startZoom;
         }
 
+        BitmapImage LoadBitmapWithoutLocingFile(string url)
+        {
+            //https://social.msdn.microsoft.com/Forums/vstudio/en-US/dee7cb68-aca3-402b-b159-2de933f933f1/disposing-a-wpf-image-or-bitmapimage-so-the-source-picture-file-can-be-modified?forum=wpf
+
+            System.Windows.Media.Imaging.BitmapImage result = new System.Windows.Media.Imaging.BitmapImage();  // Create new BitmapImage  
+            System.IO.Stream stream = new System.IO.MemoryStream();  // Create new MemoryStream  
+
+            System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(url);  // Create new Bitmap (System.Drawing.Bitmap) from the existing image file (albumArtSource set to its path name)  
+            bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);  // Save the loaded Bitmap into the MemoryStream - Png format was the only one I tried that didn't cause an error (tried Jpg, Bmp, MemoryBmp)  
+            bitmap.Dispose();  // Dispose bitmap so it releases the source image file 
+            
+            result.BeginInit();  // Begin the BitmapImage's initialisation  
+            result.StreamSource = stream;  // Set the BitmapImage's StreamSource to the MemoryStream containing the image  
+            result.EndInit();  // End the BitmapImage's initialisation  
+
+            return result;
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Title = _title;
 
-            BitmapImage bm = new BitmapImage(new Uri(_imageUrl, UriKind.Absolute));
+            BitmapImage bm = LoadBitmapWithoutLocingFile(_imageUrl);
             imgMain.DataContext = myImage = new MyImageBind() { Image = bm, BlurRadius = slideBlur.Value * maxBlur / 100 };
 
             resetZoom();
@@ -114,6 +133,11 @@ namespace MangaPrinter.WpfGUI.Dialogs
             Canvas.SetLeft(imgMain, 0);
             Canvas.SetTop(imgMain, 0);
             resetZoom();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            myImage.Image = null;
         }
 
         public void Zoom(double percent)
