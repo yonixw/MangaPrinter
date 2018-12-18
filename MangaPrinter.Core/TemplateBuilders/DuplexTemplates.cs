@@ -64,8 +64,8 @@ namespace MangaPrinter.Core.TemplateBuilders
 
         private Bitmap TemplateDouble(PrintFace face, PrintFace nextFace, int spW, int spH, int padding)
         {
-            int tmpW = spW * 2;
-            int tmpH = spH;
+            int tmpW = spW * 2 + padding * 2;
+            int tmpH = spH + padding * 2; 
 
             int contentW = tmpW - padding * 2;
             int contentH = tmpH - padding * 2;
@@ -135,8 +135,8 @@ namespace MangaPrinter.Core.TemplateBuilders
 
         private Bitmap TemplateSingle(PrintFace face, PrintFace nextFace, int spW, int spH, int padding)
         {
-            int tmpW = spW * 2;
-            int tmpH = spH;
+            int tmpW = spW * 2 + padding *3;
+            int tmpH = spH + padding * 2;
 
             int arrowW = tmpW - padding * 2;
             int arrowH = padding;
