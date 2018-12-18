@@ -77,7 +77,8 @@ namespace MangaPrinter.Core
 
     public enum SideMangaPageType
     {
-        ALL, LEFT, RIGHT // For cutting original image file.
+        ALL, // only in booklet we need to know right\left
+        LEFT, RIGHT // For cutting original image file.
     }
 
     public enum FaceType

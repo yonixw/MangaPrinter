@@ -37,5 +37,23 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
 
             Utils.TestResult(input, output, false, false, 0);
         }
+
+        [TestMethod()]
+        public void SimpleIntroOutroRTL()
+        {
+            var input = "L2,1,1,1 / L1,1";
+            var output = "s,I,b / D,M / S,M,M / S,M,O / S,I,M / S,M,O";
+
+            Utils.TestResult(input, output, true, true, 0);
+        }
+
+        [TestMethod()]
+        public void SimpleIntroOutroEvenRTL()
+        {
+            var input = "L2,1,1,1,1 / L1,1";
+            var output = "s,I,b / D,M / S,M,M / S,M,M / S,O,E / S,I,M / S,M,O / D,E";
+
+            Utils.TestResult(input, output, true, true, 0);
+        }
     }
 }
