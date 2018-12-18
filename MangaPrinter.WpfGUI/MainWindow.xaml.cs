@@ -343,6 +343,7 @@ namespace MangaPrinter.WpfGUI
                     tempImage.Delete();
 
                 b.Save(tempImage.FullName);
+                b.Dispose();
 
                 Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
                         "Front face of page: " + p.PageNumber);
@@ -362,6 +363,7 @@ namespace MangaPrinter.WpfGUI
                     tempImage.Delete();
 
                 b.Save(tempImage.FullName);
+                b.Dispose();
 
                 Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
                         "Back face of page: " + p.PageNumber);
@@ -370,28 +372,6 @@ namespace MangaPrinter.WpfGUI
             });
         }
 
-        private void LstPrintPages_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2)
-            {
-                SelectablePrintPage page = lstPrintPages.SelectedItem as SelectablePrintPage;
-                if (page != null)
-                {
-                    
-                    if (tempImage.Exists)
-                        tempImage.Delete();
-
-                    //var b = GraphicsUtils.loadFileZoomed(page.Back.Right.MangaPageSource.ImagePath, 100, 100);
-                    var b = GraphicsUtils.createImageWithText("Hello\nאבגד\nWhat is up?\n",
-                        500, 500);
-                    b.Save(tempImage.FullName, System.Drawing.Imaging.ImageFormat.Png);
-                    b.Dispose();
-
-                    Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
-                        "Print Page: " + page.PageNumber);
-                    dlgImage.ShowDialog();
-                }
-            }
-        }
+      
     }
 }

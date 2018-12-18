@@ -49,7 +49,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         {
             try
             {
-                return sameAspectResize((Bitmap)Image.FromFile(path), newHeight, newWidth);
+                return sameAspectResize((Bitmap)Image.FromFile(path),  newWidth, newHeight);
                 // no stream because it has to stay open: https://stackoverflow.com/a/1053123/1997873
             }
             catch (OutOfMemoryException ex)
@@ -183,6 +183,9 @@ namespace MangaPrinter.Core.TemplateBuilders
             }
         }
 
+        
     }
+
+    
 
 }
