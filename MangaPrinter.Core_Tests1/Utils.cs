@@ -31,14 +31,14 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
 
         };
         //Output format(Per face Single - 3 items, Double 2 items)
-        //      * MUST have faces for both sides
-        //      * Front side first, Left face first
+        //      * MUST have faces for both sides (full pages)
+        //      * Front side first, Left face first -> LTR (a->b) a,b while RTL (a->b) b,a
         //  S,M,B / D,M / S,M,M / S,M,E / ....
 
         public static void TestResult(string inputMangaChapters, string outputPrintFaces,
             bool startPage, bool endPage, int antiSpoiler=0)
         {
-            // ------------ REAL INPUT --------------
+            // ------------ MOCK INPUT --------------
 
             List<MangaChapter> allChapters = new List<MangaChapter>();
             string [] iCs = inputMangaChapters.Replace(" ", "").Split('/');
@@ -78,6 +78,8 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
                     quickLookArr.Add("D," + reverseSide(face.Left.SideType) );
                 }
             }
+
+            // ------------ COMPARE --------------
 
             string resultOutputString = string.Join("/", quickLookArr).ToUpper();
             string testOutputString = outputPrintFaces.Replace(" ", "").ToUpper();

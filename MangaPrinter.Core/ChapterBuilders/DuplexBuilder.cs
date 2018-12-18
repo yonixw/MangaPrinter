@@ -18,22 +18,22 @@ namespace MangaPrinter.Core.ChapterBuilders
 
             List<PrintPage> pc =  new List<PrintPage>() ;
 
-            int sideCounter = 1;
+           
             bool isFirst = true; // Starting page
             List<PrintFace> Faces = new List<PrintFace>();
 
             foreach (MangaChapter ch in chapters)
             {
                 if (addStartPage)
-                    HandlePage(ref sideCounter, ref isFirst, Faces, ch, SinglePageNULL, SingleSideType.INTRO);
+                    HandleFace( ref isFirst, Faces, ch, SinglePageNULL, SingleSideType.INTRO);
 
                 foreach (MangaPage p in ch.Pages)
                 {
-                    HandlePage(ref sideCounter, ref isFirst, Faces, ch, p);
+                    HandleFace( ref isFirst, Faces, ch, p);
                 }
 
                 if (addEndPage)
-                    HandlePage(ref sideCounter, ref isFirst, Faces, ch, SinglePageNULL, SingleSideType.OUTRO);
+                    HandleFace( ref isFirst, Faces, ch, SinglePageNULL, SingleSideType.OUTRO);
 
                 if (isFirst)
                 {
@@ -45,7 +45,6 @@ namespace MangaPrinter.Core.ChapterBuilders
 
                     PrintSide side = new PrintSide()
                     {
-                        SideNumber = sideCounter++,
                         SideType = SingleSideType.MAKE_EVEN,
                     };
 
@@ -60,16 +59,27 @@ namespace MangaPrinter.Core.ChapterBuilders
             }
 
             // ----------- Anti Spoiler
+            if (addAntiSpoiler > 0)
+            {
+                int faceIndex = 0;
+                while (faceIndex < Faces.Count)
+                {
+                    PrintSide s = new PrintSide() { SideType = SingleSideType.ANTI_SPOILER };
+                    PrintFace f = new PrintFace() { PrintFaceType = FaceType.DOUBLE , IsRTL = true}; // RTL not important
+                    f.Left = f.Right = s;
+                    Faces.Insert(faceIndex, f);
+                    faceIndex += addAntiSpoiler * 2;
+                }
+            }
 
             if (Faces.Count % 2 == 1)
             {
                 // Add a face for even faces to occupy entire double-sided pages.
-                PrintFace face = new PrintFace() { PrintFaceType = FaceType.DOUBLE };
+                PrintFace face = new PrintFace() { PrintFaceType = FaceType.DOUBLE ,IsRTL = true };
                 Faces.Add(face);
 
                 PrintSide side = new PrintSide()
                 {
-                    SideNumber = sideCounter++,
                     SideType = SingleSideType.MAKE_EVEN
                 };
 
@@ -77,8 +87,30 @@ namespace MangaPrinter.Core.ChapterBuilders
             }
 
             int pageIndex = 1;
+            int sideCounter = 1;
             for (int i=0;i<Faces.Count;i+=2)
             {
+                for (int j=0;j<2;j++)
+                {
+                    if (Faces[i + j].Right == Faces[i + j].Left)
+                    {
+                        Faces[i + j].Right.SideNumber = sideCounter++;
+                        sideCounter++;
+                    }
+                    else
+                    {
+                        if (Faces[i + j].IsRTL )
+                        {
+                            Faces[i+j].Right.SideNumber = sideCounter++;
+                            Faces[i + j].Left.SideNumber = sideCounter++;
+                        }
+                        else
+                        {
+                            Faces[i + j].Left.SideNumber = sideCounter++;
+                            Faces[i + j].Right.SideNumber = sideCounter++;
+                        }
+                    }
+                }
                 PrintPage pp = new PrintPage() { PageNumber = pageIndex++,  Front = Faces[i], Back = Faces[i + 1] };
                 pc.Add(pp);
             }
@@ -86,11 +118,11 @@ namespace MangaPrinter.Core.ChapterBuilders
             return pc;
         }
 
-        private static void HandlePage(ref int sideCounter, ref bool isFirst, List<PrintFace> Faces, MangaChapter ch, MangaPage p, SingleSideType sideType = SingleSideType.MANGA)
+        private static void HandleFace( ref bool isFirst, List<PrintFace> Faces, MangaChapter ch, MangaPage p, SingleSideType sideType = SingleSideType.MANGA)
         {
             if (isFirst && !p.IsDouble)
             {
-                PrintFace face = new PrintFace() { PrintFaceType = FaceType.SINGLES };
+                PrintFace face = new PrintFace() { PrintFaceType = FaceType.SINGLES , IsRTL = ch.IsRTL};
                 Faces.Add(face);
 
                 PrintSide side = null;
@@ -98,7 +130,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                 {
                     side = new PrintSide()
                     {
-                        SideNumber = sideCounter++,
+                        
                         SideType = SingleSideType.MANGA,
                         MangaPageSource = p,
                         MangaPageSourceType = SideMangaPageType.ALL
@@ -108,7 +140,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                 {
                     side = new PrintSide()
                     {
-                        SideNumber = sideCounter++,
+                       
                         SideType = sideType,
                     };
                 }
@@ -123,19 +155,19 @@ namespace MangaPrinter.Core.ChapterBuilders
             }
             else if (isFirst && p.IsDouble)
             {
-                PrintFace face = new PrintFace() { PrintFaceType = FaceType.DOUBLE };
+                PrintFace face = new PrintFace() { PrintFaceType = FaceType.DOUBLE, IsRTL = ch.IsRTL };
                 Faces.Add(face);
 
                 PrintSide side = new PrintSide()
                 {
-                    SideNumber = sideCounter++,
+                    
                     SideType = SingleSideType.MANGA,
                     MangaPageSource = p,
                     MangaPageSourceType = SideMangaPageType.ALL // only in booklet we need to know right\left
                 };
 
                 face.Left = face.Right = side;
-                sideCounter++;
+               
                 isFirst = true;
             }
             else if (!isFirst && !p.IsDouble)
@@ -147,7 +179,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                 {
                     side = new PrintSide()
                     {
-                        SideNumber = sideCounter++,
+                       
                         SideType = SingleSideType.MANGA,
                         MangaPageSource = p,
                         MangaPageSourceType = SideMangaPageType.ALL
@@ -157,7 +189,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                 {
                     side = new PrintSide()
                     {
-                        SideNumber = sideCounter++,
+                        
                         SideType = sideType,
                     };
                 }
@@ -176,7 +208,7 @@ namespace MangaPrinter.Core.ChapterBuilders
 
                 PrintSide side = new PrintSide()
                 {
-                    SideNumber = sideCounter++,
+
                     SideType = SingleSideType.BEFORE_DOUBLE,
                 };
 
@@ -186,19 +218,18 @@ namespace MangaPrinter.Core.ChapterBuilders
                     face.Right = side;
 
                 // Add Double
-                face = new PrintFace() { PrintFaceType = FaceType.DOUBLE };
+                face = new PrintFace() { PrintFaceType = FaceType.DOUBLE, IsRTL = ch.IsRTL };
                 Faces.Add(face);
 
                 side = new PrintSide()
                 {
-                    SideNumber = sideCounter++,
+
                     SideType = SingleSideType.MANGA,
                     MangaPageSource = p,
                     MangaPageSourceType = SideMangaPageType.ALL // only in booklet we need to know right\left
                 };
 
                 face.Left = face.Right = side;
-                sideCounter++;
                 isFirst = true;
             }
         }

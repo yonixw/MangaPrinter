@@ -112,6 +112,7 @@ namespace MangaPrinter.Core
         public int FaceNumber { get { return _baseGet(); } set { _baseSet(value); } }
         public FaceType PrintFaceType { get { return _baseGet(); } set { _baseSet(value); } }
 
+        public bool IsRTL { get { return _baseGet(); } set { _baseSet(value); } } // for template + side index
         public PrintSide Left { get { return _baseGet(); } set { _baseSet(value); } }
         public PrintSide Right { get { return _baseGet(); } set { _baseSet(value); } }
        

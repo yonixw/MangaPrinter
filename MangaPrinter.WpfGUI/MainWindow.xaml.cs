@@ -223,7 +223,7 @@ namespace MangaPrinter.WpfGUI
         {
             bool startPage = cbAddStart.IsChecked ?? false;
             bool endPage = cbAddEnd.IsChecked ?? false;
-            int antiSpoiler = (cbUseAntiSpoiler.IsChecked ?? false) ? 0 :int.Parse(txtSpoilerPgNm.Text);
+            int antiSpoiler = (cbUseAntiSpoiler.IsChecked ?? false) ? int.Parse(txtSpoilerPgNm.Text) : 0;
 
             var allChapters = mangaChapters.ToList();
 
