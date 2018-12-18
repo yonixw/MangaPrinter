@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MangaPrinter.WpfGUI.ExtendedClasses;
+using MangaPrinter.Core.TemplateBuilders;
 using System.IO;
 
 namespace MangaPrinter.WpfGUI
@@ -338,7 +339,14 @@ namespace MangaPrinter.WpfGUI
                 if (page != null)
                 {
                     FileInfo tempImage = new FileInfo("_tmp_.png");
+                    if (tempImage.Exists)
+                        tempImage.Delete();
 
+                    //var b = GraphicsUtils.loadFileZoomed(page.Back.Right.MangaPageSource.ImagePath, 100, 100);
+                    var b = GraphicsUtils.createImageWithText("Hello\nאבגד\nWhat is up?\n",
+                        500, 500);
+                    b.Save(tempImage.FullName, System.Drawing.Imaging.ImageFormat.Png);
+                    b.Dispose();
 
                     Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
                         "Print Page: " + page.PageNumber);

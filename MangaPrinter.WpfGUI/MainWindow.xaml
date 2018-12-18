@@ -199,7 +199,7 @@
             <TabItem Header="Binding">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label Content="Target Binding:" IsEnabled="False" />
+                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Book binding:</Label>
                         <StackPanel Orientation="Horizontal">
                             <RadioButton Name="rbBindDuplex" IsChecked="True" Margin="0,0,10,0" VerticalContentAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
@@ -215,6 +215,9 @@
                             </RadioButton>
                         </StackPanel>
                         
+                       
+                    </Menu>
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Chapter:</Label>
                         <CheckBox Name="cbAddStart" IsChecked="True">Add Start Page</CheckBox>
                         <CheckBox Name="cbAddEnd" IsChecked="True">Add End Page</CheckBox>
@@ -225,6 +228,7 @@
                         <Label Content="pages" IsEnabled="False" />
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Export:</Label>
                         <Label Content="Single Page Size (px):" IsEnabled="False" />
                         <TextBox Width="100px" Name="txtPrintWidth" TextAlignment="Center" TextChanged="TxtPrintWidth_TextChanged">
                             794</TextBox>
