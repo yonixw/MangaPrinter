@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace MangaPrinter.Core
 {
@@ -34,7 +35,10 @@ namespace MangaPrinter.Core
                         page.IsDouble = jpeg.PhysicalDimension.Width > cutoff;
                     }
                 }
-                catch (OutOfMemoryException ex) { } // Not valid image or not supported
+                catch (OutOfMemoryException ex) {
+                    MessageBox.Show("Can't load image file:\n" + page.ImagePath);
+
+                } // Not valid image or not supported
             }
 
             return page;
