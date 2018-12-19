@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using MangaPrinter.WpfGUI.ExtendedClasses;
 using MangaPrinter.Core.TemplateBuilders;
 using System.IO;
+using Microsoft.Win32;
 
 namespace MangaPrinter.WpfGUI
 {
@@ -25,7 +26,7 @@ namespace MangaPrinter.WpfGUI
     public partial class MainWindow : Window
     {
         ObservableCollection<SelectableMangaChapter> mangaChapters = new ObservableCollection<SelectableMangaChapter>();
-       
+
 
         public MainWindow()
         {
@@ -81,7 +82,7 @@ namespace MangaPrinter.WpfGUI
 
                 winWorking.waitForTask((updateFunc) =>
                 {
-                    return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl,  orderFunc, updateFunc);
+                    return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl, orderFunc, updateFunc);
                 },
                 isProgressKnwon: false)
                 .ForEach(ch => mangaChapters.Add(MangaChapter.Extend<SelectableMangaChapter>(ch)));
@@ -145,7 +146,7 @@ namespace MangaPrinter.WpfGUI
             };
             if (dlgName.ShowDialog() ?? false)
             {
-                mangaChapters.Add(MangaChapter.Extend<SelectableMangaChapter>( new Core.MangaChapter()
+                mangaChapters.Add(MangaChapter.Extend<SelectableMangaChapter>(new Core.MangaChapter()
                 {
                     IsRTL = rbRTL.IsChecked ?? false,
                     Pages = new ObservableCollection<Core.MangaPage>(),
@@ -212,6 +213,8 @@ namespace MangaPrinter.WpfGUI
             }
         }
         #endregion
+
+        #region Binding Tab
 
         private void txtSpoilerPgNm_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -311,7 +314,7 @@ namespace MangaPrinter.WpfGUI
             foreach (var c in mangaChapters) c.Selected = false;
 
             bool cSelected = false;
-            foreach(SelectableMangaChapter c in mangaChapters)
+            foreach (SelectableMangaChapter c in mangaChapters)
             {
                 if (
                      p.Front.Left.MangaPageSource?.Chapter.Name == c.Name ||
@@ -372,6 +375,86 @@ namespace MangaPrinter.WpfGUI
             });
         }
 
-      
+        private void MnuExport_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dlgSave = new SaveFileDialog();
+            dlgSave.Title = "Export book as PDF";
+            dlgSave.Filter = "PDF |*.pdf";
+            if (dlgSave.ShowDialog() == true)
+            {
+                FileInfo fi = new FileInfo(dlgSave.FileName);
+                int saveCounter = 0;
+                int pW = int.Parse(txtPrintWidth.Text);
+                int pH = int.Parse(txtPrintHeight.Text);
+                int pad = int.Parse(txtPrintPadding.Text);
+                int pagesCount = allPrintPages.Count;
+                List<string> filesToDelete = new List<string>();
+
+                Exception ex = winWorking.waitForTask<Exception>((updateFunc) =>
+                {
+
+                    DuplexTemplates dt = new DuplexTemplates();
+                    foreach (SelectablePrintPage page in allPrintPages)
+                    {
+
+                        try
+                        {
+                            updateFunc("Export page " + page.PageNumber, (int)(100.0f * saveCounter / 2 / pagesCount));
+
+                            var b = dt.BuildFace(page.Front, page.Back, pW, pH, pad);
+                            var bName = System.IO.Path.Combine(
+                                    fi.Directory.FullName,
+                                    "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".png"
+                                    );
+                            b.Save(bName);
+                            filesToDelete.Add(bName);
+                            b.Dispose();
+
+                            b = dt.BuildFace(page.Back, null, pW, pH, pad);
+                            bName = System.IO.Path.Combine(
+                                   fi.Directory.FullName,
+                                   "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".png"
+                                   );
+                            b.Save(bName);
+                            filesToDelete.Add(bName);
+                            b.Dispose();
+
+                            b = null;
+                        }
+                        catch (Exception ex1)
+                        {
+                            return  new Exception("Exception exporting page " + page.PageNumber, ex1);
+                        }
+                    }
+
+                    return null;
+                },
+                isProgressKnwon: true);
+
+                if (ex != null)
+                {
+                    MessageBox.Show("Error occured while exporting pdf (image step).\n" + ex.ToString());
+                }
+                else
+                {
+                    //.. convert to pdf ..
+
+                    if (ex != null)
+                    {
+                        MessageBox.Show("Error occured while exporting pdf (convert step).\n" + ex.ToString());
+                    }
+                    else
+                    {
+                        MessageBox.Show("Export done successfully!");
+                    }
+
+                    // .... delete files
+                }
+
+            }
+        }
+
+        #endregion
+
     }
 }
