@@ -437,7 +437,19 @@ namespace MangaPrinter.WpfGUI
                 }
                 else
                 {
-                    //.. convert to pdf ..
+                    ex = winWorking.waitForTask<Exception>((updateFunc) =>
+                    {
+                        try
+                        {
+                            Core.MagickImaging.Convert(filesToDelete, fi.FullName, fi.Directory.FullName);
+                        }
+                        catch (Exception ex2)
+                        {
+                            return ex2;
+                        }
+
+                        return null;
+                    }, false);
 
                     if (ex != null)
                     {
