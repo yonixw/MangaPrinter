@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI"
         mc:Ignorable="d"
-        Title="Task progress" Height="85.333" Width="341.333" 
+        Title="Task progress" Height="111.333" Width="341.333" 
         ShowInTaskbar="False" ResizeMode="NoResize"  WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
@@ -21,6 +21,7 @@
                 <Label>Current step:</Label>
                 <Label Name="lblTask" Height="26" />
                 <ProgressBar Name="pbTask" Height="20px" Margin="5,0" />
+                <Label Name="lblTime" Height="26" />
             </StackPanel>
 
         </Grid>

@@ -49,8 +49,13 @@ namespace MangaPrinter.WpfGUI
 
         string updateStateDesc = string.Empty;
         int nextPercent = 0;
+
+        TimeSpan timeLapsed = TimeSpan.FromSeconds(0);
         private void MyUpdateTimer_Tick(object sender, EventArgs e)
         {
+            timeLapsed += myUpdateTimer.Interval;
+            lblTime.Content = "Time passed: " + timeLapsed.ToString();
+
             lblTask.Content = updateStateDesc;
             if (myProgressKnown)
                 pbTask.Value = Math.Min(100, Math.Max(0, nextPercent));
