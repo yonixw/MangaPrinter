@@ -38,6 +38,20 @@ namespace MangaPrinter.WpfGUI
             lstFileChapters.ItemsSource = mangaChapters;
             lstFileChaptersBinding.ItemsSource = mangaChapters;
             rtbInfo.AppendText(" " + Properties.Resources.GitInfo.Split(';')[0]);
+
+            // Load Settings:
+            var Config = MangaPrinter.WpfGUI.Properties.Settings.Default;
+            txtPageMaxWidth.Text = Config.doublePageWidth.ToString();
+            rbByName.IsChecked = Config.orderImportByName;
+            cbSubfolders.IsChecked = Config.importSubfolders;
+            rbLTR.IsChecked = !Config.RTL;
+            cbAddStart.IsChecked = Config.addStartPage;
+            cbAddEnd.IsChecked = Config.addEndPage;
+            cbUseAntiSpoiler.IsChecked = Config.addAntiSpoiler;
+            txtSpoilerPgNm.Text = Config.antiSpoilerStep.ToString();
+            txtPrintWidth.Text = Config.exportPageWidth .ToString() ;
+            txtPrintHeight.Text = Config.exportPageHeight.ToString() ;
+            txtPrintPadding.Text = Config.exportPagePadding.ToString();
         }
 
         void verifyInteger(TextBox textBox, string fallbackValue)
