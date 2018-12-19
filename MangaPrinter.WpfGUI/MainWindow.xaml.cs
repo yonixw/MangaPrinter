@@ -441,6 +441,7 @@ namespace MangaPrinter.WpfGUI
                     {
                         try
                         {
+                            updateFunc("Converting images to PDF...", 0);
                             Core.MagickImaging.Convert(filesToDelete, fi.FullName, fi.Directory.FullName);
                         }
                         catch (Exception ex2)
@@ -457,10 +458,12 @@ namespace MangaPrinter.WpfGUI
                     }
                     else
                     {
+                        foreach (var f in filesToDelete)
+                            File.Delete(f);
+
                         MessageBox.Show("Export done successfully!");
                     }
-
-                    // .... delete files
+                    
                 }
 
             }

@@ -207,10 +207,20 @@
                                     <Label>Duplex</Label>
                                 </StackPanel>
                             </RadioButton>
-                            <RadioButton Margin="0,0,10,0" VerticalContentAlignment="Center">
-                                <StackPanel Orientation="Horizontal">
+                            <RadioButton Margin="0,0,10,0" VerticalContentAlignment="Center" IsEnabled="False">
+                                <StackPanel Orientation="Horizontal" >
                                     <Image Source="Icons/booklet.png" Height="32px" ></Image>
-                                    <Label>Booklet</Label>
+                                    <Label>
+                                        <TextBlock >
+                                            <TextBlock.TextDecorations>
+                                                <TextDecoration Location="Strikethrough">
+                                                    <TextDecoration.Pen>
+                                                        <Pen Brush="Black" Thickness="3"  />
+                                                    </TextDecoration.Pen>
+                                                </TextDecoration>
+                                            </TextBlock.TextDecorations>
+                                            Booklet
+                                        </TextBlock> </Label>
                                 </StackPanel>
                             </RadioButton>
                         </StackPanel>
