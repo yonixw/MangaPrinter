@@ -11,9 +11,11 @@ namespace MangaPrinter.Core
 {
     public class MagickImaging
     {
-        public static void Convert(List<string> images, string pdfPath, string tempFolder)
+        public static void Convert(List<string> images, string pdfPath, string tempFolder, uint MemoryMBLimit = 500)
         {
             if (images == null) return;
+
+            ImageMagick.ResourceLimits.Memory = MemoryMBLimit * 1024 * 1024;
 
             // When reading PDF : 
             //     MagickNET.SetGhostscriptDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));

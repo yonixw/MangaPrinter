@@ -113,6 +113,8 @@ namespace MangaPrinter.Core.ChapterBuilders
                     }
                 }
                 PrintPage pp = new PrintPage() { PageNumber = pageIndex++,  Front = Faces[i], Back = Faces[i + 1] };
+                pp.Front.FaceNumber = (i) + 1; // not stating from zero
+                pp.Back.FaceNumber = (i+1)+1;
                 pc.Add(pp);
             }
 

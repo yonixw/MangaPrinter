@@ -83,33 +83,43 @@ namespace MangaPrinter.Core.TemplateBuilders
             using (Graphics g = Graphics.FromImage(b))
             {
                 int sideIndex = face.Right.SideNumber;
-                string side1 = "[ " + sideIndex + " ]";
-                string side2 = "[ " + (sideIndex + 1) + " ]";
-                Font side1Font = GraphicsUtils.FindFontSizeByContent(
-                    g, side1, new Size(sideTextW, sideTextH), fontSide);
-                Font side2Font = GraphicsUtils.FindFontSizeByContent(
-                    g, side1, new Size(sideTextW, sideTextH), fontSide);
+                string sideLeftText, sideRightText;
+                string FaceCountText = "Page No. " + face.FaceNumber;
 
                 if (isRTL)
                 {
+                    sideRightText =  "[ " + sideIndex + " ]";
+                    sideLeftText = "[ " + (sideIndex+1) + " ]";
+
                     GraphicsUtils.DrawArrowHeadRow(g, blackPen,
                         new Point(tmpW - padding, padding / 2),
                         new Point(padding, padding / 2),
-                        padding);
-
-                    g.DrawString(side1, side1Font, blackBrush, new PointF(tmpW / 2, padding + contentH));
-                    g.DrawString(side2, side2Font, blackBrush, new PointF(padding, padding + contentH));
+                        padding);   
                 }
                 else
                 {
+                    sideLeftText= "[ " + sideIndex + " ]";
+                    sideRightText = "[ " + (sideIndex + 1) + " ]";
+
                     GraphicsUtils.DrawArrowHeadRow(g, blackPen,
                        new Point(padding, padding / 2),
                        new Point(tmpW - padding, padding / 2),
                        padding);
-
-                    g.DrawString(side1, side1Font, blackBrush, new PointF(padding, padding + contentH));
-                    g.DrawString(side2, side2Font, blackBrush, new PointF(tmpW / 2, padding + contentH));
                 }
+
+                GraphicsUtils.FontScaled sideLeftFS = GraphicsUtils.FindFontSizeByContent(g, sideLeftText, new Size(sideTextW, sideTextH), fontSide);
+                GraphicsUtils.FontScaled sideRightFS = GraphicsUtils.FindFontSizeByContent(g, sideRightText, new Size(sideTextW, sideTextH), fontSide);
+                GraphicsUtils.FontScaled faceCountFS = GraphicsUtils.FindFontSizeByContent(g, FaceCountText, new Size(sideTextW, sideTextH), fontSide);
+
+                GraphicsUtils.DrawTextCenterd(g, sideLeftText, sideLeftFS, blackBrush,
+                    new PointF(padding + contentW /4, padding + contentH + padding / 2)
+                );
+                GraphicsUtils.DrawTextCenterd(g, sideRightText, sideRightFS, blackBrush,
+                    new PointF(tmpW - padding - contentW / 4, padding + contentH + padding / 2)
+                );
+                GraphicsUtils.DrawTextCenterd(g, FaceCountText, faceCountFS, blackBrush,
+                    new PointF(tmpW / 2, padding + contentH + padding / 2)
+                );
 
                 Bitmap page = null;
                 switch (face.Left.SideType)
@@ -154,10 +164,11 @@ namespace MangaPrinter.Core.TemplateBuilders
             {
                 string sideLeft = "[ " + face.Left.SideNumber + " ]";
                 string sideRight = "[ " + face.Right.SideNumber + " ]";
-                Font sideLeftFont = GraphicsUtils.FindFontSizeByContent(
-                    g, sideLeft, new Size(sideTextW, sideTextH), fontSide);
-                Font sideRightFont = GraphicsUtils.FindFontSizeByContent(
-                    g, sideRight, new Size(sideTextW, sideTextH), fontSide);
+                string FaceIndex = "Page No. " + face.FaceNumber;
+
+                GraphicsUtils.FontScaled sideLeftFont = GraphicsUtils.FindFontSizeByContent(g, sideLeft, new Size(sideTextW, sideTextH), fontSide);
+                GraphicsUtils.FontScaled sideRightFont = GraphicsUtils.FindFontSizeByContent(g, sideRight, new Size(sideTextW, sideTextH), fontSide);
+                GraphicsUtils.FontScaled faceFont = GraphicsUtils.FindFontSizeByContent(g, FaceIndex, new Size(sideTextW, sideTextH), fontSide);
 
                 if (isRTL)
                 {
@@ -174,8 +185,15 @@ namespace MangaPrinter.Core.TemplateBuilders
                        padding);
                 }
 
-                g.DrawString(sideLeft, sideLeftFont, blackBrush, new PointF(padding, padding + pageH));
-                g.DrawString(sideRight, sideRightFont, blackBrush, new PointF(tmpW / 2, padding + pageH));
+                GraphicsUtils.DrawTextCenterd(g, sideLeft,   sideLeftFont, blackBrush,
+                    new PointF(padding + pageW/2, padding  + pageH + padding/2)
+                );
+                GraphicsUtils.DrawTextCenterd(g, sideRight, sideRightFont, blackBrush,
+                     new PointF(padding + pageW + padding + pageW / 2, padding + pageH + padding / 2)
+                );
+                GraphicsUtils.DrawTextCenterd(g, FaceIndex, faceFont, blackBrush,
+                    new PointF(tmpW / 2, padding + pageH + padding / 2)
+               );
 
 
                 DrawSide(pageW, pageH, g, face.Left, new Point(padding, padding));

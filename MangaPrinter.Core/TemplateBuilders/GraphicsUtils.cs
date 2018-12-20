@@ -14,12 +14,18 @@ namespace MangaPrinter.Core.TemplateBuilders
     {
         static Pen borderPen = new Pen(Color.Black, 4);
 
+        public struct FontScaled
+        {
+            public SizeF size;
+            public Font font;
+        }
+
         //https://stackoverflow.com/questions/19674743/dynamically-resizing-font-to-fit-space-while-using-graphics-drawstring
         //This function checks the room size and your text and appropriate font for your text to fit in room
         //PreferedFont is the Font that you wish to apply
         //Room is your space in which your text should be in.
         //LongString is the string which it's bounds is more than room bounds.
-        public static Font FindFontSizeByContent(System.Drawing.Graphics g, string longString, Size Room, Font PreferedFont)
+        public static FontScaled FindFontSizeByContent(System.Drawing.Graphics g, string longString, Size Room, Font PreferedFont)
         {
             //you should perform some scale functions!!!
             SizeF RealSize = g.MeasureString(longString, PreferedFont);
@@ -27,8 +33,17 @@ namespace MangaPrinter.Core.TemplateBuilders
             float WidthScaleRatio = Room.Width / RealSize.Width;
             float ScaleRatio = (HeightScaleRatio < WidthScaleRatio) ? ScaleRatio = HeightScaleRatio : ScaleRatio = WidthScaleRatio;
             float ScaleFontSize = PreferedFont.Size * ScaleRatio;
-            return new Font(PreferedFont.FontFamily, ScaleFontSize);
+            return new FontScaled() {
+                font = new Font(PreferedFont.FontFamily, ScaleFontSize),
+                size = new SizeF(ScaleRatio * RealSize.Width, ScaleRatio * RealSize.Height)
+            };
         }
+
+        public static void DrawTextCenterd(Graphics g, string text, FontScaled fs, Brush brush, PointF centerPoint)
+        {
+            g.DrawString(text, fs.font, brush, new PointF(centerPoint.X - fs.size.Width /2, centerPoint.Y - fs.size.Height / 2));
+        }
+
 
         public static Bitmap createImageWithText(string drawText,
             int height, int width,
@@ -38,7 +53,7 @@ namespace MangaPrinter.Core.TemplateBuilders
             Graphics g = Graphics.FromImage(b);
             g.DrawRectangle(Pens.White, new Rectangle(0, 0, width, height));
 
-            Font textFont = FindFontSizeByContent(g, drawText, b.Size, new Font(new FontFamily(fontName), 5)); // font size not imprtnt
+            Font textFont = FindFontSizeByContent(g, drawText, b.Size, new Font(new FontFamily(fontName), 5)).font; // font size not imprtnt
             g.DrawString(drawText, textFont, Brushes.Black, 0, 0);
             g.DrawRectangle(borderPen, new Rectangle(0, 0, width, height));
 
