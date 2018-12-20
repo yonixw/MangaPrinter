@@ -29,7 +29,9 @@ Here is where MangaPrinter comes to help. It will let you:
 (Try right clicking on stuff for more options like preview)
 
 1. Import all image files and let the program auto detect doubles:
+![alt text](https://raw.githubusercontent.com/yonixw/MangaPrinter/f12cf8ad2a323877a2e40c3d387c6e3e509e57fb/1.png)
 
 2. Rebind all chapter with your flavor of extra pages (Intro, Outro, Anti spoiler)
+![alt text](https://raw.githubusercontent.com/yonixw/MangaPrinter/f12cf8ad2a323877a2e40c3d387c6e3e509e57fb/2.png)
 
 3. Export to pdf!
