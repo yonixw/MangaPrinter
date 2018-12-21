@@ -6,7 +6,7 @@ The tool that will let you print manga from the internet!
 
 ## The problem:
 
-Downloading manga from the internet can result in complex situations:
+Downloading manga from the internet (**Legally of course**) can result in complex situations:
 * You have some files with double pages and some contain singles. 
 * Simply cutting every double page into 2 files of singles will not work because you need to consider whether the chapter is being read from right to left or vice versa. 
 * Also, since the chapter was stripped from any advertisement pages in-between, some doubles will be split across printed pages if not treated correctly.
@@ -31,9 +31,10 @@ Here is where MangaPrinter comes to help. It will let you:
 (Try right clicking on stuff for more options like preview)
 
 1. Import all image files and let the program auto detect doubles:
-![alt text](https://raw.githubusercontent.com/yonixw/MangaPrinter/f12cf8ad2a323877a2e40c3d387c6e3e509e57fb/1.png)
+![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/1.PNG)
 
 2. Rebind all chapter with your flavor of extra pages (Intro, Outro, Anti spoiler)
-![alt text](https://raw.githubusercontent.com/yonixw/MangaPrinter/f12cf8ad2a323877a2e40c3d387c6e3e509e57fb/2.png)
+![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/2.PNG)
 
-3. Export to pdf!
+3. Export to pdf! Sample:
+![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/3.PNG)
