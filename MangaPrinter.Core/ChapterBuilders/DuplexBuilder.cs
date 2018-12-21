@@ -76,15 +76,22 @@ namespace MangaPrinter.Core.ChapterBuilders
             if (Faces.Count % 2 == 1)
             {
                 // Add a face for even faces to occupy entire double-sided pages.
-                PrintFace face = new PrintFace() { PrintFaceType = FaceType.DOUBLE ,IsRTL = true };
+                PrintFace face = new PrintFace() { PrintFaceType = FaceType.SINGLES ,IsRTL = true };
                 Faces.Add(face);
 
-                PrintSide side = new PrintSide()
+                // but add as 2 singels because there is no template for double make_even
+                PrintSide sideLeft = new PrintSide()
                 {
                     SideType = SingleSideType.MAKE_EVEN
                 };
 
-                face.Left = face.Right = side;
+                PrintSide sideRight = new PrintSide()
+                {
+                    SideType = SingleSideType.MAKE_EVEN
+                };
+
+                face.Left = sideLeft;
+                face.Right = sideRight;
             }
 
             int pageIndex = 1;
