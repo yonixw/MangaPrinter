@@ -25,7 +25,7 @@ Here is where MangaPrinter comes to help. It will let you:
 * Export to PDF without any extra installs!
 
 ## Download for windows :
-[MangaPrinter_v1.0_AnyCPU.zip](https://github.com/yonixw/MangaPrinter/releases/download/v1.0/MangaPrinter_v1.0_AnyCPU.zip)
+[Download latest release](https://github.com/yonixw/MangaPrinter/releases/latest)
 
 ## The process being explained with pictures: 
 (Try right clicking on stuff for more options like preview)
