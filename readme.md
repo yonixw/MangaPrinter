@@ -28,7 +28,7 @@ Here is where MangaPrinter comes to help. It will let you:
 [Download latest release](https://github.com/yonixw/MangaPrinter/releases/latest)
 
 ## The process being explained with pictures: 
-(Try right clicking on stuff for more options like preview)
+When using the software, right click on list items for more options (e.g. preview)
 
 1. Import all image files and let the program auto detect doubles:
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/1.png)
