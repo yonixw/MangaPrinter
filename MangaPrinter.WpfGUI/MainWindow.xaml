@@ -4,13 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI"
+        xmlns:converts="clr-namespace:MangaPrinter.WpfGUI.Convertors"
         xmlns:mangaobj="clr-namespace:MangaPrinter.Core;assembly=MangaPrinter.Core"
         mc:Ignorable="d"
         Title="Manga printer and binder manager" Height="900" Width="1000"
         FontSize="9.75pt" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Window.Resources>
-        <local:PrintSideLabelConvert x:Key="sideConvert"/>
-        
+        <converts:PrintSideLabelConvert x:Key="sideConvert"/>
+        <converts:PageCountGreaterConvert x:Key="greaterConvert"/>
+
         <Style x:Key="GeneralStyle" TargetType="{x:Type Control}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Cursor" Value="Hand" />
@@ -135,8 +137,17 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
                                         <Label Content="{Binding Name}" />
+                                        <Label Name="lblPagesCount" Content="{Binding Path=Pages.Count}" ContentStringFormat=" [{0} pages]" />
                                     </StackPanel>
                                     <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource greaterConvert}, ConverterParameter=25}" Value="True">
+                                            <Setter TargetName="lblPagesCount" Property="FontWeight" Value="Bold"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource greaterConvert}, ConverterParameter=65}" Value="True">
+                                            <Setter TargetName="lblPagesCount" Property="Foreground" Value="Red"/>
+                                        </DataTrigger>
+                                        
                                         <DataTrigger Binding="{Binding IsRTL}" Value="False">
                                             <Setter TargetName="imgRTL" Property="Source" Value="Icons/LTR.png"/>
                                         </DataTrigger>

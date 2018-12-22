@@ -10,7 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using MangaPrinter.Core;
 
-namespace MangaPrinter.WpfGUI
+namespace MangaPrinter.WpfGUI.Convertors
 {
     public class PrintSideLabelConvert : IValueConverter
     {

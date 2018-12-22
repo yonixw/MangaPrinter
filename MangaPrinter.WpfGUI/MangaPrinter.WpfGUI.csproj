@@ -56,6 +56,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Convertors\PageCountGreaterConvert.cs" />
     <Compile Include="Dialogs\dlgBluredImage.xaml.cs">
       <DependentUpon>dlgBluredImage.xaml</DependentUpon>
     </Compile>
@@ -64,7 +65,7 @@
     </Compile>
     <Compile Include="ExtendedClasses\SelectableMangaChapter.cs" />
     <Compile Include="ExtendedClasses\SelectablePrintPage.cs" />
-    <Compile Include="PrintSideLabelConvert.cs" />
+    <Compile Include="Convertors\PrintSideLabelConvert.cs" />
     <Compile Include="winWorking.xaml.cs">
       <DependentUpon>winWorking.xaml</DependentUpon>
     </Compile>
