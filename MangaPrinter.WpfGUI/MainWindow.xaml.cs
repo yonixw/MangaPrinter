@@ -214,16 +214,13 @@ namespace MangaPrinter.WpfGUI
             });
         }
 
-        private void stackFilePage_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void MnPreviewManga_Click(object sender, RoutedEventArgs e)
         {
-            if (e.ClickCount == 2)
+            Core.MangaPage page = lstFilePages.SelectedValue as Core.MangaPage;
+            if (page != null)
             {
-                Core.MangaPage page = lstFilePages.SelectedValue as Core.MangaPage;
-                if (page != null)
-                {
-                    Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(page.ImagePath, "File: " + page.Name);
-                    dlgImage.ShowDialog();
-                }
+                Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(page.ImagePath, "File: " + page.Name);
+                dlgImage.ShowDialog();
             }
         }
         #endregion
@@ -388,6 +385,8 @@ namespace MangaPrinter.WpfGUI
 
             });
         }
+
+        
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {

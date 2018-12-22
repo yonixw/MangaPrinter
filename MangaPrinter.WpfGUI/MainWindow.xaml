@@ -162,13 +162,15 @@
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
                             <ListBox.ContextMenu>
                                 <ContextMenu>
+                                    <MenuItem Name="mnPreviewManga" Click="MnPreviewManga_Click" Header="Preview File"/>
+                                    <Separator/>
                                     <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Change to single page"/>
                                     <MenuItem Name="mnuToDouble" Click="mnuToDouble_Click" Header="Change to double page"/>
                                 </ContextMenu>
                             </ListBox.ContextMenu>
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
-                                    <StackPanel Name="stackFilePage" Orientation="Horizontal" PreviewMouseLeftButtonDown="stackFilePage_PreviewMouseLeftButtonDown">
+                                    <StackPanel Name="stackFilePage" Orientation="Horizontal">
                                         <Image Name="imgPage" Source="Icons/1Page.png"/>
 
                                         <Label Name="lblDouble" FontWeight="Bold" Visibility="Collapsed">

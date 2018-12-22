@@ -36,17 +36,22 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
         void resetZoom()
         {
-            int startZoom = 100;
-            if (myImage.Image.Width > myImage.Image.Height)
+            float ratioBitmap = (float)myImage.Image.Width / (float)myImage.Image.Height;
+            float ratioMax = (float)cnvsImage.ActualWidth / (float)cnvsImage.ActualHeight;
+
+            int finalWidth =  (int)cnvsImage.ActualWidth;
+            int finalHeight = (int)cnvsImage.ActualHeight;
+            if (ratioMax > ratioBitmap)
             {
-                startZoom = (int)(100 * cnvsImage.ActualWidth / myImage.Image.Width);
+                finalWidth = (int)((float)cnvsImage.ActualHeight * ratioBitmap);
             }
             else
             {
-                startZoom = (int)(100 * cnvsImage.ActualHeight / myImage.Image.Height);
+                finalHeight = (int)((float)cnvsImage.ActualWidth / ratioBitmap);
             }
 
-            slideZoom.Value = startZoom;
+
+            slideZoom.Value = (100.0f *  finalHeight)/ myImage.Image.Height;
         }
 
         BitmapImage LoadBitmapWithoutLocingFile(string url)
