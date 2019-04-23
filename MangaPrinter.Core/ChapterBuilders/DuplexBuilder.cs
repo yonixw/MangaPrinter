@@ -69,15 +69,29 @@ namespace MangaPrinter.Core.ChapterBuilders
                     PrintFace f = new PrintFace() { PrintFaceType = FaceType.DOUBLE , IsRTL = true}; // RTL not important
                     f.Left = f.Right = s;
                     Faces.Insert(faceIndex, f);
+                    if (faceIndex == 0)
+                    {
+                        if (Faces.Count > 1)
+                        {
+                            f.IsRTL = Faces[1].IsRTL;
+                        }
+                    }
+                    else
+                    {
+                        f.IsRTL = Faces[faceIndex-1].IsRTL;
+                    }
                     faceIndex += addAntiSpoiler * 2;
                 }
 
-                // Add spoiler to the last page:
-                PrintSide _s = new PrintSide() { SideType = SingleSideType.ANTI_SPOILER };
-                PrintFace _f = new PrintFace() { PrintFaceType = FaceType.DOUBLE, IsRTL = true }; // RTL not important
-                _f.Left = _f.Right = _s;
-                Faces.Add(_f);
-                faceIndex += addAntiSpoiler * 2;
+                if (Faces.Count > 1)
+                {
+                    // Add spoiler to the last page:
+                    PrintSide _s = new PrintSide() { SideType = SingleSideType.ANTI_SPOILER };
+                    PrintFace _f = new PrintFace() { PrintFaceType = FaceType.DOUBLE, IsRTL = true }; // RTL not important
+                    _f.Left = _f.Right = _s;
+                    Faces.Add(_f);
+                    _f.IsRTL = Faces[Faces.Count - 1 - 1].IsRTL;
+                }
             }
 
             if (Faces.Count % 2 == 1)

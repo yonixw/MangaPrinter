@@ -42,7 +42,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         public static Font fontSide = new Font(new FontFamily("Arial"), 5, FontStyle.Bold); // size will be changed
         public static Font fontPageText = new Font(new FontFamily("Arial"), 5);
 
-        public Bitmap BuildFace(PrintFace face, PrintFace nextFace, int spW, int spH, int padding)
+        public Bitmap BuildFace(PrintFace face,  int spW, int spH, int padding)
         {
             if (face.Left == face.Right) // double
             {
@@ -54,7 +54,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                         string.Format("Got type {0} in double in duplex. It's unexpected.", face.Right.SideType)
                         );
 
-                return TemplateDouble(face, nextFace, spW, spH, padding);
+                return TemplateDouble(face, spW, spH, padding);
 
             }
             else
@@ -68,11 +68,11 @@ namespace MangaPrinter.Core.TemplateBuilders
                         string.Format("Got type {0} in left single in duplex. It's unexpected.", face.Left.SideType)
                         );
 
-                return TemplateSingle(face, nextFace, spW, spH, padding);
+                return TemplateSingle(face, spW, spH, padding);
             }
         }
 
-        private Bitmap TemplateDouble(PrintFace face, PrintFace nextFace, int spW, int spH, int padding)
+        private Bitmap TemplateDouble(PrintFace face, int spW, int spH, int padding)
         {
             int tmpW = spW * 2 + padding * 2;
             int tmpH = spH + padding * 2; 
@@ -86,8 +86,7 @@ namespace MangaPrinter.Core.TemplateBuilders
             int arrowW = contentW;
             int arrowH = padding;
 
-            bool isRTL = (face.Right.SideType == SingleSideType.MANGA) ?
-                face.IsRTL : nextFace.IsRTL; // next face of anti spoiler must be from some chapter.
+            bool isRTL = face.IsRTL;
 
             Bitmap b = new Bitmap(tmpW, tmpH);
             using (Graphics g = Graphics.FromImage(b))
@@ -153,7 +152,7 @@ namespace MangaPrinter.Core.TemplateBuilders
             return b;
         }
 
-        private Bitmap TemplateSingle(PrintFace face, PrintFace nextFace, int spW, int spH, int padding)
+        private Bitmap TemplateSingle(PrintFace face, int spW, int spH, int padding)
         {
             int tmpW = spW * 2 + padding *3;
             int tmpH = spH + padding * 2;

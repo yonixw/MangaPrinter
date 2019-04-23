@@ -50,8 +50,8 @@ namespace MangaPrinter.WpfGUI
             cbAddEnd.IsChecked = Config.addEndPage;
             cbUseAntiSpoiler.IsChecked = Config.addAntiSpoiler;
             txtSpoilerPgNm.Text = Config.antiSpoilerStep.ToString();
-            txtPrintWidth.Text = Config.exportPageWidth .ToString() ;
-            txtPrintHeight.Text = Config.exportPageHeight.ToString() ;
+            txtPrintWidth.Text = Config.exportPageWidth.ToString();
+            txtPrintHeight.Text = Config.exportPageHeight.ToString();
             txtPrintPadding.Text = Config.exportPagePadding.ToString();
         }
 
@@ -256,14 +256,14 @@ namespace MangaPrinter.WpfGUI
                 .Select(i => new BucketInfo()
                 {
                     index = i,
-                    value = min + (max - min) * (i * 1.0 / (numOfBuckets )),
+                    value = min + (max - min) * (i * 1.0 / (numOfBuckets)),
                     count = 0
                 }).ToList();
 
             foreach (MangaPage page in allPages)
             {
                 var b = buckets.Last((bucket) => page.AspectRatio >= bucket.value);
-                Console.WriteLine("{0}.{1}: {2}",page.Chapter.Name, page.Name, page.AspectRatio);
+                Console.WriteLine("{0}.{1}: {2}", page.Chapter.Name, page.Name, page.AspectRatio);
                 b.count++;
             }
 
@@ -311,7 +311,7 @@ namespace MangaPrinter.WpfGUI
 
         private void txtSpoilerPgNm_TextChanged(object sender, TextChangedEventArgs e)
         {
-            verifyInteger(txtSpoilerPgNm, 
+            verifyInteger(txtSpoilerPgNm,
                 MangaPrinter.WpfGUI.Properties.Settings.Default.antiSpoilerStep.ToString());
         }
 
@@ -436,7 +436,7 @@ namespace MangaPrinter.WpfGUI
         {
             ListBoxAction<SelectablePrintPage>(lstPrintPages, (p) =>
             {
-                var b = (new DuplexTemplates(Properties.Resources.GitInfo.Split(' ')[0])).BuildFace(p.Front, p.Back,
+                var b = (new DuplexTemplates(Properties.Resources.GitInfo.Split(' ')[0])).BuildFace(p.Front,
                     int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text));
 
                 if (tempImage.Exists)
@@ -456,7 +456,7 @@ namespace MangaPrinter.WpfGUI
         {
             ListBoxAction<SelectablePrintPage>(lstPrintPages, (p) =>
             {
-                var b = (new DuplexTemplates(Properties.Resources.GitInfo.Split(' ')[0])).BuildFace(p.Back, null,
+                var b = (new DuplexTemplates(Properties.Resources.GitInfo.Split(' ')[0])).BuildFace(p.Back,
                     int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text));
 
                 if (tempImage.Exists)
@@ -472,7 +472,7 @@ namespace MangaPrinter.WpfGUI
             });
         }
 
-        
+
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
@@ -500,7 +500,7 @@ namespace MangaPrinter.WpfGUI
                         {
                             updateFunc("Export page " + page.PageNumber, (int)(100.0f * saveCounter / 2 / pagesCount));
 
-                            var b = dt.BuildFace(page.Front, page.Back, pW, pH, pad);
+                            var b = dt.BuildFace(page.Front, pW, pH, pad);
                             var bName = System.IO.Path.Combine(
                                     fi.Directory.FullName,
                                     "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".png"
@@ -509,7 +509,7 @@ namespace MangaPrinter.WpfGUI
                             filesToDelete.Add(bName);
                             b.Dispose();
 
-                            b = dt.BuildFace(page.Back, null, pW, pH, pad);
+                            b = dt.BuildFace(page.Back, pW, pH, pad);
                             bName = System.IO.Path.Combine(
                                    fi.Directory.FullName,
                                    "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".png"
@@ -522,7 +522,7 @@ namespace MangaPrinter.WpfGUI
                         }
                         catch (Exception ex1)
                         {
-                            return  new Exception("Exception exporting page " + page.PageNumber, ex1);
+                            return new Exception("Exception exporting page " + page.PageNumber, ex1);
                         }
                     }
 
@@ -562,7 +562,7 @@ namespace MangaPrinter.WpfGUI
 
                         MessageBox.Show("Export done successfully!");
                     }
-                    
+
                 }
 
             }
