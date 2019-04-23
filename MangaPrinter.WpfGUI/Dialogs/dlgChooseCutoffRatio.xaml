@@ -6,14 +6,24 @@
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
         xmlns:d3="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF"
         mc:Ignorable="d"
-        Title="Choose cutoff ratio for double-page" Height="450" Width="800"  WindowStartupLocation="CenterScreen"
-        Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="Choose cutoff ratio for double-page" Height="500" Width="800"  WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded" Closing="Window_Closing" FontSize="14">
     <Grid>
-        <d3:Chart BottomTitle="Ratio (Page Width/Height)" LeftTitle="Count">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <d3:Chart BottomTitle="Ratio (Page Width/Height)" LeftTitle="Count" Grid.Row="0"  Margin="5,5">
             <Grid>
                 <d3:LineGraph x:Name="gRatio" Description="Ratio Distribution" Stroke="Blue" StrokeThickness="3"/>
-                <d3:LineGraph x:Name="gCutoff" Description="Ratio Distribution" Stroke="Red" StrokeThickness="3"/>
+                <d3:LineGraph x:Name="gCutoff" Description="Cutoff" Stroke="Red" StrokeThickness="3"/>
             </Grid>
         </d3:Chart>
+        
+        <StackPanel Grid.Row="1" Margin="5,5">
+            <Label>Choose cutoff (in the middle?)</Label>
+            <Slider Name="sldCutoff" Minimum="0" Maximum="99" SmallChange="1" LargeChange="1" 
+                    Value="{Binding BucketIndex}" ValueChanged="Slider_ValueChanged"/>
+        </StackPanel>
     </Grid>
 </Window>

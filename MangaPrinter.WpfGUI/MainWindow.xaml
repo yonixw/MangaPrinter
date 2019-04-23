@@ -130,7 +130,7 @@
 
 
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold" Content="Double-Page min ratio (w/h):" />
-                        <TextBox Name="txtPageMaxWidth" Width="100px" Text="1.5" 
+                        <TextBox Name="txtPageMaxWidth" Width="100px" Text="0.85" 
                                 TextChanged="txtPageMaxWidth_TextChanged" TextAlignment="Center"/>
 
                         <Button Name="btnNewCutoffRatio" Click="BtnNewCutoffRatio_Click">Choose better cutoff</Button>

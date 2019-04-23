@@ -20,7 +20,8 @@ namespace MangaPrinter.Core
             MangaPage page = new MangaPage()
             {
                 Name = Path.GetFileNameWithoutExtension(fiImage.Name),
-                ImagePath = fiImage.FullName
+                ImagePath = fiImage.FullName,
+                IsDouble = false
             };
 
             using (FileStream file = new FileStream(page.ImagePath, FileMode.Open, FileAccess.Read))
@@ -35,6 +36,8 @@ namespace MangaPrinter.Core
                             jpeg.PhysicalDimension.Height > 0 ?
                             jpeg.PhysicalDimension.Width / jpeg.PhysicalDimension.Height :
                             0;
+                        if (page.AspectRatio > cutoff)
+                            page.IsDouble = true;
                     }
                 }
                 catch (OutOfMemoryException ex) {

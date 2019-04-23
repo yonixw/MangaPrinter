@@ -244,22 +244,27 @@ namespace MangaPrinter.WpfGUI
 
         private IEnumerable<BucketInfo> plotData(IEnumerable<MangaChapter> chapters, int numOfBuckets = 100)
         {
+            if (chapters == null || chapters.Count() == 0)
+                return new List<BucketInfo>();
+
             IEnumerable<MangaPage> allPages = chapters.SelectMany((ch) => ch.Pages);
 
             float min = allPages.Min((p) => p.AspectRatio);
             float max = allPages.Max((p) => p.AspectRatio);
 
-            IEnumerable<BucketInfo> buckets = Enumerable.Range(0, numOfBuckets - 1)
+            List<BucketInfo> buckets = Enumerable.Range(0, numOfBuckets)
                 .Select(i => new BucketInfo()
                 {
                     index = i,
-                    value = min + (max - min) * (i * 1.0 / (numOfBuckets - 1)),
+                    value = min + (max - min) * (i * 1.0 / (numOfBuckets )),
                     count = 0
-                });
+                }).ToList();
 
             foreach (MangaPage page in allPages)
             {
-                buckets.First((bucket) => page.AspectRatio >= bucket.value).count++;
+                var b = buckets.Last((bucket) => page.AspectRatio >= bucket.value);
+                Console.WriteLine("{0}.{1}: {2}",page.Chapter.Name, page.Name, page.AspectRatio);
+                b.count++;
             }
 
             return buckets;
@@ -267,11 +272,13 @@ namespace MangaPrinter.WpfGUI
 
         private void BtnNewCutoffRatio_Click(object sender, RoutedEventArgs e)
         {
-            var AspectsBuckets = winWorking.waitForTask((updateFunc) =>
+            Dialogs.dlgChooseCutoffRatio dlg = new Dialogs.dlgChooseCutoffRatio();
+            dlg.InputBuckets = winWorking.waitForTask((updateFunc) =>
             {
-                return plotData(mangaChapters);
+                return plotData(mangaChapters).ToList();
             },
             isProgressKnwon: false);
+            dlg.ShowDialog();
         }
 
         #endregion
