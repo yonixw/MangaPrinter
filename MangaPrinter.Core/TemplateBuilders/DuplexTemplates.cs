@@ -18,14 +18,24 @@ namespace MangaPrinter.Core.TemplateBuilders
             *  Double:      -   -   +   -   -   +
         */
 
-        Dictionary<SingleSideType, String> sideTextConsts = new Dictionary<SingleSideType, string>()
+        private string _programVersion = "???";
+        public DuplexTemplates(string versionString)
+        {
+            _programVersion = string.Format("\n\nyonixw/MangaPrinter@Github\n{0}", versionString);
+        }
+
+        private Dictionary<SingleSideType, String> _sideTextConsts = new Dictionary<SingleSideType, string>()
         {
             { SingleSideType.ANTI_SPOILER, "Anti Spoiler" },
-            { SingleSideType.BEFORE_DOUBLE, "Filler\nBefore\nDouble" },
+            { SingleSideType.BEFORE_DOUBLE, "Filler Before Double" },
             { SingleSideType.INTRO, "Chapter start:\n{0}" },
             { SingleSideType.OUTRO, "Chapter end:\n{0}" },
-            { SingleSideType.MAKE_EVEN, "Filler\nAfter\nChapter" },
+            { SingleSideType.MAKE_EVEN, "Filler After Chapter" },
         };
+        public string sideTextConsts(SingleSideType type)
+        {
+            return _sideTextConsts[type] + _programVersion;
+        }
 
         public static Pen blackPen = new Pen(Color.Black, 4);
         public static Brush blackBrush = new SolidBrush(Color.Black);
@@ -125,7 +135,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                 switch (face.Left.SideType)
                 {
                     case SingleSideType.ANTI_SPOILER:
-                        page = GraphicsUtils.createImageWithText(sideTextConsts[SingleSideType.ANTI_SPOILER],
+                        page = GraphicsUtils.createImageWithText(sideTextConsts(SingleSideType.ANTI_SPOILER),
                             contentH, contentW);
                         break;
                     case SingleSideType.MANGA:
@@ -212,21 +222,21 @@ namespace MangaPrinter.Core.TemplateBuilders
             switch (side.SideType)
             {
                 case SingleSideType.INTRO:
-                    page = GraphicsUtils.createImageWithText(sideTextConsts[SingleSideType.INTRO]
+                    page = GraphicsUtils.createImageWithText(sideTextConsts(SingleSideType.INTRO)
                         .Replace("{0}", side.MangaPageSource.Chapter.Name),
                       pageH, pageW);
                     break;
                 case SingleSideType.OUTRO:
-                    page = GraphicsUtils.createImageWithText(sideTextConsts[SingleSideType.OUTRO]
+                    page = GraphicsUtils.createImageWithText(sideTextConsts(SingleSideType.OUTRO)
                         .Replace("{0}", side.MangaPageSource.Chapter.Name),
                       pageH, pageW);
                     break;
                 case SingleSideType.BEFORE_DOUBLE:
-                    page = GraphicsUtils.createImageWithText(sideTextConsts[SingleSideType.BEFORE_DOUBLE],
+                    page = GraphicsUtils.createImageWithText(sideTextConsts(SingleSideType.BEFORE_DOUBLE),
                       pageH, pageW);
                     break;
                 case SingleSideType.MAKE_EVEN:
-                    page = GraphicsUtils.createImageWithText(sideTextConsts[SingleSideType.MAKE_EVEN],
+                    page = GraphicsUtils.createImageWithText(sideTextConsts(SingleSideType.MAKE_EVEN),
                        pageH, pageW);
                     break;
                 case SingleSideType.MANGA:

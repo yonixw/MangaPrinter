@@ -2,8 +2,6 @@
 
 The tool that will let you print manga from the internet!
 
-
-
 ## The problem:
 
 Downloading manga from the internet (**Legally of course, after supporting the creator**) can result in complex situations:
@@ -15,14 +13,15 @@ Downloading manga from the internet (**Legally of course, after supporting the c
 
 Here is where MangaPrinter comes to help. It will let you:
 
-* Manage chapters and pages
+* Manage both chapters and pages
 * Decide on the go whether a page is single or double
 * Add a page in the start and end of each chapter 
 * Auto manage everything so all double pages will stay together
 * Add anti-spoiler pages to help you when you cut or staple the printed pages
 * Preview each step with blur built in to avoid spoilers!
 * Add RTL\LTR arrows and page numbers to make reading a breeze.
-* Export to PDF without any extra installs!
+* Amazing GUI to choose ratio aspect of the double pages (width in px is problematic)
+* Export to PDF without any extra installs\tools!
 
 ## Download for windows :
 [Download latest release](https://github.com/yonixw/MangaPrinter/releases/latest)
@@ -33,8 +32,11 @@ When using the software, right click on list items for more options (e.g. previe
 1. Import all image files and let the program auto detect doubles:
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/1.png)
 
-2. Rebind all chapter with your flavor of extra pages (Intro, Outro, Anti spoiler)
+2. (Optional) Choose the double-page aspect ratio cutoff with a histogram dialog 
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/2.png)
 
-3. Export to pdf! Sample:
-![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/3.PNG)
+3. Rebind all chapter with your flavor of extra pages (Intro, Outro, Anti spoiler)
+![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/3.png)
+
+4. Export to pdf! Sample:
+![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/4.png)

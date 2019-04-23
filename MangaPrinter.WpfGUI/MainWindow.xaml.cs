@@ -436,7 +436,7 @@ namespace MangaPrinter.WpfGUI
         {
             ListBoxAction<SelectablePrintPage>(lstPrintPages, (p) =>
             {
-                var b = (new DuplexTemplates()).BuildFace(p.Front, p.Back,
+                var b = (new DuplexTemplates(Properties.Resources.GitInfo.Split(' ')[0])).BuildFace(p.Front, p.Back,
                     int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text));
 
                 if (tempImage.Exists)
@@ -456,7 +456,7 @@ namespace MangaPrinter.WpfGUI
         {
             ListBoxAction<SelectablePrintPage>(lstPrintPages, (p) =>
             {
-                var b = (new DuplexTemplates()).BuildFace(p.Back, null,
+                var b = (new DuplexTemplates(Properties.Resources.GitInfo.Split(' ')[0])).BuildFace(p.Back, null,
                     int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text));
 
                 if (tempImage.Exists)
@@ -492,7 +492,7 @@ namespace MangaPrinter.WpfGUI
                 Exception ex = winWorking.waitForTask<Exception>((updateFunc) =>
                 {
 
-                    DuplexTemplates dt = new DuplexTemplates();
+                    DuplexTemplates dt = new DuplexTemplates(Properties.Resources.GitInfo.Split(' ')[0]);
                     foreach (SelectablePrintPage page in allPrintPages)
                     {
 
