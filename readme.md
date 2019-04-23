@@ -36,7 +36,7 @@ When using the software, right click on list items for more options (e.g. previe
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/2.png)
 
 3. Rebind all chapter with your flavor of extra pages (Intro, Outro, Anti spoiler)
-![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/3.png)
+![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/3.PNG)
 
 4. Export to pdf! Sample:
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/4.png)
