@@ -158,7 +158,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             // * Last anti spoiler takes again, from 1 before so need to match last episode RTL.
 
 
-            Utils.TestResult(input, output, true, true, 2  /* => 6 faces*/ );
+            Utils.TestResult(input, output, true, true, 2  /* => 4 faces*/ );
         }
     }
 }
