@@ -58,9 +58,18 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
+            if (!(DialogResult ?? false)) // Make sure not left null
+                DialogResult = false;
         }
 
-        
+        private void BtnAccept_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+        }
+
+        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+        }
     }
 }

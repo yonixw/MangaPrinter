@@ -12,6 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <d3:Chart BottomTitle="Ratio (Page Width/Height)" LeftTitle="Count" Grid.Row="0"  Margin="5,5">
             <Grid>
@@ -25,5 +26,11 @@
             <Slider Name="sldCutoff" Minimum="0" Maximum="99" SmallChange="1" LargeChange="1" 
                     Value="{Binding BucketIndex}" ValueChanged="Slider_ValueChanged"/>
         </StackPanel>
+        <DockPanel Grid.Row="2" LastChildFill="False">
+            <Button DockPanel.Dock="Right" Margin="5" Padding="5"
+                    Name="btnAccept" Click="BtnAccept_Click">Accept</Button>
+            <Button DockPanel.Dock="Right" Margin="5" Padding="5" Background="LightPink"
+                    Name="btnCancel" Click="BtnCancel_Click">Cancel</Button>
+        </DockPanel>
     </Grid>
 </Window>

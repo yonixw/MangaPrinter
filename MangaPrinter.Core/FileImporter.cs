@@ -36,8 +36,7 @@ namespace MangaPrinter.Core
                             jpeg.PhysicalDimension.Height > 0 ?
                             jpeg.PhysicalDimension.Width / jpeg.PhysicalDimension.Height :
                             0;
-                        if (page.AspectRatio > cutoff)
-                            page.IsDouble = true;
+                        page.IsDouble = page.AspectRatio >= cutoff;
                     }
                 }
                 catch (OutOfMemoryException ex) {

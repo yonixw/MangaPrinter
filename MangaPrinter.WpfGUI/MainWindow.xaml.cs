@@ -279,6 +279,30 @@ namespace MangaPrinter.WpfGUI
             },
             isProgressKnwon: false);
             dlg.ShowDialog();
+            if ((dlg.DialogResult ?? false) && (dlg.InputBuckets != null) && (dlg.InputBuckets.Count > 0))
+            {
+                double newAspectCutoff = Math.Round(dlg.InputBuckets[dlg.BucketIndex].value, 2);
+                txtPageMaxWidth.Text = newAspectCutoff.ToString();
+                // Update all pages:
+                winWorking.waitForTask((updateFunc) =>
+                {
+                    if (mangaChapters.Count < 1)
+                        return 0;
+
+                    List<MangaPage> allPages = mangaChapters.SelectMany((ch) => ch.Pages).ToList();
+                    if (allPages.Count < 1)
+                        return 0;
+
+                    int counter = 0;
+                    foreach (MangaPage page in allPages)
+                    {
+                        updateFunc(page.Name, (int)(counter * 100.0f / allPages.Count));
+                        page.IsDouble = page.AspectRatio >= newAspectCutoff;
+                    }
+                    return 1;
+                },
+                isProgressKnwon: false);
+            }
         }
 
         #endregion

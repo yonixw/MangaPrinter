@@ -76,6 +76,13 @@ namespace MangaPrinter.WpfGUI
             });
         }
 
+        /// <summary>
+        /// Async computation with dialog showing moving progress
+        /// </summary>
+        /// <typeparam name="T">Type of returned result, when used correctly should't be important</typeparam>
+        /// <param name="Task">The task to do, return result and get void update(description,percent)</param>
+        /// <param name="isProgressKnwon">are you going to update the progress? or should we show general cycling progress bar</param>
+        /// <returns>The result of the task</returns>
         public static T waitForTask<T>(Func<Action<string, int>, T> Task, bool isProgressKnwon) {
             winWorking taskWindow = new winWorking((update)=> { return Task(update); }, isProgressKnwon);
             taskWindow.ShowDialog();
