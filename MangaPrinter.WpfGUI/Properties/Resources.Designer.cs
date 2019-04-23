@@ -61,7 +61,8 @@ namespace MangaPrinter.WpfGUI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to v1.1+0* (master) 714b25f, 2018-12-23 00:24:54 +0200; Update-readme.md 
+        ///.
         /// </summary>
         internal static string GitInfo {
             get {
