@@ -64,11 +64,22 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
+        void verifyFloat(TextBox textBox, string fallbackValue)
+        {
+            float value = 0;
+            if (!float.TryParse(textBox.Text, out value))
+            {
+                MessageBox.Show("Can't convert \"" + textBox.Text + "\" to float, try again.");
+                textBox.Text = fallbackValue;
+            }
+        }
+
         #region FilesTab
 
         private void txtPageMaxWidth_TextChanged(object sender, TextChangedEventArgs e)
         {
-            verifyInteger(txtPageMaxWidth, "900");
+            verifyFloat(txtPageMaxWidth,
+                MangaPrinter.WpfGUI.Properties.Settings.Default.doublePageWidth.ToString());
         }
 
         private void menuImprtFolders_Click(object sender, RoutedEventArgs e)
@@ -87,7 +98,7 @@ namespace MangaPrinter.WpfGUI
 
                 var DirPath = new System.IO.FileInfo(dlgSaveFile.FileName).Directory.FullName;
                 var subFolders = cbSubfolders.IsChecked ?? false;
-                int cutoff = int.Parse(txtPageMaxWidth.Text);
+                float cutoff = float.Parse(txtPageMaxWidth.Text);
                 var rtl = rbRTL.IsChecked ?? false;
 
                 Func<System.IO.FileSystemInfo, object> orderFunc = (si) => si.CreationTime;
@@ -198,7 +209,7 @@ namespace MangaPrinter.WpfGUI
                 {
                     Core.FileImporter fileImporter = new Core.FileImporter();
 
-                    int cutoff = int.Parse(txtPageMaxWidth.Text);
+                    float cutoff = float.Parse(txtPageMaxWidth.Text);
 
                     Func<System.IO.FileSystemInfo, object> orderFunc = (si) => si.CreationTime;
                     if (rbByName.IsChecked ?? false)
@@ -235,22 +246,26 @@ namespace MangaPrinter.WpfGUI
 
         private void txtSpoilerPgNm_TextChanged(object sender, TextChangedEventArgs e)
         {
-            verifyInteger(txtSpoilerPgNm, "25");
+            verifyInteger(txtSpoilerPgNm, 
+                MangaPrinter.WpfGUI.Properties.Settings.Default.antiSpoilerStep.ToString());
         }
 
         private void TxtPrintWidth_TextChanged(object sender, TextChangedEventArgs e)
         {
-            verifyInteger(txtPrintWidth, "794");
+            verifyInteger(txtPrintWidth,
+                MangaPrinter.WpfGUI.Properties.Settings.Default.exportPageWidth.ToString());
         }
 
         private void TxtPrintHeight_TextChanged(object sender, TextChangedEventArgs e)
         {
-            verifyInteger(txtPrintHeight, "1123");
+            verifyInteger(txtPrintHeight,
+                MangaPrinter.WpfGUI.Properties.Settings.Default.exportPageHeight.ToString());
         }
 
         private void TxtPrintPadding_TextChanged(object sender, TextChangedEventArgs e)
         {
-            verifyInteger(txtPrintPadding, "25");
+            verifyInteger(txtPrintPadding,
+                MangaPrinter.WpfGUI.Properties.Settings.Default.exportPagePadding.ToString());
         }
 
         ObservableCollection<SelectablePrintPage> allPrintPages = new ObservableCollection<SelectablePrintPage>();

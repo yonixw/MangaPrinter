@@ -16,7 +16,7 @@ namespace MangaPrinter.Core
 
 
 
-        public MangaPage getMangaPageFromPath(FileInfo fiImage, int cutoff)
+        public MangaPage getMangaPageFromPath(FileInfo fiImage, float cutoff)
         {
             MangaPage page = new MangaPage()
             {
@@ -44,7 +44,7 @@ namespace MangaPrinter.Core
             return page;
         }
 
-        public List<MangaChapter> getChapters(DirectoryInfo di, bool subFodlers, int pageCutoff, bool RTL, 
+        public List<MangaChapter> getChapters(DirectoryInfo di, bool subFodlers, float pageCutoff, bool RTL, 
             Func<FileSystemInfo, object> orderFunc, Action<string, int> updateFunc = null)
         {
             List<MangaChapter> result = new List<MangaChapter>();
@@ -94,13 +94,13 @@ namespace MangaPrinter.Core
             return result;
         }
 
-        public List<MangaChapter> getChapters(string DirectoryPath, bool subFodlers, int pageCutoff, bool isRTL, 
+        public List<MangaChapter> getChapters(string DirectoryPath, bool subFodlers, float pageCutoff, bool isRTL, 
             Func<FileSystemInfo, object> orderFunc, Action<string, int> updateFunc = null)
         {
             return getChapters(new DirectoryInfo(DirectoryPath), subFodlers, pageCutoff, isRTL,  orderFunc, updateFunc);
         }
 
-        public List<MangaPage> importImages(string[] imagePaths, int pageCutoff,
+        public List<MangaPage> importImages(string[] imagePaths, float pageCutoff,
             Func<FileSystemInfo, object> orderFunc, Action<string, int> updateFunc = null)
         {
             List<FileSystemInfo> files = new List<FileSystemInfo>();

@@ -127,10 +127,10 @@
             <TabItem Header="Chapter and Files">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        
 
-                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold" >Double-Page min width (px):</Label>
-                        <TextBox Name="txtPageMaxWidth" Width="100px" Text="900" 
+
+                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold" Content="Double-Page min ratio (w/h):" />
+                        <TextBox Name="txtPageMaxWidth" Width="100px" Text="1.5" 
                                 TextChanged="txtPageMaxWidth_TextChanged" TextAlignment="Center"/>
 
                     </Menu>

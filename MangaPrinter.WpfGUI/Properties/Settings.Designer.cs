@@ -25,10 +25,10 @@ namespace MangaPrinter.WpfGUI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("900")]
-        public int doublePageWidth {
+        [global::System.Configuration.DefaultSettingValueAttribute("1.5")]
+        public float doublePageWidth {
             get {
-                return ((int)(this["doublePageWidth"]));
+                return ((float)(this["doublePageWidth"]));
             }
         }
         
