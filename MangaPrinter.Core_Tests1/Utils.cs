@@ -69,13 +69,14 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
 
             List<string> quickLookArr = new List<string>();
             foreach (PrintFace face in resultFaces) {
+                string isRTL = (face.IsRTL ? "R" : "L" ) + ">";
                 if (face.PrintFaceType == FaceType.SINGLES)
                 {
-                    quickLookArr.Add("S," + reverseSide(face.Left.SideType) + "," + reverseSide(face.Right.SideType));
+                    quickLookArr.Add(isRTL + "S," + reverseSide(face.Left.SideType) + "," + reverseSide(face.Right.SideType));
                 }
                 else
                 {
-                    quickLookArr.Add("D," + reverseSide(face.Left.SideType) );
+                    quickLookArr.Add(isRTL + "D," + reverseSide(face.Left.SideType) );
                 }
             }
 
