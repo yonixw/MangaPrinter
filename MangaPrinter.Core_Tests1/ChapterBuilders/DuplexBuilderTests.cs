@@ -88,8 +88,18 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         public void SimpleIntroOutroEvenAntiRTL()
         {
             var input = "R2,1,1,1,1 / R1,1";
-            var output = "D,A/s,b,i / D,M / S,M,M / S,M,M /  S,e,o / D,A/  S,m,i /  S,o,m / S,E,E";
+            var output = "D,A/s,b,i / D,M / S,M,M / S,M,M /  S,e,o / D,A/  S,m,i /  S,o,m / D,A";
            
+
+            Utils.TestResult(input, output, true, true, 3 /* => 6 faces*/);
+        }
+
+        [TestMethod()]
+        public void SimpleIntroOutroEvenAntiRTL2()
+        {
+            var input = "R2,1,1,1,1 / R1,1,1";
+            var output = "D,A/ s,b,i / D,M / S,M,M / S,M,M /  S,e,o / D,A/  S,m,i /  S,m,m / S,e,o / D,A / S,e,e";
+
 
             Utils.TestResult(input, output, true, true, 3 /* => 6 faces*/);
         }

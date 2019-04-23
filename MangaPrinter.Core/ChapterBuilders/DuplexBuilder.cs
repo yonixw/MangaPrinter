@@ -71,6 +71,13 @@ namespace MangaPrinter.Core.ChapterBuilders
                     Faces.Insert(faceIndex, f);
                     faceIndex += addAntiSpoiler * 2;
                 }
+
+                // Add spoiler to the last page:
+                PrintSide _s = new PrintSide() { SideType = SingleSideType.ANTI_SPOILER };
+                PrintFace _f = new PrintFace() { PrintFaceType = FaceType.DOUBLE, IsRTL = true }; // RTL not important
+                _f.Left = _f.Right = _s;
+                Faces.Add(_f);
+                faceIndex += addAntiSpoiler * 2;
             }
 
             if (Faces.Count % 2 == 1)
