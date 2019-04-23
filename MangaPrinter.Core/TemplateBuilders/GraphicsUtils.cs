@@ -69,7 +69,7 @@ namespace MangaPrinter.Core.TemplateBuilders
             }
             catch (OutOfMemoryException ex)
             {
-                MessageBox.Show("Can't load image file:\n" + path);
+                MessageBox.Show("Can't load image file:\n" + path + "\n" + ex.ToString());
 
             }
             return null;

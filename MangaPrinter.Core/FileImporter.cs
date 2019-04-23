@@ -36,7 +36,7 @@ namespace MangaPrinter.Core
                     }
                 }
                 catch (OutOfMemoryException ex) {
-                    MessageBox.Show("Can't load image file:\n" + page.ImagePath);
+                    MessageBox.Show("Can't load image file:\n" + page.ImagePath + "\n" + ex.ToString());
 
                 } // Not valid image or not supported
             }
