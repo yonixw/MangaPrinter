@@ -15,7 +15,6 @@ namespace MangaPrinter.Core
             "*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.jpeg;*.tiff";
 
 
-
         public MangaPage getMangaPageFromPath(FileInfo fiImage, float cutoff)
         {
             MangaPage page = new MangaPage()
@@ -32,7 +31,10 @@ namespace MangaPrinter.Core
                                                                 useEmbeddedColorManagement: false,
                                                                 validateImageData: false))
                     {
-                        page.IsDouble = jpeg.PhysicalDimension.Width > cutoff;
+                        page.AspectRatio =
+                            jpeg.PhysicalDimension.Height > 0 ?
+                            jpeg.PhysicalDimension.Width / jpeg.PhysicalDimension.Height :
+                            0;
                     }
                 }
                 catch (OutOfMemoryException ex) {
