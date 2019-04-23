@@ -17,6 +17,7 @@ using MangaPrinter.WpfGUI.ExtendedClasses;
 using MangaPrinter.Core.TemplateBuilders;
 using System.IO;
 using Microsoft.Win32;
+using MangaPrinter.WpfGUI.Utils;
 
 namespace MangaPrinter.WpfGUI
 {
@@ -240,6 +241,39 @@ namespace MangaPrinter.WpfGUI
                 dlgImage.ShowDialog();
             }
         }
+
+        private IEnumerable<BucketInfo> plotData(IEnumerable<MangaChapter> chapters, int numOfBuckets = 100)
+        {
+            IEnumerable<MangaPage> allPages = chapters.SelectMany((ch) => ch.Pages);
+
+            float min = allPages.Min((p) => p.AspectRatio);
+            float max = allPages.Max((p) => p.AspectRatio);
+
+            IEnumerable<BucketInfo> buckets = Enumerable.Range(0, numOfBuckets - 1)
+                .Select(i => new BucketInfo()
+                {
+                    index = i,
+                    value = min + (max - min) * (i * 1.0 / (numOfBuckets - 1)),
+                    count = 0
+                });
+
+            foreach (MangaPage page in allPages)
+            {
+                buckets.First((bucket) => page.AspectRatio >= bucket.value).count++;
+            }
+
+            return buckets;
+        }
+
+        private void BtnNewCutoffRatio_Click(object sender, RoutedEventArgs e)
+        {
+            var AspectsBuckets = winWorking.waitForTask((updateFunc) =>
+            {
+                return plotData(mangaChapters);
+            },
+            isProgressKnwon: false);
+        }
+
         #endregion
 
         #region Binding Tab
@@ -407,6 +441,7 @@ namespace MangaPrinter.WpfGUI
             });
         }
 
+        
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {

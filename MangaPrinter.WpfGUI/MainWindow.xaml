@@ -133,6 +133,8 @@
                         <TextBox Name="txtPageMaxWidth" Width="100px" Text="1.5" 
                                 TextChanged="txtPageMaxWidth_TextChanged" TextAlignment="Center"/>
 
+                        <Button Name="btnNewCutoffRatio" Click="BtnNewCutoffRatio_Click">Choose better cutoff</Button>
+
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Import order:</Label>

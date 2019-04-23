@@ -25,11 +25,6 @@ namespace MangaPrinter.WpfGUI.Dialogs
             InitializeComponent();
         }
 
-        private void plotData(IEnumerable<MangaChapter> chapters)
-        {
-            //chapters.SelectMany((ch)=>ch.Pages).Select((page)=> page.)
-        }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             IEnumerable<double> _x = Enumerable.Range(0, 10).Select<int, double>((x) => x * 1.0);
