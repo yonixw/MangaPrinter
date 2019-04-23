@@ -169,6 +169,12 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
+
+        private void MnuClearAllData_Click(object sender, RoutedEventArgs e)
+        {
+            mangaChapters.Clear();
+        }
+
         private void mnuDeleteCh_Click(object sender, RoutedEventArgs e)
         {
             ListBoxAction<SelectableMangaChapter>(lstFileChapters, (ch) =>
@@ -386,7 +392,6 @@ namespace MangaPrinter.WpfGUI
             });
         }
 
-        
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
