@@ -35,8 +35,8 @@ When using the software, right click on list items for more options (e.g. previe
 2. (Optional) Choose the double-page aspect ratio cutoff with a histogram dialog 
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/2.png)
 
-3. Rebind all chapter with your flavor of extra pages (Intro, Outro, Anti spoiler)
+3. Rebind all chapters with your flavor of extra pages (Intro, Outro, Anti spoiler)
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/3.PNG)
 
-4. Export to pdf! Sample:
+4. Export to pdf with one click! Result sample:
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/4.png)
