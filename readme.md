@@ -40,3 +40,5 @@ When using the software, right click on list items for more options (e.g. previe
 
 4. Export to pdf with one click! Result sample:
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/4.png)
+
+5. Print! With duplex binding it's easy to remember: Start with odd page and end with even.
