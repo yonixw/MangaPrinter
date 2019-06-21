@@ -24,12 +24,17 @@ namespace MangaPrinter.Core
 
             MagickNET.SetTempDirectory(tempFolder);
 
-            var combined = new MagickImageCollection();
-            foreach (string imagepath in images)
+            using (var combined = new MagickImageCollection())
             {
-                combined.Add(imagepath);
+                foreach (string imagepath in images)
+                {
+                    ImageMagick.MagickImage img = new MagickImage(imagepath);
+                    combined.Add(img);
+                }
+                combined.Write(pdfPath);
             }
-            combined.Write(pdfPath);
+
+            
         }
     }
 }

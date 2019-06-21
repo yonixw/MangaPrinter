@@ -473,7 +473,6 @@ namespace MangaPrinter.WpfGUI
         }
 
 
-
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dlgSave = new SaveFileDialog();
@@ -503,7 +502,7 @@ namespace MangaPrinter.WpfGUI
                             var b = dt.BuildFace(page.Front, pW, pH, pad);
                             var bName = System.IO.Path.Combine(
                                     fi.Directory.FullName,
-                                    "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".png"
+                                    "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".jpg"
                                     );
                             b.Save(bName);
                             filesToDelete.Add(bName);
@@ -512,7 +511,7 @@ namespace MangaPrinter.WpfGUI
                             b = dt.BuildFace(page.Back, pW, pH, pad);
                             bName = System.IO.Path.Combine(
                                    fi.Directory.FullName,
-                                   "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".png"
+                                   "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".jpg"
                                    );
                             b.Save(bName);
                             filesToDelete.Add(bName);
