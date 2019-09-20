@@ -518,7 +518,7 @@ namespace MangaPrinter.WpfGUI
 
                         try
                         {
-                            updateFunc("Export page " + page.PageNumber, (int)(100.0f * saveCounter / 2 / pagesCount));
+                            updateFunc("[1/3] Export page " + page.PageNumber, (int)(100.0f * saveCounter / 2 / pagesCount));
 
                             var b = dt.BuildFace(page.Front, pW, pH, pad);
                             var bName = System.IO.Path.Combine(
@@ -568,7 +568,7 @@ namespace MangaPrinter.WpfGUI
                                     {
                                         Action<int> onUpdateIndex = new Action<int>((index) =>
                                             {
-                                                updateFunc("Adding pdf page " + index, (int)(100.0f * index / filesToDelete.Count));
+                                                updateFunc("[2/3] Adding pdf page " + index, (int)(100.0f * index / filesToDelete.Count));
                                             });
                                         pdfMagik.MakeList(filesToDelete, fi.Directory.FullName, updateIndex: onUpdateIndex);
                                     }
@@ -588,7 +588,7 @@ namespace MangaPrinter.WpfGUI
                                 {
                                     try
                                     {
-                                        updateFunc("Saving pdf to file...",0);
+                                        updateFunc("[3/3] Saving pdf to file...",0);
                                         pdfMagik.SaveListToPdf(fi.FullName);
                                     }
                                     catch (Exception ex2)
@@ -617,8 +617,8 @@ namespace MangaPrinter.WpfGUI
 
                         string TimingInfo =
                             "1) Save pages  - " + timeTemplates.ToString() + "\n" +
-                            "1) Add to PDF  - " + timeAddPages.ToString() + "\n" +
-                            "1) PDF to File - " + timeSavePdf.ToString();
+                            "2) Add to PDF  - " + timeAddPages.ToString() + "\n" +
+                            "3) PDF to File - " + timeSavePdf.ToString();
                         MessageBox.Show(this,
                             "Export done successfully!\n" +
                             "===============\n" +
