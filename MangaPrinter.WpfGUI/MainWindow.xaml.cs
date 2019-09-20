@@ -106,7 +106,7 @@ namespace MangaPrinter.WpfGUI
                 if (rbByName.IsChecked ?? false)
                     orderFunc = (si) => si.Name;
 
-                winWorking.waitForTask((updateFunc) =>
+                winWorking.waitForTask(this, (updateFunc) =>
                 {
                     return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl, orderFunc, updateFunc);
                 },
@@ -219,7 +219,7 @@ namespace MangaPrinter.WpfGUI
 
                     ch.autoPageNumbering = false;
 
-                    winWorking.waitForTask((updateFunc) =>
+                    winWorking.waitForTask(this, (updateFunc) =>
                     {
                         return fileImporter.importImages(dlgOpenImages.FileNames, cutoff, orderFunc, updateFunc);
                     },
@@ -273,7 +273,7 @@ namespace MangaPrinter.WpfGUI
         private void BtnNewCutoffRatio_Click(object sender, RoutedEventArgs e)
         {
             Dialogs.dlgChooseCutoffRatio dlg = new Dialogs.dlgChooseCutoffRatio();
-            dlg.InputBuckets = winWorking.waitForTask((updateFunc) =>
+            dlg.InputBuckets = winWorking.waitForTask(this, (updateFunc) =>
             {
                 return plotData(mangaChapters).ToList();
             },
@@ -284,7 +284,7 @@ namespace MangaPrinter.WpfGUI
                 double newAspectCutoff = Math.Round(dlg.InputBuckets[dlg.BucketIndex].value, 2);
                 txtPageMaxWidth.Text = newAspectCutoff.ToString();
                 // Update all pages:
-                winWorking.waitForTask((updateFunc) =>
+                winWorking.waitForTask(this, (updateFunc) =>
                 {
                     if (mangaChapters.Count < 1)
                         return 0;
@@ -342,7 +342,7 @@ namespace MangaPrinter.WpfGUI
 
             var allChapters = mangaChapters.ToList();
 
-            allPrintPages = winWorking.waitForTask<ObservableCollection<SelectablePrintPage>>((updateFunc) =>
+            allPrintPages = winWorking.waitForTask<ObservableCollection<SelectablePrintPage>>(this, (updateFunc) =>
             {
                 ObservableCollection<SelectablePrintPage> result = new ObservableCollection<SelectablePrintPage>();
 
@@ -503,7 +503,13 @@ namespace MangaPrinter.WpfGUI
                 bool convertPdf = !(cbExportMinimal.IsChecked??false);
                 List<string> filesToDelete = new List<string>();
 
-                Exception ex = winWorking.waitForTask<Exception>((updateFunc) =>
+                DateTime timeTemp;
+                TimeSpan timeTemplates = TimeSpan.FromSeconds(0);
+                TimeSpan timeAddPages = TimeSpan.FromSeconds(0);
+                TimeSpan timeSavePdf = TimeSpan.FromSeconds(0);
+
+                timeTemp = DateTime.Now;
+                Exception ex = winWorking.waitForTask<Exception>(this, (updateFunc) =>
                 {
 
                     DuplexTemplates dt = new DuplexTemplates(Properties.Resources.GitInfo.Split(' ')[0]);
@@ -543,6 +549,7 @@ namespace MangaPrinter.WpfGUI
                     return null;
                 },
                 isProgressKnwon: true);
+                timeTemplates = DateTime.Now - timeTemp;
 
                 if (ex != null)
                 {
@@ -552,20 +559,48 @@ namespace MangaPrinter.WpfGUI
                 {
                     if (convertPdf)
                     {
-                        ex = winWorking.waitForTask<Exception>((updateFunc) =>
+                        using (Core.MagickImaging pdfMagik = new MagickImaging())
+                        {
+                            timeTemp = DateTime.Now;
+                            ex = winWorking.waitForTask<Exception>(this,(updateFunc) =>
+                                {
+                                    try
                                     {
-                                        try
-                                        {
-                                            updateFunc("Converting images to PDF...", 0);
-                                            Core.MagickImaging.Convert(filesToDelete, fi.FullName, fi.Directory.FullName);
-                                        }
-                                        catch (Exception ex2)
-                                        {
-                                            return ex2;
-                                        }
+                                        Action<int> onUpdateIndex = new Action<int>((index) =>
+                                            {
+                                                updateFunc("Adding pdf page " + index, (int)(100.0f * index / filesToDelete.Count));
+                                            });
+                                        pdfMagik.MakeList(filesToDelete, fi.Directory.FullName, updateIndex: onUpdateIndex);
+                                    }
+                                    catch (Exception ex2)
+                                    {
+                                        return ex2;
+                                    }
 
-                                        return null;
-                                    }, false); 
+                                    return null;
+                                }, true);
+                            timeAddPages = DateTime.Now - timeTemp;
+
+                            if (ex == null)
+                            {
+                                timeTemp = DateTime.Now;
+                                ex = winWorking.waitForTask<Exception>(this,(updateFunc) =>
+                                {
+                                    try
+                                    {
+                                        updateFunc("Saving pdf to file...",0);
+                                        pdfMagik.SaveListToPdf(fi.FullName);
+                                    }
+                                    catch (Exception ex2)
+                                    {
+                                        return ex2;
+                                    }
+
+                                    return null;
+                                }, false);
+                                timeSavePdf = DateTime.Now - timeTemp;
+                            }
+                        }
                     }
 
                     if (ex != null)
@@ -580,7 +615,15 @@ namespace MangaPrinter.WpfGUI
                                 File.Delete(f); 
                         }
 
-                        MessageBox.Show("Export done successfully!");
+                        string TimingInfo =
+                            "1) Save pages  - " + timeTemplates.ToString() + "\n" +
+                            "1) Add to PDF  - " + timeAddPages.ToString() + "\n" +
+                            "1) PDF to File - " + timeSavePdf.ToString();
+                        MessageBox.Show(this,
+                            "Export done successfully!\n" +
+                            "===============\n" +
+                            TimingInfo
+                            ,"Done");
                     }
 
                 }

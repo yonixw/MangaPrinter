@@ -83,8 +83,9 @@ namespace MangaPrinter.WpfGUI
         /// <param name="Task">The task to do, return result and get void update(description,percent)</param>
         /// <param name="isProgressKnwon">are you going to update the progress? or should we show general cycling progress bar</param>
         /// <returns>The result of the task</returns>
-        public static T waitForTask<T>(Func<Action<string, int>, T> Task, bool isProgressKnwon) {
+        public static T waitForTask<T>(Window owner, Func<Action<string, int>, T> Task, bool isProgressKnwon) {
             winWorking taskWindow = new winWorking((update)=> { return Task(update); }, isProgressKnwon);
+            taskWindow.Owner = owner;
             taskWindow.ShowDialog();
             return (T)taskWindow.Result;
         }

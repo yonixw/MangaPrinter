@@ -9,9 +9,16 @@ using System.Threading.Tasks;
 
 namespace MangaPrinter.Core
 {
-    public class MagickImaging
+    public class MagickImaging : IDisposable
     {
-        public static void Convert(List<string> images, string pdfPath, string tempFolder, uint MemoryMBLimit = 500)
+        MagickImageCollection collection;
+
+        public void Dispose()
+        {
+            collection?.Dispose();
+        }
+
+        public void MakeList(List<string> images, string tempFolder, uint MemoryMBLimit = 500, Action<int> updateIndex = null)
         {
             if (images == null) return;
 
@@ -24,17 +31,22 @@ namespace MangaPrinter.Core
 
             MagickNET.SetTempDirectory(tempFolder);
 
-            using (var combined = new MagickImageCollection())
+            collection = new MagickImageCollection();
+            int counter = 0;
+            foreach (string imagepath in images)
             {
-                foreach (string imagepath in images)
-                {
-                    ImageMagick.MagickImage img = new MagickImage(imagepath);
-                    combined.Add(img);
-                }
-                combined.Write(pdfPath);
-            }
+                ImageMagick.MagickImage img = new MagickImage(imagepath);
+                collection.Add(img);
 
+                updateIndex?.Invoke(counter);
+                counter = counter + 1;
+            }          
             
+        }
+
+        public void SaveListToPdf(string pdfPath)
+        {
+            collection?.Write(pdfPath);
         }
     }
 }
