@@ -472,6 +472,20 @@ namespace MangaPrinter.WpfGUI
             });
         }
 
+        private void LblHelpExportMinimal_Click(object sender, RoutedEventArgs e)
+        {
+            string helpMessage =
+                "Normally, We bundled a pdf converter to use without any user interaction.\n" +
+                "But, every now and then comes an image format that causes bugs. (invalid format etc.)\n\n" +
+                "By cheking \"" + cbExportMinimal.Content.ToString() + "\"," +
+                    "the program will only export the book in seperage JPEGs (one per page side).\n" +
+                "And you will have to combine them in another software.\n\n" +
+                "We recommend using ImageMagick-7.\n" +
+                "After install, try to run (In the output folder):\n\n" +
+                "\"C:\\Program Files\\ImageMagick - 7.0.8 - Q16\\magick.exe\" *.jpg -monitor output.pdf";
+
+            MessageBox.Show(helpMessage, "Help", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
@@ -486,6 +500,7 @@ namespace MangaPrinter.WpfGUI
                 int pH = int.Parse(txtPrintHeight.Text);
                 int pad = int.Parse(txtPrintPadding.Text);
                 int pagesCount = allPrintPages.Count;
+                bool convertPdf = !(cbExportMinimal.IsChecked??false);
                 List<string> filesToDelete = new List<string>();
 
                 Exception ex = winWorking.waitForTask<Exception>((updateFunc) =>
@@ -535,20 +550,23 @@ namespace MangaPrinter.WpfGUI
                 }
                 else
                 {
-                    ex = winWorking.waitForTask<Exception>((updateFunc) =>
+                    if (convertPdf)
                     {
-                        try
-                        {
-                            updateFunc("Converting images to PDF...", 0);
-                            Core.MagickImaging.Convert(filesToDelete, fi.FullName, fi.Directory.FullName);
-                        }
-                        catch (Exception ex2)
-                        {
-                            return ex2;
-                        }
+                        ex = winWorking.waitForTask<Exception>((updateFunc) =>
+                                    {
+                                        try
+                                        {
+                                            updateFunc("Converting images to PDF...", 0);
+                                            Core.MagickImaging.Convert(filesToDelete, fi.FullName, fi.Directory.FullName);
+                                        }
+                                        catch (Exception ex2)
+                                        {
+                                            return ex2;
+                                        }
 
-                        return null;
-                    }, false);
+                                        return null;
+                                    }, false); 
+                    }
 
                     if (ex != null)
                     {
@@ -556,8 +574,11 @@ namespace MangaPrinter.WpfGUI
                     }
                     else
                     {
-                        foreach (var f in filesToDelete)
-                            File.Delete(f);
+                        if (convertPdf)
+                        {
+                            foreach (var f in filesToDelete)
+                                File.Delete(f); 
+                        }
 
                         MessageBox.Show("Export done successfully!");
                     }
