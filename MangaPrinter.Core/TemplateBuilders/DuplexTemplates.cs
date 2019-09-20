@@ -44,44 +44,11 @@ namespace MangaPrinter.Core.TemplateBuilders
         public static Font fontPageText = new Font(new FontFamily("Arial"), 5);
 
 
-        public static Bitmap MakeGrayscale3(Bitmap original)
-        {
-            //create a blank bitmap the same size as original
-            Bitmap newBitmap = new Bitmap(original.Width, original.Height,PixelFormat.Format16bppRgb555);
-
-            //get a graphics object from the new image
-            Graphics g = Graphics.FromImage(newBitmap);
-
-            //create the grayscale ColorMatrix
-            ColorMatrix colorMatrix = new ColorMatrix(
-               new float[][]
-               {
-                 new float[] {.3f, .3f, .3f, 0, 0},
-                 new float[] {.59f, .59f, .59f, 0, 0},
-                 new float[] {.11f, .11f, .11f, 0, 0},
-                 new float[] {0, 0, 0, 1, 0},
-                 new float[] {0, 0, 0, 0, 1}
-               });
-
-            //create some image attributes
-            ImageAttributes attributes = new ImageAttributes();
-
-            //set the color matrix attribute
-            attributes.SetColorMatrix(colorMatrix);
-
-            //draw the original image on the new image
-            //using the grayscale color matrix
-            g.FillRectangle(Brushes.White, new Rectangle(0, 0, original.Width, original.Height));
-            g.DrawImage(original, new Rectangle(0, 0, original.Width, original.Height),
-               0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attributes);
-
-            //dispose the Graphics object
-            g.Dispose();
-            return newBitmap;
-        }
+        
 
         public Bitmap BuildFace(PrintFace face,  int spW, int spH, int padding)
         {
+            Bitmap result = null;
             if (face.Left == face.Right) // double
             {
                 if (
@@ -92,7 +59,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                         string.Format("Got type {0} in double in duplex. It's unexpected.", face.Right.SideType)
                         );
 
-                return TemplateDouble(face, spW, spH, padding);
+                result = TemplateDouble(face, spW, spH, padding);
 
             }
             else
@@ -106,8 +73,10 @@ namespace MangaPrinter.Core.TemplateBuilders
                         string.Format("Got type {0} in left single in duplex. It's unexpected.", face.Left.SideType)
                         );
 
-                return MakeGrayscale3(TemplateSingle(face, spW, spH, padding));
+                result = TemplateSingle(face, spW, spH, padding);
             }
+
+            return GraphicsUtils.MakeGrayscale3(result);
         }
 
         private Bitmap TemplateDouble(PrintFace face, int spW, int spH, int padding)
