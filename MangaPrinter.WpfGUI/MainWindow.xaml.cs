@@ -83,9 +83,9 @@ namespace MangaPrinter.WpfGUI
                 MangaPrinter.WpfGUI.Properties.Settings.Default.doublePageWidth.ToString());
         }
 
+        Microsoft.Win32.OpenFileDialog dlgSaveFile = new Microsoft.Win32.OpenFileDialog();
         private void menuImprtFolders_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog dlgSaveFile = new Microsoft.Win32.OpenFileDialog();
             dlgSaveFile.Filter = "Folder|_Choose.Here_";
             dlgSaveFile.FileName = "_Choose.Here_";
             dlgSaveFile.CheckFileExists = false;
@@ -487,9 +487,9 @@ namespace MangaPrinter.WpfGUI
             MessageBox.Show(helpMessage, "Help", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        SaveFileDialog dlgSave = new SaveFileDialog();
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog dlgSave = new SaveFileDialog();
             dlgSave.Title = "Export book as PDF";
             dlgSave.Filter = "PDF |*.pdf";
             if (dlgSave.ShowDialog() == true)
