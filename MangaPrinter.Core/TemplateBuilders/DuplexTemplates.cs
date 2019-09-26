@@ -43,9 +43,6 @@ namespace MangaPrinter.Core.TemplateBuilders
         public static Font fontSide = new Font(new FontFamily("Arial"), 5, FontStyle.Bold); // size will be changed
         public static Font fontPageText = new Font(new FontFamily("Arial"), 5);
 
-
-        
-
         public Bitmap BuildFace(PrintFace face,  int spW, int spH, int padding)
         {
             Bitmap result = null;
@@ -100,21 +97,21 @@ namespace MangaPrinter.Core.TemplateBuilders
             {
                 int sideIndex = face.Right.SideNumber;
                 string sideLeftText, sideRightText;
-                string FaceCountText = "Page No. " + face.FaceNumber;
+                string FaceCountText = GetFaceCountText(face);
 
                 if (isRTL)
                 {
-                    sideRightText =  "[ " + sideIndex + " ]";
-                    sideLeftText = "[ " + (sideIndex+1) + " ]";
+                    sideRightText = "[ " + sideIndex + " ]";
+                    sideLeftText = "[ " + (sideIndex + 1) + " ]";
 
                     GraphicsUtils.DrawArrowHeadRow(g, blackPen,
                         new Point(tmpW - padding, padding / 2),
                         new Point(padding, padding / 2),
-                        padding);   
+                        padding);
                 }
                 else
                 {
-                    sideLeftText= "[ " + sideIndex + " ]";
+                    sideLeftText = "[ " + sideIndex + " ]";
                     sideRightText = "[ " + (sideIndex + 1) + " ]";
 
                     GraphicsUtils.DrawArrowHeadRow(g, blackPen,
@@ -128,7 +125,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                 GraphicsUtils.FontScaled faceCountFS = GraphicsUtils.FindFontSizeByContent(g, FaceCountText, new Size(sideTextW, sideTextH), fontSide);
 
                 GraphicsUtils.DrawTextCenterd(g, sideLeftText, sideLeftFS, blackBrush,
-                    new PointF(padding + contentW /4, padding + contentH + padding / 2)
+                    new PointF(padding + contentW / 4, padding + contentH + padding / 2)
                 );
                 GraphicsUtils.DrawTextCenterd(g, sideRightText, sideRightFS, blackBrush,
                     new PointF(tmpW - padding - contentW / 4, padding + contentH + padding / 2)
@@ -149,7 +146,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                             contentH, contentW);
                         break;
                 }
-                g.DrawImage(page, new Point(padding,padding));
+                g.DrawImage(page, new Point(padding, padding));
                 page.Dispose();
 
                 // border
@@ -157,6 +154,14 @@ namespace MangaPrinter.Core.TemplateBuilders
             }
 
             return b;
+        }
+
+        private static string GetFaceCountText(PrintFace face)
+        {
+            string result = "Page No. " + face.FaceNumber;
+            if (face.BatchPaperNumber > -1)
+                result += ", Batch Paper: " + (face.BatchPaperNumber + 1);
+            return result;
         }
 
         private Bitmap TemplateSingle(PrintFace face, int spW, int spH, int padding)
@@ -180,7 +185,7 @@ namespace MangaPrinter.Core.TemplateBuilders
             {
                 string sideLeft = "[ " + face.Left.SideNumber + " ]";
                 string sideRight = "[ " + face.Right.SideNumber + " ]";
-                string FaceIndex = "Page No. " + face.FaceNumber;
+                string FaceIndex = GetFaceCountText(face);
 
                 GraphicsUtils.FontScaled sideLeftFont = GraphicsUtils.FindFontSizeByContent(g, sideLeft, new Size(sideTextW, sideTextH), fontSide);
                 GraphicsUtils.FontScaled sideRightFont = GraphicsUtils.FindFontSizeByContent(g, sideRight, new Size(sideTextW, sideTextH), fontSide);

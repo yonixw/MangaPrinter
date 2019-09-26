@@ -111,6 +111,7 @@ namespace MangaPrinter.Core
     public class PrintFace : ModelBaseWpf
     {
         public int FaceNumber { get { return _baseGet(); } set { _baseSet(value); } }
+        public int BatchPaperNumber { get { return _baseGet(); } set { _baseSet(value); } } // For anti-spoiler batches
         public FaceType PrintFaceType { get { return _baseGet(); } set { _baseSet(value); } }
 
         public bool IsRTL { get { return _baseGet(); } set { _baseSet(value); } } // for template + side index

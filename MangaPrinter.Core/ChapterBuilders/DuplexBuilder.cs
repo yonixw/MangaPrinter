@@ -117,10 +117,12 @@ namespace MangaPrinter.Core.ChapterBuilders
 
             int pageIndex = 1;
             int sideCounter = 1;
-            for (int i=0;i<Faces.Count;i+=2)
+            for (int i=0;i<Faces.Count;i+=2) 
             {
                 for (int j=0;j<2;j++)
                 {
+                    Faces[i + j].BatchPaperNumber = (addAntiSpoiler > 0) ? ((i / 2) % addAntiSpoiler) : -1;
+
                     if (Faces[i + j].Right == Faces[i + j].Left)//double
                     {
                         Faces[i + j].Right.SideNumber = sideCounter++;
@@ -140,7 +142,11 @@ namespace MangaPrinter.Core.ChapterBuilders
                         }
                     }
                 }
-                PrintPage pp = new PrintPage() { PageNumber = pageIndex++,  Front = Faces[i], Back = Faces[i + 1] };
+                PrintPage pp = new PrintPage() {
+                    PageNumber = pageIndex++,
+                    Front = Faces[i],
+                    Back = Faces[i + 1]
+                };
                 pp.Front.FaceNumber = (i) + 1; // not stating from zero
                 pp.Back.FaceNumber = (i+1)+1;
                 pc.Add(pp);
