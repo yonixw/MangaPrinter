@@ -18,6 +18,7 @@ using MangaPrinter.Core.TemplateBuilders;
 using System.IO;
 using Microsoft.Win32;
 using MangaPrinter.WpfGUI.Utils;
+using MangaPrinter.WpfGUI.Dialogs;
 
 namespace MangaPrinter.WpfGUI
 {
@@ -106,12 +107,18 @@ namespace MangaPrinter.WpfGUI
                 if (rbByName.IsChecked ?? false)
                     orderFunc = (si) => si.Name;
 
+                List<FileImporterError> importErrors = new List<FileImporterError>();
                 winWorking.waitForTask(this, (updateFunc) =>
                 {
-                    return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl, orderFunc, updateFunc);
+                    return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl, orderFunc, importErrors, updateFunc);
                 },
                 isProgressKnwon: false)
                 .ForEach(ch => mangaChapters.Add(MangaChapter.Extend<SelectableMangaChapter>(ch)));
+
+                if (importErrors.Count >0)
+                {
+                    (new dlgImportErrors() { DataErrors = importErrors }).ShowDialog();
+                }
             }
         }
 
@@ -219,15 +226,22 @@ namespace MangaPrinter.WpfGUI
 
                     ch.autoPageNumbering = false;
 
+                    List<FileImporterError> importErrors = new List<FileImporterError>();
                     winWorking.waitForTask(this, (updateFunc) =>
                     {
-                        return fileImporter.importImages(dlgOpenImages.FileNames, cutoff, orderFunc, updateFunc);
+                        return fileImporter.importImages(dlgOpenImages.FileNames, cutoff, orderFunc, importErrors, updateFunc);
                     },
                     isProgressKnwon: true)
                     .ForEach(page => ch.Pages.Add(page));
 
                     ch.autoPageNumbering = true;
                     ch.updatePageNumber();
+
+                    
+                    if (importErrors.Count > 0)
+                    {
+                        (new dlgImportErrors() { DataErrors = importErrors }).ShowDialog();
+                    }
                 }
             });
         }

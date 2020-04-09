@@ -9,13 +9,18 @@ using System.Windows.Forms;
 
 namespace MangaPrinter.Core
 {
-    public class FileImporterErros
+    public class FileImporterError
     {
-        FileInfo fileObj =null;
-        Exception exObject = null;
-        string reasonString = "";
+        public FileInfo fileObj =null;
+        public Exception exObject = null;
+        public string reasonString = "";
 
-        public FileImporterErros(FileInfo file=null, Exception ex=null, string reason="")
+        public override string ToString()
+        {
+            return (reasonString == "") ? "Empty reason" : reasonString;
+        }
+
+        public FileImporterError(FileInfo file=null, Exception ex=null, string reason="")
         {
             fileObj = file;
             ex = exObject;
@@ -35,17 +40,17 @@ namespace MangaPrinter.Core
             ".psd;.raw;.arw;.cr2;.nrw;.k25;.bmp;.dib;.heif;.heic;.ind;.indd;.indt;" +
             ".jp2;.j2k;.jpf;.jpx;.jpm;.mj2;.svg;.svgz;.ai;.eps;.pdf;";
 
-        static bool checkFileSupported(FileInfo file, List<FileImporterErros> errorPages)
+        static bool checkFileSupported(FileInfo file, List<FileImporterError> errorPages)
         {
             string lowerExt = file.Extension.ToLower();
             bool supported = SupportedImagesExtensions.Contains(lowerExt);
             if (!supported && AllImageExtensions.Contains(lowerExt)) {
-                errorPages?.Add(new FileImporterErros(file: file, reason: "Image extention '" + lowerExt + "' not supported"));
+                errorPages?.Add(new FileImporterError(file: file, reason: "Image extention '" + lowerExt + "' not supported"));
             }
             return supported;
         }
 
-        public MangaPage getMangaPageFromPath(FileInfo fiImage, float cutoff, List<FileImporterErros> errorPages)
+        public MangaPage getMangaPageFromPath(FileInfo fiImage, float cutoff, List<FileImporterError> errorPages)
         {
             MangaPage page = new MangaPage()
             {
@@ -71,15 +76,19 @@ namespace MangaPrinter.Core
                 }
                 catch (OutOfMemoryException ex) {
                     // Not valid image or not supported
-                    errorPages?.Add(new FileImporterErros(file: fiImage, ex: ex, reason: "Can't load image file"));
+                    errorPages?.Add(new FileImporterError(file: fiImage, ex: ex, reason: "Can't load image file. Invalid Format?"));
                 } 
+                catch (Exception ex)
+                {
+                    errorPages?.Add(new FileImporterError(file: fiImage, ex: ex, reason: "Can't load image file."));
+                }
             }
 
             return page;
         }
 
         public List<MangaChapter> getChapters(DirectoryInfo di, bool subFodlers, float pageCutoff, bool RTL, 
-            Func<FileSystemInfo, object> orderFunc, List<FileImporterErros> errorPages, Action<string, int> updateFunc = null)
+            Func<FileSystemInfo, object> orderFunc, List<FileImporterError> errorPages, Action<string, int> updateFunc = null)
         {
             List<MangaChapter> result = new List<MangaChapter>();
 
@@ -128,13 +137,13 @@ namespace MangaPrinter.Core
         }
 
         public List<MangaChapter> getChapters(string DirectoryPath, bool subFodlers, float pageCutoff, bool isRTL, 
-            Func<FileSystemInfo, object> orderFunc, List<FileImporterErros> errorPages, Action<string, int> updateFunc = null)
+            Func<FileSystemInfo, object> orderFunc, List<FileImporterError> errorPages, Action<string, int> updateFunc = null)
         {
             return getChapters(new DirectoryInfo(DirectoryPath), subFodlers, pageCutoff, isRTL,  orderFunc, errorPages, updateFunc);
         }
 
         public List<MangaPage> importImages(string[] imagePaths, float pageCutoff,
-            Func<FileSystemInfo, object> orderFunc, List<FileImporterErros> errorPages, Action<string, int> updateFunc = null)
+            Func<FileSystemInfo, object> orderFunc, List<FileImporterError> errorPages, Action<string, int> updateFunc = null)
         {
             List<FileSystemInfo> files = new List<FileSystemInfo>();
             List<MangaPage> result = new List<MangaPage>();
