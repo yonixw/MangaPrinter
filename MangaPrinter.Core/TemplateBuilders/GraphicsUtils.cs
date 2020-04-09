@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageMagick;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -65,7 +66,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         {
             try
             {
-                return sameAspectResize((Bitmap)Image.FromFile(path),  newWidth, newHeight);
+                return sameAspectResize(MagickImaging.BitmapFromUrlExt(path), newWidth, newHeight);
                 // no stream because it has to stay open: https://stackoverflow.com/a/1053123/1997873
             }
             catch (OutOfMemoryException ex)

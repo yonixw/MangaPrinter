@@ -1,6 +1,7 @@
 ﻿using ImageMagick;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -47,6 +48,24 @@ namespace MangaPrinter.Core
         public void SaveListToPdf(string pdfPath)
         {
             collection?.Write(pdfPath);
+        }
+
+        public static Bitmap BitmapFromUrlExt(string path)
+        {
+            Bitmap result = null;
+            string extLower = Path.GetExtension(path).ToLower();
+            if (FileImporter.BitmapSupportedImagesExtensions.Contains(extLower))
+            {
+                result = (Bitmap)Bitmap.FromFile(path);
+            }
+            else if (FileImporter.MagickSupportedImagesExtentions.Contains(extLower))
+            {
+                using (MagickImage img = new MagickImage(path))
+                {
+                    result = img.ToBitmap();
+                }
+            }
+            return result;
         }
     }
 }

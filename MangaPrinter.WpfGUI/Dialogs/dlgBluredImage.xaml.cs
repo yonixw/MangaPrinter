@@ -54,14 +54,14 @@ namespace MangaPrinter.WpfGUI.Dialogs
             slideZoom.Value = (100.0f *  finalHeight)/ myImage.Image.Height;
         }
 
-        BitmapImage LoadBitmapWithoutLocingFile(string url)
+        BitmapImage LoadBitmapWithoutLockingFile(string url)
         {
             //https://social.msdn.microsoft.com/Forums/vstudio/en-US/dee7cb68-aca3-402b-b159-2de933f933f1/disposing-a-wpf-image-or-bitmapimage-so-the-source-picture-file-can-be-modified?forum=wpf
 
             System.Windows.Media.Imaging.BitmapImage result = new System.Windows.Media.Imaging.BitmapImage();  // Create new BitmapImage  
             System.IO.Stream stream = new System.IO.MemoryStream();  // Create new MemoryStream  
 
-            System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(url);  // Create new Bitmap (System.Drawing.Bitmap) from the existing image file (albumArtSource set to its path name)  
+            System.Drawing.Bitmap bitmap = MagickImaging.BitmapFromUrlExt(url);  // Create new Bitmap (System.Drawing.Bitmap) from the existing image file (albumArtSource set to its path name)  
             bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);  // Save the loaded Bitmap into the MemoryStream - Png format was the only one I tried that didn't cause an error (tried Jpg, Bmp, MemoryBmp)  
             bitmap.Dispose();  // Dispose bitmap so it releases the source image file 
             
@@ -76,7 +76,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
         {
             Title = _title;
 
-            BitmapImage bm = LoadBitmapWithoutLocingFile(_imageUrl);
+            BitmapImage bm = LoadBitmapWithoutLockingFile(_imageUrl);
             imgMain.DataContext = myImage = new MyImageBind() { Image = bm, BlurRadius = slideBlur.Value * maxBlur / 100 };
 
             resetZoom();

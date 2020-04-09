@@ -42,3 +42,8 @@ When using the software, right click on list items for more options (e.g. previe
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/4.png)
 
 5. Print! With duplex binding it's easy to remember: Start with odd page and end with even.
+
+## Performance
+We care about your PC. We try to use less than 1GB of Memory when possible. Here you can see an example CPU% and Memory usage during the converting process:
+
+![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/5Performance.png)

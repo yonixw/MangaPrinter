@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using ImageMagick;
 
 namespace MangaPrinter.Core
 {
@@ -30,8 +31,10 @@ namespace MangaPrinter.Core
 
     public class FileImporter
     {
-        public static string SupportedImagesExtensions =
-            "*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.jpeg;*.tiff";
+        public static string BitmapSupportedImagesExtensions =
+            "*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.jpeg;*.tiff;";
+        public static string MagickSupportedImagesExtentions =
+            "*.webp;";
 
         //https://blog.filestack.com/thoughts-and-knowledge/complete-image-file-extension-list/
         //http://archive.is/ml1sM
@@ -43,7 +46,7 @@ namespace MangaPrinter.Core
         static bool checkFileSupported(FileInfo file, List<FileImporterError> errorPages)
         {
             string lowerExt = file.Extension.ToLower();
-            bool supported = SupportedImagesExtensions.Contains(lowerExt);
+            bool supported = BitmapSupportedImagesExtensions.Contains(lowerExt) || MagickSupportedImagesExtentions.Contains(lowerExt);
             if (!supported && AllImageExtensions.Contains(lowerExt)) {
                 errorPages?.Add(new FileImporterError(file: file, reason: "Image extention '" + lowerExt + "' not supported"));
             }
@@ -52,27 +55,45 @@ namespace MangaPrinter.Core
 
         public MangaPage getMangaPageFromPath(FileInfo fiImage, float cutoff, List<FileImporterError> errorPages)
         {
-            MangaPage page = new MangaPage()
-            {
-                Name = Path.GetFileNameWithoutExtension(fiImage.Name),
-                ImagePath = fiImage.FullName,
-                IsDouble = false
-            };
+            MangaPage resultPage = null;
 
-            using (FileStream file = new FileStream(page.ImagePath, FileMode.Open, FileAccess.Read))
+            using (FileStream file = new FileStream(fiImage.FullName, FileMode.Open, FileAccess.Read))
             {
                 try
                 {
-                    using (Image jpeg = Image.FromStream(stream: file,
-                                                                useEmbeddedColorManagement: false,
-                                                                validateImageData: false))
+                    MangaPage page = new MangaPage()
                     {
-                        page.AspectRatio =
-                            jpeg.PhysicalDimension.Height > 0 ?
-                            jpeg.PhysicalDimension.Width / jpeg.PhysicalDimension.Height :
-                            0;
-                        page.IsDouble = page.AspectRatio >= cutoff;
+                        Name = Path.GetFileNameWithoutExtension(fiImage.Name),
+                        ImagePath = fiImage.FullName,
+                        IsDouble = false
+                    };
+                    if (MagickSupportedImagesExtentions.Contains(fiImage.Extension.ToLower()))
+                    {
+                        using (MagickImage webP = new MagickImage(file))
+                        {
+                            page.AspectRatio =
+                                webP.Height > 0 ?
+                                webP.Width / webP.Height :
+                                0;
+                            page.IsDouble = page.AspectRatio >= cutoff;
+                        }
+
                     }
+                    else
+                    {
+                        // We dont use BitmapFromUrlExt() because we can read only metadata for simple types
+                        using (Image jpeg = Image.FromStream(stream: file,
+                                                                    useEmbeddedColorManagement: false,
+                                                                    validateImageData: false))
+                        {
+                            page.AspectRatio =
+                                jpeg.PhysicalDimension.Height > 0 ?
+                                jpeg.PhysicalDimension.Width / jpeg.PhysicalDimension.Height :
+                                0;
+                            page.IsDouble = page.AspectRatio >= cutoff;
+                        }
+                    }
+                    resultPage = page;
                 }
                 catch (OutOfMemoryException ex) {
                     // Not valid image or not supported
@@ -84,7 +105,7 @@ namespace MangaPrinter.Core
                 }
             }
 
-            return page;
+            return resultPage;
         }
 
         public List<MangaChapter> getChapters(DirectoryInfo di, bool subFodlers, float pageCutoff, bool RTL, 
@@ -109,7 +130,9 @@ namespace MangaPrinter.Core
                     updateFunc?.Invoke(fi.Directory.Name + "/" + fi.Name, 0);
                     try
                     {
-                        ch.Pages.Add(getMangaPageFromPath(fi, pageCutoff,errorPages));
+                        var page = getMangaPageFromPath(fi, pageCutoff, errorPages);
+                        if (page != null)
+                            ch.Pages.Add(page);
                     }
                     catch (Exception ex) { Debug.Print(ex.ToString()); }
                 }
@@ -171,7 +194,9 @@ namespace MangaPrinter.Core
                     updateFunc?.Invoke(fi.Directory.Name + "/" + fi.Name, (int)(100.0f * pageIndex / pageCount));
                     try
                     {
-                        result.Add(getMangaPageFromPath(fi, pageCutoff, errorPages));
+                        var page = getMangaPageFromPath(fi, pageCutoff, errorPages);
+                        if (page != null)
+                            result.Add(page);
                     }
                     catch (Exception ex) { Debug.Print(ex.ToString()); }
 
