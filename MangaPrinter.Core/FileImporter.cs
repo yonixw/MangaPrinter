@@ -9,13 +9,43 @@ using System.Windows.Forms;
 
 namespace MangaPrinter.Core
 {
+    public class FileImporterErros
+    {
+        FileInfo fileObj =null;
+        Exception exObject = null;
+        string reasonString = "";
+
+        public FileImporterErros(FileInfo file=null, Exception ex=null, string reason="")
+        {
+            fileObj = file;
+            ex = exObject;
+            reasonString = reason;
+        }
+    }
+
     public class FileImporter
     {
-        public static string ImagesExtensions =
+        public static string SupportedImagesExtensions =
             "*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.jpeg;*.tiff";
 
+        //https://blog.filestack.com/thoughts-and-knowledge/complete-image-file-extension-list/
+        //http://archive.is/ml1sM
+        public static string AllImageExtensions =
+            ".jpg;.jpeg;.jpe;jif;.jfif;.jfi;.png;.gif;.webp;.tiff;.tif;" +
+            ".psd;.raw;.arw;.cr2;.nrw;.k25;.bmp;.dib;.heif;.heic;.ind;.indd;.indt;" +
+            ".jp2;.j2k;.jpf;.jpx;.jpm;.mj2;.svg;.svgz;.ai;.eps;.pdf;";
 
-        public MangaPage getMangaPageFromPath(FileInfo fiImage, float cutoff)
+        static bool checkFileSupported(FileInfo file, List<FileImporterErros> errorPages)
+        {
+            string lowerExt = file.Extension.ToLower();
+            bool supported = SupportedImagesExtensions.Contains(lowerExt);
+            if (!supported && AllImageExtensions.Contains(lowerExt)) {
+                errorPages?.Add(new FileImporterErros(file: file, reason: "Image extention '" + lowerExt + "' not supported"));
+            }
+            return supported;
+        }
+
+        public MangaPage getMangaPageFromPath(FileInfo fiImage, float cutoff, List<FileImporterErros> errorPages)
         {
             MangaPage page = new MangaPage()
             {
@@ -40,16 +70,16 @@ namespace MangaPrinter.Core
                     }
                 }
                 catch (OutOfMemoryException ex) {
-                    MessageBox.Show("Can't load image file:\n" + page.ImagePath + "\n" + ex.ToString());
-
-                } // Not valid image or not supported
+                    // Not valid image or not supported
+                    errorPages?.Add(new FileImporterErros(file: fiImage, ex: ex, reason: "Can't load image file"));
+                } 
             }
 
             return page;
         }
 
         public List<MangaChapter> getChapters(DirectoryInfo di, bool subFodlers, float pageCutoff, bool RTL, 
-            Func<FileSystemInfo, object> orderFunc, Action<string, int> updateFunc = null)
+            Func<FileSystemInfo, object> orderFunc, List<FileImporterErros> errorPages, Action<string, int> updateFunc = null)
         {
             List<MangaChapter> result = new List<MangaChapter>();
 
@@ -64,14 +94,13 @@ namespace MangaPrinter.Core
 
                 foreach (FileInfo fi in di.EnumerateFiles("*.*").OrderBy(orderFunc))
                 {
-                    if (!ImagesExtensions.Contains(fi.Extension))
+                    if (!checkFileSupported(fi, errorPages))
                         continue;
 
-                    if (updateFunc != null)
-                        updateFunc(fi.Directory.Name + "/" + fi.Name, 0);
+                    updateFunc?.Invoke(fi.Directory.Name + "/" + fi.Name, 0);
                     try
                     {
-                        ch.Pages.Add(getMangaPageFromPath(fi, pageCutoff));
+                        ch.Pages.Add(getMangaPageFromPath(fi, pageCutoff,errorPages));
                     }
                     catch (Exception ex) { Debug.Print(ex.ToString()); }
                 }
@@ -89,7 +118,7 @@ namespace MangaPrinter.Core
                 {
                     foreach (DirectoryInfo subdi in di.EnumerateDirectories().OrderBy(orderFunc))
                     {
-                        List<MangaChapter> subdiChapters = getChapters(subdi, subFodlers, pageCutoff, RTL, orderFunc, updateFunc);
+                        List<MangaChapter> subdiChapters = getChapters(subdi, subFodlers, pageCutoff, RTL, orderFunc, errorPages, updateFunc);
                         result.AddRange(subdiChapters);
                     }
                 }
@@ -99,13 +128,13 @@ namespace MangaPrinter.Core
         }
 
         public List<MangaChapter> getChapters(string DirectoryPath, bool subFodlers, float pageCutoff, bool isRTL, 
-            Func<FileSystemInfo, object> orderFunc, Action<string, int> updateFunc = null)
+            Func<FileSystemInfo, object> orderFunc, List<FileImporterErros> errorPages, Action<string, int> updateFunc = null)
         {
-            return getChapters(new DirectoryInfo(DirectoryPath), subFodlers, pageCutoff, isRTL,  orderFunc, updateFunc);
+            return getChapters(new DirectoryInfo(DirectoryPath), subFodlers, pageCutoff, isRTL,  orderFunc, errorPages, updateFunc);
         }
 
         public List<MangaPage> importImages(string[] imagePaths, float pageCutoff,
-            Func<FileSystemInfo, object> orderFunc, Action<string, int> updateFunc = null)
+            Func<FileSystemInfo, object> orderFunc, List<FileImporterErros> errorPages, Action<string, int> updateFunc = null)
         {
             List<FileSystemInfo> files = new List<FileSystemInfo>();
             List<MangaPage> result = new List<MangaPage>();
@@ -114,7 +143,7 @@ namespace MangaPrinter.Core
             foreach (string path in imagePaths)
             {
                 FileInfo fi = new FileInfo(path);
-                if (ImagesExtensions.Contains(fi.Extension))
+                if (checkFileSupported(fi, errorPages))
                 {
                     files.Add(fi);
                 }
@@ -127,14 +156,13 @@ namespace MangaPrinter.Core
             {
                 FileInfo fi = new FileInfo(imagePaths[pageIndex]);
 
-                if (ImagesExtensions.Contains(fi.Extension))
+                if (checkFileSupported(fi, errorPages))
                 {
 
-                    if (updateFunc != null)
-                        updateFunc(fi.Directory.Name + "/" + fi.Name, (int)(100.0f * pageIndex / pageCount));
+                    updateFunc?.Invoke(fi.Directory.Name + "/" + fi.Name, (int)(100.0f * pageIndex / pageCount));
                     try
                     {
-                        result.Add(getMangaPageFromPath(fi, pageCutoff));
+                        result.Add(getMangaPageFromPath(fi, pageCutoff, errorPages));
                     }
                     catch (Exception ex) { Debug.Print(ex.ToString()); }
 

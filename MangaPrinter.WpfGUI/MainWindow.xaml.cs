@@ -200,7 +200,7 @@ namespace MangaPrinter.WpfGUI
             ListBoxAction<Core.MangaChapter>(lstFileChapters, (ch) =>
             {
                 Microsoft.Win32.OpenFileDialog dlgOpenImages = new Microsoft.Win32.OpenFileDialog();
-                dlgOpenImages.Filter = "Images|" + Core.FileImporter.ImagesExtensions;
+                dlgOpenImages.Filter = "Supported Images|" + Core.FileImporter.SupportedImagesExtensions;
                 dlgOpenImages.FileName = "Open supported images";
                 dlgOpenImages.CheckFileExists = true;
                 dlgOpenImages.Multiselect = true;
