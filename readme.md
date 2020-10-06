@@ -1,17 +1,17 @@
-# MangaPrinter
+# Manga Printer
 
 The tool that will let you print manga from the internet!
 
 ## The problem:
 
-Downloading manga from the internet (**Legally of course, after supporting the creator**) can result in complex situations:
+Downloading manga from the internet (**Legally of course, like from [MANGA Plus by SHUEISHA](https://mangaplus.shueisha.co.jp/)**) can result in complex situations:
 * You have some files with double pages and some contain singles. 
 * Simply cutting every double page into 2 files of singles will not work because you need to consider whether the chapter is being read from right to left or vice versa. 
 * Also, since the chapter was stripped from any advertisement pages in-between, some doubles will be split across printed pages if not treated correctly.
 
 ## The solution:
 
-Here is where MangaPrinter comes to help. It will let you:
+Here is where Manga Printer comes to help. It will let you:
 
 * Manage both chapters and pages
 * Decide on the go whether a page is single or double
