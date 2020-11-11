@@ -15,7 +15,7 @@ export class MangaChapter {
         result.rtl = rtl;
         result.pages = [];
         for (let i = 0; i < pageCount; i++) {
-            result.pages.push(new MangaPage);
+            result.pages.push(new MangaPage());
         }
         return result;
     }

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import rtlImage from '../../../icons/RTL.png'
-import ltrImage from '../../../icons/LTR.png'
+import rtlImage from '../../icons/RTL.png'
+import ltrImage from '../../icons/LTR.png'
 import styles from './ctrl.module.css'
-import { MangaChapter} from "../../../lib/MangaObjects"
 
 export interface ChapterItemProps {
     chapterID: number
@@ -15,9 +14,11 @@ export interface ChapterItemProps {
 export const ChapterItem = (props:ChapterItemProps ) => 
 {
   // Declare a new state variable, which we'll call "count"
-  const [rtl,setRTL] = useState(props.rtl);
-  const [name, setName] = useState(props.name);
-  const [pageCount, setPageCount] = useState(props.pageCount);
+  const rtl = props.rtl;
+  const name = props.name;
+  const pageCount = props.pageCount;
+
+  console.log(props);
 
   /* componentDidMount\Update */ 
   useEffect(() => {
