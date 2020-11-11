@@ -3,7 +3,7 @@ import React from 'react';
 import { Story, Meta } from '@storybook/react/types-6-0';
 
 import { ChapterItem, ChapterItemProps } from './ctrl';
-import { MangaChapter } from 'mangaprinterjs-lib/dist/MangaObjects';
+import { MangaChapter } from "../../../lib/MangaObjects"
 
 export default {
   title: 'Example/ChapterItem',
@@ -21,28 +21,4 @@ RTL.args = {
     "Chapter1",
     true,
     25)
-};
-
-export const LTR = Template.bind({});
-LTR.args = {
-chapter: MangaChapter.mockChapter(
-  "Chapter2",
-  false,
-  20)
-};
-
-export const PageWarn1 = Template.bind({});
-PageWarn1.args = {
-chapter: MangaChapter.mockChapter(
-  "Chapter2",
-  true,
-  25)
-};
-
-export const PageWarn2 = Template.bind({});
-PageWarn2.args = {
-chapter: MangaChapter.mockChapter(
-  "Chapter2",
-  false,
-  70)
 };
