@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import rtlImage from '../../icons/RTL.png'
 import ltrImage from '../../icons/LTR.png'
-import styles from './chapter.item.module.css'
+import styles from './ctrl.module.css'
 
 export interface ChapterItemProps {
   rtl?: boolean
@@ -30,19 +30,26 @@ export const ChapterItem = (
       <span></span> */}
 
       <div className={styles.flexh}>
-          <div><img src={props.rtl ? rtlImage: ltrImage} alt={"RTL"}/></div>
-          <div>{props.name}</div>
           <div>
+            <img 
+              className={styles["reset-img"]}
+              src={props.rtl ? rtlImage: ltrImage} 
+              alt={"RTL"}/>
+          </div>
+          <div>
+          &nbsp;
+          {props.name} 
+          &nbsp;
           {
             (props.pageCount < 25) ? 
-              (<span>[{props.pageCount}] </span>) :
-              (
+            (<span>[{props.pageCount} pages]</span>) :
+            (
               (props.pageCount < 65) ? 
-                (<b>[{props.pageCount} 👀] </b>) :
-                (<b style={{color:"red"}}>[{props.pageCount} 🛑] </b>)
+              (<b>[{props.pageCount} 👀 pages]</b>) :
+              (<b style={{color:"red"}}>[{props.pageCount} 🛑 pages]</b>)
               )
-          }
-          </div>
+            }
+            </div>
       </div>
     </div>)
 
