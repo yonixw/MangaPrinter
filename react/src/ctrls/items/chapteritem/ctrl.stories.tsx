@@ -3,7 +3,6 @@ import React from 'react';
 import { Story, Meta } from '@storybook/react/types-6-0';
 
 import { ChapterItem, ChapterItemProps } from './ctrl';
-import { MangaChapter } from "../../../lib/MangaObjects"
 
 export default {
   title: 'Example/ChapterItem',
@@ -17,32 +16,29 @@ const Template: Story<ChapterItemProps> = (args) => <ChapterItem {...args} />;
 
 export const RTL = Template.bind({});
 RTL.args = {
-  chapter: MangaChapter.mockChapter(
-    "Chapter1",
-    true,
-    20)
+  name: "Chapter1",
+  pageCount: 12,
+  rtl: true
 };
 
 export const LTR = Template.bind({});
 LTR.args = {
-  chapter: MangaChapter.mockChapter(
-    "Chapter2",
-    true,
-    24)
+  name: "Chapter2",
+  pageCount: 20,
+  rtl: false
 };
 
-export const PageCountWarn1 = Template.bind({});
-PageCountWarn1.args = {
-  chapter: MangaChapter.mockChapter(
-    "Chapter3",
-    false,
-    25)
+export const PageWarn1 = Template.bind({});
+PageWarn1.args = {
+  name: "Chapter2",
+  pageCount: 25,
+  rtl: true
 };
 
-export const PageCountWarn2 = Template.bind({});
-PageCountWarn2.args = {
-  chapter: MangaChapter.mockChapter(
-    "Chapter4",
-    true,
-    65)
+export const PageWarn2 = Template.bind({});
+PageWarn2.args = {
+  name: "Chapter2",
+  pageCount: 70,
+  rtl: false
 };
+

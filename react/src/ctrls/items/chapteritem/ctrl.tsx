@@ -5,24 +5,25 @@ import styles from './ctrl.module.css'
 import { MangaChapter} from "../../../lib/MangaObjects"
 
 export interface ChapterItemProps {
-  chapter: MangaChapter
+    chapterID: number
+    rtl?: boolean
+    name: string
+    pageCount: number
 }
 
 
-export const ChapterItem = (
-  props:ChapterItemProps = {
-    chapter: { rtl: true, name: "Empty chapter", pages: []}
-  }) => 
+export const ChapterItem = (props:ChapterItemProps ) => 
 {
   // Declare a new state variable, which we'll call "count"
-  const [count, setCount] = useState(0);
+  const [rtl,setRTL] = useState(props.rtl);
+  const [name, setName] = useState(props.name);
+  const [pageCount, setPageCount] = useState(props.pageCount);
 
   /* componentDidMount\Update */ 
   useEffect(() => {
     
   });
 
-  const pageCount = props.chapter.pages.length;
   return (
     <div>
       {/* <img src={rtlImage} alt={"RTL"}/>
@@ -33,12 +34,12 @@ export const ChapterItem = (
           <div>
             <img 
               className={styles["reset-img"]}
-              src={props.chapter.rtl ? rtlImage: ltrImage} 
-              alt={"RTL"}/>
+              src={rtl ? rtlImage: ltrImage} 
+              alt={rtl ? "RTL":"LTR"}/>
           </div>
           <div>
           &nbsp;
-          {props.chapter.name} 
+          {name} 
           &nbsp;
           {
             (pageCount < 25) ? 
