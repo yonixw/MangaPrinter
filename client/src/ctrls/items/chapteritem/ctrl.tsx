@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import rtlImage from '../../icons/RTL.png'
-import ltrImage from '../../icons/LTR.png'
+import rtlImage from '../../../icons/RTL.png'
+import ltrImage from '../../../icons/LTR.png'
 import styles from './ctrl.module.css'
 
 export interface ChapterItemProps {
