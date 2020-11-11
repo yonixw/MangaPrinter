@@ -3,7 +3,7 @@ import React from 'react';
 import { Story, Meta } from '@storybook/react/types-6-0';
 
 import { ChapterItem, ChapterItemProps } from './ctrl';
-import { MangaChapter, MangaPage } from 'mangaprinterjs-lib/MangaObjects';
+import { MangaChapter } from 'mangaprinterjs-lib/dist/MangaObjects';
 
 export default {
   title: 'Example/ChapterItem',

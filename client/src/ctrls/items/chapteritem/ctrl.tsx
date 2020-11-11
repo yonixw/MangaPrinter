@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import rtlImage from '../../../icons/RTL.png'
 import ltrImage from '../../../icons/LTR.png'
 import styles from './ctrl.module.css'
-import { } from 'mangaprinterjs-lib';
+import { MangaPage} from "mangaprinterjs-lib/dist/MangaObjects"
 
 export interface ChapterItemProps {
   chapter: MangaChapter
