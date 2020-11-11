@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react';
 import rtlImage from '../../../icons/RTL.png'
 import ltrImage from '../../../icons/LTR.png'
 import styles from './ctrl.module.css'
+import { } from 'mangaprinterjs-lib';
 
 export interface ChapterItemProps {
-  rtl?: boolean
-  name: string
-  pageCount: number
+  chapter: MangaChapter
 }
 
 
 export const ChapterItem = (
   props:ChapterItemProps = {
-    rtl: true, name: "Empty chapter", pageCount:0
+    chapter: { rtl: true, name: "Empty chapter", pages: []}
   }) => 
 {
   // Declare a new state variable, which we'll call "count"
@@ -23,6 +22,7 @@ export const ChapterItem = (
     
   });
 
+  const pageCount = props.chapter.pages.length;
   return (
     <div>
       {/* <img src={rtlImage} alt={"RTL"}/>
@@ -33,20 +33,20 @@ export const ChapterItem = (
           <div>
             <img 
               className={styles["reset-img"]}
-              src={props.rtl ? rtlImage: ltrImage} 
+              src={props.chapter.rtl ? rtlImage: ltrImage} 
               alt={"RTL"}/>
           </div>
           <div>
           &nbsp;
-          {props.name} 
+          {props.chapter.name} 
           &nbsp;
           {
-            (props.pageCount < 25) ? 
-            (<span>[{props.pageCount} pages]</span>) :
+            (pageCount < 25) ? 
+            (<span>[{pageCount} pages]</span>) :
             (
-              (props.pageCount < 65) ? 
-              (<b>[{props.pageCount} 👀 pages]</b>) :
-              (<b style={{color:"red"}}>[{props.pageCount} 🛑 pages]</b>)
+              (pageCount < 65) ? 
+              (<b>[{pageCount} 👀 pages]</b>) :
+              (<b style={{color:"red"}}>[{pageCount} 🛑 pages]</b>)
               )
             }
             </div>
