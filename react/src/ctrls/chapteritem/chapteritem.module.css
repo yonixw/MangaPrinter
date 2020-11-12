@@ -23,3 +23,8 @@
     /*https://stackoverflow.com/a/14054008/1997873*/
     vertical-align: bottom;
   }
+
+  
+  .row-controls button {
+    margin-left: 10px !important;
+  }

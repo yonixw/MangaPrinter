@@ -1,24 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import rtlImage from '../../icons/RTL.png'
 import ltrImage from '../../icons/LTR.png'
-import styles from './ctrl.module.css'
+import styles from './chapteritem.module.css'
+import { Button, Checkbox, List, Tooltip } from 'antd';
+import {DeleteOutlined, EditOutlined} from '@ant-design/icons'
 
 export interface ChapterItemProps {
     chapterID: number
-    rtl?: boolean
+    rtl: boolean
     name: string
     pageCount: number
+    checked?: boolean
+    onChecked? : (checked:boolean)=>void
+    onDelete? : () => void
 }
 
 
 export const ChapterItem = (props:ChapterItemProps ) => 
 {
   // Declare a new state variable, which we'll call "count"
-  const rtl = props.rtl;
-  const name = props.name;
-  const pageCount = props.pageCount;
+  const [name, setName] = useState(props.name);
+  const [rtl, setRTL] = useState(props.rtl);
+  const [pageCount] = useState(props.pageCount);
+  const [checked,setCheckedState] = useState(props.checked || false);
 
-  console.log(props);
+  const setChecked = (c:boolean) => 
+  {
+    setCheckedState(c);
+    if (props.onChecked) props.onChecked(c);
+  }
+
+  const toggleRTL = ()=> {setRTL(!rtl)}
+
+  const renameChapter = () => {
+    const newName = prompt("Enter new name:",name);
+    if (newName && newName != name)
+      setName(newName);
+  }
 
   /* componentDidMount\Update */ 
   useEffect(() => {
@@ -26,17 +44,25 @@ export const ChapterItem = (props:ChapterItemProps ) =>
   });
 
   return (
-    <div>
+    <List.Item>
       {/* <img src={rtlImage} alt={"RTL"}/>
       <span></span>
       <span></span> */}
 
       <div className={styles.flexh}>
           <div>
-            <img 
-              className={styles["reset-img"]}
-              src={rtl ? rtlImage: ltrImage} 
-              alt={rtl ? "RTL":"LTR"}/>
+            <Checkbox 
+              checked={checked} 
+              onChange={(e)=>setChecked(e.target.checked)}>
+            </Checkbox>
+          </div>
+          <div>
+            <Tooltip placement="right" title="Reading direction: RTL\LTR">
+              <img 
+                onClick={toggleRTL}
+                className={styles["reset-img"]}
+                src={rtl ? rtlImage: ltrImage} alt={rtl ? "RTL":"LTR"}/>
+            </Tooltip>
           </div>
           <div>
           &nbsp;
@@ -53,6 +79,16 @@ export const ChapterItem = (props:ChapterItemProps ) =>
             }
             </div>
       </div>
-    </div>)
+      <div className={styles["row-controls"]}>
+        <Button onClick={renameChapter}>
+          <EditOutlined /> Rename
+        </Button>
+        <Button danger onClick={(props.onDelete || function(){})}>
+          <DeleteOutlined />
+        </Button>
+      </div>
+    </List.Item>)
 
 };
+
+

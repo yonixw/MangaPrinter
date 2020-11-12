@@ -23,3 +23,7 @@
     /*https://stackoverflow.com/a/14054008/1997873*/
     vertical-align: bottom;
   }
+
+  .ant-list-item{
+    justify-content: initial !important
+  }

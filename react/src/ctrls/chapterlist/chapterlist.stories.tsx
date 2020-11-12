@@ -4,6 +4,11 @@ import { Story, Meta } from '@storybook/react/types-6-0';
 
 import { ChapterList, ChapterListProps } from './chapterlist';
 
+
+
+
+import 'antd/dist/antd.css'; 
+
 export default {
   title: 'Example/ChapterList',
   component: ChapterList,
