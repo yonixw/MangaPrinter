@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+*/bin/Debug/
+*/obj/Debug/
+
 # testing
 /coverage
 
