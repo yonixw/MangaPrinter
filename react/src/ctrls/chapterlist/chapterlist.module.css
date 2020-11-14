@@ -27,3 +27,8 @@
   .ant-list-item{
     justify-content: initial !important
   }
+
+   
+  .menu-buttons button {
+    margin-left: 10px !important;
+  }

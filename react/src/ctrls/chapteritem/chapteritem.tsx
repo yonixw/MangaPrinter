@@ -12,7 +12,7 @@ export interface ChapterItemProps {
     pageCount: number
     checked?: boolean
     onChecked? : (checked:boolean)=>void
-    onDelete? : () => void
+    onDelete? : (id:number) => void
 }
 
 
@@ -34,7 +34,7 @@ export const ChapterItem = (props:ChapterItemProps ) =>
 
   const renameChapter = () => {
     const newName = prompt("Enter new name:",name);
-    if (newName && newName != name)
+    if (newName && newName !== name)
       setName(newName);
   }
 
@@ -83,7 +83,9 @@ export const ChapterItem = (props:ChapterItemProps ) =>
         <Button onClick={renameChapter}>
           <EditOutlined /> Rename
         </Button>
-        <Button danger onClick={(props.onDelete || function(){})}>
+        <Button danger 
+            onClick={()=>
+              (props.onDelete || function(a){})((props.chapterID))}>
           <DeleteOutlined />
         </Button>
       </div>
