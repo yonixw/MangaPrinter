@@ -4,60 +4,30 @@ import styles from './chapterlist.module.css'
 
 import { Affix, Button, List, Spin } from 'antd'
 
-import { ChapterItem, ChapterItemProps } from '../chapteritem/chapteritem';
+import { ChapterItem, } from '../chapteritem/chapteritem';
 import { DeleteFilled, FolderOpenOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import { removeItemOnce, ArrayReducer, useReduceArr, RActions } from '../../utils/arrays';
+import { MangaChapter } from '../../lib/MangaObjects';
+import { observer } from 'mobx-react';
+import { IObservableArray, runInAction, toJS } from 'mobx';
 
 
-export interface ChapterListProps {
-  chapters?: ChapterItemProps[]
-  onChaptersUpdate: (chapters: ChapterItemProps[]) => void
-}
 
-export const ChapterList = (props: ChapterListProps) => {
-  //const [chapters, setChapters] = useState(props.chapters)
+export const ChapterList = observer( 
+  ({chapters}:{chapters:IObservableArray<MangaChapter>}) => {
 
-  const initialChapters = (props.chapters||new Array<ChapterItemProps>());
-  const [chapters,setChpater] = useReduceArr(
-      initialChapters
-  );
-  const [loading, setLoading] = useState(false);
+  const [loading,setLoading] = useState(false)
   /*const [container] = useState(null);*/
 
-  const newChapter = ():ChapterItemProps=> {
+  const newChapter = ():MangaChapter=> {
     const chapterName = prompt("Enter new chapter name:") || "Empty1"
-    return {
-      chapterID: (new Date()).getTime(), // TODO: Replace with guid
-      name: chapterName,
-      rtl: false,
-      pageCount: 0
-    }
+
+    console.log(toJS(chapters)) // use slice() to print
+
+    return new MangaChapter((new Date()).getTime(), chapterName,true)
   }
 
-  /* const addChapter = () => {
-    if (!chapterName) return;
-    
-    const newChapter : ChapterItemProps = {
-      chapterID: (new Date()).getTime(), // TODO: Replace with guid
-      name: chapterName,
-      rtl: false,
-      pageCount: 0
-    }
-    setChapters([...(chapters||[]), newChapter]);
-  }
 
-  const onDelete =(id:number) => {
-    if (chapters) {
-      setChapters(
-        [...removeItemOnce(chapters, (e)=>e.chapterID===id)]
-      );
-    }
-  } */
-
-  /* componentDidMount\Update */
-  useEffect(() => {
-
-  });
 
   return (
     <>
@@ -65,22 +35,19 @@ export const ChapterList = (props: ChapterListProps) => {
         <div className={styles["menu-buttons"]}>
           <Button type="primary">
             <FolderOpenOutlined/> Import Folders</Button>
-          <Button onClick={
-              ()=>setChpater({type:RActions.INSERT, payload: newChapter()})
-          }>
+          <Button onClick={()=>runInAction(()=>chapters.push(newChapter()))}>
             <PlusSquareOutlined/> Add Empty</Button>
           <Button danger>
             <DeleteFilled/> Clear all</Button>
         </div>
       </Affix>
       <List
-        dataSource={chapters}
+        dataSource={chapters.slice()}
         renderItem={item => 
           (
-          <ChapterItem {...item} 
-            key={item.chapterID} onDelete={
-              ()=>setChpater({type:RActions.REMOVE, payload: item})
-            }
+          <ChapterItem chapter={item}
+            key={item.id} 
+            onRemove={()=>runInAction(()=>removeItemOnce(chapters,(e)=>e.id===item.id))}
           />)
         }>
 
@@ -93,4 +60,4 @@ export const ChapterList = (props: ChapterListProps) => {
       </List>
     </>)
 
-};
+});
