@@ -10,7 +10,7 @@ import { ChapterList } from './chapterlist';
 
 import 'antd/dist/antd.css'; 
 import { MangaChapter } from '../../lib/MangaObjects';
-import { observable, IObservableArray } from 'mobx';
+import { observable, IObservableArray, toJS } from 'mobx';
 
 export default {
   title: 'Example/ChapterList',
@@ -21,7 +21,13 @@ export default {
 } as Meta;
 
 const Template: Story<{chapters:IObservableArray<MangaChapter>}> 
-                    = (args) => <ChapterList {...args} />;
+                    = (args) => 
+                  <>
+                    <ChapterList {...args} />
+                    <button onClick={(e)=>console.log(toJS(args.chapters))}>
+                      Log state
+                    </button>
+                  </>;
 
 export const Example1 = Template.bind({});
 const chapters1 = observable([] as MangaChapter[]);

@@ -6,7 +6,6 @@ import { Button, Checkbox, List, Tooltip } from 'antd';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons'
 import { MangaChapter } from '../../lib/MangaObjects';
 import { observer } from 'mobx-react';
-import { runInAction } from 'mobx';
 
 
 export type OnChapter = (chpaterID?:number, value?:any)=>void
