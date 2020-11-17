@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState} from 'react';
 import './chapterlist.module.css'
 import styles from './chapterlist.module.css'
 
@@ -6,10 +6,10 @@ import { Affix, Button, Checkbox, Divider, List, Spin, Tooltip } from 'antd';
 
 import { ChapterItem, } from '../chapteritem/chapteritem';
 import { DeleteFilled, FolderOpenOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { removeItemOnce, ArrayReducer, useReduceArr, RActions } from '../../utils/arrays';
+import { removeItemOnce } from '../../utils/arrays';
 import { MangaChapter } from '../../lib/MangaObjects';
 import { observer } from 'mobx-react';
-import { IObservableArray, runInAction, toJS } from 'mobx';
+import { IObservableArray, runInAction } from 'mobx';
 
 import rtlImage from '../../icons/RTL.png'
 import ltrImage from '../../icons/LTR.png'
@@ -29,11 +29,10 @@ export const ChapterList = observer(
   }
 
   const noneSelected = chapters.slice()
-          .filter(e=>e.checked).length==0;
+          .filter(e=>e.checked).length===0;
   const allSelected =chapters.slice()
-          .filter(e=>e.checked).length==chapters.slice().length;
+          .filter(e=>e.checked).length===chapters.slice().length;
   const someSelected = !allSelected && !noneSelected
-  console.log([noneSelected,someSelected,allSelected])
 
   const setCheckAll = (c:boolean) => {
     chapters.slice().forEach(ch=>{

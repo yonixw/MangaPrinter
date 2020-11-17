@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import rtlImage from '../../icons/RTL.png'
 import ltrImage from '../../icons/LTR.png'
 import styles from './chapteritem.module.css'
