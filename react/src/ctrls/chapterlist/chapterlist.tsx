@@ -28,13 +28,27 @@ export const ChapterList = observer(
     return new MangaChapter((new Date()).getTime(), chapterName,true)
   }
 
-  const noneSelected = chapters.slice().filter(e=>e.checked).length==0;
+  const noneSelected = chapters.slice()
+          .filter(e=>e.checked).length==0;
+  const allSelected =chapters.slice()
+          .filter(e=>e.checked).length==chapters.slice().length;
+  const someSelected = !allSelected && !noneSelected
+  console.log([noneSelected,someSelected,allSelected])
+
+  const setCheckAll = (c:boolean) => {
+    chapters.slice().forEach(ch=>{
+      ch.setCheck(c);
+    })
+  }
 
   return (
     <>
       <Affix offsetTop={10} /*target={()=>container}*/>
         <div className={styles["menu-buttons"]}>
-          <Checkbox></Checkbox>
+          <Checkbox 
+            checked={allSelected} indeterminate={someSelected}
+            onChange={(e)=>setCheckAll(e.target.checked)}
+            ></Checkbox>
           <Tooltip placement="bottomLeft" title="Delete Selected">
             <Button danger disabled={noneSelected}>
               <DeleteFilled/>
