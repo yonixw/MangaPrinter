@@ -6,7 +6,7 @@ import { Affix, Button, Checkbox, Divider, List, Spin, Tooltip } from 'antd';
 
 import { ChapterItem, } from '../chapteritem/chapteritem';
 import { DeleteFilled, FolderOpenOutlined, PlusSquareOutlined } from '@ant-design/icons';
-import { removeItemOnce } from '../../utils/arrays';
+import { removeItemOnce, removeItemAll } from '../../utils/arrays';
 import { MangaChapter } from '../../lib/MangaObjects';
 import { observer } from 'mobx-react';
 import { IObservableArray, runInAction } from 'mobx';
@@ -14,7 +14,7 @@ import { IObservableArray, runInAction } from 'mobx';
 import rtlImage from '../../icons/RTL.png'
 import ltrImage from '../../icons/LTR.png'
 
-
+export const grayScaleBlur = "grayscale(1) blur(2px)"
 
 export const ChapterList = observer( 
   ({chapters}:{chapters:IObservableArray<MangaChapter>}) => {
@@ -28,15 +28,30 @@ export const ChapterList = observer(
     return new MangaChapter((new Date()).getTime(), chapterName,true)
   }
 
-  const noneSelected = chapters.slice()
-          .filter(e=>e.checked).length===0;
-  const allSelected =chapters.slice()
-          .filter(e=>e.checked).length===chapters.slice().length;
+  const checkedCount = chapters.slice().filter(e=>e.checked).length
+  const chaptersCount = chapters.slice().length;
+
+  const noneSelected = checkedCount ===0;
+  const allSelected = checkedCount === chaptersCount;
   const someSelected = !allSelected && !noneSelected
 
   const setCheckAll = (c:boolean) => {
     chapters.slice().forEach(ch=>{
       ch.setCheck(c);
+    })
+  }
+
+  const changeSelectedRTL = (rtl:boolean) => {
+    runInAction(()=>{
+      chapters.filter(e=>e.checked).forEach((e)=>{
+        e.rtl = rtl;
+      })
+    })
+  }
+
+  const deleteSelected = () => {
+    runInAction(()=>{
+      removeItemAll(chapters, (e)=>e.checked)
     })
   }
 
@@ -49,20 +64,22 @@ export const ChapterList = observer(
             onChange={(e)=>setCheckAll(e.target.checked)}
             ></Checkbox>
           <Tooltip placement="bottomLeft" title="Delete Selected">
-            <Button danger disabled={noneSelected}>
+            <Button danger disabled={noneSelected} onClick={deleteSelected}>
               <DeleteFilled/>
             </Button>
           </Tooltip>
           <Tooltip placement="bottom" title="RTL Selected">
             <img 
-                //onClick={chapter.toggleRTL}
+                style={noneSelected? {filter: grayScaleBlur}:{}}
+                onClick={()=>changeSelectedRTL(true)}
                 className={styles["reset-img"]}
                 src={rtlImage} 
                 alt={"RTL"}/>
           </Tooltip>
           <Tooltip placement="bottom" title="LTR Selected">
             <img 
-//                onClick={chapter.toggleRTL}
+                style={noneSelected? {filter: grayScaleBlur}:{}}
+                onClick={()=>changeSelectedRTL(false)}
                 className={styles["reset-img"]}
                 src={ltrImage} 
                 alt={"LTR"}/>
@@ -72,7 +89,7 @@ export const ChapterList = observer(
               <PlusSquareOutlined/>Empty</Button>
           </Tooltip>
           <Button type="primary">
-            <FolderOpenOutlined/>Add Folders</Button>
+            <FolderOpenOutlined/>Add Folder(s)</Button>
         </div>
       </Affix>
       <Divider />
