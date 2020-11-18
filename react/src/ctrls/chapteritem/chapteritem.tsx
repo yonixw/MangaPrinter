@@ -27,43 +27,52 @@ export const ChapterItem = observer(
   });
  */
   return (
-    <List.Item>
+    <List.Item >
       {/* <img src={rtlImage} alt={"RTL"}/>
       <span></span>
       <span></span> */}
-
-      <div className={styles.flexh}>
-          <div>
-            <Checkbox 
-              checked={chapter.checked} 
-              onChange={(e)=>chapter.setCheck(e.target.checked)}>
-            </Checkbox>
-          </div>
-          <div>
-            <Tooltip placement="right" title="Reading direction: RTL\LTR">
-              <img 
-                onClick={chapter.toggleRTL}
-                className={styles["reset-img"]}
-                src={chapter.rtl ? rtlImage: ltrImage} 
-                alt={chapter.rtl ? "RTL":"LTR"}/>
-            </Tooltip>
-          </div>
-          <div>
-          &nbsp;
-          {chapter.name} 
-
-          &nbsp;
-          {
-            (chapter.pageCount < 25) ? 
-            (<span>[{chapter.pageCount} pages]</span>) :
-            (
-              (chapter.pageCount < 65) ? 
-              (<b>[{chapter.pageCount} 👀 pages]</b>) :
-              (<b style={{color:"red"}}>[{chapter.pageCount} 🛑 pages]</b>)
-              )
-            }
+      <List.Item.Meta 
+      description={
+        <Tooltip title={chapter.folderPath} trigger="click">
+          {chapter.folderPath.length<70?
+          chapter.folderPath:
+          "..."+chapter.folderPath.substr(-70)}
+        </Tooltip>
+      }  
+      title={
+        <div className={styles.flexh}>
+            <div>
+              <Checkbox 
+                checked={chapter.checked} 
+                onChange={(e)=>chapter.setCheck(e.target.checked)}>
+              </Checkbox>
             </div>
-      </div>
+            <div>
+              <Tooltip placement="right" title="RightToLeft (RTL)\LeftToRight (LTR)">
+                <img 
+                  onClick={chapter.toggleRTL}
+                  className={styles["reset-img"]}
+                  src={chapter.rtl ? rtlImage: ltrImage} 
+                  alt={chapter.rtl ? "RTL":"LTR"}/>
+              </Tooltip>
+            </div>
+            <div>
+            &nbsp;
+            {chapter.name} 
+
+            &nbsp;
+            {
+              (chapter.pageCount < 25) ? 
+              (<span>[{chapter.pageCount} pages]</span>) :
+              (
+                (chapter.pageCount < 65) ? 
+                (<b>[{chapter.pageCount} 👀 pages]</b>) :
+                (<b style={{color:"red"}}>[{chapter.pageCount} 🛑 pages]</b>)
+                )
+              }
+              </div>
+        </div>
+      }></List.Item.Meta>
       <div className={styles["row-controls"]}>
         <Button onClick={renameChapter}>
           <EditOutlined /> Rename

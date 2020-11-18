@@ -11,10 +11,11 @@ export class MangaChapter {
     name: string = "<New Chapter>"
     rtl: boolean = true
     pages: Array<MangaPage> = []
+    folderPath: string = "<Added manually>"
     
     checked: boolean = false;
 
-    constructor(id:number, name:string, rtl:boolean) {
+    constructor(id:number, name:string, rtl:boolean, path?: string) {
         this.id = id
         makeObservable(this, {
             name: observable,
@@ -29,6 +30,8 @@ export class MangaChapter {
         })
         this.name = name;
         this.rtl = rtl
+        if (path)
+            this.folderPath=path;
     }
 
     rename(newName:string) {
@@ -47,9 +50,10 @@ export class MangaChapter {
         return this.pages.length;
     }
 
-    static mockChapter(id: number, name:string, rtl:boolean, pageCount: number) 
+    static mockChapter(id: number, name:string, rtl:boolean,
+        pageCount: number, path?:string) 
         : MangaChapter {
-        const result = new MangaChapter(id,name,rtl);
+        const result = new MangaChapter(id,name,rtl,path);
         for (let i = 0; i < pageCount; i++) {
             result.pages.push(new MangaPage());
         }

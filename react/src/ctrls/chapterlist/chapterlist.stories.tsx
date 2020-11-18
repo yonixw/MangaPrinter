@@ -31,7 +31,8 @@ const Template: Story<{chapters:IObservableArray<MangaChapter>}>
 
 export const Example1 = Template.bind({});
 const chapters1 = observable([] as MangaChapter[]);
-chapters1.push(MangaChapter.mockChapter(1,"Chapter1",true,20))
+chapters1.push(MangaChapter.mockChapter(1,"Chapter1",true,20,
+  "C:\\Users\\Yoni\\Documents\\Mangas\\Mangas\\Mangas\\Mangas\\Karakai Jouzu no Takagi-san\\Ch.135 - Dropped Something"))
 chapters1.push(MangaChapter.mockChapter(2,"Chapter2",false,70))
 Example1.args = {
   chapters: chapters1
