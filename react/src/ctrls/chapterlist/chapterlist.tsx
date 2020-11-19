@@ -106,8 +106,7 @@ export const ChapterList = observer(
               openUI={newChpFlow.emptyChapterUI} 
               onUpdate={newChpFlow.addChapter}
           />
-          <Button type="primary">
-            <FolderOpenOutlined/>Add Folder(s)</Button>
+          
         </div>
       </Affix>
       <Divider />
