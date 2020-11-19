@@ -1,4 +1,4 @@
-import { makeObservable, observable, action, computed } from "mobx"
+import { makeAutoObservable } from 'mobx';
 import { MangaPage } from "./MangaPage"
 
 
@@ -14,37 +14,31 @@ export class MangaChapter {
 
     constructor(id:number, name:string, rtl:boolean, path?: string) {
         this.id = id
-        makeObservable(this, {
-            name: observable,
-            rtl: observable,
-            pages: observable,
-            checked: observable,
-            pageCount: computed,
-
-            rename:  action.bound,
-            setCheck:  action.bound,
-            toggleRTL: action.bound,
-        })
         this.name = name;
         this.rtl = rtl
         if (path)
             this.folderPath=path;
+        makeAutoObservable(this);
     }
 
-    rename(newName:string) {
+    rename = (newName:string) => {
         this.name = newName
     }
 
-    setCheck(state:boolean) {
+    setCheck = (state:boolean) => {
         this.checked = state
     }
 
-    toggleRTL() { 
+    toggleRTL= () => { 
         this.rtl = !this.rtl
     }
 
     get pageCount() {
         return this.pages.length;
+    }
+
+    addEmptyPage = () => {
+        this.pages.push(new MangaPage())
     }
 
     static mockChapter(id: number, name:string, rtl:boolean,

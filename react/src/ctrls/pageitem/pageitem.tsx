@@ -1,36 +1,18 @@
 import React from 'react';
-import rtlImage from '../../icons/RTL.png'
-import ltrImage from '../../icons/LTR.png'
-import styles from './chapteritem.module.css'
+import singlePage from '../../icons/1Page.png'
+import dblPage from '../../icons/2Page.png'
+import styles from './pageitem.module.css'
 import { Button, Checkbox, List, Tooltip } from 'antd';
-import {DeleteOutlined, EditOutlined} from '@ant-design/icons'
-import { MangaChapter } from '../../lib/MangaChapter';
+import {DeleteOutlined} from '@ant-design/icons'
 import { observer } from 'mobx-react';
-import { PromptDialog } from '../promptdialog/promptdialog';
+import { MangaPage } from '../../lib/MangaPage';
+import { OnChapter } from '../chapteritem/chapteritem';
 
 
-export type OnChapter = (chpaterID?:number, value?:any)=>void
+export type PageItemArgs = {page: MangaPage, onRemove?: OnChapter}
 
-export const ChapterItem = observer(
-  ({chapter,onRemove}
-      :{chapter:MangaChapter,onRemove?:OnChapter}) => 
+export const PageItem = observer((props: PageItemArgs) => 
 {
-
-  const renameChptFlow = {
-    renameChapter : (ok:boolean,newName:string)=> {
-      if(!ok || !newName) return;
-      chapter.rename(newName)
-    },
-    renameChapterUI:(showDialog:()=>void) => {
-      return <Tooltip placement="bottom" title="Rename Chapter">
-                <Button onClick={showDialog}>
-                  <EditOutlined /> Rename
-                </Button>
-            </Tooltip>
-    }
-  }
-
-
   return (
     <List.Item >
       {/* <img src={rtlImage} alt={"RTL"}/>
@@ -38,56 +20,40 @@ export const ChapterItem = observer(
       <span></span> */}
       <List.Item.Meta 
       description={
-        <Tooltip title={chapter.folderPath} trigger="click">
-          {chapter.folderPath.length<70?
-          chapter.folderPath:
-          "..."+chapter.folderPath.substr(-70)}
+        <Tooltip title={props.page.ImagePath} trigger="click">
+          {props.page.ImagePath.length<70?
+          props.page.ImagePath:
+          "..."+props.page.ImagePath.substr(-70)}
         </Tooltip>
       }  
       title={
         <div className={styles.flexh}>
             <div>
               <Checkbox 
-                checked={chapter.checked} 
-                onChange={(e)=>chapter.setCheck(e.target.checked)}>
+                checked={props.page.checked} 
+                onChange={(e)=>props.page.setCheck(e.target.checked)}>
               </Checkbox>
             </div>
             <div>
-              <Tooltip placement="right" title="RightToLeft (RTL)\LeftToRight (LTR)">
-                <img 
-                  onClick={chapter.toggleRTL}
+              <Tooltip placement="right" title="Single\Double Page">
+                 <img 
+                  onClick={props.page.toggleDouble}
                   className={styles["reset-img"]}
-                  src={chapter.rtl ? rtlImage: ltrImage} 
-                  alt={chapter.rtl ? "RTL":"LTR"}/>
+                  src={props.page.IsDouble ? dblPage: singlePage} 
+                  alt={(props.page.IsDouble ? "Double":"Single")+" Page"}/> 
               </Tooltip>
             </div>
             <div>
             &nbsp;
-            {chapter.name} 
+            {props.page.Name} 
 
-            &nbsp;
-            {
-              (chapter.pageCount < 25) ? 
-              (<span>[{chapter.pageCount} pages]</span>) :
-              (
-                (chapter.pageCount < 65) ? 
-                (<b>[{chapter.pageCount} 👀 pages]</b>) :
-                (<b style={{color:"red"}}>[{chapter.pageCount} 🛑 pages]</b>)
-                )
-              }
               </div>
         </div>
       }></List.Item.Meta>
       <div className={styles["row-controls"]}>
-        <PromptDialog
-          title="Rename" desc="Change chapter name:"
-          defaultValue={chapter.name} keepLast
-          openUI={renameChptFlow.renameChapterUI}
-          onUpdate={renameChptFlow.renameChapter}
-        />
         <Button danger 
             onClick={()=>
-              (onRemove || function(){})((chapter.id))}
+              (props.onRemove || function(){})((props.page.id))}
               >
           <DeleteOutlined />
         </Button>

@@ -5,7 +5,7 @@
  
 
 
-import { PromptDialog, DialogResult, PromptDialogArgs } from './promptdialog';
+import { PromptDialog,  PromptDialogArgs } from './promptdialog';
 import { Button, Menu } from 'antd';
  
  export default {

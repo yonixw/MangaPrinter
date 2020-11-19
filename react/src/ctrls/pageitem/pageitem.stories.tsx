@@ -2,39 +2,28 @@ import React from 'react';
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import { Story, Meta } from '@storybook/react/types-6-0';
 
-import { ChapterItem } from './pageitem';
-import { MangaChapter } from '../../lib/MangaChapter';
+import { PageItem, PageItemArgs } from './pageitem';
+import { MangaPage } from '../../lib/MangaPage';
+import { toJS } from 'mobx';
 
-import 'antd/dist/antd.css'; 
 
 export default {
-  title: 'Example/ChapterItem',
-  component: ChapterItem,
+  title: 'Example/PageItem',
+  component: PageItem,
   //argTypes: {
   //  backgroundColor: { control: 'color' },
   //},
 } as Meta;
 
-const Template: Story<{ chapter: MangaChapter; }> = (args) => <ChapterItem {...args} />;
+const Template: Story<PageItemArgs> = (args) =>
+  <>
+   <PageItem {...args} /> 
+   <button onClick={(e)=>console.log(toJS(args.page))}>
+                      Log state
+                    </button>
+  </>;
 
-export const RTL = Template.bind({});
-RTL.args = {
-  chapter: new MangaChapter(0,"Chapter 1",true)
+export const Default = Template.bind({});
+Default.args = {
+  page: new MangaPage()
 };
-
-export const LTR = Template.bind({});
-LTR.args = {
-  chapter: new MangaChapter(0,"Chapter 2",false)
-};
-
-
-export const PageWarn1 = Template.bind({});
-PageWarn1.args = {
-  chapter: MangaChapter.mockChapter(0,"Chapter 2",false,25)
-};
-
-export const PageWarn2 = Template.bind({});
-PageWarn2.args = {
-  chapter: MangaChapter.mockChapter(0,"Chapter 2",false,67)
-};
- 

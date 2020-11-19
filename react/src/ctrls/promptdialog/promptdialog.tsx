@@ -1,5 +1,5 @@
 import React, { useState} from 'react';
-import { Button, Input } from 'antd';
+import {  Input } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 
 export type DialogResult = (sucess: boolean, value: string)=>void
