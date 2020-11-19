@@ -2,7 +2,7 @@ import React, { useState} from 'react';
 import './chapterlist.module.css'
 import styles from './chapterlist.module.css'
 
-import { Affix, Button, Checkbox, Divider, List, Spin, Tooltip } from 'antd';
+import { Affix, Button, Checkbox, Divider, List, Popconfirm, Spin, Tooltip } from 'antd';
 
 import { ChapterItem, } from '../chapteritem/chapteritem';
 import { DeleteFilled, FolderOpenOutlined, PlusSquareOutlined } from '@ant-design/icons';
@@ -78,11 +78,12 @@ export const ChapterList = observer(
             checked={allSelected} indeterminate={someSelected}
             onChange={(e)=>setCheckAll(e.target.checked)}
             ></Checkbox>
-          <Tooltip placement="bottomLeft" title="Delete Selected">
-            <Button danger disabled={noneSelected} onClick={deleteSelected}>
-              <DeleteFilled/>
-            </Button>
-          </Tooltip>
+            <Popconfirm placement="bottomLeft" title="Delete Selected?" 
+              onConfirm={deleteSelected}>
+              <Button danger disabled={noneSelected} >
+                <DeleteFilled/>
+              </Button>
+            </Popconfirm>
           <Tooltip placement="bottom" title="RTL Selected">
             <img 
                 style={noneSelected? {filter: grayScaleBlur}:{}}
