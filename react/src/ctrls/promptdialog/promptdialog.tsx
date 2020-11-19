@@ -8,6 +8,7 @@ export type PromptDialogArgs =
   { 
     title:string, desc:string, defaultValue:string, 
     openUI:(showDialog:()=>void)=>JSX.Element,
+    keepLast?:boolean,
     onUpdate?:DialogResult
   }
 
@@ -17,21 +18,20 @@ export const PromptDialog = (props:PromptDialogArgs) => {
 
     const handleOk = ()=> {
         setVisible(false);
-        if (props.onUpdate)
-        props.onUpdate(true, value);
+        if (props.onUpdate) props.onUpdate(true, value);
     }
 
     const handleClose = ()=> {
         setVisible(false);
-        if (props.onUpdate)
-        props.onUpdate(false, value);
+        if (props.onUpdate) props.onUpdate(false, value);
     }
-
-    console.log(props.openUI)
 
     return (
         <>
-          {props.openUI(()=>setVisible(true))}
+          {props.openUI(()=>{
+            if (!props.keepLast) setValue(""); 
+            setVisible(true)
+          })}
           <Modal
             title={'✍ ' + props.title}
             visible={visible}
@@ -40,6 +40,7 @@ export const PromptDialog = (props:PromptDialogArgs) => {
           >
             <p>{props.desc}</p>
             <Input 
+                value={value}
                 placeholder={props.defaultValue||"Enter text..."} 
                 onChange={(e)=>setValue(e.target.value)} />
           </Modal>

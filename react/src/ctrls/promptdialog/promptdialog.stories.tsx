@@ -39,7 +39,7 @@ const buttonUI = (showDialog:()=>void)=>
 
  const { SubMenu } = Menu;
 
- const buttonUI2 = (showDialog:()=>void)=>
+ const menuUI = (showDialog:()=>void)=>
    (
    <Menu mode="horizontal">
    <Menu.Item>Menu</Menu.Item>
@@ -54,5 +54,14 @@ const buttonUI = (showDialog:()=>void)=>
     title: "Example Title 2",
     desc: "Some description here",
     defaultValue: "Default value 👌",
-    openUI: buttonUI2
+    openUI: menuUI
+ };
+
+ export const KeepLastValue = Template.bind({});
+ KeepLastValue.args = {
+    title: "Example Title 3",
+    desc: "Some description here",
+    defaultValue: "Default value 👌",
+    openUI: buttonUI,
+    keepLast: true
  };

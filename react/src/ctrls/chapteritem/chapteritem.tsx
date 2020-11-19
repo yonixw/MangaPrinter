@@ -6,6 +6,7 @@ import { Button, Checkbox, List, Tooltip } from 'antd';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons'
 import { MangaChapter } from '../../lib/MangaObjects';
 import { observer } from 'mobx-react';
+import { PromptDialog } from '../promptdialog/promptdialog';
 
 
 export type OnChapter = (chpaterID?:number, value?:any)=>void
@@ -15,17 +16,21 @@ export const ChapterItem = observer(
       :{chapter:MangaChapter,onRemove?:OnChapter}) => 
 {
 
-  const renameChapter = () => {
-    const newName = prompt("Enter new name:",chapter.name);
-    if (newName && newName !== chapter.name)
+  const renameChptFlow = {
+    renameChapter : (ok:boolean,newName:string)=> {
+      if(!ok || !newName) return;
       chapter.rename(newName)
+    },
+    renameChapterUI:(showDialog:()=>void) => {
+      return <Tooltip placement="bottom" title="Rename Chapter">
+                <Button onClick={showDialog}>
+                  <EditOutlined /> Rename
+                </Button>
+            </Tooltip>
+    }
   }
 
-  /* componentDidMount\Update */ 
-  /* useEffect(() => {
-    
-  });
- */
+
   return (
     <List.Item >
       {/* <img src={rtlImage} alt={"RTL"}/>
@@ -74,9 +79,12 @@ export const ChapterItem = observer(
         </div>
       }></List.Item.Meta>
       <div className={styles["row-controls"]}>
-        <Button onClick={renameChapter}>
-          <EditOutlined /> Rename
-        </Button>
+        <PromptDialog
+          title="Rename" desc="Change chapter name:"
+          defaultValue={chapter.name} keepLast
+          openUI={renameChptFlow.renameChapterUI}
+          onUpdate={renameChptFlow.renameChapter}
+        />
         <Button danger 
             onClick={()=>
               (onRemove || function(){})((chapter.id))}

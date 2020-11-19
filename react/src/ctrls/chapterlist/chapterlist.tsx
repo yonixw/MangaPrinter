@@ -13,6 +13,7 @@ import { IObservableArray, runInAction } from 'mobx';
 
 import rtlImage from '../../icons/RTL.png'
 import ltrImage from '../../icons/LTR.png'
+import { PromptDialog } from '../promptdialog/promptdialog';
 
 export const grayScaleBlur = "grayscale(1) blur(2px)"
 
@@ -22,11 +23,6 @@ export const ChapterList = observer(
   const [loading,setLoading] = useState(false)
   /*const [container] = useState(null);*/
 
-  const newChapter = ():MangaChapter=> {
-    const chapterName = prompt("Enter new chapter name:") || "Empty1"
-
-    return new MangaChapter((new Date()).getTime(), chapterName,true)
-  }
 
   const checkedCount = chapters.slice().filter(e=>e.checked).length
   const chaptersCount = chapters.slice().length;
@@ -53,6 +49,25 @@ export const ChapterList = observer(
     runInAction(()=>{
       removeItemAll(chapters, (e)=>e.checked)
     })
+  }
+
+  const newChpFlow = {
+    addChapter : (ok:boolean,chapterName:string)=> {
+      if(!ok || !chapterName) return;
+      runInAction(()=> {
+        chapters.push(
+          new MangaChapter(
+            (new Date()).getTime(), chapterName,true
+          )
+        )
+      })
+    },
+    emptyChapterUI:(showDialog:()=>void) => {
+      return <Tooltip placement="bottom" title="Add empty chapter">
+                <Button onClick={showDialog}>
+                  <PlusSquareOutlined/>Empty</Button>
+            </Tooltip>
+    }
   }
 
   return (
@@ -84,10 +99,12 @@ export const ChapterList = observer(
                 src={ltrImage} 
                 alt={"LTR"}/>
           </Tooltip>
-          <Tooltip placement="bottom" title="Add empty chapter">
-            <Button onClick={()=>runInAction(()=>chapters.push(newChapter()))}>
-              <PlusSquareOutlined/>Empty</Button>
-          </Tooltip>
+          <PromptDialog 
+              title="New chapter"
+              desc="Enter new chapter name:" defaultValue="Empty1"
+              openUI={newChpFlow.emptyChapterUI} 
+              onUpdate={newChpFlow.addChapter}
+          />
           <Button type="primary">
             <FolderOpenOutlined/>Add Folder(s)</Button>
         </div>
@@ -99,7 +116,9 @@ export const ChapterList = observer(
           (
           <ChapterItem chapter={item}
             key={item.id} 
-            onRemove={()=>runInAction(()=>removeItemOnce(chapters,(e)=>e.id===item.id))}
+            onRemove={
+              ()=>runInAction(
+                ()=>removeItemOnce(chapters,(e)=>e.id===item.id))}
           />)
         }>
 
