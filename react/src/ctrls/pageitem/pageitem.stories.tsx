@@ -23,7 +23,21 @@ const Template: Story<PageItemArgs> = (args) =>
                     </button>
   </>;
 
-export const Default = Template.bind({});
-Default.args = {
-  page: new MangaPage()
+export const Single = Template.bind({});
+const ex1 = new MangaPage()
+ex1.ImagePath = "C:/Manga/Manga/Manga//Manga/Manga/Manga/Manga/Manga/Manga/Manga/Path/01.png"
+ex1.ChildIndexEnd = ex1.ChildIndexStart = 22
+ex1.AspectRatio = 0.7785115
+Single.args = {
+  page: ex1
+};
+
+export const Double = Template.bind({});
+const ex2 = new MangaPage()
+ex2.IsDouble = true;
+ex2.ChildIndexStart = 5
+ex2.ChildIndexEnd = 6
+ex2.AspectRatio = 1.116661
+Double.args = {
+  page: ex2
 };

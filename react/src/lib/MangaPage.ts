@@ -33,5 +33,6 @@ export class MangaPage {
     toggleDouble =  () => {
         this.setDouble(!this.IsDouble);
     }
+
 }
 

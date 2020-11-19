@@ -3,10 +3,12 @@ import singlePage from '../../icons/1Page.png'
 import dblPage from '../../icons/2Page.png'
 import styles from './pageitem.module.css'
 import { Button, Checkbox, List, Tooltip } from 'antd';
-import {DeleteOutlined} from '@ant-design/icons'
+import {DashboardTwoTone, DeleteOutlined, FieldNumberOutlined} from '@ant-design/icons'
 import { observer } from 'mobx-react';
 import { MangaPage } from '../../lib/MangaPage';
 import { OnChapter } from '../chapteritem/chapteritem';
+import { stringify } from 'querystring';
+import { round } from '../../utils/numbers';
 
 
 export type PageItemArgs = {page: MangaPage, onRemove?: OnChapter}
@@ -21,9 +23,9 @@ export const PageItem = observer((props: PageItemArgs) =>
       <List.Item.Meta 
       description={
         <Tooltip title={props.page.ImagePath} trigger="click">
-          {props.page.ImagePath.length<70?
+          {props.page.ImagePath.length<35?
           props.page.ImagePath:
-          "..."+props.page.ImagePath.substr(-70)}
+          "..."+props.page.ImagePath.substr(-35)}
         </Tooltip>
       }  
       title={
@@ -35,7 +37,7 @@ export const PageItem = observer((props: PageItemArgs) =>
               </Checkbox>
             </div>
             <div>
-              <Tooltip placement="right" title="Single\Double Page">
+              <Tooltip placement="bottomLeft" title="Single\Double Page">
                  <img 
                   onClick={props.page.toggleDouble}
                   className={styles["reset-img"]}
@@ -44,10 +46,24 @@ export const PageItem = observer((props: PageItemArgs) =>
               </Tooltip>
             </div>
             <div>
+            <b>({
+              props.page.IsDouble ?
+              (<>
+                <FieldNumberOutlined />{props.page.ChildIndexStart}-
+                <FieldNumberOutlined />{props.page.ChildIndexEnd}
+              </>)
+              :
+              (<><FieldNumberOutlined />{props.page.ChildIndexStart}</>)
+            })
+            </b>
+
             &nbsp;
             {props.page.Name} 
-
-              </div>
+            &nbsp; 
+            <Tooltip title="Aspect-ratio (Width/Height)" placement="bottom">
+            <DashboardTwoTone />{round(props.page.AspectRatio)}
+            </Tooltip>
+            </div>
         </div>
       }></List.Item.Meta>
       <div className={styles["row-controls"]}>

@@ -39,9 +39,9 @@ export const ChapterItem = observer(
       <List.Item.Meta 
       description={
         <Tooltip title={chapter.folderPath} trigger="click">
-          {chapter.folderPath.length<70?
+          {chapter.folderPath.length<60?
           chapter.folderPath:
-          "..."+chapter.folderPath.substr(-70)}
+          "..."+chapter.folderPath.substr(-60)}
         </Tooltip>
       }  
       title={
