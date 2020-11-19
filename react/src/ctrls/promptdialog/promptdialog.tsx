@@ -4,38 +4,43 @@ import Modal from 'antd/lib/modal/Modal';
 
 export type DialogResult = (sucess: boolean, value: string)=>void
 
-export const PromptDialog =
-     ({title, desc, defaultValue, onUpdate}:
-         {title:string, desc:string, defaultValue:string, onUpdate?:DialogResult}) => {
+export type PromptDialogArgs = 
+  { 
+    title:string, desc:string, defaultValue:string, 
+    openUI:(showDialog:()=>void)=>JSX.Element,
+    onUpdate?:DialogResult
+  }
+
+export const PromptDialog = (props:PromptDialogArgs) => {
     const [visible,setVisible] = useState(false);
-    const [value, setValue] = useState(defaultValue);
+    const [value, setValue] = useState(props.defaultValue);
 
     const handleOk = ()=> {
         setVisible(false);
-        if (onUpdate)
-            onUpdate(true, value);
+        if (props.onUpdate)
+        props.onUpdate(true, value);
     }
 
     const handleClose = ()=> {
         setVisible(false);
-        if (onUpdate)
-            onUpdate(false, value);
+        if (props.onUpdate)
+        props.onUpdate(false, value);
     }
+
+    console.log(props.openUI)
 
     return (
         <>
-          <Button type="primary" onClick={()=>setVisible(true)}>
-            Open Modal
-          </Button>
+          {props.openUI(()=>setVisible(true))}
           <Modal
-            title={'✍ ' + title}
+            title={'✍ ' + props.title}
             visible={visible}
             onOk={handleOk}
             onCancel={handleClose}
           >
-            <p>{desc}</p>
+            <p>{props.desc}</p>
             <Input 
-                placeholder={defaultValue||"Enter text..."} 
+                placeholder={props.defaultValue||"Enter text..."} 
                 onChange={(e)=>setValue(e.target.value)} />
           </Modal>
         </>

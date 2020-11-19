@@ -5,7 +5,8 @@
  
 
 
-import { PromptDialog, DialogResult } from './promptdialog';
+import { PromptDialog, DialogResult, PromptDialogArgs } from './promptdialog';
+import { Button, Menu } from 'antd';
  
  export default {
    title: 'Example/PromptDialog',
@@ -15,20 +16,43 @@ import { PromptDialog, DialogResult } from './promptdialog';
    //},
  } as Meta;
  
- const Template: Story<{title:string, desc:string, defaultValue:string, onUpdate:DialogResult}> 
+ 
+ const Template: Story<PromptDialogArgs> 
     = (args) => <PromptDialog {...args} 
     onUpdate={(status,value)=>alert(status + ","+ value)} 
 />;
+
+const buttonUI = (showDialog:()=>void)=>
+   (
+   <Button type="primary" onClick={showDialog}>
+      Open Modal
+   </Button>
+   )
  
- export const Example1 = Template.bind({});
- Example1.args = {
+
+ export const Example1WithButton = Template.bind({});
+ Example1WithButton.args = {
     title: "Example Title",
-    desc: "Some description here"
+    desc: "Some description here",
+    openUI: buttonUI
  };
+
+ const { SubMenu } = Menu;
+
+ const buttonUI2 = (showDialog:()=>void)=>
+   (
+   <Menu mode="horizontal">
+   <Menu.Item>Menu</Menu.Item>
+   <SubMenu title="SubMenu">
+     <Menu.Item onClick={showDialog}>Open Dialog</Menu.Item>
+   </SubMenu>
+ </Menu>
+   )
   
- export const DefaultValueExample = Template.bind({});
- DefaultValueExample.args = {
+ export const DefaultValueExampleWithMenu = Template.bind({});
+ DefaultValueExampleWithMenu.args = {
     title: "Example Title 2",
     desc: "Some description here",
     defaultValue: "Default value 👌",
+    openUI: buttonUI2
  };
