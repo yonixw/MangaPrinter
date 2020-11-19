@@ -7,7 +7,7 @@ import { Affix, Button, Checkbox, Divider, List, Popconfirm, Spin, Tooltip } fro
 import { ChapterItem, } from '../chapteritem/chapteritem';
 import { DeleteFilled, FolderOpenOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import { removeItemOnce, removeItemAll } from '../../utils/arrays';
-import { MangaChapter } from '../../lib/MangaObjects';
+import { MangaChapter } from '../../lib/MangaChapter';
 import { observer } from 'mobx-react';
 import { IObservableArray, runInAction } from 'mobx';
 

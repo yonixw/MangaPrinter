@@ -9,7 +9,7 @@ import { ChapterList } from './chapterlist';
 
 
 import 'antd/dist/antd.css'; 
-import { MangaChapter } from '../../lib/MangaObjects';
+import { MangaChapter } from '../../lib/MangaChapter';
 import { observable, IObservableArray, toJS } from 'mobx';
 
 export default {

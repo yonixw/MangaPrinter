@@ -1,9 +1,6 @@
 import { makeObservable, observable, action, computed } from "mobx"
+import { MangaPage } from "./MangaPage"
 
-
-export class MangaPage {
-    isDouble: boolean = false;
-}
 
 
 export class MangaChapter {
