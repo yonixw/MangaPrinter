@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "TUuhaFFpTQP3COYfvA7c//zDvn2UAF8fuRl5SIK0xL5mTbhfXMKNYv1TfQs4zgTvPUR6CPPNlxNGCZfgLVrXVA==",
+  "dgSpecHash": "Efi8a6kEh+9OlVsyKpALx7+2D9fOlZkRHVXzYkAHKg37y/GSamoA7/7eqzzl1rCyH59NdB1pX5mXyJAPGjVuYQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Yoni\\Desktop\\2020\\MangaPrinterJS\\netcore\\netcore.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Yoni\\.nuget\\packages\\magick.net-q8-anycpu\\7.22.2.2\\magick.net-q8-anycpu.7.22.2.2.nupkg.sha512",
+    "C:\\Users\\Yoni\\.nuget\\packages\\magick.net.core\\5.2.2\\magick.net.core.5.2.2.nupkg.sha512"
+  ],
   "logs": []
 }
