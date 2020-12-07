@@ -60,13 +60,14 @@ export const PageItem = observer((props: PageItemArgs) =>
             &nbsp;
             {props.page.Name} 
             &nbsp; 
-            <Tooltip title="Aspect-ratio (Width/Height)" placement="bottom">
-            <DashboardTwoTone />{round(props.page.AspectRatio)}
-            </Tooltip>
+            
             </div>
         </div>
       }></List.Item.Meta>
       <div className={styles["row-controls"]}>
+	     <Tooltip title="Aspect-ratio (Width/Height)" placement="bottom">
+            <DashboardTwoTone />{round(props.page.AspectRatio)}
+            </Tooltip>
         <Button danger 
             onClick={()=>
               (props.onRemove || function(){})((props.page.id))}
