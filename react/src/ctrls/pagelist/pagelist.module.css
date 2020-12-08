@@ -1,0 +1,34 @@
+
+.flexh {
+    display: flex;
+    align-content: center;
+    flex-direction: row;
+  }
+  
+  .flexh div {
+    padding: 2px;
+    
+    margin-top: auto;
+    margin-bottom: auto;
+
+    /*border: solid black 1px;*/
+  }
+  
+  .align-middle {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .reset-img{
+    /*https://stackoverflow.com/a/14054008/1997873*/
+    vertical-align: bottom;
+  }
+
+  .ant-list-item{
+    justify-content: initial !important
+  }
+
+   
+  .menu-buttons button {
+    margin-left: 10px !important;
+  }

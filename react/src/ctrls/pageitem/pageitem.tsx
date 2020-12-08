@@ -21,13 +21,7 @@ export const PageItem = observer((props: PageItemArgs) =>
       <span></span>
       <span></span> */}
       <List.Item.Meta 
-      description={
-        <Tooltip title={props.page.ImagePath} trigger="click">
-          {props.page.ImagePath.length<35?
-          props.page.ImagePath:
-          "..."+props.page.ImagePath.substr(-35)}
-        </Tooltip>
-      }  
+
       title={
         <div className={styles.flexh}>
             <div>
@@ -46,19 +40,23 @@ export const PageItem = observer((props: PageItemArgs) =>
               </Tooltip>
             </div>
             <div>
-            <b>({
+            <>({
               props.page.IsDouble ?
-              (<>
+              (<i>
                 <FieldNumberOutlined />{props.page.ChildIndexStart}-
                 <FieldNumberOutlined />{props.page.ChildIndexEnd}
-              </>)
+              </i>)
               :
               (<><FieldNumberOutlined />{props.page.ChildIndexStart}</>)
             })
-            </b>
+            </>
 
             &nbsp;
-            {props.page.Name} 
+            <Tooltip title={props.page.ImagePath} trigger="click">
+              {props.page.ImagePath.length<35?
+              props.page.ImagePath:
+              "..."+props.page.ImagePath.substr(-35)}
+            </Tooltip>
             &nbsp; 
             
             </div>
