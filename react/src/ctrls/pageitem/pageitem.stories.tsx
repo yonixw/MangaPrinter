@@ -5,6 +5,7 @@ import { Story, Meta } from '@storybook/react/types-6-0';
 import { PageItem, PageItemArgs } from './pageitem';
 import { MangaPage } from '../../lib/MangaPage';
 import { toJS } from 'mobx';
+import { MangaChapter } from '../../lib/MangaChapter';
 
 
 export default {
@@ -23,8 +24,13 @@ const Template: Story<PageItemArgs> = (args) =>
                     </button>
   </>;
 
+const Parents = [
+  new MangaChapter(-1,"Chapter 1",false)
+]
+
 export const Single = Template.bind({});
-const ex1 = new MangaPage()
+const ex1 = new MangaPage(()=>Parents[0])
+Parents[0].pages.push(ex1);
 ex1.ImagePath = "C:/Manga/Manga/Manga//Manga/Manga/Manga/Manga/Manga/Manga/Manga/Path/01.png"
 ex1.ChildIndexEnd = ex1.ChildIndexStart = 22
 ex1.AspectRatio = 0.7785115
@@ -33,7 +39,8 @@ Single.args = {
 };
 
 export const Double = Template.bind({});
-const ex2 = new MangaPage()
+const ex2 = new MangaPage(()=>Parents[0])
+Parents[0].pages.push(ex2);
 ex2.IsDouble = true;
 ex2.ChildIndexStart = 5
 ex2.ChildIndexEnd = 6

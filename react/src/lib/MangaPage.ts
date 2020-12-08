@@ -1,4 +1,5 @@
 import {  makeAutoObservable } from 'mobx';
+import { MangaChapter } from './MangaChapter';
 
 
 export class MangaPage {
@@ -12,8 +13,10 @@ export class MangaPage {
     ChildIndexStart : number = -1;
     ChildIndexEnd : number = -1;
 
+    GetParent: ()=>MangaChapter;
 
-    constructor() {
+    constructor(parent : ()=>MangaChapter) {
+        this.GetParent = parent;
         makeAutoObservable(this);
     }
 
@@ -27,8 +30,8 @@ export class MangaPage {
 
     setDouble = (isDouble: boolean) => {
         this.IsDouble = isDouble;
+        this.GetParent().recalculateChildPagesIndexes();
     }
-
     
     toggleDouble =  () => {
         this.setDouble(!this.IsDouble);

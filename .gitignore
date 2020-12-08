@@ -27,3 +27,4 @@ yarn-error.log*
 
 /.git - Copy/
 /.git*
+netcore/.vs/netcore/

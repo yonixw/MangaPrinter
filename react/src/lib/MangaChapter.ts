@@ -33,8 +33,24 @@ export class MangaChapter {
         this.rtl = !this.rtl
     }
 
+    recalculateChildPagesIndexes = () => {
+        let index = 1;
+        this.pages.forEach(p=> {
+            p.ChildIndexStart = index;
+            if (p.IsDouble) {
+                index++;
+            }
+            p.ChildIndexEnd = index;
+            index++;
+        })
+    }
+
     get pageCount() {
-        return this.pages.length;
+        //return this.pages.length;
+        let result = 0;
+        result += this.pages.filter(p=>p.IsDouble).length *2;
+        result += this.pages.filter(p=>!p.IsDouble).length;
+        return result;
     }
 
     addEmptyPage = () => {
