@@ -43,7 +43,7 @@ export const PageList = observer(
   const changeSelectedDouble = (isDouble:boolean) => {
     runInAction(()=>{
       chapter.pages.filter(e=>e.checked).forEach((e)=>{
-        e.IsDouble = isDouble;
+        e.setDouble(isDouble)
       })
     })
   }
@@ -61,7 +61,7 @@ export const PageList = observer(
       runInAction(()=> {
         chapter.pages.push(
           new MangaPage(
-            ()=>chapter, pagePath
+            ()=>chapter, pagePath,(new Date()).getTime()
           )
         )
       })

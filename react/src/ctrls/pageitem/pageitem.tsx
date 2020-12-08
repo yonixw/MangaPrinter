@@ -63,7 +63,7 @@ export const PageItem = observer((props: PageItemArgs) =>
         </div>
       }></List.Item.Meta>
       <div className={styles["row-controls"]}>
-	     <Tooltip title="Aspect-ratio (Width/Height)" placement="bottom">
+	     <Tooltip title="Aspect-ratio (Width/Height)" placement="bottomRight">
             <DashboardTwoTone />{round(props.page.AspectRatio)}
             </Tooltip>
         <Button danger 
