@@ -54,7 +54,8 @@ export class MangaChapter {
     }
 
     addEmptyPage = () => {
-        this.pages.push(new MangaPage())
+        let that=this;
+        this.pages.push(new MangaPage(()=>that))
     }
 
     static mockChapter(id: number, name:string, rtl:boolean,
@@ -62,7 +63,7 @@ export class MangaChapter {
         : MangaChapter {
         const result = new MangaChapter(id,name,rtl,path);
         for (let i = 0; i < pageCount; i++) {
-            result.pages.push(new MangaPage());
+            result.pages.push(new MangaPage(()=>result));
         }
         return result;
     }
