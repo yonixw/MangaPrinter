@@ -15,9 +15,12 @@ export class MangaPage {
 
     GetParent: ()=>MangaChapter;
 
-    constructor(parent : ()=>MangaChapter) {
+    constructor(parent : ()=>MangaChapter, path?: string,id?: number, Name?: string) {
         this.GetParent = parent;
         makeAutoObservable(this);
+        this.ImagePath = path || "";
+        this.id = id || -1;
+        this.Name = Name || this.Name;
     }
 
     rename = (newName:string) => {

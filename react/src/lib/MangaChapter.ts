@@ -63,7 +63,9 @@ export class MangaChapter {
         : MangaChapter {
         const result = new MangaChapter(id,name,rtl,path);
         for (let i = 0; i < pageCount; i++) {
-            result.pages.push(new MangaPage(()=>result));
+            result.pages.push(
+                new MangaPage(()=>result,"Some Path"+i,i,`Default ${i}.png`)
+            );
         }
         return result;
     }
