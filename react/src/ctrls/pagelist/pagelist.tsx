@@ -75,7 +75,7 @@ export const PageList = observer(
   }
 
   return (
-    <div ref={setContainer}>
+    <div ref={(setContainer as unknown as any)}>
       <Affix offsetTop={10} target={()=>container}>
         <div className={styles["menu-buttons"]}>
           <Checkbox 
@@ -115,7 +115,7 @@ export const PageList = observer(
       </Affix>
       <Divider />
       <List
-        
+        size="small"
         dataSource={chapter.pages.slice()}
         renderItem={item => 
           (
