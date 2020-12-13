@@ -28,3 +28,8 @@
   .row-controls button {
     margin-left: 10px !important;
   }
+
+  .highlighted {
+    background-color: #2d94ff40;
+    border-radius: 6px;
+  }

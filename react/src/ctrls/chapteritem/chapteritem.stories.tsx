@@ -21,6 +21,7 @@ const TemplateDef: Story<{ chapter: MangaChapter; }> = (args) =>
 <>
   <ChapterItem {...args} />
   <Button onClick={args.chapter.addEmptyPage}>Add Page</Button>
+  <Button onClick={()=>args.chapter.setSelected(false)}>Unselect</Button>
 </>
 
 const TemplateSimple: Story<{ chapter: MangaChapter; }> = (args) => <ChapterItem {...args} />;

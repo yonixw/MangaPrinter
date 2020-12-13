@@ -11,6 +11,7 @@ export class MangaChapter {
     folderPath: string = "<Added manually>"
     
     checked: boolean = false;
+    selected: boolean = false;
 
     constructor(id:number, name:string, rtl:boolean, path?: string) {
         this.id = id
@@ -19,6 +20,10 @@ export class MangaChapter {
         if (path)
             this.folderPath=path;
         makeAutoObservable(this);
+    }
+
+    setSelected = (selected:boolean) => {
+        this.selected = selected;
     }
 
     rename = (newName:string) => {
