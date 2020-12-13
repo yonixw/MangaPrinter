@@ -37,7 +37,7 @@ export const ChapterList = observer(
     })
   }
 
-  const changeSelectedRTL = (rtl:boolean) => {
+  const changeCheckedRTL = (rtl:boolean) => {
     runInAction(()=>{
       chapters.filter(e=>e.checked).forEach((e)=>{
         e.rtl = rtl;
@@ -51,13 +51,19 @@ export const ChapterList = observer(
     })
   }
 
+  const onChapterSelect = (id:string|undefined, value?:any) => {
+    chapters.filter(e=>e.id !== id).forEach((e)=>{
+      e.setSelected(false);
+    })
+  }
+
   const newChpFlow = {
     addChapter : (ok:boolean,chapterName:string)=> {
       if(!ok || !chapterName) return;
       runInAction(()=> {
         chapters.push(
           new MangaChapter(
-            (new Date()).getTime(), chapterName,true
+            (new Date()).getTime().toString(), chapterName,true
           )
         )
       })
@@ -87,7 +93,7 @@ export const ChapterList = observer(
           <Tooltip placement="bottom" title="RTL Selected">
             <img 
                 style={noneSelected? {filter: grayScaleBlur}:{}}
-                onClick={()=>changeSelectedRTL(true)}
+                onClick={()=>changeCheckedRTL(true)}
                 className={styles["reset-img"]}
                 src={rtlImage} 
                 alt={"RTL"}/>
@@ -95,7 +101,7 @@ export const ChapterList = observer(
           <Tooltip placement="bottom" title="LTR Selected">
             <img 
                 style={noneSelected? {filter: grayScaleBlur}:{}}
-                onClick={()=>changeSelectedRTL(false)}
+                onClick={()=>changeCheckedRTL(false)}
                 className={styles["reset-img"]}
                 src={ltrImage} 
                 alt={"LTR"}/>
@@ -116,6 +122,7 @@ export const ChapterList = observer(
           (
           <ChapterItem chapter={item}
             key={item.id} 
+            onSelect={onChapterSelect}
             onRemove={
               ()=>runInAction(
                 ()=>removeItemOnce(chapters,(e)=>e.id===item.id))}

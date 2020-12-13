@@ -4,7 +4,7 @@ import { MangaPage } from "./MangaPage"
 
 
 export class MangaChapter {
-    id:number = -1
+    id:string = "-1"
     name: string = "<New Chapter>"
     rtl: boolean = true
     pages: Array<MangaPage> = []
@@ -13,7 +13,7 @@ export class MangaChapter {
     checked: boolean = false;
     selected: boolean = false;
 
-    constructor(id:number, name:string, rtl:boolean, path?: string) {
+    constructor(id:string, name:string, rtl:boolean, path?: string) {
         this.id = id
         this.name = name;
         this.rtl = rtl
@@ -63,13 +63,13 @@ export class MangaChapter {
         this.pages.push(new MangaPage(()=>that))
     }
 
-    static mockChapter(id: number, name:string, rtl:boolean,
+    static mockChapter(id: string, name:string, rtl:boolean,
         pageCount: number, path?:string) 
         : MangaChapter {
         const result = new MangaChapter(id,name,rtl,path);
         for (let i = 0; i < pageCount; i++) {
             result.pages.push(
-                new MangaPage(()=>result,"Some Path"+i,i,`Default ${i}.png`)
+                new MangaPage(()=>result,"Some Path"+i,i.toString(),`Default ${i}.png`)
             );
         }
         return result;

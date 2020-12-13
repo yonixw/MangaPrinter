@@ -3,7 +3,7 @@ import { MangaChapter } from './MangaChapter';
 
 
 export class MangaPage {
-    id: number = -1;
+    id: string = "-1";
     checked: boolean = false;
 
     Name: string = "Default.png";
@@ -15,11 +15,11 @@ export class MangaPage {
 
     GetParent: ()=>MangaChapter;
 
-    constructor(parent : ()=>MangaChapter, path?: string,id?: number, Name?: string) {
+    constructor(parent : ()=>MangaChapter, path?: string,id?: string, Name?: string) {
         this.GetParent = parent;
         makeAutoObservable(this);
         this.ImagePath = path || "";
-        this.id = id || -1;
+        this.id = id || "-1";
         this.Name = Name || this.Name;
     }
 

@@ -9,11 +9,11 @@ import { observer } from 'mobx-react';
 import { PromptDialog } from '../promptdialog/promptdialog';
 
 
-export type OnChapter = (chpaterID?: number, value?: any) => void
+export type OnChapter = (chpaterID?: string, value?: any) => void
 
 export const ChapterItem = observer(
-  ({ chapter, onRemove }
-    : { chapter: MangaChapter, onRemove?: OnChapter }) => {
+  ({ chapter, onRemove,onSelect}
+    : { chapter: MangaChapter, onRemove?: OnChapter, onSelect?:OnChapter }) => {
 
     const renameChptFlow = {
       renameChapter: (ok: boolean, newName: string) => {
@@ -34,6 +34,7 @@ export const ChapterItem = observer(
         e.nativeEvent.composedPath()[0] === e.currentTarget) {
         console.log("Highlighting!")
         chapter.setSelected(true)
+        if (onSelect) onSelect(chapter.id, true);
       }
     }
 
