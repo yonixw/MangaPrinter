@@ -6,9 +6,6 @@ import { Story, Meta } from '@storybook/react/types-6-0';
 import { ChapterList } from './chapterlist';
 
 
-
-
-import 'antd/dist/antd.css'; 
 import { MangaChapter } from '../../lib/MangaChapter';
 import { observable, IObservableArray, toJS } from 'mobx';
 

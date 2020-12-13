@@ -24,7 +24,7 @@ export const PageList = observer(
   ({chapter}:{chapter:MangaChapter}) => {
 
   const [loading,setLoading] = useState(false)
-  /*const [container] = useState(null);*/
+  const [container,setContainer] = useState(null);
 
 
   const checkedCount = chapter.pages.slice().filter(e=>e.checked).length
@@ -61,7 +61,7 @@ export const PageList = observer(
       runInAction(()=> {
         chapter.pages.push(
           new MangaPage(
-            ()=>chapter, pagePath,(new Date()).getTime()
+            ()=>chapter, pagePath,(new Date()).getTime().toString()
           )
         )
       })
@@ -75,8 +75,8 @@ export const PageList = observer(
   }
 
   return (
-    <>
-      <Affix offsetTop={10} /*target={()=>container}*/>
+    <div ref={setContainer}>
+      <Affix offsetTop={10} target={()=>container}>
         <div className={styles["menu-buttons"]}>
           <Checkbox 
             checked={allSelected} indeterminate={someSelected}
@@ -115,6 +115,7 @@ export const PageList = observer(
       </Affix>
       <Divider />
       <List
+        
         dataSource={chapter.pages.slice()}
         renderItem={item => 
           (
@@ -137,6 +138,6 @@ export const PageList = observer(
         )}
 
       </List>
-    </>)
+    </div>)
 
 });
