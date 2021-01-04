@@ -39,7 +39,7 @@ namespace MangaPrinter.WpfGUI
         {
             lstFileChapters.ItemsSource = mangaChapters;
             lstFileChaptersBinding.ItemsSource = mangaChapters;
-            rtbInfo.AppendText(" " + Properties.Resources.GitInfo.Split(';')[0]);
+            rtbInfo.AppendText(" " + Properties.Resources.GitInfo.Replace("\"", "").Split(';')[0]);
 
             // Load Settings:
             var Config = MangaPrinter.WpfGUI.Properties.Settings.Default;
@@ -448,10 +448,11 @@ namespace MangaPrinter.WpfGUI
         FileInfo tempImage = new FileInfo("_tmp_.png");
         private void MnuPrvwFront_Click(object sender, RoutedEventArgs e)
         {
+
             ListBoxAction<SelectablePrintPage>(lstPrintPages, (p) =>
             {
-                var b = (new DuplexTemplates(Properties.Resources.GitInfo.Split(' ')[0])).BuildFace(p.Front,
-                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text));
+                var b = (new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0])).BuildFace(p.Front,
+                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text), cbKeepColors.IsChecked ?? false);
 
                 if (tempImage.Exists)
                     tempImage.Delete();
@@ -470,8 +471,8 @@ namespace MangaPrinter.WpfGUI
         {
             ListBoxAction<SelectablePrintPage>(lstPrintPages, (p) =>
             {
-                var b = (new DuplexTemplates(Properties.Resources.GitInfo.Split(' ')[0])).BuildFace(p.Back,
-                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text));
+                var b = (new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0])).BuildFace(p.Back,
+                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text), cbKeepColors.IsChecked ?? false);
 
                 if (tempImage.Exists)
                     tempImage.Delete();
@@ -502,6 +503,18 @@ namespace MangaPrinter.WpfGUI
         }
 
         SaveFileDialog dlgSave = new SaveFileDialog();
+
+        private void lblKeepColorsHelp_Click(object sender, RoutedEventArgs e)
+        {
+            string helpMessage =
+               "Normally, we convert all pages to grayscale. This option lets you keep the color. \n\n" +
+               "* Colorful PDFs are usually bigger (x3+). \n" +
+               "* Colorful PDFs even sometimes cannot be printed by some industrial printers (maybe due to temp memory size). \n\n" +
+               "So, It is not recommended to relay on the printer to convert to grayscale.";
+
+            MessageBox.Show(helpMessage, "Help", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
             dlgSave.Title = "Export book as PDF";
@@ -515,6 +528,7 @@ namespace MangaPrinter.WpfGUI
                 int pad = int.Parse(txtPrintPadding.Text);
                 int pagesCount = allPrintPages.Count;
                 bool convertPdf = !(cbExportMinimal.IsChecked??false);
+                bool keepColors = cbKeepColors.IsChecked ?? false;
                 List<string> filesToDelete = new List<string>();
 
                 DateTime timeTemp;
@@ -526,7 +540,7 @@ namespace MangaPrinter.WpfGUI
                 Exception ex = winWorking.waitForTask<Exception>(this, (updateFunc) =>
                 {
 
-                    DuplexTemplates dt = new DuplexTemplates(Properties.Resources.GitInfo.Split(' ')[0]);
+                    DuplexTemplates dt = new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"","").Split(' ')[0]);
                     foreach (SelectablePrintPage page in allPrintPages)
                     {
 
@@ -534,7 +548,7 @@ namespace MangaPrinter.WpfGUI
                         {
                             updateFunc("[1/3] Export page " + page.PageNumber, (int)(100.0f * saveCounter / 2 / pagesCount));
 
-                            var b = dt.BuildFace(page.Front, pW, pH, pad);
+                            var b = dt.BuildFace(page.Front, pW, pH, pad, keepColors);
                             var bName = System.IO.Path.Combine(
                                     fi.Directory.FullName,
                                     "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".jpg"
@@ -543,7 +557,7 @@ namespace MangaPrinter.WpfGUI
                             filesToDelete.Add(bName);
                             b.Dispose();
 
-                            b = dt.BuildFace(page.Back, pW, pH, pad);
+                            b = dt.BuildFace(page.Back, pW, pH, pad, keepColors);
                             bName = System.IO.Path.Combine(
                                    fi.Directory.FullName,
                                    "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".jpg"

@@ -22,7 +22,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         private string _programVersion = "???";
         public DuplexTemplates(string versionString)
         {
-            _programVersion = string.Format("\n\nyonixw/MangaPrinter@Github\n{0}", versionString);
+            _programVersion = string.Format("\n\n[MangaPrinter {0}]\n\n", versionString );
         }
 
         private Dictionary<SingleSideType, String> _sideTextConsts = new Dictionary<SingleSideType, string>()
@@ -43,7 +43,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         public static Font fontSide = new Font(new FontFamily("Arial"), 5, FontStyle.Bold); // size will be changed
         public static Font fontPageText = new Font(new FontFamily("Arial"), 5);
 
-        public Bitmap BuildFace(PrintFace face,  int spW, int spH, int padding)
+        public Bitmap BuildFace(PrintFace face,  int spW, int spH, int padding, bool colors)
         {
             Bitmap result = null;
             if (face.Left == face.Right) // double
@@ -73,7 +73,9 @@ namespace MangaPrinter.Core.TemplateBuilders
                 result = TemplateSingle(face, spW, spH, padding);
             }
 
-            return GraphicsUtils.MakeGrayscale3(result);
+            if (result != null && !colors) result = GraphicsUtils.MakeGrayscale3(result);
+            // TODO: dispose bitmaps?
+            return result;
         }
 
         private Bitmap TemplateDouble(PrintFace face, int spW, int spH, int padding)

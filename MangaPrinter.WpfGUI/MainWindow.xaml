@@ -312,8 +312,10 @@
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <MenuItem Header="(2) (Re)Bind All!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Click="MenuItem_Click"/>
                         <MenuItem Header="(3) Export PDF!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Name="mnuExport" Click="MnuExport_Click" />
-                        <CheckBox Name="cbExportMinimal" IsChecked="False">Let me convert to pdf</CheckBox>
+                        <CheckBox Name="cbExportMinimal" IsChecked="False">Export to images</CheckBox>
                         <Hyperlink Name="lblHelpExportMinimal" Click="LblHelpExportMinimal_Click">( ? )</Hyperlink>
+                        <CheckBox Name="cbKeepColors" IsChecked="False">Keep colors</CheckBox>
+                        <Hyperlink Name="lblKeepColorsHelp" Click="lblKeepColorsHelp_Click">( ? )</Hyperlink>
                     </Menu>
                     <Grid >
                         <Grid.ColumnDefinitions>
