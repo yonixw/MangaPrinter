@@ -22,5 +22,5 @@ FOR /F "tokens=*" %%g IN ('git status --porcelain') do (
 	SET dirty=*
 )
 
-
-echo %latesttag%+%commitsafter%%dirty% (%branch%) %commitinfo% > "%projectdir%Resources\GitInfo.txt"	
+mkdir "%projectdir%Resources"
+echo "%latesttag%+%commitsafter%%dirty% (%branch%) %commitinfo%" > "%projectdir%Resources\GitInfo.txt"	
