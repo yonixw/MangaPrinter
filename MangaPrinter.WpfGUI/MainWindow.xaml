@@ -144,6 +144,7 @@
                         </StackPanel>
 
                         <CheckBox IsChecked="True" Name="cbSubfolders">Include subfolders</CheckBox>
+                        <CheckBox IsChecked="True" Name="cbNumberFix">"0" Pad Names</CheckBox>
 
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Page Direction:</Label>
                         <StackPanel Orientation="Horizontal" >

@@ -84,6 +84,8 @@ namespace MangaPrinter.WpfGUI
                 MangaPrinter.WpfGUI.Properties.Settings.Default.doublePageWidth.ToString());
         }
 
+        
+
         Microsoft.Win32.OpenFileDialog dlgSaveFile = new Microsoft.Win32.OpenFileDialog();
         private void menuImprtFolders_Click(object sender, RoutedEventArgs e)
         {
@@ -102,10 +104,11 @@ namespace MangaPrinter.WpfGUI
                 var subFolders = cbSubfolders.IsChecked ?? false;
                 float cutoff = float.Parse(txtPageMaxWidth.Text);
                 var rtl = rbRTL.IsChecked ?? false;
+                var numFix = cbNumberFix.IsChecked ?? false;
 
                 Func<System.IO.FileSystemInfo, object> orderFunc = (si) => si.CreationTime;
                 if (rbByName.IsChecked ?? false)
-                    orderFunc = (si) => si.Name;
+                    orderFunc = (si) => numFix ?  FileImporter.pad0AllNumbers(si.Name): si.Name;
 
                 List<FileImporterError> importErrors = new List<FileImporterError>();
                 winWorking.waitForTask(this, (updateFunc) =>
@@ -218,10 +221,11 @@ namespace MangaPrinter.WpfGUI
                     Core.FileImporter fileImporter = new Core.FileImporter();
 
                     float cutoff = float.Parse(txtPageMaxWidth.Text);
+                    var numFix = cbNumberFix.IsChecked ?? false;
 
                     Func<System.IO.FileSystemInfo, object> orderFunc = (si) => si.CreationTime;
                     if (rbByName.IsChecked ?? false)
-                        orderFunc = (si) => si.Name;
+                        orderFunc = (si) => numFix ? FileImporter.pad0AllNumbers(si.Name) : si.Name; 
 
 
                     ch.autoPageNumbering = false;

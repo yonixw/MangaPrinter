@@ -7,6 +7,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using ImageMagick;
+using System.Text.RegularExpressions;
 
 namespace MangaPrinter.Core
 {
@@ -51,6 +52,55 @@ namespace MangaPrinter.Core
                 errorPages?.Add(new FileImporterError(file: file, reason: "Image extention '" + lowerExt + "' not supported"));
             }
             return supported;
+        }
+
+        const string numberPattern = "(?:^|[^\\.0-9]|[^0-9]\\.)([0-9]+)((?:\\.[0-9]+)*)";
+        static Regex fixNumberRegex = new Regex(numberPattern,RegexOptions.Compiled);
+        public static string pad0AllNumbers(string input)
+        {
+            string result = input;
+            int resultAddonsOffset = 0;
+            try
+            {
+                foreach (Match match in fixNumberRegex.Matches(input))
+                {
+                    var g1 = match.Groups[1]; // main number
+                    var g2 = match.Groups.Count > 2 ? match.Groups[2] : null; // all after decimal
+                    int newPosition = g1.Index + resultAddonsOffset;
+                    int actualLength = g1.Length + (g2?.Length ?? 0);
+                    int oldResultLen = result.Length;
+                    result =
+                        (newPosition > 0 ? result.Substring(0, newPosition ) : "")
+                        + g1.Value.PadLeft(7, '0') + (g2?.Value ?? "")
+                        + (newPosition + actualLength > input.Length ? "" : result.Substring(newPosition + actualLength));
+                    resultAddonsOffset += result.Length - oldResultLen;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
+        }
+
+        public static string pad0AllNumbersForCompareOnly(string input)
+        {
+            string result = "0";
+            int resultAddonsOffset = 0;
+            try
+            {
+                foreach (Match match in fixNumberRegex.Matches(input))
+                {
+                    var g1 = match.Groups[1]; // main number
+                    var g2 = match.Groups.Count > 2 ? match.Groups[2] : null; // all after decimal
+                    result += g1.Value.PadLeft(7, '0') + (g2?.Value ?? "") + ";";
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
         }
 
         public MangaPage getMangaPageFromPath(FileInfo fiImage, float cutoff, List<FileImporterError> errorPages)
