@@ -95,6 +95,11 @@ namespace MangaPrinter.Core
             }
         }
 
+        public override int GetHashCode()
+        {
+            return string.Format("{0}|{1}|{2}", Name, ParentName, Pages.Count).GetHashCode();
+        }
+
         public static T Extend<T>(MangaChapter input) where T : MangaChapter, new()
         {
             T result = new T();

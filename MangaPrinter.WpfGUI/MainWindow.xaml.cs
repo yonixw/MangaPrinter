@@ -667,16 +667,67 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
+
+        private List<string> getBindedRange()
+        {
+            List<string> chaptersInfo = new List<string>();   
+
+            MangaChapter lastChapter = null;
+            int lastChapterStart = -1;
+            foreach (var _p in lstPrintPages.Items)
+            {
+                var page  = (PrintPage)_p;
+                var Faces = new[] { page?.Front, page?.Back };
+                foreach (var Face in Faces)
+                {
+                    var Sides = new[] { Face.Left, Face.Right };
+                    if (Face.IsRTL) Sides = new[] { Face.Right, Face.Left };
+                    
+                    foreach (var Side in Sides)
+                    {
+                        if (Side.MangaPageSource?.Chapter != null)
+                        {
+                            var ch = Side.MangaPageSource.Chapter;
+                            if ((ch?.GetHashCode()??0) != (lastChapter?.GetHashCode()??0))
+                            {
+                                chaptersInfo.Add(
+                                    string.Format(HTMLItem, lastChapter?.Name + string.Format(" [{0}-{1}]", lastChapterStart, Face.FaceNumber-1), lastChapter?.ParentName)
+                                );
+                                lastChapter = ch;
+                                lastChapterStart = Face.FaceNumber;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Add unclosed chapter:
+            if (lastChapter != null)
+            {
+                chaptersInfo.Add(
+                    string.Format(HTMLItem, lastChapter?.Name + string.Format(" [{0}-{1}]", lastChapterStart, lstPrintPages.Items.Count *2), lastChapter?.ParentName)
+                );
+            }
+
+            if (chaptersInfo.Count > 0)
+            {
+                chaptersInfo.RemoveAt(0); // The first element is null chapter
+            }
+
+            return chaptersInfo;
+        }
+
+        const string HTMLItem = "<li><span>{0}</span><br><span style='color: dimgray;'>{1}</span></li>";
         private void mnuExportTOC_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult quick = MessageBox.Show("Checked chapters only?",
+            MessageBoxResult quick = MessageBox.Show("Only binded chpater? If no, then no page range.",
                  "Export Table of content as PDF",
                  MessageBoxButton.YesNoCancel
                  );
 
             if (quick == MessageBoxResult.Cancel)
                 return;
-            bool checkedOnly = quick == MessageBoxResult.Yes;
+            bool bindedOnly = quick == MessageBoxResult.Yes;
 
             dlgSave.Title = "Export Table of content as PDF";
             dlgSave.Filter = "PDF |*.pdf";
@@ -685,22 +736,29 @@ namespace MangaPrinter.WpfGUI
                 FileInfo fi = new FileInfo(dlgSave.FileName);
 
                 string StartHTML = string.Format("[{0}] <h1>{1}</h1>"+ "<ol>", DateTime.Now.ToShortDateString(), fi.Name) ;
-                const string HTMLItem = "<li><span>{0}</span><br><span style='color: dimgray;'>{1}</span></li>";
+                
                 const string EndHTML = "</ol>";
 
-                var list = checkedOnly ?
-                    mangaChapters.Where(ch=>ch.IsChecked).Select(ch => string.Format(HTMLItem, ch.Name, ch.ParentName)).ToList()
+                var list = bindedOnly ?
+                    getBindedRange()
                     :
                      mangaChapters.Select(ch => string.Format(HTMLItem, ch.Name, ch.ParentName)).ToList();
 
 
-                PdfDocument pdf = PdfGenerator.GeneratePdf(
-                    StartHTML + 
+                try
+                {
+                    PdfDocument pdf = PdfGenerator.GeneratePdf(
+                    StartHTML +
                     string.Join("\n", list) +
                     EndHTML
                     , PageSize.A4);
-                pdf.Save(fi.FullName);
-                System.Diagnostics.Process.Start(fi.FullName);
+                    pdf.Save(fi.FullName);
+                    System.Diagnostics.Process.Start(fi.FullName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error occured while saving TOC pdf.\n" + ex.ToString());
+                }
             }
         }
 
