@@ -114,6 +114,8 @@ namespace MangaPrinter.Core
                     MangaPage page = new MangaPage()
                     {
                         Name = Path.GetFileNameWithoutExtension(fiImage.Name),
+                        AspectRatio = MangaPage.MinRatio, // Must be > 0, o.w. Infinity!
+                        WhiteBlackRatio = 1, // All White
                         ImagePath = fiImage.FullName,
                         IsDouble = false
                     };

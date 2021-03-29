@@ -14,6 +14,7 @@ namespace MangaPrinter.Core
         public string Name { get { return _baseGet(); } set { _baseSet(value); } }
         public bool IsDouble { get { return _baseGet(); } set { _baseSet(value); } }
         public float AspectRatio { get { return _baseGet(); } set { _baseSet(value); } }
+        public float WhiteBlackRatio { get { return _baseGet(); } set { _baseSet(value); } }
         public string ImagePath { get { return _baseGet(); } set { _baseSet(value); } }
 
         public MangaChapter Chapter { get { return _baseGet(); } set { _baseSet(value); } }
@@ -39,7 +40,13 @@ namespace MangaPrinter.Core
         private void Pages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             updatePageNumber();
-            NotifyChange("MinRatio");
+            NotifyChange("MinRatio"); 
+            // NotifyChange("MinWhiteRatio"); // Will not work since we update after inserting to collection
+        }
+
+        public void PublicNotifyChange(string name)
+        {
+            NotifyChange(name);
         }
 
         public float MinRatio
@@ -47,6 +54,14 @@ namespace MangaPrinter.Core
             get
             {
                 return ((Pages?.Count() ?? 0) > 0) ? Pages.Min(p=>p.AspectRatio) : MangaPage.MaxRatio;
+            }
+        }
+
+        public float MinWhiteRatio
+        {
+            get
+            {
+                return ((Pages?.Count() ?? 0) > 0) ? Pages.Min(p => p.WhiteBlackRatio) : 1.00f;
             }
         }
 

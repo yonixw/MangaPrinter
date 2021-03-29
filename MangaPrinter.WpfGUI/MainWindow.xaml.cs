@@ -19,6 +19,7 @@ using System.IO;
 using Microsoft.Win32;
 using MangaPrinter.WpfGUI.Utils;
 using MangaPrinter.WpfGUI.Dialogs;
+using System.Drawing;
 
 namespace MangaPrinter.WpfGUI
 {
@@ -517,6 +518,54 @@ namespace MangaPrinter.WpfGUI
                "So, It is not recommended to relay on the printer to convert to grayscale.";
 
             MessageBox.Show(helpMessage, "Help", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void btnCalcWhiteRatio_Click(object sender, RoutedEventArgs e)
+        {
+            int TotlaPageCount = mangaChapters.Sum(p => p.Pages.Count);
+            DateTime start = DateTime.Now;
+
+            Exception ex = winWorking.waitForTask<Exception>(this, (updateFunc) =>
+            {
+                try
+                {
+                    int pageCounter = 0;
+                    foreach (var ch in mangaChapters)
+                    {
+                        foreach (var page in ch.Pages)
+                        {
+                            pageCounter++;
+                            updateFunc(
+                                     "Processing: " + ch.Name + " -> " + page.Name,
+                                     (int)(100.0f * pageCounter / TotlaPageCount)
+                                 );
+                            using (Bitmap b1 = MagickImaging.BitmapFromUrlExt(page.ImagePath))
+                            {
+                                using (Bitmap b2 = GraphicsUtils.MakeBW1(b1))
+                                {
+                                    page.WhiteBlackRatio = MagickImaging.WhiteRatio(b1);
+                                }
+                            }
+                        }
+                        ch.PublicNotifyChange("MinWhiteRatio");
+                    }
+                }
+                catch (Exception ex2)
+                {
+                    return ex2;
+                }
+
+                return null;
+            }, true);
+
+            if (ex != null)
+            {
+                MessageBox.Show("Error occured while exporting pdf (convert step).\n" + ex.ToString());
+            }
+            else
+            {
+                MessageBox.Show("Done!, Took:" + (DateTime.Now - start).ToString());
+            }
         }
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)

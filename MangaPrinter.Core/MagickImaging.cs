@@ -67,5 +67,24 @@ namespace MangaPrinter.Core
             }
             return result;
         }
+
+        public static float WhiteRatio(Bitmap bmp)
+        {
+            //https://stackoverflow.com/a/21406312/1997873
+            int whiteColor = 0;
+            int blackColor = 0;
+            for (int x = 0; x < bmp.Width; x++)
+            {
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    Color color = bmp.GetPixel(x, y);
+                    if (color.ToArgb() == Color.White.ToArgb())
+                    {
+                        whiteColor++;
+                    }
+                }
+            }
+            return whiteColor > 0?  (whiteColor * 1f) / (bmp.Width*bmp.Height) : 0;
+        }
     }
 }

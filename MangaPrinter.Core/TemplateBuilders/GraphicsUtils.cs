@@ -200,6 +200,14 @@ namespace MangaPrinter.Core.TemplateBuilders
             }
         }
 
+        public static Bitmap MakeBW1(Bitmap Original)
+        {
+            return Original.Clone(
+                new Rectangle(0, 0, Original.Width, Original.Height),
+                System.Drawing.Imaging.PixelFormat.Format1bppIndexed
+            );
+        }
+
         public static Bitmap MakeGrayscale3(Bitmap original)
         {
             //create a blank bitmap the same size as original
