@@ -43,7 +43,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         public static Font fontSide = new Font(new FontFamily("Arial"), 5, FontStyle.Bold); // size will be changed
         public static Font fontPageText = new Font(new FontFamily("Arial"), 5);
 
-        public Bitmap BuildFace(PrintFace face,  int spW, int spH, int padding, bool colors)
+        public Bitmap BuildFace(PrintFace face,  int spW, int spH, int padding, bool colors, bool parentText)
         {
             Bitmap result = null;
             if (face.Left == face.Right) // double
@@ -70,7 +70,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                         string.Format("Got type {0} in left single in duplex. It's unexpected.", face.Left.SideType)
                         );
 
-                result = TemplateSingle(face, spW, spH, padding);
+                result = TemplateSingle(face, spW, spH, padding, parentText);
             }
 
             if (result != null && !colors) result = GraphicsUtils.MakeGrayscale3(result);
@@ -166,7 +166,7 @@ namespace MangaPrinter.Core.TemplateBuilders
             return result;
         }
 
-        private Bitmap TemplateSingle(PrintFace face, int spW, int spH, int padding)
+        private Bitmap TemplateSingle(PrintFace face, int spW, int spH, int padding, bool parentText)
         {
             int tmpW = spW * 2 + padding *3;
             int tmpH = spH + padding * 2;
@@ -219,8 +219,8 @@ namespace MangaPrinter.Core.TemplateBuilders
                );
 
 
-                DrawSide(pageW, pageH, g, face.Left, new Point(padding, padding));
-                DrawSide(pageW, pageH, g, face.Right, new Point(padding*2 + pageW, padding));
+                DrawSide(pageW, pageH, g, face.Left, new Point(padding, padding), parentText);
+                DrawSide(pageW, pageH, g, face.Right, new Point(padding*2 + pageW, padding), parentText);
 
                 // border
                 //g.DrawRectangle(blackPen, new Rectangle(padding, padding, pageW, pageH));
@@ -229,19 +229,22 @@ namespace MangaPrinter.Core.TemplateBuilders
             return b;
         }
 
-        private void DrawSide(int pageW, int pageH, Graphics g,  PrintSide side, Point pagePlace)
+        private void DrawSide(int pageW, int pageH, Graphics g,  PrintSide side, Point pagePlace, bool parentName)
         {
             Bitmap page = null;
+            string chapterName = 
+                ( parentName ? side.MangaPageSource.Chapter.ParentName + '\n'  : "") +
+                side.MangaPageSource.Chapter.Name;
             switch (side.SideType)
             {
                 case SingleSideType.INTRO:
                     page = GraphicsUtils.createImageWithText(sideTextConsts(SingleSideType.INTRO)
-                        .Replace("{0}", side.MangaPageSource.Chapter.Name),
+                        .Replace("{0}", chapterName),
                       pageH, pageW);
                     break;
                 case SingleSideType.OUTRO:
                     page = GraphicsUtils.createImageWithText(sideTextConsts(SingleSideType.OUTRO)
-                        .Replace("{0}", side.MangaPageSource.Chapter.Name),
+                        .Replace("{0}", chapterName),
                       pageH, pageW);
                     break;
                 case SingleSideType.BEFORE_DOUBLE:

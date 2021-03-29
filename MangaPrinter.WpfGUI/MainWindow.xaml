@@ -193,11 +193,16 @@
                                     <StackPanel Orientation="Horizontal">
                                         <CheckBox IsChecked="{Binding IsChecked}" Padding="3px"/>
                                         <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
-                                        <Label Content="{Binding Name}" />
-                                        <Label Name="lblPagesCount" Content="{Binding Path=Pages.Count}" ContentStringFormat=" [{0} pages]" />
-
-                                        <Label Name="lblPagesWhiteMinRatio" Content="{Binding MinWhiteRatio}" ContentStringFormat=" 🔳{0:0.00}" Visibility="Collapsed" />
-                                        <Label Name="lblPagesMinRatio" Content="{Binding MinRatio}" ContentStringFormat=" ➗{0:F3}" Visibility="Collapsed" />
+                                        <StackPanel Orientation="Vertical">
+                                            <Label Padding="5,0" Content="{Binding Name}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Padding="5,0" Name="lblPagesCount" Content="{Binding Path=Pages.Count}" ContentStringFormat=" [{0} pages]" />
+                                                <Label Padding="5,0" Name="lblPagesWhiteMinRatio" Content="{Binding MinWhiteRatio}" ContentStringFormat=" 🔳{0:0.00}" Visibility="Collapsed" />
+                                                <Label Padding="5,0" Name="lblPagesMinRatio" Content="{Binding MinRatio}" ContentStringFormat=" ➗{0:F3}" Visibility="Collapsed" />
+                                                <Label Padding="5,0" Content="{Binding ParentName}"  Foreground="DimGray"/>
+                                            </StackPanel>
+                                            <Separator />
+                                        </StackPanel>
                                     </StackPanel>
                                     <DataTemplate.Triggers>
                                         <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource greaterConvert}, ConverterParameter=25}" Value="True">
@@ -336,6 +341,7 @@
                         <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
                             25</TextBox>
                         <Label Content="pages" IsEnabled="False" />
+                        <CheckBox Name="cbIncludeParent" IsChecked="True">Include parent</CheckBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Export:</Label>

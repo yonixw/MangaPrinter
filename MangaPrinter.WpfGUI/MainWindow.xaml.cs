@@ -376,6 +376,7 @@ namespace MangaPrinter.WpfGUI
             bool startPage = cbAddStart.IsChecked ?? false;
             bool endPage = cbAddEnd.IsChecked ?? false;
             int antiSpoiler = (cbUseAntiSpoiler.IsChecked ?? false) ? int.Parse(txtSpoilerPgNm.Text) : 0;
+            bool printParent = cbIncludeParent.IsChecked ?? false;
 
             var allSelectedChapters = mangaChapters.Where(ch=>ch.IsChecked).ToList();
 
@@ -384,7 +385,7 @@ namespace MangaPrinter.WpfGUI
                 ObservableCollection<SelectablePrintPage> result = new ObservableCollection<SelectablePrintPage>();
 
                 (new Core.ChapterBuilders.DuplexBuilder())
-                    .Build(allSelectedChapters.Cast<MangaChapter>().ToList(), startPage, endPage, antiSpoiler)
+                    .Build(allSelectedChapters.Cast<MangaChapter>().ToList(), startPage, endPage, antiSpoiler,printParent)
                     .ForEach((p) => result.Add(PrintPage.Extend<SelectablePrintPage>(p)));
 
                 return result;
@@ -476,7 +477,8 @@ namespace MangaPrinter.WpfGUI
             ListBoxAction<SelectablePrintPage>(lstPrintPages, (p) =>
             {
                 var b = (new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0])).BuildFace(p.Front,
-                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text), cbKeepColors.IsChecked ?? false);
+                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text),
+                    int.Parse(txtPrintPadding.Text), cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
                 if (tempImage.Exists)
                     tempImage.Delete();
@@ -496,7 +498,8 @@ namespace MangaPrinter.WpfGUI
             ListBoxAction<SelectablePrintPage>(lstPrintPages, (p) =>
             {
                 var b = (new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0])).BuildFace(p.Back,
-                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text), cbKeepColors.IsChecked ?? false);
+                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text),
+                    cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
                 if (tempImage.Exists)
                     tempImage.Delete();
@@ -661,6 +664,7 @@ namespace MangaPrinter.WpfGUI
                 int pagesCount = allPrintPages.Count;
                 bool convertPdf = !(cbExportMinimal.IsChecked??false);
                 bool keepColors = cbKeepColors.IsChecked ?? false;
+                bool parentText = cbIncludeParent.IsChecked ?? false;
                 List<string> filesToDelete = new List<string>();
 
                 DateTime timeTemp;
@@ -680,7 +684,7 @@ namespace MangaPrinter.WpfGUI
                         {
                             updateFunc("[1/3] Export page " + page.PageNumber, (int)(100.0f * saveCounter / 2 / pagesCount));
 
-                            var b = dt.BuildFace(page.Front, pW, pH, pad, keepColors);
+                            var b = dt.BuildFace(page.Front, pW, pH, pad, keepColors, parentText);
                             var bName = System.IO.Path.Combine(
                                     fi.Directory.FullName,
                                     "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".jpg"
@@ -689,7 +693,7 @@ namespace MangaPrinter.WpfGUI
                             filesToDelete.Add(bName);
                             b.Dispose();
 
-                            b = dt.BuildFace(page.Back, pW, pH, pad, keepColors);
+                            b = dt.BuildFace(page.Back, pW, pH, pad, keepColors, parentText);
                             bName = System.IO.Path.Combine(
                                    fi.Directory.FullName,
                                    "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".jpg"

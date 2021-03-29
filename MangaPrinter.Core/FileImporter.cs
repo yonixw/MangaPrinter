@@ -169,7 +169,7 @@ namespace MangaPrinter.Core
             {
                 MangaChapter ch = new MangaChapter()
                 {
-                    Name = di.Name,
+                    Name = di.Name, ParentName = ( di.Parent?.Name ?? ""),
                     IsRTL = RTL,
                     autoPageNumbering = false
                 };

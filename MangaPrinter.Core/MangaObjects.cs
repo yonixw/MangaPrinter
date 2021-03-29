@@ -29,6 +29,7 @@ namespace MangaPrinter.Core
     {
         public bool IsChecked { get { return _baseGet(failover: false); } set { _baseSet(value); } }
         public string Name { get { return _baseGet(); } set { _baseSet(value); } }
+        public string ParentName { get { return _baseGet(""); } set { _baseSet(value); } }
         public ObservableCollection<MangaPage> Pages { get { return _baseGet(); } set { _baseSet(value); } }
         public bool IsRTL { get { return _baseGet(); } set { _baseSet(value); } }
 
@@ -97,6 +98,7 @@ namespace MangaPrinter.Core
             result.autoPageNumbering = input.autoPageNumbering;
             result.IsRTL = input.IsRTL;
             result.Name = input.Name;
+            result.ParentName = input.ParentName;
             result.Pages = input.Pages;
 
             return result;
