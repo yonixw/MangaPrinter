@@ -23,7 +23,9 @@ namespace MangaPrinter.Core.ChapterBuilders
 
             foreach (MangaChapter ch in chapters)
             {
-                MangaPage SinglePageNULL = new MangaPage() {AspectRatio = 0, IsDouble = false, Chapter = ch }; 
+                MangaPage SinglePageNULL = new MangaPage() {
+                    AspectRatio = MangaPage.MinRatio, // Must be > 0, o.w. Infinity!
+                    IsDouble = false, Chapter = ch }; 
 
                 if (addStartPage)
                     HandleFace( ref isFirst, Faces, ch, SinglePageNULL, SingleSideType.INTRO);

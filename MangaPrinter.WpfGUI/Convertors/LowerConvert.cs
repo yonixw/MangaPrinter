@@ -8,13 +8,13 @@ using System.Windows.Data;
 
 namespace MangaPrinter.WpfGUI.Convertors
 {
-    class PageCountGreaterConvert : IValueConverter
+    class LowerConvert : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int intParam = 0;
-            if (value != null && parameter != null  && int.TryParse((string)parameter,out intParam))
-                return (int)value > intParam;
+            float inParam = int.MaxValue;
+            if (value != null && parameter != null  && float.TryParse((string)parameter,out inParam))
+                return System.Convert.ToSingle(value) < inParam;
             return false;
         }
 

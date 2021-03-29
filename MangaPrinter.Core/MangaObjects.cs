@@ -8,6 +8,9 @@ namespace MangaPrinter.Core
 {
     public class MangaPage : ModelBaseWpf
     {
+        public const float MinRatio = 0.05f;
+        public const float MaxRatio = 20f;
+
         public string Name { get { return _baseGet(); } set { _baseSet(value); } }
         public bool IsDouble { get { return _baseGet(); } set { _baseSet(value); } }
         public float AspectRatio { get { return _baseGet(); } set { _baseSet(value); } }
@@ -36,6 +39,23 @@ namespace MangaPrinter.Core
         private void Pages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             updatePageNumber();
+            NotifyChange("MinRatio");
+        }
+
+        public float MinRatio
+        {
+            get
+            {
+                return ((Pages?.Count() ?? 0) > 0) ? Pages.Min(p=>p.AspectRatio) : MangaPage.MaxRatio;
+            }
+        }
+
+        public float MaxRatio
+        {
+            get
+            {
+                return ((Pages?.Count() ?? 0) > 0) ? Pages.Max(p => p.AspectRatio) : MangaPage.MinRatio;
+            }
         }
 
         public void updatePageNumber()

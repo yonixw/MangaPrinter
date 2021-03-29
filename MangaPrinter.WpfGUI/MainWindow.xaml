@@ -11,7 +11,8 @@
         FontSize="9.75pt" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Window.Resources>
         <converts:PrintSideLabelConvert x:Key="sideConvert"/>
-        <converts:PageCountGreaterConvert x:Key="greaterConvert"/>
+        <converts:GreaterConvert x:Key="greaterConvert"/>
+        <converts:LowerConvert x:Key="lowerConvert"/>
 
         <Style x:Key="GeneralStyle" TargetType="{x:Type Control}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -185,6 +186,7 @@
                                         <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
                                         <Label Content="{Binding Name}" />
                                         <Label Name="lblPagesCount" Content="{Binding Path=Pages.Count}" ContentStringFormat=" [{0} pages]" />
+                                        <Label Name="lblPagesMinRatio" Content="{Binding MinRatio}" ContentStringFormat=" ➗{0:F3}" Visibility="Collapsed" />
                                     </StackPanel>
                                     <DataTemplate.Triggers>
                                         <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource greaterConvert}, ConverterParameter=25}" Value="True">
@@ -194,7 +196,12 @@
                                         <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource greaterConvert}, ConverterParameter=65}" Value="True">
                                             <Setter TargetName="lblPagesCount" Property="Foreground" Value="Red"/>
                                         </DataTrigger>
-                                        
+
+                                        <DataTrigger Binding="{Binding Path=MinRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.33}" Value="True">
+                                            <Setter TargetName="lblPagesMinRatio" Property="Foreground" Value="Red"/>
+                                            <Setter TargetName="lblPagesMinRatio" Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+
                                         <DataTrigger Binding="{Binding IsRTL}" Value="False">
                                             <Setter TargetName="imgRTL" Property="Source" Value="Icons/LTR.png"/>
                                         </DataTrigger>
@@ -241,6 +248,8 @@
                                         </Label>
 
                                         <Label Content="{Binding Name}" />
+
+                                        <Label Name="lblPageRatio" Content="{Binding AspectRatio}" ContentStringFormat=" ➗{0:F3}" Visibility="Collapsed" />
                                     </StackPanel>
 
                                     <DataTemplate.Triggers>
@@ -248,6 +257,11 @@
                                             <Setter TargetName="imgPage" Property="Source" Value="Icons/2Page.png"/>
                                             <Setter TargetName="lblDouble" Property="Visibility" Value="Visible"/>
                                             <Setter TargetName="lblSingle" Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding Path=AspectRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.33}" Value="True">
+                                            <Setter TargetName="lblPageRatio" Property="Foreground" Value="Red"/>
+                                            <Setter TargetName="lblPageRatio" Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </DataTemplate.Triggers>
                                 </DataTemplate>

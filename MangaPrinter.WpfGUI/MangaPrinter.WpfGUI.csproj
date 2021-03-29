@@ -78,7 +78,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Convertors\PageCountGreaterConvert.cs" />
+    <Compile Include="Convertors\LowerConvert.cs" />
+    <Compile Include="Convertors\GreaterConvert.cs" />
     <Compile Include="Dialogs\dlgBluredImage.xaml.cs">
       <DependentUpon>dlgBluredImage.xaml</DependentUpon>
     </Compile>
