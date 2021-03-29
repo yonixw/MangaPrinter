@@ -232,9 +232,13 @@ namespace MangaPrinter.Core.TemplateBuilders
         private void DrawSide(int pageW, int pageH, Graphics g,  PrintSide side, Point pagePlace, bool parentName)
         {
             Bitmap page = null;
-            string chapterName = 
-                ( parentName ? side.MangaPageSource.Chapter.ParentName + '\n'  : "") +
+            string chapterName = "<init ch name>";
+            if (side.SideType == SingleSideType.INTRO || side.SideType == SingleSideType.OUTRO)
+            {
+                chapterName = (parentName ? side.MangaPageSource.Chapter.ParentName + '\n' : "") +
                 side.MangaPageSource.Chapter.Name;
+            }
+                
             switch (side.SideType)
             {
                 case SingleSideType.INTRO:

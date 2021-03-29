@@ -190,7 +190,7 @@ namespace MangaPrinter.Core
                 }
 
                 ch.autoPageNumbering = true;
-                ch.updatePageNumber();
+                ch.updateChapterStats();
 
                 if (ch.Pages.Count > 0)
                 {

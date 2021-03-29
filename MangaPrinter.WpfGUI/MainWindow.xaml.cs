@@ -21,6 +21,7 @@ using MangaPrinter.WpfGUI.Utils;
 using MangaPrinter.WpfGUI.Dialogs;
 using System.Drawing;
 using System.IO.Packaging;
+using System.ComponentModel;
 
 namespace MangaPrinter.WpfGUI
 {
@@ -29,7 +30,7 @@ namespace MangaPrinter.WpfGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        ObservableCollection<SelectableMangaChapter> mangaChapters = new ObservableCollection<SelectableMangaChapter>();
+        BindingList<SelectableMangaChapter> mangaChapters = new BindingList<SelectableMangaChapter>();
 
 
         public MainWindow()
@@ -41,6 +42,8 @@ namespace MangaPrinter.WpfGUI
         {
             lstFileChapters.ItemsSource = mangaChapters;
             lstFileChaptersBinding.ItemsSource = mangaChapters;
+            
+            mangaChapters.ListChanged += MangaChapters_ListChanged;
             rtbInfo.AppendText(" " + Properties.Resources.GitInfo.Replace("\"", "").Split(';')[0]);
 
             // Load Settings:
@@ -56,6 +59,16 @@ namespace MangaPrinter.WpfGUI
             txtPrintWidth.Text = Config.exportPageWidth.ToString();
             txtPrintHeight.Text = Config.exportPageHeight.ToString();
             txtPrintPadding.Text = Config.exportPagePadding.ToString();
+        }
+
+        bool shouldUpdateStats = true;
+        private void MangaChapters_ListChanged(object sender, ListChangedEventArgs e)
+        {
+            if (shouldUpdateStats)
+            {
+                lblChCount.DataContext = null;
+                lblChCount.DataContext = mangaChapters;
+            }
         }
 
         void verifyInteger(TextBox textBox, string fallbackValue)
@@ -150,7 +163,7 @@ namespace MangaPrinter.WpfGUI
                 Chapter.Pages
                     .Where(p => p.IsChecked)
                     .ForEach(p => p.IsDouble = false);
-                Chapter.updatePageNumber();
+                Chapter.updateChapterStats();
             }
         }
 
@@ -162,7 +175,7 @@ namespace MangaPrinter.WpfGUI
                 Chapter.Pages
                     .Where(p => p.IsChecked)
                     .ForEach(p => p.IsDouble = true);
-                Chapter.updatePageNumber();
+                Chapter.updateChapterStats();
             }
         }
 
@@ -258,7 +271,7 @@ namespace MangaPrinter.WpfGUI
                     .ForEach(page => ch.Pages.Add(page));
 
                     ch.autoPageNumbering = true;
-                    ch.updatePageNumber();
+                    ch.updateChapterStats();
 
                     
                     if (importErrors.Count > 0)
@@ -473,45 +486,40 @@ namespace MangaPrinter.WpfGUI
         FileInfo tempImage = new FileInfo("_tmp_.png");
         private void MnuPrvwFront_Click(object sender, RoutedEventArgs e)
         {
+            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
 
-            ListBoxAction<SelectablePrintPage>(lstPrintPages, (p) =>
-            {
-                var b = (new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0])).BuildFace(p.Front,
+            var b = (new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0])).BuildFace(p.Front,
                     int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text),
                     int.Parse(txtPrintPadding.Text), cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
-                if (tempImage.Exists)
-                    tempImage.Delete();
+            if (tempImage.Exists)
+                tempImage.Delete();
 
-                b.Save(tempImage.FullName);
-                b.Dispose();
+            b.Save(tempImage.FullName);
+            b.Dispose();
 
-                Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
-                        "Front face of page: " + p.PageNumber);
-                dlgImage.ShowDialog();
-
-            });
+            Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
+                    "Front face of page: " + p.PageNumber);
+            dlgImage.ShowDialog();
         }
 
         private void MnuPrvwBack_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxAction<SelectablePrintPage>(lstPrintPages, (p) =>
-            {
-                var b = (new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0])).BuildFace(p.Back,
-                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text), int.Parse(txtPrintPadding.Text),
-                    cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
+            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
 
-                if (tempImage.Exists)
-                    tempImage.Delete();
+            var b = (new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0])).BuildFace(p.Back,
+                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text),
+                    int.Parse(txtPrintPadding.Text), cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
-                b.Save(tempImage.FullName);
-                b.Dispose();
+            if (tempImage.Exists)
+                tempImage.Delete();
 
-                Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
-                        "Back face of page: " + p.PageNumber);
-                dlgImage.ShowDialog();
+            b.Save(tempImage.FullName);
+            b.Dispose();
 
-            });
+            Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
+                    "Front face of page: " + p.PageNumber);
+            dlgImage.ShowDialog();
         }
 
         private void LblHelpExportMinimal_Click(object sender, RoutedEventArgs e)
@@ -561,6 +569,8 @@ namespace MangaPrinter.WpfGUI
             int TotlaPageCount = mangaChapters.Sum(p => isQuick ? Math.Min(6, p.Pages.Count) : p.Pages.Count);
             DateTime start = DateTime.Now;
 
+            shouldUpdateStats = false; // Because we are updating the stats which will update ui in the middle
+
             Exception ex = winWorking.waitForTask<Exception>(this, (updateFunc) =>
             {
                 try
@@ -588,7 +598,7 @@ namespace MangaPrinter.WpfGUI
                                 }
                             }
                         }
-                        ch.PublicNotifyChange("MinWhiteRatio");
+                        ch.updateChapterStats();
                     }
                 }
                 catch (Exception ex2)
@@ -599,9 +609,13 @@ namespace MangaPrinter.WpfGUI
                 return null;
             }, true);
 
+            shouldUpdateStats = true;
+            lblChCount.DataContext = null;
+            lblChCount.DataContext = mangaChapters;
+
             if (ex != null)
             {
-                MessageBox.Show("Error occured while exporting pdf (convert step).\n" + ex.ToString());
+                MessageBox.Show("Error occured while reading white ratio (convert step).\n" + ex.ToString());
             }
             else
             {
@@ -646,7 +660,7 @@ namespace MangaPrinter.WpfGUI
                 SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
                 List<MangaPage> tempPages = Chapter.Pages.Where(p => p.IsChecked ).ToList();
                 tempPages.ForEach(p => Chapter.Pages.Remove(p));
-                Chapter.updatePageNumber();
+                Chapter.updateChapterStats();
             }
         }
 

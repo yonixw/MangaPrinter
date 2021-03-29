@@ -13,6 +13,9 @@
         <converts:PrintSideLabelConvert x:Key="sideConvert"/>
         <converts:GreaterConvert x:Key="greaterConvert"/>
         <converts:LowerConvert x:Key="lowerConvert"/>
+        <converts:ChapterListInfo x:Key="chInfoConvert"/>
+
+        
 
         <Style x:Key="GeneralStyle" TargetType="{x:Type Control}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -173,63 +176,71 @@
                             <ColumnDefinition Width="5"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <ListBox Name="lstFileChapters" Grid.Column="0">
-                            <ListBox.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Name="mnuRenameChapter" Click="mnuRenameChapter_Click" Header="Rename chapter title"/>
-                                    <MenuItem Name="mnuAddChapterPages" Click="mnuAddChapterPages_Click" Header="Add images as pages..."/>
-                                    <Separator/>
-                                    <MenuItem Name="mnuToRTL" Click="mnuToRTL_Click" Header="Change selected to RTL"/>
-                                    <MenuItem Name="mnuToLTR" Click="mnuToLTR_Click" Header="Change selected to LTR"/>
-                                    <Separator/>
-                                    <MenuItem Name="mnuChSelectAll" Click="mnuChSelectAll_Click" Header="Select All"/>
-                                    <MenuItem Name="mnuChSelectNone" Click="mnuChSelectNone_Click" Header="Select None"/>
-                                    <Separator/>
-                                    <MenuItem Name="mnuDeleteCh" Click="mnuDeleteCh_Click" Header="Delete selected" Background="LightSalmon" />
-                                </ContextMenu>
-                            </ListBox.ContextMenu>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <CheckBox IsChecked="{Binding IsChecked}" Padding="3px"/>
-                                        <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
-                                        <StackPanel Orientation="Vertical">
-                                            <Label Padding="5,0" Content="{Binding Name}" />
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Padding="5,0" Name="lblPagesCount" Content="{Binding Path=Pages.Count}" ContentStringFormat=" [{0} pages]" />
-                                                <Label Padding="5,0" Name="lblPagesWhiteMinRatio" Content="{Binding MinWhiteRatio}" ContentStringFormat=" 🔳{0:0.00}" Visibility="Collapsed" />
-                                                <Label Padding="5,0" Name="lblPagesMinRatio" Content="{Binding MinRatio}" ContentStringFormat=" ➗{0:F3}" Visibility="Collapsed" />
-                                                <Label Padding="5,0" Content="{Binding ParentName}"  Foreground="DimGray"/>
+                        <DockPanel Grid.Column="0">
+                            <StatusBar DockPanel.Dock="Bottom">
+                                <StatusBarItem>
+                                    <Label Padding="5,0" Name="lblChCount" Content="{Binding Converter={StaticResource chInfoConvert}}"  />
+                                </StatusBarItem>
+                            </StatusBar>
+                            <ListBox Name="lstFileChapters" >
+                                <ListBox.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Name="mnuRenameChapter" Click="mnuRenameChapter_Click" Header="Rename chapter title"/>
+                                        <MenuItem Name="mnuAddChapterPages" Click="mnuAddChapterPages_Click" Header="Add images as pages..."/>
+                                        <Separator/>
+                                        <MenuItem Name="mnuToRTL" Click="mnuToRTL_Click" Header="Change selected to RTL"/>
+                                        <MenuItem Name="mnuToLTR" Click="mnuToLTR_Click" Header="Change selected to LTR"/>
+                                        <Separator/>
+                                        <MenuItem Name="mnuChSelectAll" Click="mnuChSelectAll_Click" Header="Select All"/>
+                                        <MenuItem Name="mnuChSelectNone" Click="mnuChSelectNone_Click" Header="Select None"/>
+                                        <Separator/>
+                                        <MenuItem Name="mnuDeleteCh" Click="mnuDeleteCh_Click" Header="Delete selected" Background="LightSalmon" />
+                                    </ContextMenu>
+                                </ListBox.ContextMenu>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox IsChecked="{Binding IsChecked}" Padding="3px"/>
+                                            <Image Name="imgRTL" Height="32px" Source="Icons/RTL.png" />
+                                            <StackPanel Orientation="Vertical">
+                                                <Label Padding="5,0" Content="{Binding Name}" />
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Padding="5,0" Name="lblPagesCount" Content="{Binding Path=Pages.Count}" ContentStringFormat=" [{0} pages]" />
+                                                    <Label Padding="5,0" Name="lblPagesWhiteMinRatio" Content="{Binding MinWhiteRatio}" ContentStringFormat=" 🔳{0:0.00}" Visibility="Collapsed" />
+                                                    <Label Padding="5,0" Name="lblPagesMinRatio" Content="{Binding MinRatio}" ContentStringFormat=" ➗{0:F3}" Visibility="Collapsed" />
+                                                    <Label Padding="5,0" Content="{Binding ParentName}"  Foreground="DimGray"/>
+                                                </StackPanel>
+                                                <Separator />
                                             </StackPanel>
-                                            <Separator />
                                         </StackPanel>
-                                    </StackPanel>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource greaterConvert}, ConverterParameter=25}" Value="True">
-                                            <Setter TargetName="lblPagesCount" Property="FontWeight" Value="Bold"/>
-                                        </DataTrigger>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource greaterConvert}, ConverterParameter=25}" Value="True">
+                                                <Setter TargetName="lblPagesCount" Property="FontWeight" Value="Bold"/>
+                                            </DataTrigger>
 
-                                        <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource greaterConvert}, ConverterParameter=65}" Value="True">
-                                            <Setter TargetName="lblPagesCount" Property="Foreground" Value="Red"/>
-                                        </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource greaterConvert}, ConverterParameter=65}" Value="True">
+                                                <Setter TargetName="lblPagesCount" Property="Foreground" Value="Red"/>
+                                            </DataTrigger>
 
 
-                                        <DataTrigger Binding="{Binding Path=MinWhiteRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.10}" Value="True">
-                                            <Setter TargetName="lblPagesWhiteMinRatio" Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=MinWhiteRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.10}" Value="True">
+                                                <Setter TargetName="lblPagesWhiteMinRatio" Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
 
-                                        <DataTrigger Binding="{Binding Path=MinRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.33}" Value="True">
-                                            <Setter TargetName="lblPagesMinRatio" Property="Foreground" Value="Red"/>
-                                            <Setter TargetName="lblPagesMinRatio" Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=MinRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.33}" Value="True">
+                                                <Setter TargetName="lblPagesMinRatio" Property="Foreground" Value="Red"/>
+                                                <Setter TargetName="lblPagesMinRatio" Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
 
-                                        <DataTrigger Binding="{Binding IsRTL}" Value="False">
-                                            <Setter TargetName="imgRTL" Property="Source" Value="Icons/LTR.png"/>
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                                            <DataTrigger Binding="{Binding IsRTL}" Value="False">
+                                                <Setter TargetName="imgRTL" Property="Source" Value="Icons/LTR.png"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                           
+                        </DockPanel>
 
                         <GridSplitter Grid.Column="1" Width="5"   HorizontalAlignment="Stretch"/>
 
@@ -341,7 +352,7 @@
                         <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
                             25</TextBox>
                         <Label Content="pages" IsEnabled="False" />
-                        <CheckBox Name="cbIncludeParent" IsChecked="True">Include parent</CheckBox>
+                        <CheckBox Name="cbIncludeParent" IsChecked="True">Include folder name</CheckBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Export:</Label>
@@ -366,9 +377,9 @@
                     </Menu>
                     <Grid >
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4*"/>
                             <ColumnDefinition Width="5"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6*"/>
                         </Grid.ColumnDefinitions>
                         <ListBox Name="lstFileChaptersBinding" Grid.Column="0" 
                                  SelectionMode="Multiple"  SelectionChanged="LstFileChaptersBinding_SelectionChanged">
@@ -379,7 +390,11 @@
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
-                                    <Label Content="{Binding Name}"  />
+                                    <StackPanel Orientation="Vertical">
+                                        <Label Padding="5,0" Content="{Binding Name}"  />
+                                        <Label Padding="5,0" Content="{Binding ParentName}"  Foreground="DimGray"/>
+                                        <Separator />
+                                    </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
@@ -394,12 +409,6 @@
                                     <Setter Property="IsSelected" Value="{Binding Selected, Mode=TwoWay}" />
                                 </Style>
                             </ListBox.ItemContainerStyle>
-                            <ListBox.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Name="mnuPrvwFront" Click="MnuPrvwFront_Click" Header="Preview Front"/>
-                                    <MenuItem Name="mnuPrvwBack" Click="MnuPrvwBack_Click" Header="Preview Back"/>
-                                </ContextMenu>
-                            </ListBox.ContextMenu>
                             <ListBox.ItemTemplate >
                                 <DataTemplate >
                                     <StackPanel Orientation="Horizontal" >
@@ -411,11 +420,13 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="*" />
                                                     <RowDefinition Height="*" />
                                                 </Grid.RowDefinitions>
+                                                
                                                 <Border BorderThickness="0 0 0 2" Grid.Column="0" BorderBrush="Blue" Grid.Row="0">
                                                     <Label Content="{Binding Front.Left, Converter={StaticResource sideConvert}}"  />
                                                 </Border>
@@ -427,9 +438,10 @@
                                                        Grid.Column="1" Grid.RowSpan="2"/>
 
                                                 <Label  Content="{Binding Back.Right, Converter={StaticResource sideConvert}}" Grid.Row="1" Grid.Column="2" />
-                                                <Label Content="{Binding Back.Left, Converter={StaticResource sideConvert}}" Grid.Column="0" Grid.Row="1"/>
+                                                <Label Content="{Binding Back.Left, Converter={StaticResource sideConvert}}"   Grid.Row="1" Grid.Column="0" />
 
-
+                                                <Button Click="MnuPrvwFront_Click" Grid.Row="0" Grid.Column="3">👁🔼</Button>
+                                                <Button Click="MnuPrvwBack_Click" Grid.Row="1" Grid.Column="3">👁🔽</Button>
                                             </Grid>
                                         </Border>
                                     </StackPanel>
