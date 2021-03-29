@@ -22,6 +22,9 @@ using MangaPrinter.WpfGUI.Dialogs;
 using System.Drawing;
 using System.IO.Packaging;
 using System.ComponentModel;
+using PdfSharp.Pdf;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
+using PdfSharp;
 
 namespace MangaPrinter.WpfGUI
 {
@@ -661,6 +664,43 @@ namespace MangaPrinter.WpfGUI
                 List<MangaPage> tempPages = Chapter.Pages.Where(p => p.IsChecked ).ToList();
                 tempPages.ForEach(p => Chapter.Pages.Remove(p));
                 Chapter.updateChapterStats();
+            }
+        }
+
+        private void mnuExportTOC_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult quick = MessageBox.Show("Checked chapters only?",
+                 "Export Table of content as PDF",
+                 MessageBoxButton.YesNoCancel
+                 );
+
+            if (quick == MessageBoxResult.Cancel)
+                return;
+            bool checkedOnly = quick == MessageBoxResult.Yes;
+
+            dlgSave.Title = "Export Table of content as PDF";
+            dlgSave.Filter = "PDF |*.pdf";
+            if (dlgSave.ShowDialog() == true)
+            {
+                FileInfo fi = new FileInfo(dlgSave.FileName);
+
+                string StartHTML = string.Format("[{0}] <h1>{1}</h1>"+ "<ol>", DateTime.Now.ToShortDateString(), fi.Name) ;
+                const string HTMLItem = "<li><span>{0}</span><br><span style='color: dimgray;'>{1}</span></li>";
+                const string EndHTML = "</ol>";
+
+                var list = checkedOnly ?
+                    mangaChapters.Where(ch=>ch.IsChecked).Select(ch => string.Format(HTMLItem, ch.Name, ch.ParentName)).ToList()
+                    :
+                     mangaChapters.Select(ch => string.Format(HTMLItem, ch.Name, ch.ParentName)).ToList();
+
+
+                PdfDocument pdf = PdfGenerator.GeneratePdf(
+                    StartHTML + 
+                    string.Join("\n", list) +
+                    EndHTML
+                    , PageSize.A4);
+                pdf.Save(fi.FullName);
+                System.Diagnostics.Process.Start(fi.FullName);
             }
         }
 

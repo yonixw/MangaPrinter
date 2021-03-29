@@ -374,6 +374,7 @@
                         <Hyperlink Name="lblHelpExportMinimal" Click="LblHelpExportMinimal_Click">( ? )</Hyperlink>
                         <CheckBox Name="cbKeepColors" IsChecked="False">Keep colors</CheckBox>
                         <Hyperlink Name="lblKeepColorsHelp" Click="lblKeepColorsHelp_Click">( ? )</Hyperlink>
+                        <MenuItem Header="Export Chapter List" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Name="mnuExportTOC" Click="mnuExportTOC_Click" />
                     </Menu>
                     <Grid >
                         <Grid.ColumnDefinitions>
