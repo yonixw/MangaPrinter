@@ -11,6 +11,8 @@ namespace MangaPrinter.Core
         public const float MinRatio = 0.05f;
         public const float MaxRatio = 20f;
 
+        public bool IsChecked { get { return _baseGet(failover: false); } set { _baseSet(value); } } 
+
         public string Name { get { return _baseGet(); } set { _baseSet(value); } }
         public bool IsDouble { get { return _baseGet(); } set { _baseSet(value); } }
         public float AspectRatio { get { return _baseGet(); } set { _baseSet(value); } }
@@ -25,6 +27,7 @@ namespace MangaPrinter.Core
    
     public class MangaChapter : ModelBaseWpf
     {
+        public bool IsChecked { get { return _baseGet(failover: false); } set { _baseSet(value); } }
         public string Name { get { return _baseGet(); } set { _baseSet(value); } }
         public ObservableCollection<MangaPage> Pages { get { return _baseGet(); } set { _baseSet(value); } }
         public bool IsRTL { get { return _baseGet(); } set { _baseSet(value); } }

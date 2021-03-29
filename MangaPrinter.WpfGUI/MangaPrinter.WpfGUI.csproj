@@ -96,6 +96,7 @@
     <Compile Include="ExtendedClasses\SelectablePrintPage.cs" />
     <Compile Include="Convertors\PrintSideLabelConvert.cs" />
     <Compile Include="Utils\BucketInfo.cs" />
+    <Compile Include="Utils\LinqUtils.cs" />
     <Compile Include="winWorking.xaml.cs">
       <DependentUpon>winWorking.xaml</DependentUpon>
     </Compile>

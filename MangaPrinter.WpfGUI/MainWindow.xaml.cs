@@ -20,6 +20,7 @@ using Microsoft.Win32;
 using MangaPrinter.WpfGUI.Utils;
 using MangaPrinter.WpfGUI.Dialogs;
 using System.Drawing;
+using System.IO.Packaging;
 
 namespace MangaPrinter.WpfGUI
 {
@@ -123,6 +124,10 @@ namespace MangaPrinter.WpfGUI
                 {
                     (new dlgImportErrors() { DataErrors = importErrors }).ShowDialog();
                 }
+                else
+                {
+                    StartWhiteRatioScan();
+                }
             }
         }
 
@@ -138,22 +143,37 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuToSingle_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxAction<Core.MangaPage>(lstFilePages, page => { page.IsDouble = false; page.Chapter.updatePageNumber(); });
+            //ListBoxAction<Core.MangaPage>(lstFilePages, page => { page.IsDouble = false; page.Chapter.updatePageNumber(); });
+            if (lstFileChapters.SelectedValue!=null)
+            {
+                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                Chapter.Pages
+                    .Where(p => p.IsChecked)
+                    .ForEach(p => p.IsDouble = false);
+                Chapter.updatePageNumber();
+            }
         }
 
         private void mnuToDouble_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxAction<Core.MangaPage>(lstFilePages, page => { page.IsDouble = true; page.Chapter.updatePageNumber(); });
+            if (lstFileChapters.SelectedValue != null)
+            {
+                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                Chapter.Pages
+                    .Where(p => p.IsChecked)
+                    .ForEach(p => p.IsDouble = true);
+                Chapter.updatePageNumber();
+            }
         }
 
         private void mnuToRTL_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxAction<Core.MangaChapter>(lstFileChapters, ch => ch.IsRTL = true);
+            mangaChapters.Where(ch => ch.IsChecked).ForEach(ch => ch.IsRTL = true);
         }
 
         private void mnuToLTR_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxAction<Core.MangaChapter>(lstFileChapters, ch => ch.IsRTL = false);
+            mangaChapters.Where(ch => ch.IsChecked).ForEach(ch => ch.IsRTL = false);
         }
 
         private void mnuRenameChapter_Click(object sender, RoutedEventArgs e)
@@ -200,10 +220,8 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuDeleteCh_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxAction<SelectableMangaChapter>(lstFileChapters, (ch) =>
-            {
-                mangaChapters.Remove(ch);
-            });
+            List<SelectableMangaChapter> tempList =  mangaChapters.Where(ch => ch.IsChecked).ToList();
+            tempList.ForEach(ch => mangaChapters.Remove(ch));
         }
 
         private void mnuAddChapterPages_Click(object sender, RoutedEventArgs e)
@@ -359,20 +377,21 @@ namespace MangaPrinter.WpfGUI
             bool endPage = cbAddEnd.IsChecked ?? false;
             int antiSpoiler = (cbUseAntiSpoiler.IsChecked ?? false) ? int.Parse(txtSpoilerPgNm.Text) : 0;
 
-            var allChapters = mangaChapters.ToList();
+            var allSelectedChapters = mangaChapters.Where(ch=>ch.IsChecked).ToList();
 
             allPrintPages = winWorking.waitForTask<ObservableCollection<SelectablePrintPage>>(this, (updateFunc) =>
             {
                 ObservableCollection<SelectablePrintPage> result = new ObservableCollection<SelectablePrintPage>();
 
                 (new Core.ChapterBuilders.DuplexBuilder())
-                    .Build(allChapters.Cast<MangaChapter>().ToList(), startPage, endPage, antiSpoiler)
+                    .Build(allSelectedChapters.Cast<MangaChapter>().ToList(), startPage, endPage, antiSpoiler)
                     .ForEach((p) => result.Add(PrintPage.Extend<SelectablePrintPage>(p)));
 
                 return result;
             },
             isProgressKnwon: false);
 
+            lstFileChaptersBinding.ItemsSource = allSelectedChapters;
             lstPrintPages.ItemsSource = allPrintPages;
         }
 
@@ -522,7 +541,21 @@ namespace MangaPrinter.WpfGUI
 
         private void btnCalcWhiteRatio_Click(object sender, RoutedEventArgs e)
         {
-            int TotlaPageCount = mangaChapters.Sum(p => p.Pages.Count);
+            StartWhiteRatioScan();
+        }
+
+        private void StartWhiteRatioScan()
+        {
+            MessageBoxResult quick = MessageBox.Show("Should we do a quick scan? The first\\last 3 pages only?",
+                 "White Ratio options",
+                 MessageBoxButton.YesNoCancel
+                 );
+
+            if (quick == MessageBoxResult.Cancel)
+                return;
+            bool isQuick = quick == MessageBoxResult.Yes;
+
+            int TotlaPageCount = mangaChapters.Sum(p => isQuick ? Math.Min(6, p.Pages.Count) : p.Pages.Count);
             DateTime start = DateTime.Now;
 
             Exception ex = winWorking.waitForTask<Exception>(this, (updateFunc) =>
@@ -532,18 +565,23 @@ namespace MangaPrinter.WpfGUI
                     int pageCounter = 0;
                     foreach (var ch in mangaChapters)
                     {
-                        foreach (var page in ch.Pages)
+                        for (int i = 0; i < ch.Pages.Count; i++)
                         {
-                            pageCounter++;
-                            updateFunc(
-                                     "Processing: " + ch.Name + " -> " + page.Name,
-                                     (int)(100.0f * pageCounter / TotlaPageCount)
-                                 );
-                            using (Bitmap b1 = MagickImaging.BitmapFromUrlExt(page.ImagePath))
+                            var page = ch.Pages[i];
+
+                            if (!isQuick || i < 3 || i > ch.Pages.Count - 1 - 3)
                             {
-                                using (Bitmap b2 = GraphicsUtils.MakeBW1(b1))
+                                pageCounter++;
+                                updateFunc(
+                                         "Processing: " + ch.Name + " -> " + page.Name,
+                                         (int)(100.0f * pageCounter / TotlaPageCount)
+                                     );
+                                using (Bitmap b1 = MagickImaging.BitmapFromUrlExt(page.ImagePath))
                                 {
-                                    page.WhiteBlackRatio = MagickImaging.WhiteRatio(b1);
+                                    using (Bitmap b2 = GraphicsUtils.MakeBW1(b1))
+                                    {
+                                        page.WhiteBlackRatio = MagickImaging.WhiteRatio(b1);
+                                    }
                                 }
                             }
                         }
@@ -565,6 +603,47 @@ namespace MangaPrinter.WpfGUI
             else
             {
                 MessageBox.Show("Done!, Took:" + (DateTime.Now - start).ToString());
+            }
+        }
+
+        private void mnuChSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            mangaChapters.ForEach((ch) => ch.IsChecked = true);
+        }
+
+        private void mnuChSelectNone_Click(object sender, RoutedEventArgs e)
+        {
+            mangaChapters.ForEach((ch) => ch.IsChecked = false);
+        }
+
+        private void mnuPgSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstFileChapters.SelectedValue != null)
+            {
+                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                Chapter.Pages
+                    .ForEach(p => p.IsChecked = true);
+            }
+        }
+
+        private void mnuPgSelectNone_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstFileChapters.SelectedValue != null)
+            {
+                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                Chapter.Pages
+                    .ForEach(p => p.IsChecked = false);
+            }
+        }
+
+        private void mnuDeletePg_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstFileChapters.SelectedValue != null)
+            {
+                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                List<MangaPage> tempPages = Chapter.Pages.Where(p => p.IsChecked ).ToList();
+                tempPages.ForEach(p => Chapter.Pages.Remove(p));
+                Chapter.updatePageNumber();
             }
         }
 

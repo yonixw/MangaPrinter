@@ -18,10 +18,10 @@ namespace MangaPrinter.Core
     {
         protected Dictionary<string, object> myData = new Dictionary<string, object>();
 
-        protected dynamic _baseGet([CallerMemberName] string propName = "")
+        protected dynamic _baseGet(dynamic failover=null, [CallerMemberName] string propName = "")
         {
             if (!myData.ContainsKey(propName))
-                return null;
+                return failover;
             return myData[propName];
         }
 
