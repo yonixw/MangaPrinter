@@ -688,7 +688,7 @@ namespace MangaPrinter.WpfGUI
                         if (Side.MangaPageSource?.Chapter != null)
                         {
                             var ch = Side.MangaPageSource.Chapter;
-                            if ((ch?.GetHashCode()??0) != (lastChapter?.GetHashCode()??0))
+                            if ((ch == null && lastChapter != null) || !ch.isEqual(lastChapter))
                             {
                                 chaptersInfo.Add(
                                     string.Format(HTMLItem, lastChapter?.Name + string.Format(" [{0}-{1}]", lastChapterStart, Face.FaceNumber-1), lastChapter?.ParentName)

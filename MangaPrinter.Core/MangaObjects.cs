@@ -43,17 +43,18 @@ namespace MangaPrinter.Core
         public bool autoPageNumbering = true; // set to false when adding many pages at once.
         private void Pages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            updateChapterStats();
+           updateChapterStats();
            
             // NotifyChange("MinWhiteRatio"); // Will not work since we update after inserting to collection
         }
 
         public void updateChapterStats()
         {
+            updatePageNumber();
             NotifyChange("MinRatio");
             NotifyChange("MaxRatio");
             NotifyChange("MinWhiteRatio");
-            updatePageNumber();
+            NotifyChange("Pages");
         }
 
         public float MinRatio
@@ -95,10 +96,18 @@ namespace MangaPrinter.Core
             }
         }
 
-        public override int GetHashCode()
+        int MyGetHashCode()
         {
             return string.Format("{0}|{1}|{2}", Name, ParentName, Pages.Count).GetHashCode();
         }
+
+        public bool isEqual(MangaChapter other)
+        {
+            if (other == null) return false;
+            return this.MyGetHashCode() == other.MyGetHashCode();
+        }
+
+
 
         public static T Extend<T>(MangaChapter input) where T : MangaChapter, new()
         {
