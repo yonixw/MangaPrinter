@@ -188,13 +188,13 @@
                                         <MenuItem Name="mnuRenameChapter" Click="mnuRenameChapter_Click" Header="Rename chapter title"/>
                                         <MenuItem Name="mnuAddChapterPages" Click="mnuAddChapterPages_Click" Header="Add images as pages..."/>
                                         <Separator/>
-                                        <MenuItem Name="mnuToRTL" Click="mnuToRTL_Click" Header="Change selected to RTL"/>
-                                        <MenuItem Name="mnuToLTR" Click="mnuToLTR_Click" Header="Change selected to LTR"/>
+                                        <MenuItem Name="mnuToRTL" Click="mnuToRTL_Click" Header="Change checked to RTL"/>
+                                        <MenuItem Name="mnuToLTR" Click="mnuToLTR_Click" Header="Change checked to LTR"/>
                                         <Separator/>
-                                        <MenuItem Name="mnuChSelectAll" Click="mnuChSelectAll_Click" Header="Select All"/>
-                                        <MenuItem Name="mnuChSelectNone" Click="mnuChSelectNone_Click" Header="Select None"/>
+                                        <MenuItem Name="mnuChSelectAll" Click="mnuChSelectAll_Click" Header="Check All"/>
+                                        <MenuItem Name="mnuChSelectNone" Click="mnuChSelectNone_Click" Header="Check None"/>
                                         <Separator/>
-                                        <MenuItem Name="mnuDeleteCh" Click="mnuDeleteCh_Click" Header="Delete selected" Background="LightSalmon" />
+                                        <MenuItem Name="mnuDeleteCh" Click="mnuDeleteCh_Click" Header="Delete checked" Background="LightSalmon" />
                                     </ContextMenu>
                                 </ListBox.ContextMenu>
                                 <ListBox.ItemTemplate>
@@ -250,13 +250,13 @@
                                 <ContextMenu>
                                     <MenuItem Name="mnPreviewManga" Click="MnPreviewManga_Click" Header="Preview File"/>
                                     <Separator/>
-                                    <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Single page selected"/>
-                                    <MenuItem Name="mnuToDouble" Click="mnuToDouble_Click" Header="Double page selected"/>
+                                    <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Single page checked"/>
+                                    <MenuItem Name="mnuToDouble" Click="mnuToDouble_Click" Header="Double page checked"/>
                                     <Separator/>
-                                    <MenuItem Name="mnuPgSelectAll" Click="mnuPgSelectAll_Click" Header="Select All"/>
-                                    <MenuItem Name="mnuPgSelectNone" Click="mnuPgSelectNone_Click" Header="Select None"/>
+                                    <MenuItem Name="mnuPgSelectAll" Click="mnuPgSelectAll_Click" Header="Check All"/>
+                                    <MenuItem Name="mnuPgSelectNone" Click="mnuPgSelectNone_Click" Header="Check None"/>
                                     <Separator/>
-                                    <MenuItem Name="mnuDeletePg" Click="mnuDeletePg_Click" Header="Delete selected" Background="LightSalmon" />
+                                    <MenuItem Name="mnuDeletePg" Click="mnuDeletePg_Click" Header="Delete checked" Background="LightSalmon" />
                                 </ContextMenu>
                             </ListBox.ContextMenu>
                             <ListBox.ItemTemplate >
