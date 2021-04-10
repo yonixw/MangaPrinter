@@ -143,8 +143,8 @@
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Import order:</Label>
                         <StackPanel Orientation="Horizontal">
-                            <RadioButton Name="rbByName" IsChecked="True" Margin="0,0,10,0">Name</RadioButton>
-                            <RadioButton Name="rbByDate" >Create Date</RadioButton>
+                            <RadioButton Name="rbByName" Margin="0,0,10,0">Name</RadioButton>
+                            <RadioButton Name="rbByDate" IsChecked="True">Create Date</RadioButton>
                         </StackPanel>
 
                         <CheckBox IsChecked="True" Name="cbSubfolders">Include subfolders</CheckBox>
