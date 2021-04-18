@@ -19,7 +19,7 @@ namespace MangaPrinter.Core
             collection?.Dispose();
         }
 
-        public void MakeList(List<string> images, string tempFolder, uint MemoryMBLimit = 500, Action<int> updateIndex = null)
+        public void MakeList(List<string> images, string tempFolder, int dpi, uint MemoryMBLimit = 500, Action<int> updateIndex = null)
         {
             if (images == null) return;
 
@@ -37,6 +37,7 @@ namespace MangaPrinter.Core
             foreach (string imagepath in images)
             {
                 ImageMagick.MagickImage img = new MagickImage(imagepath);
+                img.Density = new Density(dpi);
                 collection.Add(img);
 
                 updateIndex?.Invoke(counter);

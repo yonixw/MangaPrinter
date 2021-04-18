@@ -312,7 +312,7 @@
                     </Grid>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Binding">
+            <TabItem Header="Binding" Height="23" VerticalAlignment="Top">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Book binding:</Label>
@@ -356,16 +356,15 @@
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Export:</Label>
-                        <Label Content="Single Page Size (px):" IsEnabled="False" />
-                        <TextBox Width="100px" Name="txtPrintWidth" TextAlignment="Center" TextChanged="TxtPrintWidth_TextChanged">
-                            794</TextBox>
-                        <Label Content="x" IsEnabled="False" />
-                        <TextBox Width="100px" Name="txtPrintHeight" TextAlignment="Center" TextChanged="TxtPrintHeight_TextChanged">
-                            1123</TextBox>
-                        <Label Content="Padding (px):" IsEnabled="False" />
+                        <Label Content="Padding (%):" IsEnabled="False" />
                         <TextBox Width="100px" Name="txtPrintPadding" TextAlignment="Center" TextChanged="TxtPrintPadding_TextChanged">
-                            25</TextBox>
-                        
+                            1.5</TextBox>
+                        <Label Content="Page Size:" IsEnabled="False" />
+                        <ComboBox Name="cbPageSize" Width="150px" SelectedIndex="0" IsEditable="False">
+                            <ComboBoxItem>Simple A4 150DPI</ComboBoxItem>
+                            <ComboBoxItem >A4 150DPI</ComboBoxItem>
+                            <ComboBoxItem >A4 300DPI</ComboBoxItem>
+                        </ComboBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <MenuItem Header="(2) (Re)Bind Selected" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Click="MenuItem_Click"/>

@@ -59,8 +59,6 @@ namespace MangaPrinter.WpfGUI
             cbAddEnd.IsChecked = Config.addEndPage;
             cbUseAntiSpoiler.IsChecked = Config.addAntiSpoiler;
             txtSpoilerPgNm.Text = Config.antiSpoilerStep.ToString();
-            txtPrintWidth.Text = Config.exportPageWidth.ToString();
-            txtPrintHeight.Text = Config.exportPageHeight.ToString();
             txtPrintPadding.Text = Config.exportPagePadding.ToString();
         }
 
@@ -368,21 +366,10 @@ namespace MangaPrinter.WpfGUI
                 MangaPrinter.WpfGUI.Properties.Settings.Default.antiSpoilerStep.ToString());
         }
 
-        private void TxtPrintWidth_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            verifyInteger(txtPrintWidth,
-                MangaPrinter.WpfGUI.Properties.Settings.Default.exportPageWidth.ToString());
-        }
-
-        private void TxtPrintHeight_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            verifyInteger(txtPrintHeight,
-                MangaPrinter.WpfGUI.Properties.Settings.Default.exportPageHeight.ToString());
-        }
 
         private void TxtPrintPadding_TextChanged(object sender, TextChangedEventArgs e)
         {
-            verifyInteger(txtPrintPadding,
+            verifyFloat(txtPrintPadding,
                 MangaPrinter.WpfGUI.Properties.Settings.Default.exportPagePadding.ToString());
         }
 
@@ -486,14 +473,42 @@ namespace MangaPrinter.WpfGUI
             selectPrintChapters = true;
         }
 
+        class PageInfo
+        {
+            public int singlePageWidth = 0;
+            public int singlePageHeight = 0;
+            public int paddingPx = 0;
+            public int pageDepth = 0;
+
+
+            string[] dataPage = new[] { "Simple A4 150DPI", "A4 150DPI", "A4 300DPI" };
+            int[] pageHeight = new[] {1266,1240,2480 };
+            int[] pageWidth = new[] {1648,1754,3508 };
+            int[] pageDepths = new[] { 150, 150, 300 };
+
+            public PageInfo(string pageName, float paddingPercent)
+            {
+                int index =  Array.IndexOf(dataPage, pageName);
+                if (index < 0)
+                    throw new Exception("Can't find page!!!");
+                pageDepth = pageDepths[index];
+                paddingPx = Math.Max(0, (int)( pageHeight[index] * paddingPercent / 100.0f) -1);
+                singlePageHeight = pageHeight[index] - 2 * paddingPx;
+                singlePageWidth = (pageWidth[index] - 3 * paddingPx) / 2 ;
+            }
+        }
+
+
         FileInfo tempImage = new FileInfo("_tmp_.png");
         private void MnuPrvwFront_Click(object sender, RoutedEventArgs e)
         {
             SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
 
+            var page = new PageInfo((string)((ComboBoxItem)cbPageSize.SelectedItem).Content, float.Parse(txtPrintPadding.Text));
+
             var b = (new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0])).BuildFace(p.Front,
-                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text),
-                    int.Parse(txtPrintPadding.Text), cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
+                    page.singlePageWidth,page.singlePageHeight,
+                    page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
             if (tempImage.Exists)
                 tempImage.Delete();
@@ -509,10 +524,11 @@ namespace MangaPrinter.WpfGUI
         private void MnuPrvwBack_Click(object sender, RoutedEventArgs e)
         {
             SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
+            var page = new PageInfo((string)((ComboBoxItem)cbPageSize.SelectedItem).Content, float.Parse(txtPrintPadding.Text));
 
             var b = (new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0])).BuildFace(p.Back,
-                    int.Parse(txtPrintWidth.Text), int.Parse(txtPrintHeight.Text),
-                    int.Parse(txtPrintPadding.Text), cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
+                    page.singlePageWidth, page.singlePageHeight,
+                    page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
             if (tempImage.Exists)
                 tempImage.Delete();
@@ -770,9 +786,13 @@ namespace MangaPrinter.WpfGUI
             {
                 FileInfo fi = new FileInfo(dlgSave.FileName);
                 int saveCounter = 0;
-                int pW = int.Parse(txtPrintWidth.Text);
-                int pH = int.Parse(txtPrintHeight.Text);
-                int pad = int.Parse(txtPrintPadding.Text);
+
+                var pageInfo = new PageInfo((string)((ComboBoxItem)cbPageSize.SelectedItem).Content, float.Parse(txtPrintPadding.Text));
+
+                int pW = pageInfo.singlePageWidth;
+                int pH = pageInfo.singlePageHeight;
+                int pad = pageInfo.paddingPx;
+
                 int pagesCount = allPrintPages.Count;
                 bool convertPdf = !(cbExportMinimal.IsChecked??false);
                 bool keepColors = cbKeepColors.IsChecked ?? false;
@@ -846,7 +866,7 @@ namespace MangaPrinter.WpfGUI
                                             {
                                                 updateFunc("[2/3] Adding pdf page " + index, (int)(100.0f * index / filesToDelete.Count));
                                             });
-                                        pdfMagik.MakeList(filesToDelete, fi.Directory.FullName, updateIndex: onUpdateIndex);
+                                        pdfMagik.MakeList(filesToDelete, fi.Directory.FullName,pageInfo.pageDepth, updateIndex: onUpdateIndex);
                                     }
                                     catch (Exception ex2)
                                     {

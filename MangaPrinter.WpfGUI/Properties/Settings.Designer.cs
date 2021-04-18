@@ -97,28 +97,10 @@ namespace MangaPrinter.WpfGUI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("794")]
-        public int exportPageWidth {
+        [global::System.Configuration.DefaultSettingValueAttribute("2.2")]
+        public float exportPagePadding {
             get {
-                return ((int)(this["exportPageWidth"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1123")]
-        public int exportPageHeight {
-            get {
-                return ((int)(this["exportPageHeight"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("25")]
-        public int exportPagePadding {
-            get {
-                return ((int)(this["exportPagePadding"]));
+                return ((float)(this["exportPagePadding"]));
             }
         }
     }
