@@ -9,7 +9,7 @@
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2">
             <StatusBarItem>
-                <Button Padding="5px" Name="btnRefit" Click="btnRefit_Click">Reset image</Button>
+                <Button Padding="5px" Name="btnRefit" Click="btnRefit_Click">Re-Fit image</Button>
             </StatusBarItem>
             <StatusBarItem>
                 <Label>Blur% level:</Label>
