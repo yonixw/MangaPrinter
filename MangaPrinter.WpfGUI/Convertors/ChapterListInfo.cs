@@ -15,14 +15,15 @@ namespace MangaPrinter.WpfGUI.Convertors
         {
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
+            const string strFormat = "({0}/{1}) Selected // {2} ➗TooVertical // {3} 🔳EmptyInk% ";
             if (value == null) return
-                string.Format("{0} Total, {1}✔, {2}➗, {3}🔳 ", 0, 0, 0, 0);
+                string.Format(strFormat, 0, 0, 0, 0);
 
                 BindingList <SelectableMangaChapter> observableCollection 
                     = value as BindingList<SelectableMangaChapter>;
-                return string.Format("{0} Total, {1}✔, {2}➗, {3}🔳 ",
-                    observableCollection.Count,
+                return string.Format(strFormat,
                     observableCollection.Where(ch => ch.IsChecked).Count(),
+                    observableCollection.Count,
                     observableCollection.Where(ch => ch.MinRatio < 0.33f).Count(),
                     observableCollection.Where(ch => ch.MinWhiteRatio < 0.10f).Count()
                     );

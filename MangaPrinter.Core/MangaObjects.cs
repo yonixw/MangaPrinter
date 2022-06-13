@@ -127,10 +127,12 @@ namespace MangaPrinter.Core
 
     public enum SingleSideType
     {
-        INTRO, OUTRO,
+        INTRO=0, OUTRO,
         MANGA,
         BEFORE_DOUBLE, MAKE_EVEN,
-        ANTI_SPOILER
+        ANTI_SPOILER,
+
+        LAST
     }
 
     public enum SideMangaPageType

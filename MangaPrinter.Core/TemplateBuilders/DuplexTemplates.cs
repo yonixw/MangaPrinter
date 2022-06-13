@@ -33,6 +33,18 @@ namespace MangaPrinter.Core.TemplateBuilders
             { SingleSideType.OUTRO, "Chapter end:\n{0}" },
             { SingleSideType.MAKE_EVEN, "Filler After Chapter" },
         };
+
+        public void setTextTemplate(int type, string text)
+        {
+            if (type > -1 && type < (int)SingleSideType.LAST)
+            {
+                if (_sideTextConsts.ContainsKey((SingleSideType)type))
+                {
+                    _sideTextConsts[(SingleSideType)type] = text;
+                }
+            }
+        }
+
         public string sideTextConsts(SingleSideType type)
         {
             return _sideTextConsts[type] + _programVersion;
