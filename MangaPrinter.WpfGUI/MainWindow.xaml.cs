@@ -44,7 +44,7 @@ namespace MangaPrinter.WpfGUI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             lstFileChapters.ItemsSource = mangaChapters;
-            lstFileChaptersBinding.ItemsSource = mangaChapters;
+            lstFileChaptersBinding.ItemsSource = new BindingList<SelectableMangaChapter>();
             
             mangaChapters.ListChanged += MangaChapters_ListChanged;
             rtbInfo.AppendText(" " + Properties.Resources.GitInfo.Replace("\"", "").Split(';')[0]);
@@ -749,15 +749,14 @@ namespace MangaPrinter.WpfGUI
         const string HTMLItem = "<li><span>{0}</span><br><span style='color: dimgray;'>{1}</span></li>";
         private void mnuExportTOC_Click(object sender, RoutedEventArgs e)
         {
-            // todo
-            MessageBoxResult quick = MessageBox.Show("Only binded chpater? If no, then no page range.",
-                 "Export Table of content as PDF",
-                 MessageBoxButton.YesNoCancel
-                 );
-
-            if (quick == MessageBoxResult.Cancel)
+            if ( ((List<SelectableMangaChapter>)lstFileChaptersBinding.ItemsSource).Count == 0)
+            {
+                MessageBox.Show("Please bind at least one chapter!");
                 return;
-            bool bindedOnly = quick == MessageBoxResult.Yes;
+            }
+
+
+            bool bindedOnly = true;
 
             dlgSave.Title = "Export Table of content as PDF";
             dlgSave.Filter = "PDF |*.pdf";

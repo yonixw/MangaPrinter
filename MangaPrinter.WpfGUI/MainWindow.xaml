@@ -371,7 +371,7 @@
                         </ComboBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="(2) (Re)Bind Selected" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Click="MenuItem_Click" Margin="0 0 5px 0"/>
+                        <MenuItem Header="(2) (Re)Bind Checked" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Click="MenuItem_Click" Margin="0 0 5px 0"/>
                         <MenuItem Header="Export Chapter List" Style="{StaticResource MenuItemBtnStyle}"  Foreground="Black" Name="mnuExportTOC" Click="mnuExportTOC_Click" Margin="0 0 5px 0"/>
                         <MenuItem Header="(3) Export PDF!" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Name="mnuExport" Click="MnuExport_Click" Margin="0 0 5px 0" />
                         <CheckBox Name="cbExportMinimal" IsChecked="False">Export to images</CheckBox>

@@ -109,9 +109,6 @@
     <Compile Include="Dialogs\dlgNewChapter.xaml.cs">
       <DependentUpon>dlgNewChapter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\dlgTOC.xaml.cs">
-      <DependentUpon>dlgTOC.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\dlgString.xaml.cs">
       <DependentUpon>dlgString.xaml</DependentUpon>
     </Compile>
@@ -140,10 +137,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\dlgNewChapter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Dialogs\dlgTOC.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
