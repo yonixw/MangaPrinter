@@ -79,7 +79,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="MenuItem">
-                        <Border Name="border" CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"
+                        <Border Name="border" CornerRadius="5" BorderBrush="{TemplateBinding Background}" Background="White"
                                 BorderThickness="1">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Header">
                             </ContentPresenter>
@@ -160,13 +160,13 @@
 
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="(1) Import folders" Style="{StaticResource MenuItemBtnStyle}"
+                        <MenuItem Header="(1) Import folders" Style="{StaticResource MenuItemBtnStyle}" Margin="0 0 5px 0"
                                   Name="menuImprtFolders" Click="menuImprtFolders_Click" Foreground="Black"/>
-                        <MenuItem Header="Load White Ratio" Style="{StaticResource MenuItemBtnStyle}"
+                        <MenuItem Header="Recheck White Ratio" Style="{StaticResource MenuItemBtnStyle}" Margin="0 0 5px 0"
                                   Name="btnCalcWhiteRatio" Click="btnCalcWhiteRatio_Click" Foreground="Black" FontWeight="Bold"/>
-                        <MenuItem Header=" Add empty chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="200px"
+                        <MenuItem Header=" Add empty chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="200px" Margin="0 0 5px 0"
                                   Name="mnuAddEmptyChapter" Click="mnuAddEmptyChapter_Click"/>
-                        <MenuItem Header="Clear All" Style="{StaticResource MenuItemBtnStyleRed}" Foreground="White" Width="100"
+                        <MenuItem Header="Clear All" Style="{StaticResource MenuItemBtnStyleRed}" Foreground="White" Width="100" Margin="0 0 5px 0"
                                   Name="mnuClearAllData" Click="MnuClearAllData_Click"/>
                     </Menu>
 
@@ -367,8 +367,8 @@
                         </ComboBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="(2) (Re)Bind Selected" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Click="MenuItem_Click"/>
-                        <MenuItem Header="(3) Export PDF!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Name="mnuExport" Click="MnuExport_Click" />
+                        <MenuItem Header="(2) (Re)Bind Selected" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Click="MenuItem_Click" Margin="0 0 5px 0"/>
+                        <MenuItem Header="(3) Export PDF!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Name="mnuExport" Click="MnuExport_Click" Margin="0 0 5px 0" />
                         <CheckBox Name="cbExportMinimal" IsChecked="False">Export to images</CheckBox>
                         <Hyperlink Name="lblHelpExportMinimal" Click="LblHelpExportMinimal_Click">( ? )</Hyperlink>
                         <CheckBox Name="cbKeepColors" IsChecked="False">Keep colors</CheckBox>
