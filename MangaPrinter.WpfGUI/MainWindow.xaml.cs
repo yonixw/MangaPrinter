@@ -101,22 +101,24 @@ namespace MangaPrinter.WpfGUI
         }
 
         
+        // Use save dialog as a trick to get folder
+        Microsoft.Win32.OpenFileDialog dlgSaveTrick = new Microsoft.Win32.OpenFileDialog();
 
-        Microsoft.Win32.OpenFileDialog dlgSaveFile = new Microsoft.Win32.OpenFileDialog();
+
         private void menuImprtFolders_Click(object sender, RoutedEventArgs e)
         {
-            dlgSaveFile.Filter = "Folder|_Choose.Here_";
-            dlgSaveFile.FileName = "_Choose.Here_";
-            dlgSaveFile.CheckFileExists = false;
-            dlgSaveFile.Multiselect = false;
-            dlgSaveFile.ValidateNames = false;
-            dlgSaveFile.Title = "Choose folder to import from:";
+            dlgSaveTrick.Filter = "Folder|_Choose.Here_";
+            dlgSaveTrick.FileName = "_Choose.Here_";
+            dlgSaveTrick.CheckFileExists = false;
+            dlgSaveTrick.Multiselect = false;
+            dlgSaveTrick.ValidateNames = false;
+            dlgSaveTrick.Title = "Choose folder to import from:";
 
-            if (dlgSaveFile.ShowDialog() == true)
+            if (dlgSaveTrick.ShowDialog() == true)
             {
                 Core.FileImporter fileImporter = new Core.FileImporter();
 
-                var DirPath = new System.IO.FileInfo(dlgSaveFile.FileName).Directory.FullName;
+                var DirPath = new System.IO.FileInfo(dlgSaveTrick.FileName).Directory.FullName;
                 var subFolders = cbSubfolders.IsChecked ?? false;
                 float cutoff = float.Parse(txtPageMaxWidth.Text);
                 var rtl = rbRTL.IsChecked ?? false;
@@ -563,6 +565,15 @@ namespace MangaPrinter.WpfGUI
         }
 
         SaveFileDialog dlgSave = new SaveFileDialog();
+        void resetDlgSaveName()
+        {
+            if (dlgSave.FileName != "")
+            {
+                FileInfo fi = new FileInfo(dlgSave.FileName);
+                dlgSave.FileName = System.IO.Path.Combine(fi.Directory.FullName, "Enter New Name!");
+            }
+        }
+       
 
         private void lblKeepColorsHelp_Click(object sender, RoutedEventArgs e)
         {
@@ -758,6 +769,7 @@ namespace MangaPrinter.WpfGUI
 
             bool bindedOnly = true;
 
+            resetDlgSaveName();
             dlgSave.Title = "Export Table of content as PDF";
             dlgSave.Filter = "PDF |*.pdf";
             if (dlgSave.ShowDialog() == true)
@@ -793,6 +805,7 @@ namespace MangaPrinter.WpfGUI
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
+            resetDlgSaveName();
             dlgSave.Title = "Export book as PDF";
             dlgSave.Filter = "PDF |*.pdf";
             if (dlgSave.ShowDialog() == true)
