@@ -209,11 +209,10 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuAddEmptyChapter_Click(object sender, RoutedEventArgs e)
         {
-            Dialogs.dlgString dlgName = new Dialogs.dlgString()
+            Dialogs.dlgNewChapter dlgName = new Dialogs.dlgNewChapter()
             {
-                Title = "Enter name",
-                Caption = "Enter empty chapter title:",
-                StringData = "Chapter Name"
+                Name = "Chapter. 000",
+                Folder = "Book-Name"
             };
             if (dlgName.ShowDialog() ?? false)
             {
@@ -221,7 +220,8 @@ namespace MangaPrinter.WpfGUI
                 {
                     IsRTL = rbRTL.IsChecked ?? false,
                     Pages = new ObservableCollection<Core.MangaPage>(),
-                    Name = dlgName.StringData
+                    Name = dlgName.Name,
+                    ParentName = dlgName.Folder
                 }));
             }
         }
@@ -376,6 +376,12 @@ namespace MangaPrinter.WpfGUI
         ObservableCollection<SelectablePrintPage> allPrintPages = new ObservableCollection<SelectablePrintPage>();
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
+            if (mangaChapters.Where(p => p.IsChecked).Count() == 0)
+            {
+                MessageBox.Show("Please check at least one chapter!");
+                return;
+            }
+
             bool startPage = cbAddStart.IsChecked ?? false;
             bool endPage = cbAddEnd.IsChecked ?? false;
             int antiSpoiler = (cbUseAntiSpoiler.IsChecked ?? false) ? int.Parse(txtSpoilerPgNm.Text) : 0;
@@ -576,15 +582,17 @@ namespace MangaPrinter.WpfGUI
 
         private void StartWhiteRatioScan(bool checkedOnly = false)
         {
-            MessageBoxResult quick = MessageBox.Show(
-                 "Perform 🔳EmptyInk% Scan?\n======\nYes) - The first/last 3 pages only\nNo) - Full Scan\nCancel) - No scan at all.",
-                 "White Ratio options",
-                 MessageBoxButton.YesNoCancel
-                 );
-
-            if (quick == MessageBoxResult.Cancel)
+            if (checkedOnly && mangaChapters.Where(p=>p.IsChecked).Count() == 0 )
+            {
+                MessageBox.Show("Please check at least one chapter!");
                 return;
-            bool isQuick = quick == MessageBoxResult.Yes;
+            }
+
+            Dialogs.dlgEmptyInk dlgScan = new Dialogs.dlgEmptyInk();
+            bool isSkip = ! ( dlgScan.ShowDialog() ?? false );
+            bool isQuick = dlgScan.isQuick;
+
+            if (isSkip) return;
 
             int TotlaPageCount = mangaChapters.Where(p=>checkedOnly? p.IsChecked : true)
                 .Sum(p => isQuick ? Math.Min(6, p.Pages.Count) : p.Pages.Count);
