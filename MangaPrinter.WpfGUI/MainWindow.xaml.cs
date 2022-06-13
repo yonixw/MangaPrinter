@@ -803,6 +803,7 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
+        
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
             resetDlgSaveName();
@@ -811,6 +812,7 @@ namespace MangaPrinter.WpfGUI
             if (dlgSave.ShowDialog() == true)
             {
                 FileInfo fi = new FileInfo(dlgSave.FileName);
+                PrintPage.lastFullExportMetadata = fi.Name.Replace(fi.Extension,"");
                 int saveCounter = 0;
 
                 var pageInfo = new PageInfo((string)((ComboBoxItem)cbPageSize.SelectedItem).Content, float.Parse(txtPrintPadding.Text));

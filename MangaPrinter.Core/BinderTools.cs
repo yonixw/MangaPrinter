@@ -7,7 +7,8 @@ using System.Collections.ObjectModel;
 
 namespace MangaPrinter.Core
 {
-   
+
+    
 
     public interface IBindBuilder
     {
