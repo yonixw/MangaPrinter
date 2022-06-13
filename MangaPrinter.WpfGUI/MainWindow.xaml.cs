@@ -140,7 +140,8 @@ namespace MangaPrinter.WpfGUI
                 {
                     (new dlgImportErrors() { DataErrors = importErrors }).ShowDialog();
                 }
-                else
+
+                if (mangaChapters.Count > 0 )
                 {
                     StartWhiteRatioScan();
                 }
@@ -803,7 +804,40 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
-        
+        private void mnuChInsertUp_Click(object sender, RoutedEventArgs e)
+        {
+            List<SelectableMangaChapter> myChecked = mangaChapters.Where(c => c.IsChecked).Reverse().ToList();
+
+            // Remove only if found 
+            ListBoxAction<SelectableMangaChapter>(lstFileChapters, (ch) =>
+            {
+                // If  not chose a checked
+                if (myChecked.IndexOf(ch) > -1)
+                    return;
+
+                myChecked.ForEach(c => mangaChapters.Remove(c));
+                int index = mangaChapters.IndexOf(ch);
+                myChecked.ForEach(c => mangaChapters.Insert(index, c));
+            });
+        }
+
+        private void mnuChInsertDown_Click(object sender, RoutedEventArgs e)
+        {
+            List<SelectableMangaChapter> myChecked = mangaChapters.Where(c => c.IsChecked).Reverse().ToList();
+
+            // Remove only if found
+            ListBoxAction<SelectableMangaChapter>(lstFileChapters, (ch) =>
+            {
+                // If  not chose a checked
+                if (myChecked.IndexOf(ch) > -1)
+                    return;
+
+                myChecked.ForEach(c => mangaChapters.Remove(c));
+                int index = mangaChapters.IndexOf(ch);
+                myChecked.ForEach(c => mangaChapters.Insert(index+1, c));
+            });
+        }
+
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
             resetDlgSaveName();

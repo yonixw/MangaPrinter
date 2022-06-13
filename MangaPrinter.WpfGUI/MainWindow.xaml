@@ -194,6 +194,9 @@
                                         <MenuItem Name="mnuChSelectAll" Click="mnuChSelectAll_Click" Header="Check All"/>
                                         <MenuItem Name="mnuChSelectNone" Click="mnuChSelectNone_Click" Header="Check None"/>
                                         <Separator/>
+                                        <MenuItem Name="mnuChInsertUp" Click="mnuChInsertUp_Click" Header="Move checked above"/>
+                                        <MenuItem Name="mnuChInsertDown" Click="mnuChInsertDown_Click" Header="Move checked bellow"/>
+                                        <Separator/>
                                         <MenuItem Name="mnuDeleteCh" Click="mnuDeleteCh_Click" Header="Delete checked" Background="LightSalmon" />
                                     </ContextMenu>
                                 </ListBox.ContextMenu>
