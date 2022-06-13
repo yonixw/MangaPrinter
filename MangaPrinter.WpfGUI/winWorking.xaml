@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI"
         mc:Ignorable="d"
         Title="Task progress" Height="111.333" Width="341.333" 
-        ShowInTaskbar="False" ResizeMode="NoResize"  WindowStyle="None"
+        ShowInTaskbar="True" ResizeMode="NoResize"  WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
         

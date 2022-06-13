@@ -77,7 +77,7 @@ namespace MangaPrinter.WpfGUI
             int value = 0;
             if (!int.TryParse(textBox.Text, out value))
             {
-                MessageBox.Show("Can't convert \"" + textBox.Text + "\" to integer, try again.");
+                MessageBox.Show(this,"Can't convert \"" + textBox.Text + "\" to integer, try again.");
                 textBox.Text = fallbackValue;
             }
         }
@@ -87,7 +87,7 @@ namespace MangaPrinter.WpfGUI
             float value = 0;
             if (!float.TryParse(textBox.Text, out value))
             {
-                MessageBox.Show("Can't convert \"" + textBox.Text + "\" to float, try again.");
+                MessageBox.Show(this,"Can't convert \"" + textBox.Text + "\" to float, try again.");
                 textBox.Text = fallbackValue;
             }
         }
@@ -378,7 +378,7 @@ namespace MangaPrinter.WpfGUI
         {
             if (mangaChapters.Where(p => p.IsChecked).Count() == 0)
             {
-                MessageBox.Show("Please check at least one chapter!");
+                MessageBox.Show(this,"Please check at least one chapter!");
                 return;
             }
 
@@ -559,7 +559,7 @@ namespace MangaPrinter.WpfGUI
                 "After install, try to run (In the output folder):\n\n" +
                 "\"C:\\Program Files\\ImageMagick - 7.0.8 - Q16\\magick.exe\" *.jpg -monitor output.pdf";
 
-            MessageBox.Show(helpMessage, "Help", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(this,helpMessage, "Help", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         SaveFileDialog dlgSave = new SaveFileDialog();
@@ -572,7 +572,7 @@ namespace MangaPrinter.WpfGUI
                "* Colorful PDFs even sometimes cannot be printed by some industrial printers (maybe due to temp memory size). \n\n" +
                "So, It is not recommended to relay on the printer to convert to grayscale.";
 
-            MessageBox.Show(helpMessage, "Help", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(this,helpMessage, "Help", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void btnCalcWhiteRatio_Click(object sender, RoutedEventArgs e)
@@ -584,7 +584,7 @@ namespace MangaPrinter.WpfGUI
         {
             if (checkedOnly && mangaChapters.Where(p=>p.IsChecked).Count() == 0 )
             {
-                MessageBox.Show("Please check at least one chapter!");
+                MessageBox.Show(this,"Please check at least one chapter!");
                 return;
             }
 
@@ -647,11 +647,11 @@ namespace MangaPrinter.WpfGUI
 
             if (ex != null)
             {
-                MessageBox.Show("Error occured while reading white ratio (convert step).\n" + ex.ToString());
+                MessageBox.Show(this,"Error occured while reading white ratio (convert step).\n" + ex.ToString());
             }
             else
             {
-                MessageBox.Show("Done!, Took:" + (DateTime.Now - start).ToString());
+                MessageBox.Show(this, "Done!, Took:" + (DateTime.Now - start).ToString());
             }
         }
 
@@ -751,7 +751,7 @@ namespace MangaPrinter.WpfGUI
         {
             if ( ((List<SelectableMangaChapter>)lstFileChaptersBinding.ItemsSource).Count == 0)
             {
-                MessageBox.Show("Please bind at least one chapter!");
+                MessageBox.Show(this,"Please bind at least one chapter!");
                 return;
             }
 
@@ -786,7 +786,7 @@ namespace MangaPrinter.WpfGUI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error occured while saving TOC pdf.\n" + ex.ToString());
+                    MessageBox.Show(this,"Error occured while saving TOC pdf.\n" + ex.ToString());
                 }
             }
         }
@@ -862,7 +862,7 @@ namespace MangaPrinter.WpfGUI
 
                 if (ex != null)
                 {
-                    MessageBox.Show("Error occured while exporting pdf (image step).\n" + ex.ToString());
+                    MessageBox.Show(this,"Error occured while exporting pdf (image step).\n" + ex.ToString());
                 }
                 else
                 {
@@ -914,7 +914,7 @@ namespace MangaPrinter.WpfGUI
 
                     if (ex != null)
                     {
-                        MessageBox.Show("Error occured while exporting pdf (convert step).\n" + ex.ToString());
+                        MessageBox.Show(this,"Error occured while exporting pdf (convert step).\n" + ex.ToString());
                     }
                     else
                     {
