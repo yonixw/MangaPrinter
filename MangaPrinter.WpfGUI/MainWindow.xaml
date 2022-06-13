@@ -148,11 +148,11 @@
                         </StackPanel>
 
                         <CheckBox IsChecked="True" Name="cbSubfolders">Include subfolders</CheckBox>
-                        <CheckBox IsChecked="True" Name="cbNumberFix">"0" Pad Names</CheckBox>
+                        <CheckBox IsChecked="True" Name="cbNumberFix">Better 0-9 Sort</CheckBox>
 
-                        
 
-                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Page Direction:</Label>
+
+                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Import Direction:</Label>
                         <StackPanel Orientation="Horizontal" >
                             <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (↼)</RadioButton>
                             <RadioButton Name="rbLTR">LTR (⇀)</RadioButton>
@@ -161,12 +161,12 @@
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <MenuItem Header="(1) Import folders" Style="{StaticResource MenuItemBtnStyle}" Margin="0 0 5px 0"
-                                  Name="menuImprtFolders" Click="menuImprtFolders_Click" Foreground="Black"/>
-                        <MenuItem Header="Recheck White Ratio" Style="{StaticResource MenuItemBtnStyle}" Margin="0 0 5px 0"
-                                  Name="btnCalcWhiteRatio" Click="btnCalcWhiteRatio_Click" Foreground="Black" FontWeight="Bold"/>
-                        <MenuItem Header=" Add empty chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="200px" Margin="0 0 5px 0"
+                                  Name="menuImprtFolders" Click="menuImprtFolders_Click" Foreground="Black" FontWeight="DemiBold"/>
+                        <MenuItem Header="🔳EmptyInk% Checked" Style="{StaticResource MenuItemBtnStyle}" Margin="0 0 5px 0"
+                                  Name="btnCalcWhiteRatio" Click="btnCalcWhiteRatio_Click" Foreground="Black" Width="180px"/>
+                        <MenuItem Header=" + Empty chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="140px" Margin="0 0 5px 0"
                                   Name="mnuAddEmptyChapter" Click="mnuAddEmptyChapter_Click"/>
-                        <MenuItem Header="Clear All" Style="{StaticResource MenuItemBtnStyleRed}" Foreground="White" Width="100" Margin="0 0 5px 0"
+                        <MenuItem Header="Clear Data" Style="{StaticResource MenuItemBtnStyleRed}" Foreground="White" Width="100" Margin="0 0 5px 0"
                                   Name="mnuClearAllData" Click="MnuClearAllData_Click"/>
                     </Menu>
 
@@ -335,7 +335,7 @@
                                                     </TextDecoration.Pen>
                                                 </TextDecoration>
                                             </TextBlock.TextDecorations>
-                                            Booklet
+                                            Booklet (on Roadmap)
                                         </TextBlock> </Label>
                                 </StackPanel>
                             </RadioButton>
@@ -367,13 +367,14 @@
                         </ComboBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <MenuItem Header="(2) (Re)Bind Selected" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Click="MenuItem_Click" Margin="0 0 5px 0"/>
-                        <MenuItem Header="(3) Export PDF!" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Name="mnuExport" Click="MnuExport_Click" Margin="0 0 5px 0" />
+                        <MenuItem Header="(2) (Re)Bind Selected" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Click="MenuItem_Click" Margin="0 0 5px 0"/>
+                        <MenuItem Header="Export Chapter List" Style="{StaticResource MenuItemBtnStyle}"  Foreground="Black" Name="mnuExportTOC" Click="mnuExportTOC_Click" Margin="0 0 5px 0"/>
+                        <MenuItem Header="(3) Export PDF!" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Name="mnuExport" Click="MnuExport_Click" Margin="0 0 5px 0" />
                         <CheckBox Name="cbExportMinimal" IsChecked="False">Export to images</CheckBox>
                         <Hyperlink Name="lblHelpExportMinimal" Click="LblHelpExportMinimal_Click">( ? )</Hyperlink>
                         <CheckBox Name="cbKeepColors" IsChecked="False">Keep colors</CheckBox>
                         <Hyperlink Name="lblKeepColorsHelp" Click="lblKeepColorsHelp_Click">( ? )</Hyperlink>
-                        <MenuItem Header="Export Chapter List" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Name="mnuExportTOC" Click="mnuExportTOC_Click" />
+                        
                     </Menu>
                     <Grid >
                         <Grid.ColumnDefinitions>

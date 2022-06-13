@@ -571,12 +571,13 @@ namespace MangaPrinter.WpfGUI
 
         private void btnCalcWhiteRatio_Click(object sender, RoutedEventArgs e)
         {
-            StartWhiteRatioScan();
+            StartWhiteRatioScan(true);
         }
 
-        private void StartWhiteRatioScan()
+        private void StartWhiteRatioScan(bool checkedOnly = false)
         {
-            MessageBoxResult quick = MessageBox.Show("Should we do a quick scan? The first\\last 3 pages only?",
+            MessageBoxResult quick = MessageBox.Show(
+                 "Perform 🔳EmptyInk% Scan?\n======\nYes) - The first/last 3 pages only\nNo) - Full Scan\nCancel) - No scan at all.",
                  "White Ratio options",
                  MessageBoxButton.YesNoCancel
                  );
@@ -585,7 +586,8 @@ namespace MangaPrinter.WpfGUI
                 return;
             bool isQuick = quick == MessageBoxResult.Yes;
 
-            int TotlaPageCount = mangaChapters.Sum(p => isQuick ? Math.Min(6, p.Pages.Count) : p.Pages.Count);
+            int TotlaPageCount = mangaChapters.Where(p=>checkedOnly? p.IsChecked : true)
+                .Sum(p => isQuick ? Math.Min(6, p.Pages.Count) : p.Pages.Count);
             DateTime start = DateTime.Now;
 
             shouldUpdateStats = false; // Because we are updating the stats which will update ui in the middle
@@ -597,6 +599,9 @@ namespace MangaPrinter.WpfGUI
                     int pageCounter = 0;
                     foreach (var ch in mangaChapters)
                     {
+                        if (checkedOnly && !ch.IsChecked)
+                            continue;
+
                         for (int i = 0; i < ch.Pages.Count; i++)
                         {
                             var page = ch.Pages[i];
