@@ -218,6 +218,10 @@
                                                 <Setter TargetName="lblPagesCount" Property="FontWeight" Value="Bold"/>
                                             </DataTrigger>
 
+                                            <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource lowerConvert}, ConverterParameter=10}" Value="True">
+                                                <Setter TargetName="lblPagesCount" Property="Foreground" Value="Red"/>
+                                            </DataTrigger>
+
                                             <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource greaterConvert}, ConverterParameter=65}" Value="True">
                                                 <Setter TargetName="lblPagesCount" Property="Foreground" Value="Red"/>
                                             </DataTrigger>
