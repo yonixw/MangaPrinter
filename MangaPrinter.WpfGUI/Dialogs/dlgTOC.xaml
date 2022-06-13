@@ -1,0 +1,33 @@
+﻿<Window x:Class="MangaPrinter.WpfGUI.Dialogs.dlgTOC"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
+        mc:Ignorable="d"
+        Title="🔳 EmptyInk %" Height="153.5" Width="480" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+    <StackPanel>
+        <Label Name="lblDescription" Content="Choose Option:" />
+        <StackPanel Margin="15px 0 0 0">
+            <RadioButton GroupName="Options1" Name="rbQucik" Margin="0 0 0 5px">
+                <WrapPanel>
+                    <TextBlock FontWeight="Bold" Margin="0 0 5px 0">Quick -</TextBlock>
+                    <TextBlock>Scan first and last 3 pages</TextBlock>
+                </WrapPanel>
+            </RadioButton>
+            <RadioButton GroupName="Options1" Name="rbFull" Margin="0 0 0 5px">
+                <WrapPanel>
+                    <TextBlock FontWeight="Bold" Margin="0 0 5px 0">Full -</TextBlock>
+                    <TextBlock>Scan every pages</TextBlock>
+                </WrapPanel>
+            </RadioButton>
+            <RadioButton GroupName="Options1" Name="rbSkip" Margin="0 0 0 5px">
+                <WrapPanel>
+                    <TextBlock FontWeight="Bold" Margin="0 0 5px 0">Skip -</TextBlock>
+                    <TextBlock>Do not scan.</TextBlock>
+                </WrapPanel>
+            </RadioButton>
+        </StackPanel>
+        <Button Width="100px" Margin="10,10" Name="btnOk" Click="btnOk_Click">OK</Button>
+    </StackPanel>
+</Window>

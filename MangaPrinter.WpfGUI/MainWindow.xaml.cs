@@ -749,6 +749,7 @@ namespace MangaPrinter.WpfGUI
         const string HTMLItem = "<li><span>{0}</span><br><span style='color: dimgray;'>{1}</span></li>";
         private void mnuExportTOC_Click(object sender, RoutedEventArgs e)
         {
+            // todo
             MessageBoxResult quick = MessageBox.Show("Only binded chpater? If no, then no page range.",
                  "Export Table of content as PDF",
                  MessageBoxButton.YesNoCancel

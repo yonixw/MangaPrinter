@@ -100,14 +100,17 @@
     <Compile Include="Dialogs\dlgChooseCutoffRatio.xaml.cs">
       <DependentUpon>dlgChooseCutoffRatio.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\dlgEmptyInk.xaml.cs">
+      <DependentUpon>dlgEmptyInk.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\dlgImportErrors.xaml.cs">
       <DependentUpon>dlgImportErrors.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\dlgNewChapter.xaml.cs">
       <DependentUpon>dlgNewChapter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\dlgEmptyInk.xaml.cs">
-      <DependentUpon>dlgEmptyInk.xaml</DependentUpon>
+    <Compile Include="Dialogs\dlgTOC.xaml.cs">
+      <DependentUpon>dlgTOC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\dlgString.xaml.cs">
       <DependentUpon>dlgString.xaml</DependentUpon>
@@ -128,6 +131,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialogs\dlgEmptyInk.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\dlgImportErrors.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -136,7 +143,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Dialogs\dlgEmptyInk.xaml">
+    <Page Include="Dialogs\dlgTOC.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
