@@ -92,7 +92,7 @@ namespace MangaPrinter.Core.TemplateBuilders
 
         private Bitmap TemplateDouble(PrintFace face, int spW, int spH, int padding)
         {
-            int tmpW = spW * 2 + padding * 2;
+            int tmpW = spW * 2 + padding * 3;
             int tmpH = spH + padding * 2; 
 
             int contentW = tmpW - padding * 2;
