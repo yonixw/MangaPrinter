@@ -97,8 +97,8 @@
     <Compile Include="Dialogs\dlgBluredImage.xaml.cs">
       <DependentUpon>dlgBluredImage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\dlgBluredImageListAction.xaml.cs">
-      <DependentUpon>dlgBluredImageListAction.xaml</DependentUpon>
+    <Compile Include="Dialogs\dlgBluredImageListActions.xaml.cs">
+      <DependentUpon>dlgBluredImageListActions.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\dlgChooseCutoffRatio.xaml.cs">
       <DependentUpon>dlgChooseCutoffRatio.xaml</DependentUpon>
@@ -127,7 +127,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\dlgBluredImageListAction.xaml">
+    <Page Include="Dialogs\dlgBluredImageListActions.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

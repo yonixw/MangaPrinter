@@ -19,12 +19,12 @@ namespace MangaPrinter.WpfGUI.Dialogs
     /// <summary>
     /// Interaction logic for dlgBluredImageListAction.xaml
     /// </summary>
-    public partial class dlgBluredImageListAction : Window
+    public partial class dlgBluredImageListActions : Window
     {
         private string _imageUrl;
         private string _title;
 
-        public dlgBluredImageListAction(string ImageUrl, string DialogTitle)
+        public dlgBluredImageListActions(string ImageUrl, string DialogTitle)
         {
             _imageUrl = ImageUrl;
             _title = DialogTitle;
