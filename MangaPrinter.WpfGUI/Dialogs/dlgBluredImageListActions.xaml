@@ -6,41 +6,67 @@
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
         mc:Ignorable="d"
         Title="dlgBluredImageListActions" Height="450" Width="800" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
-    <DockPanel>
-        <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2">
-            <StatusBarItem>
-                <Button Padding="5px" Name="btnRefit" Click="btnRefit_Click">Re-Fit image</Button>
-            </StatusBarItem>
-            <StatusBarItem>
-                <Label>Blur% level:</Label>
-            </StatusBarItem>
-            <StatusBarItem>
-                <Slider Name="slideBlur" Maximum="100" Width="150px" AutoToolTipPlacement="BottomRight" SmallChange="1" LargeChange="5" Value="100"  ValueChanged="slideBlur_ValueChanged"></Slider>
-            </StatusBarItem>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="0">
+            <Label DockPanel.Dock="Top">Choose action per Page:</Label>
+            <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2" >
+                <StatusBarItem >
+                    <Label>Change to:</Label>
+                </StatusBarItem>
+                <StatusBarItem >
+                    <Button Padding="5px" Background="#FFFFA2A2">Delete</Button>
+                </StatusBarItem>
+                <StatusBarItem >
+                    <Button Padding="5px">Keep</Button>
+                </StatusBarItem>
+            </StatusBar>
+            <ListView Name="lstPages" ></ListView>
+        </DockPanel>
+        <DockPanel Grid.Column="1">
+            <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2" >
+                <StatusBarItem HorizontalAlignment="Right">
+                    <Button Padding="5px" Background="#FF4BE84B">Apply All ✔</Button>
+                </StatusBarItem>
+            </StatusBar>
+            <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2">
+                <StatusBarItem>
+                    <Button Padding="5px" Name="btnRefit" Click="btnRefit_Click">Re-Fit image</Button>
+                </StatusBarItem>
+                <StatusBarItem>
+                    <Label>Blur% level:</Label>
+                </StatusBarItem>
+                <StatusBarItem>
+                    <Slider Name="slideBlur" Maximum="100" Width="150px" AutoToolTipPlacement="BottomRight" SmallChange="1" LargeChange="5" Value="100"  ValueChanged="slideBlur_ValueChanged"></Slider>
+                </StatusBarItem>
 
-            <StatusBarItem>
-                <Label>Zoom% level:</Label>
-            </StatusBarItem>
-            <StatusBarItem>
-                <Slider Name="slideZoom" Maximum="1000" Width="150px" AutoToolTipPlacement="BottomRight" SmallChange="1" LargeChange="5" Value="100" ValueChanged="slideZoom_ValueChanged"></Slider>
-            </StatusBarItem>
-        </StatusBar>
-        <Canvas Name="cnvsImage" MouseLeave="cnvsImage_MouseLeave" MouseMove="cnvsImage_MouseMove" MouseUp="imgMain_MouseUp" MouseWheel="cnvsImage_MouseWheel">
-            <Image Name="imgMain" Canvas.Left="0" Canvas.Top="0" Panel.ZIndex="1"
-                   MouseDown="imgMain_MouseDown" MouseUp="imgMain_MouseUp" 
-                   Source="{Binding Image}">
-                <Image.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleX="{Binding Zoom}" ScaleY="{Binding Zoom}"/>
-                        <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform />
-                    </TransformGroup>
-                </Image.RenderTransform>
-                <Image.Effect>
-                    <BlurEffect Radius="{Binding BlurRadius}"/>
-                </Image.Effect>
-            </Image>
-        </Canvas>
-    </DockPanel>
+                <StatusBarItem>
+                    <Label>Zoom% level:</Label>
+                </StatusBarItem>
+                <StatusBarItem>
+                    <Slider Name="slideZoom" Maximum="1000" Width="150px" AutoToolTipPlacement="BottomRight" SmallChange="1" LargeChange="5" Value="100" ValueChanged="slideZoom_ValueChanged"></Slider>
+                </StatusBarItem>
+            </StatusBar>
+            <Canvas Name="cnvsImage" MouseLeave="cnvsImage_MouseLeave" MouseMove="cnvsImage_MouseMove" MouseUp="imgMain_MouseUp" MouseWheel="cnvsImage_MouseWheel">
+                <Image Name="imgMain" Canvas.Left="0" Canvas.Top="0" Panel.ZIndex="1"
+                       MouseDown="imgMain_MouseDown" MouseUp="imgMain_MouseUp" 
+                       Source="{Binding Image}">
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="{Binding Zoom}" ScaleY="{Binding Zoom}"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                    <Image.Effect>
+                        <BlurEffect Radius="{Binding BlurRadius}"/>
+                    </Image.Effect>
+                </Image>
+            </Canvas>
+        </DockPanel>
+    </Grid>
 </Window>
