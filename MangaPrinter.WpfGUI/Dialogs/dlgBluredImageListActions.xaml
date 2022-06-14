@@ -4,35 +4,125 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
+        xmlns:converts="clr-namespace:MangaPrinter.WpfGUI.Convertors"
         mc:Ignorable="d"
         Title="dlgBluredImageListActions" Height="450" Width="800" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+    <Window.Resources>
+        <converts:LowerConvert x:Key="lowerConvert"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="3*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Column="0">
             <Label DockPanel.Dock="Top">Choose action per Page:</Label>
-         
-            <ListView Name="lstPages" SelectionChanged="lstPages_SelectionChanged"  ></ListView>
+
+            <ListBox Name="lstPages" SelectionChanged="lstPages_SelectionChanged" KeyUp="lstPages_KeyUp"
+                     HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="20"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                           <Border Grid.Column="1" CornerRadius="6" BorderBrush="Gray" BorderThickness="2">
+
+                            <StackPanel  >
+                                    <Border  Name="brdMain">
+                                        <StackPanel>
+                                            <Label  Padding="5,0" Content="{Binding Page.Chapter.Name}"></Label>
+                                            <Label  Padding="5,0" Content="{Binding Page.Chapter.ParentName}"></Label>
+                                            <Separator></Separator>
+                                        </StackPanel>
+                                    </Border>
+
+                                <StackPanel Name="stackFilePage" Orientation="Horizontal">
+                                    <Image Name="imgPage" Source="../Icons/1Page.png" />
+
+                                    <Label Name="lblDouble" FontWeight="Bold" Visibility="Collapsed">
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}(p{0}-p{1}) ">
+                                                    <Binding Path="Page.ChildIndexStart"/>
+                                                    <Binding Path="Page.ChildIndexEnd"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Label>
+
+                                    <Label Name="lblSingle" FontWeight="Bold" Visibility="Visible">
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}(p{0}) ">
+                                                    <Binding Path="Page.ChildIndexStart"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Label>
+
+                                    <Label Content="{Binding Page.Name}" />
+                                    <Label Name="lblWhiteRatio" Content="{Binding Page.WhiteBlackRatio}" ContentStringFormat=" 🔳{0:0.00}" Visibility="Collapsed" />
+                                    <Label Name="lblPageRatio" Content="{Binding Page.AspectRatio}" ContentStringFormat=" ➗{0:F3}" Visibility="Collapsed" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        </Grid>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Result}" Value="True">
+                                <Setter TargetName="brdMain" Property="Background" Value="#FFFBC9C9"></Setter>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding Result}" Value="False">
+                                <Setter TargetName="brdMain" Property="Background" Value="#FFA9FFA0"></Setter>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding Page.IsDouble}" Value="True">
+                                <Setter TargetName="imgPage" Property="Source" Value="../Icons/2Page.png"/>
+                                <Setter TargetName="lblDouble" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="lblSingle" Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding Path=Page.AspectRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.33}" Value="True">
+                                <Setter TargetName="lblPageRatio" Property="Foreground" Value="Red"/>
+                                <Setter TargetName="lblPageRatio" Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding Path=Page.WhiteBlackRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.10}" Value="True">
+                                <Setter TargetName="lblWhiteRatio" Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </DockPanel>
-        <DockPanel Grid.Column="1">
+        <GridSplitter Grid.Column="1" Width="5"   HorizontalAlignment="Stretch"/>
+        <DockPanel Grid.Column="2">
             <StatusBar DockPanel.Dock="Top" Panel.ZIndex="2" >
                 <StatusBarItem HorizontalAlignment="Right">
                     <CheckBox IsChecked="False" Name="cbKeepBlur">Keep Blur between images</CheckBox>
                 </StatusBarItem>
                 <StatusBarItem HorizontalAlignment="Right">
-                    <Button Padding="5px" Background="#FF4BE84B">Apply All and Exit ✔</Button>
+                    <Button Name="Apply" Padding="5px" Background="#FF4BE84B" Click="Apply_Click"
+                            >Apply All and Exit ✔</Button>
                 </StatusBarItem>
             </StatusBar>
             <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2" >
+                <StatusBarItem>
+                    <Label>Switch: Enter / Mark Delete: (Delete/D/Backspace) </Label>
+                </StatusBarItem>
                 <StatusBarItem HorizontalAlignment="Right">
                     <StackPanel Orientation="Horizontal">
-                        <Label Margin="0 0 5px 0">Change to:</Label>
+                        <Label Margin="0 0 5px 0">Mark as:</Label>
 
-                        <Button Padding="5px" Margin="0 0 5px 0">Keep</Button>
+                        <Button Name="btnKeep" Click="btnKeep_Click"
+                                Padding="5px" Margin="0 0 5px 0">Keep</Button>
 
-                        <Button Padding="5px" Background="#FFFFA2A2">Delete</Button>
+                        <Button Name="btnDelete" Click="btnDelete_Click"
+                                Padding="5px" Background="#FFFFA2A2">Delete</Button>
                     </StackPanel>
                 </StatusBarItem>
             </StatusBar>

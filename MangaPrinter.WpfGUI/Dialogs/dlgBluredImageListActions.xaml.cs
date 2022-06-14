@@ -1,6 +1,8 @@
 ﻿using MangaPrinter.Core;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +28,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
         public string CustomTitle {get;set;}
 
-        public List<MangaPage> Pages { get; set; }
+        public ObservableCollection<ActionMangaPage<bool>> Pages { get; set; }
 
         
         public dlgBluredImageListActions()
@@ -52,7 +54,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
             //      int finalWidth =  (int)cnvsImage.ActualWidth;
             //      ... else: finalWidth = (int)((float)cnvsImage.ActualHeight * ratioBitmap);
         
-            slideZoom.Value = (100.0f *  finalHeight)/ myImage.Image.Height;
+            myImage.Zoom =   finalHeight *1.0f / myImage.Image.Height;
         }
 
         void LoadImage(string imageUrl)
@@ -82,7 +84,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
         {
             if (!String.IsNullOrEmpty(CustomTitle))
                 Title = CustomTitle;
-            lstPages.DataContext = Pages;
+            lstPages.ItemsSource = Pages;
         }
 
         bool inMove = false;
@@ -154,8 +156,52 @@ namespace MangaPrinter.WpfGUI.Dialogs
         {
             if (lstPages.SelectedIndex > -1)
             {
-                MangaPage p = (MangaPage)lstPages.SelectedItem;
-                LoadImage(p.ImagePath);
+                ActionMangaPage<bool> p = (ActionMangaPage<bool>)lstPages.SelectedItem;
+                LoadImage(p.Page.ImagePath);
+            }
+        }
+
+        private void btnKeep_Click(object sender, RoutedEventArgs e)
+        {
+            lstPages.Focus();
+            if (lstPages.SelectedIndex > -1)
+            {
+                ActionMangaPage<bool> p = (ActionMangaPage<bool>)lstPages.SelectedItem;
+                p.Result = false;
+            }
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            lstPages.Focus();
+            if (lstPages.SelectedIndex > -1)
+            {
+                ActionMangaPage<bool> p = (ActionMangaPage<bool>)lstPages.SelectedItem;
+                LoadImage(p.Page.ImagePath);
+                p.Result = true;
+            }
+        }
+
+        private void Apply_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+        }
+
+        private void lstPages_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (lstPages.SelectedIndex > -1)
+            {
+                ActionMangaPage<bool> p = (ActionMangaPage<bool>)lstPages.SelectedItem;
+
+                if (e.Key == Key.Delete || e.Key == Key.D || e.Key == Key.Back)
+                {
+                    p.Result = true;
+                }
+
+                if (e.Key == Key.Enter)
+                {
+                    p.Result = !p.Result;
+                }
             }
         }
 

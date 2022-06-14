@@ -6,6 +6,8 @@ using System.Text;
 
 namespace MangaPrinter.Core
 {
+   
+
     public class MangaPage : ModelBaseWpf
     {
         public const float MinRatio = 0.05f;
@@ -24,7 +26,14 @@ namespace MangaPrinter.Core
         public int ChildIndexEnd { get { return _baseGet(); } set { _baseSet(value); } }
     }
 
-   
+    public class ActionMangaPage<R> : ModelBaseWpf
+    {
+        public MangaPage Page { get { return _baseGet(); } set { _baseSet(value); } }
+
+        public R Result { get { return _baseGet(); } set { _baseSet(value); } }
+    }
+
+
     public class MangaChapter : ModelBaseWpf
     {
         public bool IsChecked { get { return _baseGet(failover: false); } set { _baseSet(value); } }

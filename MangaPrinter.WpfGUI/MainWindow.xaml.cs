@@ -840,8 +840,57 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuQuickDelete_Click(object sender, RoutedEventArgs e)
         {
+            bool addFirstLast3 = MessageBox.Show("Add 3 First/Last pages?", "Smart Delete", MessageBoxButton.YesNo)
+                == MessageBoxResult.Yes;
+
             dlgBluredImageListActions dlg = new dlgBluredImageListActions();
-            dlg.ShowDialog();
+            dlg.CustomTitle = "Smart Delete pages";
+            ObservableCollection<ActionMangaPage<bool>> pagesToInspect = new ObservableCollection<ActionMangaPage<bool>>();
+            int i = 0;
+            mangaChapters.ForEach(ch =>
+            {
+                i = 0;
+                ch.Pages.ForEach(_p =>
+                {
+                    ActionMangaPage<bool> p = new ActionMangaPage<bool>() { Page = _p, Result = false };
+
+                    // Add first/lest 3
+                    if (addFirstLast3 && (i < 3 || i + 3 >= ch.Pages.Count))
+                    {
+                        pagesToInspect.Add(p);
+                    }
+                    else if (p.Page.WhiteBlackRatio < 0.1)
+                    {
+                        pagesToInspect.Add(p);
+                    }
+                    else if (p.Page.AspectRatio < 0.33)
+                    {
+                        pagesToInspect.Add(p);
+                    }
+                    else if (p.Page.IsChecked || p.Page.Chapter.IsChecked)
+                    {
+                        pagesToInspect.Add(p);
+                    }
+                    i++;
+                });
+            });
+            dlg.Pages = pagesToInspect;
+            if (dlg.ShowDialog() ?? false)
+            {
+                pagesToInspect
+                    .Where(p => !p.Result)
+                    .ForEach(p => p.Page.Chapter.Pages.Remove(p.Page));
+            }
+        }
+
+        private void mnuSmartDeleteInfo_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(this,"Smart delete includes the following:\n" +
+                "- First and last 3 pages of each chapter\n"  +
+                "- 🔳 InkFill% < 0.1\n" +
+                "- ➗ TooVertical < 0.33\n" + 
+                "- ✔ Checked pages or pages of checked chapters"
+                );
         }
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)

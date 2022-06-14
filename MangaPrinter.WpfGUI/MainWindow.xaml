@@ -168,6 +168,7 @@
                                   Name="mnuAddEmptyChapter" Click="mnuAddEmptyChapter_Click"/>
                         <MenuItem Header="Smart Delete..." Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="120"  Margin="0 0 5px 0"
                                   Name="mnuQuickDelete" Click="mnuQuickDelete_Click"/>
+                        <MenuItem Header="?" Name="mnuSmartDeleteInfo" Click="mnuSmartDeleteInfo_Click" ></MenuItem>
                         <MenuItem Header="Clear Data" Style="{StaticResource MenuItemBtnStyleRed}" Foreground="White" Width="100" Margin="0 0 5px 0"
                                   Name="mnuClearAllData" Click="MnuClearAllData_Click"/>
                     </Menu>
