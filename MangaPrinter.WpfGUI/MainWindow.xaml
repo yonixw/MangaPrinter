@@ -15,7 +15,7 @@
         <converts:LowerConvert x:Key="lowerConvert"/>
         <converts:ChapterListInfo x:Key="chInfoConvert"/>
 
-        
+
 
         <Style x:Key="GeneralStyle" TargetType="{x:Type Control}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -166,6 +166,8 @@
                                   Name="btnCalcWhiteRatio" Click="btnCalcWhiteRatio_Click" Foreground="Black" Width="180px"/>
                         <MenuItem Header=" + Empty chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="140px" Margin="0 0 5px 0"
                                   Name="mnuAddEmptyChapter" Click="mnuAddEmptyChapter_Click"/>
+                        <MenuItem Header="Smart Delete..." Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="120"  Margin="0 0 5px 0"
+                                  Name="mnuQuickDelete" Click="mnuQuickDelete_Click"/>
                         <MenuItem Header="Clear Data" Style="{StaticResource MenuItemBtnStyleRed}" Foreground="White" Width="100" Margin="0 0 5px 0"
                                   Name="mnuClearAllData" Click="MnuClearAllData_Click"/>
                     </Menu>
@@ -246,7 +248,7 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                           
+
                         </DockPanel>
 
                         <GridSplitter Grid.Column="1" Width="5"   HorizontalAlignment="Stretch"/>
@@ -343,12 +345,13 @@
                                                 </TextDecoration>
                                             </TextBlock.TextDecorations>
                                             Booklet (on Roadmap)
-                                        </TextBlock> </Label>
+                                        </TextBlock>
+                                    </Label>
                                 </StackPanel>
                             </RadioButton>
                         </StackPanel>
-                        
-                       
+
+
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Chapter:</Label>
@@ -381,7 +384,7 @@
                         <Hyperlink Name="lblHelpExportMinimal" Click="LblHelpExportMinimal_Click">( ? )</Hyperlink>
                         <CheckBox Name="cbKeepColors" IsChecked="False">Keep colors</CheckBox>
                         <Hyperlink Name="lblKeepColorsHelp" Click="lblKeepColorsHelp_Click">( ? )</Hyperlink>
-                        
+
                     </Menu>
                     <Grid >
                         <Grid.ColumnDefinitions>
@@ -434,7 +437,7 @@
                                                     <RowDefinition Height="*" />
                                                     <RowDefinition Height="*" />
                                                 </Grid.RowDefinitions>
-                                                
+
                                                 <Border BorderThickness="0 0 0 2" Grid.Column="0" BorderBrush="Blue" Grid.Row="0">
                                                     <Label Content="{Binding Front.Left, Converter={StaticResource sideConvert}}"  />
                                                 </Border>

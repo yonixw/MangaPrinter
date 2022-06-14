@@ -160,7 +160,8 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            myImage.Image = null;
+            if (myImage != null)
+                myImage.Image = null;
         }
 
         public void Zoom(double percent)

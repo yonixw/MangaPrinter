@@ -16,22 +16,25 @@ using System.Windows.Shapes;
 namespace MangaPrinter.WpfGUI.Dialogs
 {
 
+
+
     /// <summary>
     /// Interaction logic for dlgBluredImageListAction.xaml
     /// </summary>
     public partial class dlgBluredImageListActions : Window
     {
-        private string _imageUrl;
-        private string _title;
 
-        public dlgBluredImageListActions(string ImageUrl, string DialogTitle)
+        public string CustomTitle {get;set;}
+
+        public List<MangaPage> Pages { get; set; }
+
+        
+        public dlgBluredImageListActions()
         {
-            _imageUrl = ImageUrl;
-            _title = DialogTitle;
             InitializeComponent();
         }
 
-        MyImageBind myImage;
+        MyImageBind myImage = null;
         public const double maxBlur = 40;
 
         void resetZoom()
@@ -52,37 +55,34 @@ namespace MangaPrinter.WpfGUI.Dialogs
             slideZoom.Value = (100.0f *  finalHeight)/ myImage.Image.Height;
         }
 
-        public static BitmapImage LoadBitmapWithoutLockingFile(string url)
+        void LoadImage(string imageUrl)
         {
-            //https://social.msdn.microsoft.com/Forums/vstudio/en-US/dee7cb68-aca3-402b-b159-2de933f933f1/disposing-a-wpf-image-or-bitmapimage-so-the-source-picture-file-can-be-modified?forum=wpf
+            if (myImage != null)
+                myImage.Image = null;
 
-            System.Windows.Media.Imaging.BitmapImage result = new System.Windows.Media.Imaging.BitmapImage();  // Create new BitmapImage  
-            System.IO.Stream stream = new System.IO.MemoryStream();  // Create new MemoryStream  
+            // Reset blur on new picture
+            if (!(cbKeepBlur.IsChecked ?? false))
+            {
+                slideBlur.Value = 100;
+            }
 
-            System.Drawing.Bitmap bitmap = MagickImaging.BitmapFromUrlExt(url);  // Create new Bitmap (System.Drawing.Bitmap) from the existing image file (albumArtSource set to its path name)  
-            bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);  // Save the loaded Bitmap into the MemoryStream - Png format was the only one I tried that didn't cause an error (tried Jpg, Bmp, MemoryBmp)  
-            bitmap.Dispose();  // Dispose bitmap so it releases the source image file 
-            
-            result.BeginInit();  // Begin the BitmapImage's initialisation  
-            result.StreamSource = stream;  // Set the BitmapImage's StreamSource to the MemoryStream containing the image  
-            result.EndInit();  // End the BitmapImage's initialisation  
+            BitmapImage bm = dlgBluredImage.LoadBitmapWithoutLockingFile(imageUrl);
+            imgMain.DataContext = myImage = new MyImageBind()
+            {
+                Image = bm,
+                BlurRadius = slideBlur.Value * maxBlur / 100,
+                Zoom = 1f,
+                Offset = new MyPointD() { X = 0, Y = 0 }
+            };
 
-            return result;
+            resetZoom();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Title = _title;
-
-            BitmapImage bm = LoadBitmapWithoutLockingFile(_imageUrl);
-            imgMain.DataContext = myImage = new MyImageBind() {
-                Image = bm,
-                BlurRadius = slideBlur.Value * maxBlur / 100,
-                Zoom = 1f,
-                Offset = new MyPointD() { X=0,Y=0}
-            };
-
-            resetZoom();
+            if (!String.IsNullOrEmpty(CustomTitle))
+                Title = CustomTitle;
+            lstPages.DataContext = Pages;
         }
 
         bool inMove = false;
@@ -146,7 +146,17 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            myImage.Image = null;
+            if (myImage != null)
+                myImage.Image = null;
+        }
+
+        private void lstPages_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstPages.SelectedIndex > -1)
+            {
+                MangaPage p = (MangaPage)lstPages.SelectedItem;
+                LoadImage(p.ImagePath);
+            }
         }
 
         public void Zoom(double percent)

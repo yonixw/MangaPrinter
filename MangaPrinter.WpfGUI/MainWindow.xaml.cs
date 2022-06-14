@@ -838,6 +838,12 @@ namespace MangaPrinter.WpfGUI
             });
         }
 
+        private void mnuQuickDelete_Click(object sender, RoutedEventArgs e)
+        {
+            dlgBluredImageListActions dlg = new dlgBluredImageListActions();
+            dlg.ShowDialog();
+        }
+
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
             resetDlgSaveName();

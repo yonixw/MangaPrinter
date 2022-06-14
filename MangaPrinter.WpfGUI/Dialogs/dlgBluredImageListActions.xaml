@@ -13,27 +13,31 @@
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Column="0">
             <Label DockPanel.Dock="Top">Choose action per Page:</Label>
-            <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2" >
-                <StatusBarItem >
-                    <Label>Change to:</Label>
-                </StatusBarItem>
-                <StatusBarItem >
-                    <Button Padding="5px" Background="#FFFFA2A2">Delete</Button>
-                </StatusBarItem>
-                <StatusBarItem >
-                    <Button Padding="5px">Keep</Button>
-                </StatusBarItem>
-            </StatusBar>
-            <ListView Name="lstPages" ></ListView>
+         
+            <ListView Name="lstPages" SelectionChanged="lstPages_SelectionChanged"  ></ListView>
         </DockPanel>
         <DockPanel Grid.Column="1">
+            <StatusBar DockPanel.Dock="Top" Panel.ZIndex="2" >
+                <StatusBarItem HorizontalAlignment="Right">
+                    <CheckBox IsChecked="False" Name="cbKeepBlur">Keep Blur between images</CheckBox>
+                </StatusBarItem>
+                <StatusBarItem HorizontalAlignment="Right">
+                    <Button Padding="5px" Background="#FF4BE84B">Apply All and Exit ✔</Button>
+                </StatusBarItem>
+            </StatusBar>
             <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2" >
                 <StatusBarItem HorizontalAlignment="Right">
-                    <Button Padding="5px" Background="#FF4BE84B">Apply All ✔</Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0 0 5px 0">Change to:</Label>
+
+                        <Button Padding="5px" Margin="0 0 5px 0">Keep</Button>
+
+                        <Button Padding="5px" Background="#FFFFA2A2">Delete</Button>
+                    </StackPanel>
                 </StatusBarItem>
             </StatusBar>
             <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2">
-                <StatusBarItem>
+                <StatusBarItem >
                     <Button Padding="5px" Name="btnRefit" Click="btnRefit_Click">Re-Fit image</Button>
                 </StatusBarItem>
                 <StatusBarItem>
