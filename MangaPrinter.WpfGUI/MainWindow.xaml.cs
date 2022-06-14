@@ -878,7 +878,7 @@ namespace MangaPrinter.WpfGUI
             if (dlg.ShowDialog() ?? false)
             {
                 pagesToInspect
-                    .Where(p => !p.Result)
+                    .Where(p => p.Result==true)
                     .ForEach(p => p.Page.Chapter.Pages.Remove(p.Page));
             }
         }
