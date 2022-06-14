@@ -1,7 +1,6 @@
 ﻿using MangaPrinter.Core;
 using System;
 using System.Collections.Generic;
-
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +15,21 @@ using System.Windows.Shapes;
 
 namespace MangaPrinter.WpfGUI.Dialogs
 {
+
+    public class MyPointD : ModelBaseWpf
+    {
+        public double X { get { return _baseGet(); } set { _baseSet(value); } }
+        public double Y { get { return _baseGet(); } set { _baseSet(value); } }
+    }
+
+    public class MyImageBind : ModelBaseWpf
+    {
+        public BitmapImage Image { get { return _baseGet(); } set { _baseSet(value); } }
+        public double BlurRadius { get { return _baseGet(); } set { _baseSet(value); } }
+        public double Zoom { get { return _baseGet(); } set { _baseSet(value); } }
+        public MyPointD Offset { get { return _baseGet(); } set { _baseSet(value); } }
+    }
+
     /// <summary>
     /// Interaction logic for dlgBluredImage.xaml
     /// </summary>
@@ -39,22 +53,20 @@ namespace MangaPrinter.WpfGUI.Dialogs
             float ratioBitmap = (float)myImage.Image.Width / (float)myImage.Image.Height;
             float ratioMax = (float)cnvsImage.ActualWidth / (float)cnvsImage.ActualHeight;
 
-            int finalWidth =  (int)cnvsImage.ActualWidth;
             int finalHeight = (int)cnvsImage.ActualHeight;
-            if (ratioMax > ratioBitmap)
+            if (ratioMax <= ratioBitmap)
             {
-                finalWidth = (int)((float)cnvsImage.ActualHeight * ratioBitmap);
-            }
-            else
-            {
-                finalHeight = (int)((float)cnvsImage.ActualWidth / ratioBitmap);
+              finalHeight = (int)((float)cnvsImage.ActualWidth / ratioBitmap);
             }
 
-
+            // for future:
+            //      int finalWidth =  (int)cnvsImage.ActualWidth;
+            //      ... else: finalWidth = (int)((float)cnvsImage.ActualHeight * ratioBitmap);
+        
             slideZoom.Value = (100.0f *  finalHeight)/ myImage.Image.Height;
         }
 
-        BitmapImage LoadBitmapWithoutLockingFile(string url)
+        public static BitmapImage LoadBitmapWithoutLockingFile(string url)
         {
             //https://social.msdn.microsoft.com/Forums/vstudio/en-US/dee7cb68-aca3-402b-b159-2de933f933f1/disposing-a-wpf-image-or-bitmapimage-so-the-source-picture-file-can-be-modified?forum=wpf
 
@@ -77,7 +89,12 @@ namespace MangaPrinter.WpfGUI.Dialogs
             Title = _title;
 
             BitmapImage bm = LoadBitmapWithoutLockingFile(_imageUrl);
-            imgMain.DataContext = myImage = new MyImageBind() { Image = bm, BlurRadius = slideBlur.Value * maxBlur / 100 };
+            imgMain.DataContext = myImage = new MyImageBind() {
+                Image = bm,
+                BlurRadius = slideBlur.Value * maxBlur / 100,
+                Zoom = 1f,
+                Offset = new MyPointD() { X=0,Y=0}
+            };
 
             resetZoom();
         }
@@ -98,6 +115,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
                 Point currentMouse = Mouse.GetPosition(this);
                 Canvas.SetLeft(imgMain, currentMouse.X - startPointMouse.X + startPointWindow.X);
                 Canvas.SetTop(imgMain, currentMouse.Y - startPointMouse.Y + startPointWindow.Y);
+
             }
         }
 
@@ -149,18 +167,10 @@ namespace MangaPrinter.WpfGUI.Dialogs
         {
             if (myImage != null)
             {
-                double _z =  percent / 100;
-
-                imgMain.Width = myImage.Image.Width * _z;
-                imgMain.Height = myImage.Image.Height * _z;
+                myImage.Zoom = percent / 100;
             }
         }
     }
 
-    public class MyImageBind : ModelBaseWpf
-    {
-
-        public BitmapImage Image { get { return _baseGet(); } set { _baseSet(value); } }
-        public double BlurRadius { get { return _baseGet(); } set { _baseSet(value); } }
-    }
+    
 }
