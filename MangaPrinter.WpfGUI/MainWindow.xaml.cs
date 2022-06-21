@@ -49,6 +49,8 @@ namespace MangaPrinter.WpfGUI
             mangaChapters.ListChanged += MangaChapters_ListChanged;
             rtbInfo.AppendText(" " + Properties.Resources.GitInfo.Replace("\"", "").Split(';')[0]);
 
+            Core.CoreSettings.Instance.setProgramVersion(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0]);
+
             // Load Settings:
             var Config = MangaPrinter.WpfGUI.Properties.Settings.Default;
             txtPageMaxWidth.Text = Config.doublePageWidth.ToString();
@@ -515,7 +517,7 @@ namespace MangaPrinter.WpfGUI
 
             var page = new PageInfo((string)((ComboBoxItem)cbPageSize.SelectedItem).Content, float.Parse(txtPrintPadding.Text));
 
-            var b = (new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0])).BuildFace(p.Front,
+            var b = (new DuplexTemplates()).BuildFace(p.Front,
                     page.singlePageWidth,page.singlePageHeight,
                     page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
@@ -535,7 +537,7 @@ namespace MangaPrinter.WpfGUI
             SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
             var page = new PageInfo((string)((ComboBoxItem)cbPageSize.SelectedItem).Content, float.Parse(txtPrintPadding.Text));
 
-            var b = (new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0])).BuildFace(p.Back,
+            var b = (new DuplexTemplates()).BuildFace(p.Back,
                     page.singlePageWidth, page.singlePageHeight,
                     page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
@@ -925,7 +927,7 @@ namespace MangaPrinter.WpfGUI
                 Exception ex = winWorking.waitForTask<Exception>(this, (updateFunc) =>
                 {
 
-                    DuplexTemplates dt = new DuplexTemplates(Properties.Resources.GitInfo.Replace("\"","").Split(' ')[0]);
+                    DuplexTemplates dt = new DuplexTemplates();
                     foreach (SelectablePrintPage page in allPrintPages)
                     {
 

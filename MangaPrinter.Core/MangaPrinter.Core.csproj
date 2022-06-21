@@ -10,7 +10,7 @@
     <RootNamespace>MangaPrinter.Core</RootNamespace>
     <AssemblyName>MangaPrinter.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-	<LangVersion>7</LangVersion>
+    <LangVersion>7</LangVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="BinderTools.cs" />
     <Compile Include="ChapterBuilders\DuplexBuilder.cs" />
+    <Compile Include="CoreSettings.cs" />
     <Compile Include="FileImporter.cs" />
     <Compile Include="MagickImaging.cs" />
     <Compile Include="MangaObjects.cs" />
