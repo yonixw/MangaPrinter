@@ -7,25 +7,25 @@ assignees: ''
 
 ---
 
-**Describe the bug**
+### 🐜 Describe the bug
 A description of what the bug is.
 
-**Expected behavior**
+### 🟩 Expected behavior
 A description of what expected to happen.
 
-**Help us Reproduce**
+### 🔁 Help us Reproduce
 Steps to reproduce the behavior:
 1. Go to ???
 2. Click on ????
 3. 
 4. 
 
-**Screenshots**
+### 📷 Screenshots
 If applicable, add screenshots to help explain your problem.
 
-**Additional context**
-Build Version: ?
+### 📝 Additional context
+Build Version: ......
 
-** Help us grow !**
-How did you find this project ? Google/Reddit/Other
-Feel free to add any other note here:
+### 🎉 Help us grow !
+* How did you find this project ? Google/Reddit/......
+* Feel free to add any other note here:
