@@ -103,7 +103,7 @@
         <DockPanel Grid.Column="2">
             <StatusBar DockPanel.Dock="Top" Panel.ZIndex="2" >
                 <StatusBarItem HorizontalAlignment="Right">
-                    <CheckBox IsChecked="False" Name="cbKeepBlur">Keep Blur between images</CheckBox>
+                    <CheckBox IsChecked="False" Name="cbKeepBlur">Keep Blur% between images</CheckBox>
                 </StatusBarItem>
                 <StatusBarItem HorizontalAlignment="Right">
                     <Button Name="Apply" Padding="5px" Background="#FF4BE84B" Click="Apply_Click"

@@ -887,11 +887,13 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuSmartDeleteInfo_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(this,"Smart delete includes the following:\n" +
-                "- First and last 3 pages of each chapter\n"  +
-                "- 🔳 InkFill% < 0.1\n" +
-                "- ➗ TooVertical < 0.33\n" + 
-                "- ✔ Checked pages or pages of checked chapters"
+            MessageBox.Show(this,">> Smart delete includes choises:\n" +
+                "+ (Optional) First and last 3 pages of each chapter\n" +
+                "+ Checked pages\n" +
+                "+ Checked chapters\n" +
+                "\n>> Smart delete includes found problems (if analyzed before):\n" +
+                "* 🔳 InkFill% < 0.1\n" +
+                "* ➗ TooVertical < 0.33\n" 
                 );
         }
 
