@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,7 +11,45 @@ namespace MangaPrinter.Conf
     {
         public static CoreSettings Instance = new CoreSettings();
 
+        public SettingFile allSettings = new SettingFile();
+
         private CoreSettings() { }
+
+        void initSettingStructure()
+        {
+            allSettings.addOrUpdateSetting("Chapter and files", "Import", "Sort type", 
+                new SettingOptionList<string>(new[] { "By Creation Date", "By Name" }.ToList(),1),
+                "When importing folder and files, how to sort them inside chapters."
+                );
+            allSettings.addOrUpdateSetting("Chapter and files", "Import", "Smart 0-9 Sort", true,
+                "If using sort by name, then sort numbers better in windows. because usally 2.jpg comes after 11.jpg."
+                );
+            allSettings.addOrUpdateSetting("Chapter and files", "Import", "Include subfolders",true,
+                "Include all subfolders on import"
+                );
+            allSettings.addOrUpdateSetting("Chapter and files", "Import", "Import direction",
+                new SettingOptionList<string>(new[] { "RTL (↼)", "LTR (⇀)" }.ToList(), 0),
+                "When importing, what direction should new chapters be"
+                );
+            // ----------------
+            allSettings.addOrUpdateSetting("Bindings", "General", "Binding type",
+                new SettingOptionList<string>(new[] { "Duplex" }.ToList(), 0),
+                "Binding type to prepare."
+                );
+            allSettings.addOrUpdateSetting("Bindings", "Chapter Pages", "Add start pages",true,
+               "Add start page before each chapter"
+               );
+            allSettings.addOrUpdateSetting("Bindings", "Chapter Pages", "Add end pages", true,
+               "Add end page after each chapter"
+               );
+            allSettings.addOrUpdateSetting("Bindings", "Chapter Pages", "Anti-Spoilers pages", true,
+               "Add pages to hide content of chapters. Good to hide spoilers while stapling or cutting pages"
+               );
+            allSettings.addOrUpdateSetting("Bindings", "Chapter Pages", "Anti-Spoilers batch page count", 0,
+               "How much pages to put between spoiler pages, usually the same page count your stapler or scissors can handle."
+               );
+        }
+
 
         // ------ Git Version Banner
 
@@ -53,109 +90,6 @@ namespace MangaPrinter.Conf
 
 
 
-    public class SettingBase { }
-
-    public class SettingItem<T> : SettingBase
-    {
-        public T value { get; set; } = default(T);
-        public Dictionary<string, string> variations { get; set; } = new Dictionary<string, string>();
-
-        public SettingItem(T _value) {
-            value = _value;
-        }
-    }
-
-    public class SettingCategory
-    {
-        public Dictionary<string, SettingSubCategory> SubCategories { get; set; } = new Dictionary<string, SettingSubCategory>();
-    }
-
-    public class SettingSubCategory
-    {
-        public Dictionary<string, SettingBase> Settings { get; set; } = new Dictionary<string, SettingBase>();
-    }
-
-
-    public class SettingFile
-    {
-        public Dictionary<string, SettingCategory> Categories { get; set; } = new Dictionary<string, SettingCategory>();
-
-        public void addOrUpdateSetting<T>(string cat, string subcat, string name, T value)
-        {
-            SettingBase item = new SettingItem<T>(value);
-            if(!Categories.ContainsKey(cat))
-            {
-                Categories.Add(cat, new SettingCategory());
-            }
-
-            if (!Categories[cat].SubCategories.ContainsKey(subcat))
-            {
-                Categories[cat].SubCategories.Add(subcat, new SettingSubCategory());
-            }
-
-            if (!Categories[cat].SubCategories[subcat].Settings.ContainsKey(name))
-            {
-                Categories[cat].SubCategories[subcat].Settings.Add(name, item);
-            }
-            else
-            {
-                Categories[cat].SubCategories[subcat].Settings[name] = item;
-            }
-        }
-
-        public object getSettingBase(string cat, string subcat, string name)
-        {
-            if (!Categories.ContainsKey(cat)) return null;
-            if (!Categories[cat].SubCategories.ContainsKey(subcat)) return null;
-            if (!Categories[cat].SubCategories[subcat].Settings.ContainsKey(name)) return null;
-            return Categories[cat].SubCategories[subcat].Settings[name];
-        }
-
-        public SettingItem<T> getSetting<T>(string cat, string subcat, string name)
-        {
-            if (!Categories.ContainsKey(cat)) return null;
-            if (!Categories[cat].SubCategories.ContainsKey(subcat)) return null;
-            if (!Categories[cat].SubCategories[subcat].Settings.ContainsKey(name)) return null;
-
-            SettingItem<T> item = Categories[cat].SubCategories[subcat].Settings[name] as SettingItem<T>;
-            return item;
-        }
-
-        public string Serialize()
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto // Auto is minimal added data
-            }) ;
-        }
-
-        static public SettingFile DeSerialize(string value)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SettingFile>(value, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto // Auto is minimal added data
-            });
-        }
-
-    }
+   
 }
 
-
-/*
- * 
- https://webcache.googleusercontent.com/search?q=cache:lHoxCxZaAKEJ:https://social.msdn.microsoft.com/Forums/vstudio/en-US/ad571139-7fff-4bfd-ba2f-8410b1b69fa4/xml-deserialize-works-with-net-452-breaks-with-46-xmlns-was-not-expected%3Fforum%3Dnetfxbcl+&cd=2&hl=iw&ct=clnk&gl=il
-
- string filename = @"C:\CARES_TFS\FIPS140\Cares\Cares.Test\TestData\FFM Sync\FFMStateAidCat38.xml";
- var xmlReader = new XmlTextReader(new FileStream(filename, FileMode.Open));
- var xmlserializer = new XmlSerializer(typeof(AccountTransferRequestPayloadType));
- var obj = xmlserializer.Deserialize(xmlReader) as AccountTransferRequestPayloadType;
-
-[System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://at.dsh.cms.gov/extension/1.0")]
-[System.Xml.Serialization.XmlRoot("AccountTransferRequest", IsNullable = false, Namespace = "http://at.dsh.cms.gov/exchange/1.0")]
-public partial class AccountTransferRequestPayloadType : ComplexObjectType { ... }
-
-*/
