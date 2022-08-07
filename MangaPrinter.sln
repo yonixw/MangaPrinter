@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaPrinter.WpfGUI", "Mang
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaPrinter.Core_Tests1", "MangaPrinter.Core_Tests1\MangaPrinter.Core_Tests1.csproj", "{4484A305-896E-48D1-9535-183EA69EA78F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaPrinter.Conf", "MangaPrinter.Conf\MangaPrinter.Conf.csproj", "{215B683F-4E8B-43D1-BC90-44AE9226A086}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4484A305-896E-48D1-9535-183EA69EA78F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4484A305-896E-48D1-9535-183EA69EA78F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4484A305-896E-48D1-9535-183EA69EA78F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{215B683F-4E8B-43D1-BC90-44AE9226A086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{215B683F-4E8B-43D1-BC90-44AE9226A086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{215B683F-4E8B-43D1-BC90-44AE9226A086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{215B683F-4E8B-43D1-BC90-44AE9226A086}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
