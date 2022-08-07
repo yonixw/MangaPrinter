@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -37,16 +38,27 @@ namespace MangaPrinter.Conf
         {
             return _sideTextConsts[type] + _programVersion;
         }
+
+        // Todo:
+        // Build your up to date config
+        //    For each setting, choose preview to show (multiple? tabs?)
+        // Config state: Found at X, not found, Saved succesully to X, Error saving..., Error loading...
+        // If config exists:
+        //    Recursive go through and update from it.
+        //    If deprecated add deprecated flag
+        // For each type: 
+        //     (Bool, Int ... SingleSideType ...)
+        //     Add editor/viewer
     }
 
-    public class SettingItemBase
-    {
-    }
 
-    public class SettingItem<T> : SettingItemBase
+
+    public class SettingBase { }
+
+    public class SettingItem<T> : SettingBase
     {
-        T value = default(T);
-        Dictionary<string, T> variations = new Dictionary<string, T>();
+        public T value { get; set; } = default(T);
+        public Dictionary<string, string> variations { get; set; } = new Dictionary<string, string>();
 
         public SettingItem(T _value) {
             value = _value;
@@ -55,14 +67,12 @@ namespace MangaPrinter.Conf
 
     public class SettingCategory
     {
-        public string Name { get; set; }
         public Dictionary<string, SettingSubCategory> SubCategories { get; set; } = new Dictionary<string, SettingSubCategory>();
     }
 
     public class SettingSubCategory
     {
-        public string Name { get; set; }
-        public Dictionary<string, SettingItemBase> Settings { get; set; } = new Dictionary<string, SettingItemBase>();
+        public Dictionary<string, SettingBase> Settings { get; set; } = new Dictionary<string, SettingBase>();
     }
 
 
@@ -72,7 +82,7 @@ namespace MangaPrinter.Conf
 
         public void addOrUpdateSetting<T>(string cat, string subcat, string name, T value)
         {
-            SettingItemBase item = new SettingItem<T>(value);
+            SettingBase item = new SettingItem<T>(value);
             if(!Categories.ContainsKey(cat))
             {
                 Categories.Add(cat, new SettingCategory());
@@ -93,7 +103,7 @@ namespace MangaPrinter.Conf
             }
         }
 
-        public SettingItemBase getSettingBase(string cat, string subcat, string name)
+        public object getSettingBase(string cat, string subcat, string name)
         {
             if (!Categories.ContainsKey(cat)) return null;
             if (!Categories[cat].SubCategories.ContainsKey(subcat)) return null;
@@ -106,12 +116,25 @@ namespace MangaPrinter.Conf
             if (!Categories.ContainsKey(cat)) return null;
             if (!Categories[cat].SubCategories.ContainsKey(subcat)) return null;
             if (!Categories[cat].SubCategories[subcat].Settings.ContainsKey(name)) return null;
-            return Categories[cat].SubCategories[subcat].Settings[name] as SettingItem<T>;
+
+            SettingItem<T> item = Categories[cat].SubCategories[subcat].Settings[name] as SettingItem<T>;
+            return item;
         }
 
         public string Serialize()
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto // Auto is minimal added data
+            }) ;
+        }
+
+        static public SettingFile DeSerialize(string value)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SettingFile>(value, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto // Auto is minimal added data
+            });
         }
 
     }
