@@ -4,10 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 
 namespace MangaPrinter.Conf
 {
@@ -28,19 +24,19 @@ namespace MangaPrinter.Conf
 
         // ------- Template Text
 
-        //private Dictionary<SingleSideType, String> _sideTextConsts = new Dictionary<SingleSideType, string>()
-        //{
-        //    { SingleSideType.ANTI_SPOILER, "Anti Spoiler" },
-        //    { SingleSideType.BEFORE_DOUBLE, "Filler Before Double" },
-        //    { SingleSideType.INTRO, "Chapter start:\n{0}" },
-        //    { SingleSideType.OUTRO, "Chapter end:\n{0}" },
-        //    { SingleSideType.MAKE_EVEN, "Filler After Chapter" },
-        //};
+        private Dictionary<int, String> _sideTextConsts = new Dictionary<int, string>()
+        {
+            { 1, "Anti Spoiler" },
+            { 2, "Filler Before Double" },
+            { 3, "Chapter start:\n{0}" },
+            { 4, "Chapter end:\n{0}" },
+            { 5, "Filler After Chapter" },
+        };
 
-        //public string getSideTextConsts(SingleSideType type)
-        //{
-        //    return _sideTextConsts[type] + _programVersion;
-        //}
+        public string getSideTextConsts(int type)
+        {
+            return _sideTextConsts[type] + _programVersion;
+        }
     }
 
     public class SettingItemBase
@@ -115,20 +111,7 @@ namespace MangaPrinter.Conf
 
         public string Serialize()
         {
-            XmlSerializer xmlserializer = new XmlSerializer(typeof(SettingFile));
-            using (MemoryStream m = new MemoryStream())
-            {
-                //for example i want to serialize an object into MemoryStream
-                //I want to use XmlSeralizer
-                XmlSerializer xs = new XmlSerializer(this.GetType());
-                xs.Serialize(m,this);
-
-                //the easy way to use ReadToEnd method in MemoryStream
-                using (StreamReader r = new StreamReader(m))
-                {
-                    return r.ReadToEnd();
-                }
-            }
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
 
     }

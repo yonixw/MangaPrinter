@@ -25,6 +25,7 @@ using System.ComponentModel;
 using PdfSharp.Pdf;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
 using PdfSharp;
+using MangaPrinter.Conf;
 
 namespace MangaPrinter.WpfGUI
 {
@@ -49,7 +50,7 @@ namespace MangaPrinter.WpfGUI
             mangaChapters.ListChanged += MangaChapters_ListChanged;
             rtbInfo.AppendText(" " + Properties.Resources.GitInfo.Replace("\"", "").Split(';')[0]);
 
-            Core.CoreSettings.Instance.setProgramVersion(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0]);
+            CoreSettings.Instance.setProgramVersion(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0]);
 
             // Load Settings:
             var Config = MangaPrinter.WpfGUI.Properties.Settings.Default;

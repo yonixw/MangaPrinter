@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MangaPrinter.Conf;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -138,7 +139,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                 switch (face.Left.SideType)
                 {
                     case SingleSideType.ANTI_SPOILER:
-                        page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts(SingleSideType.ANTI_SPOILER),
+                        page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts((int)SingleSideType.ANTI_SPOILER),
                             contentH, contentW);
                         break;
                     case SingleSideType.MANGA:
@@ -229,21 +230,21 @@ namespace MangaPrinter.Core.TemplateBuilders
             switch (side.SideType)
             {
                 case SingleSideType.INTRO:
-                    page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts(SingleSideType.INTRO)
+                    page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts((int)SingleSideType.INTRO)
                         .Replace("{0}", chapterName),
                       pageH, pageW);
                     break;
                 case SingleSideType.OUTRO:
-                    page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts(SingleSideType.OUTRO)
+                    page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts((int)SingleSideType.OUTRO)
                         .Replace("{0}", chapterName),
                       pageH, pageW);
                     break;
                 case SingleSideType.BEFORE_DOUBLE:
-                    page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts(SingleSideType.BEFORE_DOUBLE),
+                    page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts((int)SingleSideType.BEFORE_DOUBLE),
                       pageH, pageW);
                     break;
                 case SingleSideType.MAKE_EVEN:
-                    page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts(SingleSideType.MAKE_EVEN),
+                    page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts((int)SingleSideType.MAKE_EVEN),
                        pageH, pageW);
                     break;
                 case SingleSideType.MANGA:

@@ -195,6 +195,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MangaPrinter.Conf\MangaPrinter.Conf.csproj">
+      <Project>{215b683f-4e8b-43d1-bc90-44ae9226a086}</Project>
+      <Name>MangaPrinter.Conf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MangaPrinter.Core\MangaPrinter.Core.csproj">
       <Project>{3c34aef8-38d1-43a4-a629-5251b86951fa}</Project>
       <Name>MangaPrinter.Core</Name>

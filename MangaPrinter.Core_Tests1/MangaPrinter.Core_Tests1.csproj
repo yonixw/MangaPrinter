@@ -60,12 +60,17 @@
     <Compile Include="FileImporterTests.cs" />
     <Compile Include="MagickImagingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingFileTests.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MangaPrinter.Conf\MangaPrinter.Conf.csproj">
+      <Project>{215B683F-4E8B-43D1-BC90-44AE9226A086}</Project>
+      <Name>MangaPrinter.Conf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MangaPrinter.Core\MangaPrinter.Core.csproj">
       <Project>{3C34AEF8-38D1-43A4-A629-5251B86951FA}</Project>
       <Name>MangaPrinter.Core</Name>
