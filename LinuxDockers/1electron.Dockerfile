@@ -1,4 +1,6 @@
-FROM  yonixw/mangaprinter:basegui
+ARG builddate
+
+FROM  yonixw/mangaprinter:basegui-$buildate
 ENTRYPOINT ["/opt/container_startup.sh"]
 EXPOSE 5901
 ENV VNC_PASSWD=manga
