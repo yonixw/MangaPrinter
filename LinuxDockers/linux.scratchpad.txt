@@ -1,0 +1,170 @@
+
+Build with latest version by grep release latest... (ignore haku drafts)
+
+=============
+
+Wine final:
+
+   10  dpkg --add-architecture i386
+   11  mkdir -p /etc/apt/keyrings
+   13  apt update && apt install curl wget
+   14  wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+   18  lsb_release -sc
+   19  wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/$(lsb_release -sc)/winehq-$(lsb_release -sc).sources
+   20  apt update
+   21  apt install --install-recommends winehq-stable
+   22  winecfg # optional, to install minimal stuff
+   27  curl --silent --show-error https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks --stderr - | grep ^WINETRICKS_VERSION | cut -d '=' -f 2.
+   28  wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
+   29  chmod +x winetricks 
+   30  mv -v winetricks /usr/bin/
+   31  winetricks --version
+   35  winetricks -q dotnet48
+   36  winetricks -q d3dcompiler_47
+   37  wine reg add "HKCU\\SOFTWARE\\Microsoft\\Avalon.Graphics" /v DisableHWAcceleration /t REG_DWORD /d 1 /f
+   apt-get install msttcorefonts || apt-get --reinstall install ttf-mscorefonts-installer
+   winetricks -q unifont
+   
+   38  wget https://github.com/yonixw/MangaPrinter/releases/download/v1.6/MangaPrinter_v1.6_AnyCPU.zip
+   39  unzip MangaPrinter_v1.6_AnyCPU.zip 
+   40  wine Debug/MangaPrinter.WpfGUI.exe
+
+===========================
+
+docker run -d \
+  --name=remmina \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=Etc/UTC \
+  -p 3000:3000 \
+  -p 3001:3001 \
+  -v /path/to/config:/config \
+  --restart unless-stopped \
+  lscr.io/linuxserver/remmina:latest
+  
+ docker run --rm -it -p "15901:5901" yonixw/obs-audio-firefox:twitch-100523-lossy
+ 
+ 
+==================================
+
+
+Hakuneko final (no emoji):
+
+(no docker flags like ulimit, ipc=host)
+
+apt update && \
+    apt -y install libgtkextra-dev libgconf2-dev \
+                   libnss3 libasound2 libxtst-dev libxss1
+apt install -y wget curl
+wget https://github.com/manga-download/hakuneko/releases/download/v6.1.7/hakuneko-desktop_6.1.7_linux_amd64.deb
+dpkg -i hakuneko-desktop_6.1.7_linux_amd64.deb 
+export QT_X11_NO_MITSHM=1 && /usr/lib/hakuneko-desktop/hakuneko --no-sandbox --disable-gpu --enable-logging --disable-software-rasterizer --no-xshm --in-process-gpu --disable-dev-shm-usage
+
+
+
+==============================
+
+
+
+--ulimit memlock=-1
+
+
+winetricks corefonts
+     mscorefonts, unifonts (MS Arial Unicode), tahoma font package
+     OR installing allfonts font package.
+
+docker run --rm --ipc=host --ulimit memlock=-1 -it -p "3391:3389" --env="RDP_SERVER=yes" -v "/root/wine-wpf/vmount:/vmount" t1
+
+
+export QT_X11_NO_MITSHM=1 && /usr/lib/hakuneko-desktop/hakuneko --no-sandbox --disable-gpu --enable-logging --disable-software-rasterizer --no-xshm --in-process-gpu --disable-dev-shm-usage 
+
+verify ulimited (open files > 1024)
+    ulimit -aH
+
+docker run --rm  -it -p "3391:3389" --env="RDP_SERVER=yes" -v "/root/wine-wpf/vmount:/vmount" scottyhardy/docker-wine:stable
+
+
+===================================
+
+FROM scottyhardy/docker-wine:stable
+
+# Install dotnet 4.8 + d3d
+RUN winetricks -q dotnet48 && winetricks -q d3dcompiler_47
+
+# Disable HW (no gpu)
+RUN \
+    wine reg ADD 'HKCU\Software\Wine\DllOverrides' '/f' '/v' 'd3d9' '/t' 'REG_SZ' '/d' 'native' \
+    && \
+    wine reg add "HKCU\\SOFTWARE\\Microsoft\\Avalon.Graphics" /v DisableHWAcceleration /t REG_DWORD /d 1 /f
+
+# Install chrome/electron dependencies
+RUN apt update && apt -y install libgtkextra-dev libgconf2-dev libnss3 libasound2 libxtst-dev libxss1
+
+# Keep docker-wine entrypoint
+ENTRYPOINT ["/usr/bin/entrypoint"]
+
+
+===================================
+
+scottyhardy/docker-wine
+
+ docker run -it --rm --hostname="$(hostname)" \
+    -v "/x:/y" \
+    --env="RDP_SERVER=yes"   --publish="3389:3389/tcp"   scottyhardy/docker-wine /bin/bash
+ 
+winetricks -q dotnet48
+wine reg ADD 'HKCU\Software\Wine\DllOverrides' '/f' '/v' 'd3d9' '/t' 'REG_SZ' '/d' 'native'
+winetricks -q d3dcompiler_47
+wine reg add "HKCU\\SOFTWARE\\Microsoft\\Avalon.Graphics" /v DisableHWAcceleration /t REG_DWORD /d 1 /f
+
+wget https://github.com/yonixw/MangaPrinter/releases/download/v1.6/MangaPrinter_v1.6_AnyCPU.zip
+unzip
+
+sudo apt update
+sudo apt-get -y install libgtkextra-dev libgconf2-dev libnss3 libasound2 libxtst-dev libxss1
+
+wget https://github.com/manga-download/hakuneko/releases/download/v6.1.7/hakuneko-desktop_6.1.7_linux_amd64.deb
+sudo dpkg -i hakuneko-desktop_6.1.7_linux_amd64.deb
+
+/usr/lib/hakuneko-desktop/hakuneko --no-sandbox --disable-gpu
+sudo XAUTHORITY='/home/wineuser/.Xauthority' DISPLAY=':10.0' /usr/lib/hakuneko-desktop/hakuneko --no-sandbox --disable-gpu
+sudo XAUTHORITY="/home/wineuser/.Xauthority" DISPLAY="$DISPLAY" /usr/lib/hakuneko-desktop/hakuneko --no-sandbox --disable-gpu
+
+
+[X] Hakuneko works on 2nd time after deleting local folders
+
+No wierd chars in path for Manga printer
+Cutoff change only happen from dialog... not from txtbox
+
+Double clicking export chapter list:
+    Unhandled Exception: System.InvalidCastException: Unable to cast object of type 'System.ComponentModel.BindingList`1[MangaPrinter.WpfGUI.Exten
+    dedClasses.SelectableMangaChapter]' to type 'System.Collections.Generic.List`1[MangaPrinter.WpfGUI.ExtendedClasses.SelectableMangaChapter]'.  
+       at MangaPrinter.WpfGUI.MainWindow.mnuExportTOC_Click(Object sender, RoutedEventArgs e) in C:\Users\Yoni\Desktop\2020\MangaPrinter\MangaPrin
+    ter.WpfGUI\MainWindow.xaml.cs:line 764
+
+
+sudo apt-get install msttcorefonts
+
+rm -rf /home/wineuser/.config/hakuneko-desktop/* && rm -rf /home/wineuser/.cache/hakuneko-desktop/*
+
+[X] use copy pase to search in hakuneko
+
+bitmap.clone not implemented ( in MakeBW1() )... work for some images though?
+    last 3 one piece chapter from mangahere
+    https://github.com/wine-mirror/wine/blob/master/dlls/gdiplus/image.c
+
+emoji font? both for me
+    even after unifont.. some are missings...
+    some emojies work other not... can we include our own font
+    haku - missing from built in font
+    Emoji:
+        Arial Helvetica Sans sans-serif
+    
+    https://webcache.googleusercontent.com/search?q=cache:tBgJ6feg8gwJ:https://www.reddit.com/r/leagueoflinux/comments/wqbciq/how_to_install_emoji_fonts_inside_leagues/&cd=11&hl=iw&ct=clnk&gl=il
+
+[V] try hakuneko in other desktops? like with vnc? 
+
+history | sudo bash -c 'cat > /v/h1'
+
+6.6gbs
+    wine not working on gitpod (Bad operation...)
