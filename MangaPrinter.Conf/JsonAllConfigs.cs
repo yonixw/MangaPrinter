@@ -20,6 +20,8 @@ namespace MangaPrinter.Conf
             { "window.font_size", new JMeta(15.5f, "Start font size for GUI window. must be >0, can be fraction",
                 (O)=> CH.L<float>(O,(F)=>F>0.0f )
             )},
+
+
         };
     }
 }

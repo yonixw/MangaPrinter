@@ -32,6 +32,13 @@ namespace MangaPrinter.Conf.Tests
 
             Assert.AreNotEqual(before, after);
 
+            conf = new JsonConfig();
+            conf.UpdateJson("JsonTest",json2);
+            after = conf.Get<float>(test_fullname);
+
+            Assert.AreNotEqual(json, "");
+            Assert.AreNotEqual(before, after);
+
             conf.ResetToDefault(test_fullname);
             Assert.AreNotEqual(conf.Get<float>(test_fullname), after);
         }

@@ -159,10 +159,20 @@ namespace MangaPrinter.Conf
 
         public string toJSON()
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings
+            return Newtonsoft.Json.JsonConvert.SerializeObject(config_values, Formatting.Indented, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto // Auto is minimal added data
             });
+        }
+
+        public void UpdateJson(string sourceName, string json)
+        {
+            Update(sourceName,
+                Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(json, new JsonSerializerSettings
+            {
+                Converters = new List<JsonConverter>() { new PreferInt32Converter()},
+                TypeNameHandling = TypeNameHandling.Auto // Auto is minimal added data
+            }));
         }
 
 
