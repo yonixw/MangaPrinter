@@ -14,11 +14,26 @@ namespace MangaPrinter.Conf.Tests
         [TestMethod()]
         public void NoSubObjects()
         {
+            const string test_fullname = "window.font_size";
+
             JsonConfig conf = new JsonConfig();
-            conf.a();
             string json = conf.toJSON();
-            string jsonSchema = conf.toJSONSchema();
-            Assert.AreEqual(json.Split('{').Length,2);
+            float before = conf.Get<float>(test_fullname);
+
+            Assert.AreNotEqual(json,"");
+
+            conf.Update("Test1", new Dictionary<string, object>()
+            {
+                { "Update",1 },
+                {test_fullname, 12 }
+            });
+            string json2 = conf.toJSON();
+            float after = conf.Get<float>(test_fullname);
+
+            Assert.AreNotEqual(before, after);
+
+            conf.ResetToDefault(test_fullname);
+            Assert.AreNotEqual(conf.Get<float>(test_fullname), after);
         }
 
        

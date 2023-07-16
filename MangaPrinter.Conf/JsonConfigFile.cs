@@ -56,38 +56,35 @@ namespace MangaPrinter.Conf
 
         public T Get<T>(object value = null)
         {
-            if (EntryType.Equals(typeof(T)))
+            if (value != null)
             {
-                if (value != null && value.GetType().Equals(EntryType))
-                {
+                Tuple<Type, Type> myTypes = new Tuple<Type, Type>(value.GetType(), EntryType);
+
+                if (value.GetType().Equals(EntryType))
                     return (T)value;
-                }
-                else
-                {
-                    return (T)JSONDefault;
-                }
+               else if (CastHelpers.Casters.ContainsKey(myTypes))
+                    return (T)CastHelpers.Casters[myTypes](value);
             }
-            return default(T);
+            return (T)JSONDefault;
+
         }
 
-        public bool Valid<T>(object value = null)
+        public bool Valid(object value = null)
         {
             if (Verifier == null)
                 return true;
 
-            if (EntryType.Equals(typeof(T)))
+            if (value != null)
             {
-                if (value != null && value.GetType().Equals(EntryType))
-                {
-                    return Verifier((T)value);
-                }
-                else
-                {
-                    return Verifier((T)JSONDefault);
-                }
+                Tuple<Type, Type> myTypes = new Tuple<Type, Type>(value.GetType(), EntryType);
+
+                if (EntryType.Equals(value.GetType()))
+                    return Verifier(value);
+                else if (CastHelpers.Casters.ContainsKey(myTypes))
+                    return Verifier(CastHelpers.Casters[myTypes](value));
             }
             
-            return false;
+            return Verifier(JSONDefault);
         }
     }
 
@@ -95,12 +92,70 @@ namespace MangaPrinter.Conf
     public class JsonConfig
     {
         [JsonIgnore]
-        public Dictionary<string, JMeta> configs_meta = new Dictionary<string, JMeta>()
-        {
-            { "propa.prob.x.z", new JMeta(123, "Lonnnngg descriptions!") }
-        };
+        public Dictionary<string, JMeta> configs_meta = null;
 
-        
+        [JsonIgnore]
+        public Dictionary<string, List<string>> config_source = new Dictionary<string, List<string>>();
+
+        public Dictionary<string, object> config_values = new Dictionary<string, object>();
+
+
+        public JsonConfig()
+        {
+            configs_meta = new JsonAllConfigs().configs_meta;
+            Init();
+        }
+
+        void Init()
+        {
+            List<string> _keys = configs_meta.Keys.ToList();
+            for (int i = 0; i < _keys.Count; i++)
+            {
+                string fullname = _keys[i];
+                JMeta _meta = configs_meta[fullname];
+                config_values.Add(fullname, _meta.JSONDefault);
+                config_source.Add(fullname, new List<string>() { "(Default Value)" });
+            }
+        }
+
+        public void Update(string sourceName, Dictionary<string, object> data)
+        {
+            List<string> _keys = data.Keys.ToList();
+            for (int i = 0; i < _keys.Count; i++)
+            {
+                string fullname = _keys[i];
+                if (configs_meta.ContainsKey(fullname))
+                {
+                    JMeta _meta = configs_meta[fullname];
+                    bool isValid = _meta.Valid(data[fullname]);
+                    if (isValid)
+                    {
+                        config_values[fullname] = data[fullname];
+                    }
+                    config_source[fullname].Add(String.Format("Source={0}, Valid={1}", sourceName, isValid));
+                }
+            }
+        }
+
+        public T Get<T>(string fullname)
+        {
+            if (configs_meta.ContainsKey(fullname))
+            {
+                return configs_meta[fullname].Get<T>(config_values[fullname]);
+            }
+            else 
+                throw new Exception("Cannot find config named: " + fullname);
+        }
+
+        public void ResetToDefault(string fullname)
+        {
+            if (configs_meta.ContainsKey(fullname))
+            {
+                config_values[fullname] = configs_meta[fullname].JSONDefault;
+            }
+            else
+                throw new Exception("Cannot find config named: " + fullname);
+        }
 
         public string toJSON()
         {
