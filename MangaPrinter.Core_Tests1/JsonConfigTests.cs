@@ -15,7 +15,9 @@ namespace MangaPrinter.Conf.Tests
         public void NoSubObjects()
         {
             JsonConfig conf = new JsonConfig();
+            conf.a();
             string json = conf.toJSON();
+            string jsonSchema = conf.toJSONSchema();
             Assert.AreEqual(json.Split('{').Length,2);
         }
 
