@@ -34,6 +34,7 @@ namespace MangaPrinter.Conf.Tests
 
             conf = new JsonConfig();
             conf.UpdateJson("JsonTest",json2);
+            json = conf.toJSON();
             after = conf.Get<float>(test_fullname);
 
             Assert.AreNotEqual(json, "");
