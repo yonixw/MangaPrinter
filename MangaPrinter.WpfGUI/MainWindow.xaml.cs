@@ -50,8 +50,6 @@ namespace MangaPrinter.WpfGUI
             mangaChapters.ListChanged += MangaChapters_ListChanged;
             rtbInfo.AppendText(" " + Properties.Resources.GitInfo.Replace("\"", "").Split(';')[0]);
 
-            //todo CoreSettings.Instance.setProgramVersion(Properties.Resources.GitInfo.Replace("\"", "").Split(' ')[0]);
-
             // Load Settings:
             var Config = MangaPrinter.WpfGUI.Properties.Settings.Default;
             txtPageMaxWidth.Text = Config.doublePageWidth.ToString();

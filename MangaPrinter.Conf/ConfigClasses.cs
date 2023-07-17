@@ -10,14 +10,14 @@ namespace MangaPrinter.Conf
     {
     }
 
-    class JPoint
+    public class JPoint
     {
         public int X { get; set;  } = 0;
 
         public int Y { get; set; } = 0;
     }
 
-    class JSize
+    public class JSize
     {
         public int X { get; set; } = 0;
 
@@ -25,4 +25,6 @@ namespace MangaPrinter.Conf
         public int Width { get; set; } = 0;
         public int Height { get; set; } = 0;
     }
+
+    
 }

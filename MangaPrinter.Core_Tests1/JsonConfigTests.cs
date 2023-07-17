@@ -14,7 +14,7 @@ namespace MangaPrinter.Conf.Tests
         [TestMethod()]
         public void NoSubObjects()
         {
-            const string test_fullname = "window.font_size";
+            string test_fullname = JsonConfig.NameToJsonName(nameof(CoreConf.I.Window_StartFontSize));
 
             JsonConfig conf = new JsonConfig();
             string json = conf.toJSON();

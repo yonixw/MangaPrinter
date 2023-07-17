@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="ConfigClasses.cs" />
     <Compile Include="CH.cs" />
-    <Compile Include="JsonAllConfigs.cs" />
+    <Compile Include="CoreConf.cs" />
     <Compile Include="JsonConfigFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

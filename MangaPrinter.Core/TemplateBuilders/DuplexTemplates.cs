@@ -139,7 +139,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                 switch (face.Left.SideType)
                 {
                     case SingleSideType.ANTI_SPOILER:
-                        page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts((int)SingleSideType.ANTI_SPOILER),
+                        page = GraphicsUtils.createImageWithText(CoreConf.I.Templates_Duplex_AntiSpoiler.Get(),
                             contentH, contentW);
                         break;
                     case SingleSideType.MANGA:
@@ -230,21 +230,21 @@ namespace MangaPrinter.Core.TemplateBuilders
             switch (side.SideType)
             {
                 case SingleSideType.INTRO:
-                    page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts((int)SingleSideType.INTRO)
+                    page = GraphicsUtils.createImageWithText(CoreConf.I.Templates_Duplex_Intro.Get()
                         .Replace("{0}", chapterName),
                       pageH, pageW);
                     break;
                 case SingleSideType.OUTRO:
-                    page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts((int)SingleSideType.OUTRO)
+                    page = GraphicsUtils.createImageWithText(CoreConf.I.Templates_Duplex_Outro.Get()
                         .Replace("{0}", chapterName),
                       pageH, pageW);
                     break;
                 case SingleSideType.BEFORE_DOUBLE:
-                    page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts((int)SingleSideType.BEFORE_DOUBLE),
+                    page = GraphicsUtils.createImageWithText(CoreConf.I.Templates_Duplex_BeforeDouble.Get(),
                       pageH, pageW);
                     break;
                 case SingleSideType.MAKE_EVEN:
-                    page = GraphicsUtils.createImageWithText(CoreSettings.Instance.getSideTextConsts((int)SingleSideType.MAKE_EVEN),
+                    page = GraphicsUtils.createImageWithText(CoreConf.I.Templates_Duplex_MakeEven.Get(),
                        pageH, pageW);
                     break;
                 case SingleSideType.MANGA:
