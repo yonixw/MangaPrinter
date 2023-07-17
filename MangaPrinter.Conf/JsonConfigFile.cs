@@ -224,8 +224,6 @@ namespace MangaPrinter.Conf
             });
         }
 
-        // Todo, quick access after Instance, so: Func<type> CONF_XYZ = Manager.Pointer<Type>(fullname)
-
         public void UpdateJson(string sourceName, string json)
         {
             Update(sourceName,

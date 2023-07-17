@@ -26,7 +26,7 @@ namespace MangaPrinter.Conf
             return Array.IndexOf(arr, item) > -1;
         }
 
-        public static Func<string, bool> stringy = (string s) => s != null && s.Length > 0;
+        public static Func<string, bool> stringy = (string s) => !String.IsNullOrEmpty(s);
     }
 
     public class CastHelpers
