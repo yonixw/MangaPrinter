@@ -191,7 +191,7 @@ namespace MangaPrinter.Core
 
     public class PrintPage : ModelBaseWpf
     {
-        public static string lastFullExportMetadata = "";
+        public static string lastFullExportMetadata = "(Filename)";
 
         public int PageNumber { get { return _baseGet(); } set { _baseSet(value); } }
         public PrintFace Front { get { return _baseGet(); } set { _baseSet(value); } }

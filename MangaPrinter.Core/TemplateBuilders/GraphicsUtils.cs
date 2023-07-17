@@ -29,6 +29,8 @@ namespace MangaPrinter.Core.TemplateBuilders
         //LongString is the string which it's bounds is more than room bounds.
         public static FontScaled FindFontSizeByContent(System.Drawing.Graphics g, string longString, Size Room, Font PreferedFont)
         {
+            if (String.IsNullOrEmpty(longString)) longString = "(missing)";
+
             //you should perform some scale functions!!!
             SizeF RealSize = g.MeasureString(longString, PreferedFont);
             float HeightScaleRatio = Room.Height / RealSize.Height;
@@ -202,6 +204,7 @@ namespace MangaPrinter.Core.TemplateBuilders
 
         public static Bitmap MakeBW1(Bitmap Original)
         {
+            // Todo, on linux, use MakeGrayscale3?
             return Original.Clone(
                 new Rectangle(0, 0, Original.Width, Original.Height),
                 System.Drawing.Imaging.PixelFormat.Format1bppIndexed
