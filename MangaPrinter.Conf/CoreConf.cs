@@ -16,6 +16,11 @@ namespace MangaPrinter.Conf
             "Version of the software on build time", _readonly: true
         );
 
+        public const int CURR_CONFIG_MAJOR_VERSION = 1; // Breaking!    (change, delete)
+        public const int CURR_CONFIG_MINOR_VERSION = 1; // Not breaking (add only)
+
+        // TODO config version, "1"..."100" to show warnings if not expected
+
         /* ===============  Common                 =============== */
 
         public JMetaT<float> Common_PreviewBlurPrcnt = new JMetaT<float>(100,
