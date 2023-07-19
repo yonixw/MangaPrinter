@@ -26,5 +26,21 @@ namespace MangaPrinter.Conf
         public int Height { get; set; } = 0;
     }
 
-    
+    public class JPage
+    {
+        public string name { get; set; } = "";
+        public int WidthPixels { get; set; } = 1;
+        public int HeightPixels { get; set; } = 1;
+    }
+
+    public class JPadding
+    {
+        public int Top { get; set; } = 0;
+        public int Bottom { get; set; } = 0;
+        public int Left { get; set; } = 0;
+        public int Right { get; set; } = 0;
+
+
+    }
+
 }
