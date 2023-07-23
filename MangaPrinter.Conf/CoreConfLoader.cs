@@ -12,7 +12,8 @@ namespace MangaPrinter.Conf
         public static JsonConfig JsonConfigInstance = new JsonConfig();
 
         // To allow loading custom files
-        public static CoreConfLoader JsonConfigLoader = new CoreConfLoader();
+        public static CoreConfLoader I = new CoreConfLoader();
+
 
         private CoreConfLoader()
         {
@@ -21,6 +22,14 @@ namespace MangaPrinter.Conf
             LoadDefaultPlaces(_config, raiseEvent: true);
 
             JsonConfigInstance = _config;
+        }
+
+        public delegate void NotifyConf(JsonConfig newConfig);
+        public event NotifyConf onConfigFinishUpdate;
+
+        public void raiseChange(JsonConfig newConfig)
+        {
+            onConfigFinishUpdate?.Invoke(newConfig);
         }
 
         public void loadFromPath(string path, bool loadDefaults)
@@ -35,7 +44,7 @@ namespace MangaPrinter.Conf
             if (_f.Exists)
             {
                 string _txt = File.ReadAllText(_f.FullName);
-                _config.UpdateJson(_f.FullName, _txt);
+                _config.UpdateJson(_f.FullName, _txt, raiseEvent: true);
 
                 JsonConfigInstance = _config;
             }
@@ -77,7 +86,7 @@ namespace MangaPrinter.Conf
 
             if (raiseEvent)
             {
-                _config.raiseEvent();
+                JsonConfig.raiseConfigEvent(_config);
             }
         }
     }

@@ -167,8 +167,6 @@ namespace MangaPrinter.Conf
             }
         }
 
-        public delegate void NotifyConf(JsonConfig newConfig);
-        public event NotifyConf onConfigFinishUpdate;
 
         public void Update(string sourceName, Dictionary<string, object> data, bool raiseEvent = true)
         {
@@ -189,12 +187,12 @@ namespace MangaPrinter.Conf
             }
 
             if (raiseEvent)
-                onConfigFinishUpdate?.Invoke(this);
+                raiseConfigEvent(this);
         }
 
-        public void raiseEvent()
+        public static void raiseConfigEvent(JsonConfig newConfig)
         {
-            onConfigFinishUpdate?.Invoke(this);
+            CoreConfLoader.I.raiseChange(newConfig);
         }
 
         public T Get<T>(string fullname)
@@ -207,14 +205,14 @@ namespace MangaPrinter.Conf
                 throw new Exception("Cannot find config named: " + fullname);
         }
 
-        public void ResetToDefault(string fullname)
+        public void ResetToDefault(string fullname, bool raiseEvent)
         {
             if (configs_meta.ContainsKey(fullname))
             {
                 config_values[fullname] = configs_meta[fullname].JSONDefault;
+
+                if (raiseEvent) raiseConfigEvent(this);
             }
-            else
-                throw new Exception("Cannot find config named: " + fullname);
         }
 
         public string toJSON()
