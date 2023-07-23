@@ -38,9 +38,6 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NJsonSchema, Version=10.9.0.0, Culture=neutral, PublicKeyToken=c2f9c3bdfae56102, processorArchitecture=MSIL">
-      <HintPath>..\packages\NJsonSchema.10.9.0\lib\net45\NJsonSchema.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -57,6 +54,7 @@
     <Compile Include="ConfigClasses.cs" />
     <Compile Include="CH.cs" />
     <Compile Include="CoreConf.cs" />
+    <Compile Include="CoreConfLoader.cs" />
     <Compile Include="JsonConfigFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NJsonSchema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.Reflection;
@@ -12,16 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace MangaPrinter.Conf
 {
-    public class CoreSettingsLoader
-    {
-        public static JsonConfig JsonConfigInstance = new JsonConfig();
-
-        private CoreSettingsLoader()
-        {
-            // todo: load file, env or default
-            JsonConfigInstance = new JsonConfig();
-        }
-    }
+   
 
     public class JMeta
     {
@@ -140,7 +130,7 @@ namespace MangaPrinter.Conf
             }
             else
             {
-                return CoreSettingsLoader.JsonConfigInstance.Get<T>(_my_fullname);
+                return CoreConfLoader.JsonConfigInstance.Get<T>(_my_fullname);
             }
         }
 
@@ -177,7 +167,10 @@ namespace MangaPrinter.Conf
             }
         }
 
-        public void Update(string sourceName, Dictionary<string, object> data)
+        public delegate void NotifyConf(JsonConfig newConfig);
+        public event NotifyConf onConfigFinishUpdate;
+
+        public void Update(string sourceName, Dictionary<string, object> data, bool raiseEvent = true)
         {
             List<string> _keys = data.Keys.ToList();
             for (int i = 0; i < _keys.Count; i++)
@@ -194,6 +187,14 @@ namespace MangaPrinter.Conf
                     config_source[fullname].Add(String.Format("Source={0}, Valid={1}", sourceName, isValid));
                 }
             }
+
+            if (raiseEvent)
+                onConfigFinishUpdate?.Invoke(this);
+        }
+
+        public void raiseEvent()
+        {
+            onConfigFinishUpdate?.Invoke(this);
         }
 
         public T Get<T>(string fullname)
@@ -224,14 +225,18 @@ namespace MangaPrinter.Conf
             });
         }
 
-        public void UpdateJson(string sourceName, string json)
+        public void UpdateJson(string sourceName, string json, bool raiseEvent = true)
         {
+            // todo: enforce in each type that MangaPrinter.Conf exists.. to avoid type injections
+
             Update(sourceName,
                 Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(json, new JsonSerializerSettings
             {
                 Converters = new List<JsonConverter>() { new PreferInt32Converter()},
                 TypeNameHandling = TypeNameHandling.Auto // Auto is minimal added data
-            }));
+            }),
+                raiseEvent
+                );
         }
 
         public static string NameToJsonName(string name)

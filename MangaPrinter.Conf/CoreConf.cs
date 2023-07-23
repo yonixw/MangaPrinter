@@ -19,7 +19,13 @@ namespace MangaPrinter.Conf
         public const int CURR_CONFIG_MAJOR_VERSION = 1; // Breaking!    (change, delete)
         public const int CURR_CONFIG_MINOR_VERSION = 1; // Not breaking (add only)
 
-        // TODO config version, "1"..."100" to show warnings if not expected
+        public JMetaT<int> Info_ConfigVersionMajor = new JMetaT<int>(CURR_CONFIG_MAJOR_VERSION,
+           "Major Version of the config, which changes on breaking changes", _readonly: true
+        );
+
+        public JMetaT<int> Info_ConfigVersionMinor = new JMetaT<int>(CURR_CONFIG_MINOR_VERSION,
+           "Minor Version of the config, which changes when new config options are added", _readonly: true
+        );
 
         /* ===============  Common                 =============== */
 
@@ -108,7 +114,7 @@ namespace MangaPrinter.Conf
         );
 
         public JMetaT<int> Binding_AniSpoilerBatch = new JMetaT<int>(25,
-           "How many pages to print between Anti-spoiler pages. 0=Dont add",
+           "How many pages to print between Anti-spoiler pages. 0=No anti spoiler at all",
            (N) => N >= 0
          );
 
@@ -164,12 +170,23 @@ namespace MangaPrinter.Conf
            (N) => N >= 0
          );
 
+        public JMetaT<string> Templates_TextFont = new JMetaT<string>("Arial",
+           "Font to use on templates, might crash if not installed on OS", CH.stringy
+        );
+
         // TODO: list of all available meta replace !PNAME! (chapter, parent, page number?, batch number A-S?)
 
-        // TODO Bottom Meta ( 1>2>3,  Page X/Y,  Anti Spoiler (ZX/ZY) )
-        //      same as meta of all stuff?
+        public JMetaT<string> Templates_MetaText_Structure = new JMetaT<string>("{0} > {1} > {2}",
+          "How to write the structure of the folders/chapters", CH.stringy
+        );
 
-        // TODO Text font family = Arial
+        public JMetaT<string> Templates_MetaText_PageNum = new JMetaT<string>("Page {0}",
+          "How to write the page number", CH.stringy
+        );
+
+        public JMetaT<string> Templates_MetaText_AntiSpoilerNum = new JMetaT<string>("(Anti Spoiler {0})",
+          "Number of pages relative to its anti spoiler batch", CH.stringy
+        );
 
 
         /* ===============  Templates -> Duplex   =============== */
