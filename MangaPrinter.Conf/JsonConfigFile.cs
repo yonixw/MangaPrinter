@@ -192,7 +192,7 @@ namespace MangaPrinter.Conf
 
         public static void raiseConfigEvent(JsonConfig newConfig)
         {
-            CoreConfLoader.I.raiseChange(newConfig);
+            CoreConfLoader.raiseChange(newConfig);
         }
 
         public T Get<T>(string fullname)
@@ -250,10 +250,10 @@ namespace MangaPrinter.Conf
         {
             Dictionary<string, JMeta> _config_metas = new Dictionary<string, JMeta>();
 
-            FieldInfo[] fields = CoreConf.I.GetType().GetFields();
+            PropertyInfo[] fields = CoreConf.I.GetType().GetProperties();
             for (int i = 0; i < fields.Length; i++)
             {
-                if (fields[i].FieldType.BaseType.Equals(typeof(JMeta)))
+                if (fields[i].PropertyType.BaseType.Equals(typeof(JMeta)))
                 {
                     string fullname = NameToJsonName(fields[i].Name);
                     object value = fields[i].GetValue(CoreConf.I);

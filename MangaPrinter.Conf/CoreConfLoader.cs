@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,9 +26,9 @@ namespace MangaPrinter.Conf
         }
 
         public delegate void NotifyConf(JsonConfig newConfig);
-        public event NotifyConf onConfigFinishUpdate;
+        public static event NotifyConf onConfigFinishUpdate;
 
-        public void raiseChange(JsonConfig newConfig)
+        public static void raiseChange(JsonConfig newConfig)
         {
             onConfigFinishUpdate?.Invoke(newConfig);
         }
@@ -71,11 +72,11 @@ namespace MangaPrinter.Conf
             }
 
             // Environment can point us to other locations...
-            foreach (KeyValuePair<string, string> env in Environment.GetEnvironmentVariables())
+            foreach (DictionaryEntry env in Environment.GetEnvironmentVariables())
             {
-                if (env.Key.StartsWith("MANGAP_"))
+                if (env.Key.ToString().StartsWith("MANGAP_"))
                 {
-                    FileInfo _f = new FileInfo(Environment.ExpandEnvironmentVariables(env.Value));
+                    FileInfo _f = new FileInfo(Environment.ExpandEnvironmentVariables(env.Value.ToString()));
                     if (_f.Exists)
                     {
                         string _txt = File.ReadAllText(_f.FullName);

@@ -8,7 +8,8 @@
         xmlns:mangaobj="clr-namespace:MangaPrinter.Core;assembly=MangaPrinter.Core"
         mc:Ignorable="d"
         Title="Manga printer and binder manager" Height="900" Width="1000"
-        FontSize="9.75pt" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+        FontSize="9.75pt" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded"
+        >
     <Window.Resources>
         <converts:PrintSideLabelConvert x:Key="sideConvert"/>
         <converts:GreaterConvert x:Key="greaterConvert"/>

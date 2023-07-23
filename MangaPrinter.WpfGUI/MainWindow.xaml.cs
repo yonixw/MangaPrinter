@@ -61,6 +61,31 @@ namespace MangaPrinter.WpfGUI
             cbUseAntiSpoiler.IsChecked = Config.addAntiSpoiler;
             txtSpoilerPgNm.Text = Config.antiSpoilerStep.ToString();
             txtPrintPadding.Text = Config.exportPagePadding.ToString();
+
+            if (CoreConfLoader.JsonConfigInstance != null)
+            {
+                ConfigChanged(CoreConfLoader.JsonConfigInstance);
+            }
+            CoreConfLoader.onConfigFinishUpdate += ConfigChanged;
+
+        }
+
+        void ConfigChanged(JsonConfig config)
+        {
+            if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
+            {
+                Dispatcher.Invoke(()=>ConfigChanged(config));
+                return;
+            }
+
+            var locationSize = CoreConf.I.Window_LocationSize.Get();
+            Height = locationSize.Height;
+            Width = locationSize.Width;
+            if (CoreConf.I.Window_StartMode == "fixed")
+            {
+                Left = locationSize.X;
+                Left = locationSize.Y;
+            }
         }
 
         bool shouldUpdateStats = true;
