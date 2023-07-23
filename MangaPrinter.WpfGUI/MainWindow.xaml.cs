@@ -52,9 +52,7 @@ namespace MangaPrinter.WpfGUI
 
             // Load Settings:
             var Config = MangaPrinter.WpfGUI.Properties.Settings.Default;
-            txtPageMaxWidth.Text = Config.doublePageWidth.ToString();
-            rbByName.IsChecked = Config.orderImportByName;
-            cbSubfolders.IsChecked = Config.importSubfolders;
+
             rbLTR.IsChecked = !Config.RTL;
             cbAddStart.IsChecked = Config.addStartPage;
             cbAddEnd.IsChecked = Config.addEndPage;
@@ -81,11 +79,19 @@ namespace MangaPrinter.WpfGUI
             var locationSize = CoreConf.I.Window_LocationSize.Get();
             Height = locationSize.Height;
             Width = locationSize.Width;
+
             if (CoreConf.I.Window_StartMode == "fixed")
             {
                 Left = locationSize.X;
                 Left = locationSize.Y;
             }
+
+            txtPageMaxWidth.Text = CoreConf.I.Chapters_DblPgRatioCuttof.Get().ToString();
+
+            rbByName.IsChecked = CoreConf.I.Chapters_SortImportBy == "by_name";
+            rbByDate.IsChecked = CoreConf.I.Chapters_SortImportBy == "by_create_date";
+
+            cbSubfolders.IsChecked = CoreConf.I.Chapters_ImportSubfolders;
         }
 
         bool shouldUpdateStats = true;
@@ -108,22 +114,31 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
-        void verifyFloat(TextBox textBox, string fallbackValue)
+        float? verifyFloat(TextBox textBox, string fallbackValue)
         {
             float value = 0;
             if (!float.TryParse(textBox.Text, out value))
             {
                 MessageBox.Show(this,"Can't convert \"" + textBox.Text + "\" to float, try again.");
                 textBox.Text = fallbackValue;
+
+                return null;
             }
+
+            return float.Parse(textBox.Text);
+
         }
 
         #region FilesTab
 
         private void txtPageMaxWidth_TextChanged(object sender, TextChangedEventArgs e)
         {
-            verifyFloat(txtPageMaxWidth,
-                MangaPrinter.WpfGUI.Properties.Settings.Default.doublePageWidth.ToString());
+            float? doubleAspect = verifyFloat(txtPageMaxWidth,
+                CoreConf.I.Chapters_DblPgRatioCuttof.Get().ToString());
+            if (doubleAspect != null)
+            {
+                UpdateApectCutoff((float)doubleAspect);
+            }
         }
 
         
@@ -363,26 +378,31 @@ namespace MangaPrinter.WpfGUI
             {
                 double newAspectCutoff = Math.Round(dlg.InputBuckets[dlg.BucketIndex].value, 2);
                 txtPageMaxWidth.Text = newAspectCutoff.ToString();
-                // Update all pages:
-                winWorking.waitForTask(this, (updateFunc) =>
-                {
-                    if (mangaChapters.Count < 1)
-                        return 0;
-
-                    List<MangaPage> allPages = mangaChapters.SelectMany((ch) => ch.Pages).ToList();
-                    if (allPages.Count < 1)
-                        return 0;
-
-                    int counter = 0;
-                    foreach (MangaPage page in allPages)
-                    {
-                        updateFunc(page.Name, (int)(counter * 100.0f / allPages.Count));
-                        page.IsDouble = page.AspectRatio >= newAspectCutoff;
-                    }
-                    return 1;
-                },
-                isProgressKnwon: false);
+                UpdateApectCutoff(newAspectCutoff);
             }
+        }
+
+        private void UpdateApectCutoff(double newAspectCutoff)
+        {
+            // Update all pages:
+            winWorking.waitForTask(this, (updateFunc) =>
+            {
+                if (mangaChapters.Count < 1)
+                    return 0;
+
+                List<MangaPage> allPages = mangaChapters.SelectMany((ch) => ch.Pages).ToList();
+                if (allPages.Count < 1)
+                    return 0;
+
+                int counter = 0;
+                foreach (MangaPage page in allPages)
+                {
+                    updateFunc(page.Name, (int)(counter * 100.0f / allPages.Count));
+                    page.IsDouble = page.AspectRatio >= newAspectCutoff;
+                }
+                return 1;
+            },
+            isProgressKnwon: false);
         }
 
         #endregion
