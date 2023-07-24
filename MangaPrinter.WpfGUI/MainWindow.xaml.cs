@@ -53,13 +53,7 @@ namespace MangaPrinter.WpfGUI
             // Load Settings:
             var Config = MangaPrinter.WpfGUI.Properties.Settings.Default;
 
-            rbLTR.IsChecked = !Config.RTL;
-            cbAddStart.IsChecked = Config.addStartPage;
-            cbAddEnd.IsChecked = Config.addEndPage;
-            cbUseAntiSpoiler.IsChecked = Config.addAntiSpoiler;
-            txtSpoilerPgNm.Text = Config.antiSpoilerStep.ToString();
-            txtPrintPadding.Text = Config.exportPagePadding.ToString();
-
+            
             if (CoreConfLoader.JsonConfigInstance != null)
             {
                 ConfigChanged(CoreConfLoader.JsonConfigInstance);
@@ -92,6 +86,25 @@ namespace MangaPrinter.WpfGUI
             rbByDate.IsChecked = CoreConf.I.Chapters_SortImportBy == "by_create_date";
 
             cbSubfolders.IsChecked = CoreConf.I.Chapters_ImportSubfolders;
+
+            cbNumberFix.IsChecked = CoreConf.I.Chapters_SmartNumberImport;
+
+            rbRTL.IsChecked = CoreConf.I.Chapters_ChapDir == "rtl";
+            rbLTR.IsChecked = CoreConf.I.Chapters_ChapDir != "rtl";
+
+            cbAddStart.IsChecked = CoreConf.I.Binding_AddStartPage;
+            cbAddEnd.IsChecked = CoreConf.I.Binding_AddEndPage;
+
+            cbUseAntiSpoiler.IsChecked = CoreConf.I.Binding_AniSpoilerBatch > 0;
+            txtSpoilerPgNm.Text = CoreConf.I.Binding_AniSpoilerBatch.Get().ToString();
+
+            //todo txtPrintPadding.Text = Config.exportPagePadding.ToString();
+
+            cbExportMinimal.IsChecked = CoreConf.I.Binding_ExportImages;
+
+            cbKeepColors.IsChecked = CoreConf.I.Binding_KeepColors;
+
+            cbIncludeParent.IsChecked = CoreConf.I.Binding_AddParentFolder;
         }
 
         bool shouldUpdateStats = true;
@@ -104,14 +117,17 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
-        void verifyInteger(TextBox textBox, string fallbackValue)
+        int? verifyInteger(TextBox textBox, string fallbackValue)
         {
             int value = 0;
             if (!int.TryParse(textBox.Text, out value))
             {
                 MessageBox.Show(this,"Can't convert \"" + textBox.Text + "\" to integer, try again.");
                 textBox.Text = fallbackValue;
+                return null;
             }
+
+            return value;
         }
 
         float? verifyFloat(TextBox textBox, string fallbackValue)
@@ -125,8 +141,7 @@ namespace MangaPrinter.WpfGUI
                 return null;
             }
 
-            return float.Parse(textBox.Text);
-
+            return value;
         }
 
         #region FilesTab
@@ -411,16 +426,19 @@ namespace MangaPrinter.WpfGUI
 
         private void txtSpoilerPgNm_TextChanged(object sender, TextChangedEventArgs e)
         {
-            verifyInteger(txtSpoilerPgNm,
-                MangaPrinter.WpfGUI.Properties.Settings.Default.antiSpoilerStep.ToString());
+            int? batch = verifyInteger(txtSpoilerPgNm,
+                CoreConf.I.Binding_AniSpoilerBatch.Get().ToString());
+
+            if (batch != null)
+            {
+                cbUseAntiSpoiler.IsChecked = batch > 0;
+            }
+            else
+            {
+                cbUseAntiSpoiler.IsChecked = CoreConf.I.Binding_AniSpoilerBatch > 0;
+            }
         }
 
-
-        private void TxtPrintPadding_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            verifyFloat(txtPrintPadding,
-                MangaPrinter.WpfGUI.Properties.Settings.Default.exportPagePadding.ToString());
-        }
 
         ObservableCollection<SelectablePrintPage> allPrintPages = new ObservableCollection<SelectablePrintPage>();
         private void MenuItem_Click(object sender, RoutedEventArgs e)

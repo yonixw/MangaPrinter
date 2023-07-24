@@ -82,9 +82,9 @@ namespace MangaPrinter.Conf
             (T) => CH.inListP(T, "rtl", "ltr")
         );
 
-        public JMetaT<string> Chapters_ImportDir { get; } = new JMetaT<string>("c:\\",
-           "Default location to point to when importing. Good if you want to point to HakuNeko folder",
-           (T) => CH.stringy(T)
+        public JMetaT<string> Chapters_ImportDir { get; } = new JMetaT<string>("",
+           "Default location to point to when importing. Good if you want to point to HakuNeko folder, Empty for OS default",
+           (T) => T != null
        );
 
         public JMetaT<string> Chapters_SmartScan { get; } = new JMetaT<string>("only3",

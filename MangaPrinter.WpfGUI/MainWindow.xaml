@@ -368,9 +368,6 @@
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Export:</Label>
-                        <Label Content="Padding (%):" IsEnabled="False" />
-                        <TextBox Width="100px" Name="txtPrintPadding" TextAlignment="Center" TextChanged="TxtPrintPadding_TextChanged">
-                            1.5</TextBox>
                         <Label Content="Page Size:" IsEnabled="False" />
                         <ComboBox Name="cbPageSize" Width="150px" SelectedIndex="0" IsEditable="False">
                             <ComboBoxItem>Simple A4 150DPI</ComboBoxItem>
