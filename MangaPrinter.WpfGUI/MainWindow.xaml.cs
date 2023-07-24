@@ -42,6 +42,7 @@ namespace MangaPrinter.WpfGUI
             InitializeComponent();
         }
 
+        bool winLoaded = false;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             lstFileChapters.ItemsSource = mangaChapters;
@@ -60,6 +61,7 @@ namespace MangaPrinter.WpfGUI
             }
             CoreConfLoader.onConfigFinishUpdate += ConfigChanged;
 
+            winLoaded = true;
         }
 
         void ConfigChanged(JsonConfig config)
@@ -105,6 +107,21 @@ namespace MangaPrinter.WpfGUI
             cbKeepColors.IsChecked = CoreConf.I.Binding_KeepColors;
 
             cbIncludeParent.IsChecked = CoreConf.I.Binding_AddParentFolder;
+
+            int lastcbPageSizeSelected = cbPageSize.SelectedIndex;
+            if (cbPageSize.ItemsSource == null)
+            {
+                cbPageSize.ItemsSource = new ObservableCollection<JPage>(CoreConf.I.Binding_PageSizeList);
+            }
+            else
+            {
+                ((ObservableCollection<JPage>)cbPageSize.ItemsSource).Clear();
+                CoreConf.I.Binding_PageSizeList.Get().ForEach(
+                    (p) => ((ObservableCollection<JPage>)cbPageSize.ItemsSource).Add(p)
+                );
+            }
+            cbPageSize.SelectedIndex = Math.Max(0, lastcbPageSizeSelected);
+            
         }
 
         bool shouldUpdateStats = true;
@@ -150,7 +167,7 @@ namespace MangaPrinter.WpfGUI
         {
             float? doubleAspect = verifyFloat(txtPageMaxWidth,
                 CoreConf.I.Chapters_DblPgRatioCuttof.Get().ToString());
-            if (doubleAspect != null)
+            if (doubleAspect != null && winLoaded)
             {
                 UpdateApectCutoff((float)doubleAspect);
             }
@@ -553,21 +570,14 @@ namespace MangaPrinter.WpfGUI
             public int paddingPx = 0;
             public int pageDepth = 0;
 
-
-            string[] dataPage = new[] { "Simple A4 150DPI", "A4 150DPI", "A4 300DPI" };
-            int[] pageHeight = new[] {1266,1240,2480 };
-            int[] pageWidth = new[] {1648,1754,3508 };
-            int[] pageDepths = new[] { 150, 150, 300 };
-
-            public PageInfo(string pageName, float paddingPercent)
+            public PageInfo(JPage page, float paddingPercent)
             {
-                int index =  Array.IndexOf(dataPage, pageName);
-                if (index < 0)
+                if (page == null)
                     throw new Exception("Can't find page!!!");
-                pageDepth = pageDepths[index];
-                paddingPx = Math.Max(0, (int)( pageHeight[index] * paddingPercent / 100.0f) -1);
-                singlePageHeight = pageHeight[index] - 2 * paddingPx;
-                singlePageWidth = (pageWidth[index] - 3 * paddingPx) / 2 ;
+                pageDepth = page.TargetDensity;
+                paddingPx = Math.Max(0, (int)( page.HeightPixels * paddingPercent / 100.0f) -1);
+                singlePageHeight = page.HeightPixels - 2 * paddingPx;
+                singlePageWidth = (page.WidthPixels - 3 * paddingPx) / 2 ;
             }
         }
 
@@ -577,7 +587,7 @@ namespace MangaPrinter.WpfGUI
         {
             SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
 
-            var page = new PageInfo((string)((ComboBoxItem)cbPageSize.SelectedItem).Content, float.Parse(txtPrintPadding.Text));
+            var page = new PageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
 
             var b = (new DuplexTemplates()).BuildFace(p.Front,
                     page.singlePageWidth,page.singlePageHeight,
@@ -597,7 +607,7 @@ namespace MangaPrinter.WpfGUI
         private void MnuPrvwBack_Click(object sender, RoutedEventArgs e)
         {
             SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
-            var page = new PageInfo((string)((ComboBoxItem)cbPageSize.SelectedItem).Content, float.Parse(txtPrintPadding.Text));
+            var page = new PageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
 
             var b = (new DuplexTemplates()).BuildFace(p.Back,
                     page.singlePageWidth, page.singlePageHeight,
@@ -970,7 +980,7 @@ namespace MangaPrinter.WpfGUI
                 PrintPage.lastFullExportMetadata = fi.Name.Replace(fi.Extension,"");
                 int saveCounter = 0;
 
-                var pageInfo = new PageInfo((string)((ComboBoxItem)cbPageSize.SelectedItem).Content, float.Parse(txtPrintPadding.Text));
+                var pageInfo = new PageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
 
                 int pW = pageInfo.singlePageWidth;
                 int pH = pageInfo.singlePageHeight;

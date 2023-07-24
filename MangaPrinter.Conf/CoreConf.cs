@@ -107,7 +107,7 @@ namespace MangaPrinter.Conf
           "Add page after every chapter with text"
         );
 
-        public JMetaT<int> Binding_AniSpoilerBatch { get; } = new JMetaT<int>(25,
+        public JMetaT<int> Binding_AniSpoilerBatch { get; } = new JMetaT<int>(26,
            "How many pages to print between Anti-spoiler pages. 0=No anti spoiler at all",
            (N) => N >= 0
          );
@@ -126,7 +126,9 @@ namespace MangaPrinter.Conf
 
         public JMetaT<List<JPage>> Binding_PageSizeList { get; } = new JMetaT<List<JPage>>(
             new List<JPage>() { 
-                new JPage() { name="REPLACE_ME", WidthPixels=1, HeightPixels=1 } 
+                new JPage() { Name="Tailored A4 150DPI", HeightPixels=1266, WidthPixels=1648, TargetDensity=150 },
+                new JPage() { Name="A4 150DPI", HeightPixels=1240, WidthPixels=1754, TargetDensity=150 },
+                new JPage() { Name="A4 300DPI", HeightPixels=2480, WidthPixels=3508, TargetDensity=300 }
             },
            "List of available pages size, first is default",
            (L) => L != null && L.Count > 0 && L.TrueForAll(P => P.HeightPixels > 0 && P.WidthPixels > 0)
@@ -147,11 +149,9 @@ namespace MangaPrinter.Conf
            "Add software name to text templates"
         );
 
-        public JMetaT<JPadding> Templates_PaddingPrcnt { get; } = new JMetaT<JPadding>(new JPadding(),
-          "Padding of the 4 outer direction, in precent, >= 0",
-          (P) => P != null && 
-                P.Bottom >= 0 && P.Top >= 0 && P.Left >= 0 && P.Right >= 0 &&
-                P.Bottom <= 100 && P.Top <= 100 && P.Left <= 100 && P.Right <= 100
+        public JMetaT<float> Templates_PaddingPrcnt { get; } = new JMetaT<float>(1.8f, //2.2?
+          "Padding of the 4 outer direction, in precent, >= 0, around the main content",
+          (F) => F > 0.0
         );
 
         public JMetaT<int> Templates_MaxCharPerLine { get; } = new JMetaT<int>(80,
@@ -185,10 +185,6 @@ namespace MangaPrinter.Conf
 
         /* ===============  Templates -> Duplex   =============== */
 
-        public JMetaT<int> Templates_Duplex_GutterPrcnt { get; } = new JMetaT<int>(25,
-           "Space between 2 pages in the middle, in precent, unless double page, >= 0",
-           (P) => P >= 0 && P <= 100
-         );
 
         public JMetaT<string> Templates_Duplex_Intro { get; } = new JMetaT<string>("Chapter start:\n{0}",
            "Text template to use on chapter start", CH.stringy

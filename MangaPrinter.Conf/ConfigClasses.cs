@@ -28,9 +28,10 @@ namespace MangaPrinter.Conf
 
     public class JPage
     {
-        public string name { get; set; } = "";
+        public string Name { get; set; } = "";
         public int WidthPixels { get; set; } = 1;
         public int HeightPixels { get; set; } = 1;
+        public int TargetDensity { get; set; } = 1;
     }
 
     public class JPadding

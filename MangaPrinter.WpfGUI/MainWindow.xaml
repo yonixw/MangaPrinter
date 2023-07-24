@@ -369,10 +369,12 @@
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Export:</Label>
                         <Label Content="Page Size:" IsEnabled="False" />
-                        <ComboBox Name="cbPageSize" Width="150px" SelectedIndex="0" IsEditable="False">
-                            <ComboBoxItem>Simple A4 150DPI</ComboBoxItem>
-                            <ComboBoxItem >A4 150DPI</ComboBoxItem>
-                            <ComboBoxItem >A4 300DPI</ComboBoxItem>
+                        <ComboBox Name="cbPageSize" Width="150px" IsEditable="False">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
                         </ComboBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
