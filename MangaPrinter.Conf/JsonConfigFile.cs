@@ -148,6 +148,8 @@ namespace MangaPrinter.Conf
 
         public Dictionary<string, object> config_values = new Dictionary<string, object>();
 
+        [JsonIgnore]
+        public List<string> ConfigMessages = new List<string>() { "[INFO] Config Init at " + DateTime.Now }; // Info, warn and errors
 
         public JsonConfig()
         {
@@ -170,6 +172,8 @@ namespace MangaPrinter.Conf
 
         public void Update(string sourceName, Dictionary<string, object> data, bool raiseEvent = true)
         {
+            ConfigMessages.Add("[INFO] Load config from " + sourceName);
+
             List<string> _keys = data.Keys.ToList();
             for (int i = 0; i < _keys.Count; i++)
             {
@@ -184,6 +188,13 @@ namespace MangaPrinter.Conf
                     }
                     config_source[fullname].Add(String.Format("Source={0}, Valid={1}", sourceName, isValid));
                 }
+            }
+
+            if (
+                (new CoreConf()).Info_ConfigVersionMajor.Get(this) > CoreConf.CURR_CONFIG_MAJOR_VERSION
+               )
+            {
+                ConfigMessages.Add("[WARN] Config version has major update, from " + sourceName);
             }
 
             if (raiseEvent)
@@ -209,6 +220,8 @@ namespace MangaPrinter.Conf
         {
             if (configs_meta.ContainsKey(fullname))
             {
+                ConfigMessages.Add("[INFO] Reset to default: " + fullname);
+
                 config_values[fullname] = configs_meta[fullname].JSONDefault;
 
                 if (raiseEvent) raiseConfigEvent(this);

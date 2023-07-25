@@ -33,10 +33,10 @@ namespace MangaPrinter.Conf
             onConfigFinishUpdate?.Invoke(newConfig);
         }
 
-        public void loadFromPath(string path, bool loadDefaults)
+        public void loadFromPath(string path, bool loadDefaultPlaces)
         {
             JsonConfig _config = new JsonConfig();
-            if (loadDefaults)
+            if (loadDefaultPlaces)
             {
                 LoadDefaultPlaces(_config, raiseEvent: false);
             }
@@ -80,7 +80,7 @@ namespace MangaPrinter.Conf
                     if (_f.Exists)
                     {
                         string _txt = File.ReadAllText(_f.FullName);
-                        _config.UpdateJson(_f.FullName, _txt, raiseEvent: false);
+                        _config.UpdateJson("env " + env.Key.ToString() + " points to " + _f.FullName, _txt, raiseEvent: false);
                     }
                 }
             }

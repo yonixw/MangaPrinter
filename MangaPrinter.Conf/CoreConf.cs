@@ -16,15 +16,15 @@ namespace MangaPrinter.Conf
             "Version of the software on build time", _readonly: true
         );
 
-        public const int CURR_CONFIG_MAJOR_VERSION  = 1; // Breaking!    (change, delete)
+        public const int CURR_CONFIG_MAJOR_VERSION = 1; // Breaking!    (change, delete)
         public const int CURR_CONFIG_MINOR_VERSION = 1; // Not breaking (add only)
 
         public JMetaT<int> Info_ConfigVersionMajor { get; } = new JMetaT<int>(CURR_CONFIG_MAJOR_VERSION,
-           "Major Version of the config, which changes on breaking changes", _readonly: true
+           "Major Version of the config, which changes on breaking changes"
         );
 
         public JMetaT<int> Info_ConfigVersionMinor { get; } = new JMetaT<int>(CURR_CONFIG_MINOR_VERSION,
-           "Minor Version of the config, which changes when new config options are added", _readonly: true
+           "Minor Version of the config, which changes when new config options are added"
         );
 
         /* ===============  Common                 =============== */
