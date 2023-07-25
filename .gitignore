@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /MangaPrinter.WpfGUI/Resources/GitInfo.txt
+GitInfo.txt

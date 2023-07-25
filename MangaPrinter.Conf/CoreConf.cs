@@ -12,7 +12,7 @@ namespace MangaPrinter.Conf
 
         /* ===============  Information             =============== */
 
-        public JMetaT<string> Info_GitVersion { get; } = new JMetaT<string>("",
+        public JMetaT<string> Info_GitVersion { get; } = new JMetaT<string>(Properties.Resources.GitInfo,
             "Version of the software on build time", _readonly: true
         );
 

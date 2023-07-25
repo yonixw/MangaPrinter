@@ -18,9 +18,5 @@ FOR /F "tokens=*" %%g IN ('git rev-list --count %latesttag%..') do (
 	SET commitsafter=%%g
 )
 
-FOR /F "tokens=*" %%g IN ('git status --porcelain') do (
-	SET dirty=*
-)
-
 mkdir "%projectdir%Resources"
-echo "%latesttag%+%commitsafter%%dirty% (%branch%) %commitinfo%" > "%projectdir%Resources\GitInfo.txt"	
+echo "%latesttag%+%commitsafter% (branch: %branch%) %commitinfo%" > "%projectdir%Resources\GitInfo.txt"	

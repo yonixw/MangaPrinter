@@ -49,10 +49,6 @@ namespace MangaPrinter.WpfGUI
             lstFileChaptersBinding.ItemsSource = new BindingList<SelectableMangaChapter>();
             
             mangaChapters.ListChanged += MangaChapters_ListChanged;
-            rtbInfo.AppendText(" " + Properties.Resources.GitInfo.Replace("\"", "").Split(';')[0]);
-
-            // Load Settings:
-            var Config = MangaPrinter.WpfGUI.Properties.Settings.Default;
 
             
             if (CoreConfLoader.JsonConfigInstance != null)
@@ -72,6 +68,7 @@ namespace MangaPrinter.WpfGUI
                 return;
             }
 
+
             var locationSize = CoreConf.I.Window_LocationSize.Get();
             Height = locationSize.Height;
             Width = locationSize.Width;
@@ -81,6 +78,10 @@ namespace MangaPrinter.WpfGUI
                 Left = locationSize.X;
                 Left = locationSize.Y;
             }
+
+            txtGitInfo.Text = CoreConf.I.Info_GitVersion.Get().Replace("\"", "").Split(';')[0];
+            txtConfigInfo.Text = String.Format("{0}.{1}",
+                CoreConf.CURR_CONFIG_MAJOR_VERSION, CoreConf.CURR_CONFIG_MINOR_VERSION);
 
             txtPageMaxWidth.Text = CoreConf.I.Chapters_DblPgRatioCuttof.Get().ToString();
 

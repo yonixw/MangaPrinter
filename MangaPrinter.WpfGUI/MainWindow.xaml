@@ -471,21 +471,28 @@
                 <RichTextBox Name="rtbInfo" IsReadOnly="True">
                     <FlowDocument>
                         <Paragraph>
-                            Manga Printer v1
-                        </Paragraph>
-                        <Paragraph>
+                            Manga Printer
+                            <LineBreak />
                             <Hyperlink NavigateUri="https://github.com/yonixw/MangaPrinter" >
                                 https://github.com/yonixw/MangaPrinter
                             </Hyperlink>
                         </Paragraph>
-                        <Paragraph FontWeight="Bold" TextDecorations="Underline">
+                        <Paragraph FontWeight="Bold">
                             <Paragraph.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#FF00A2FF" Offset="0"/>
                                     <GradientStop Color="White" Offset="1"/>
                                 </LinearGradientBrush>
                             </Paragraph.Background>
-                            Git build information:
+                            <TextBlock TextDecorations="Underline">
+                                Build version information:
+                            </TextBlock>
+                            <LineBreak />
+                            Git: 
+                            <TextBlock x:Name="txtGitInfo"/>
+                            <LineBreak />
+                            Config:
+                            <TextBlock x:Name="txtConfigInfo"/>
                         </Paragraph>
                     </FlowDocument>
                 </RichTextBox>
