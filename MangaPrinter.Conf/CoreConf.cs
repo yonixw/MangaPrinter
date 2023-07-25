@@ -34,7 +34,7 @@ namespace MangaPrinter.Conf
             (P) => P >= 0 && P <= 100
         );
 
-        public JMetaT<int> Common_MaxPreviewBlurRadius { get; } = new JMetaT<int>(40,
+        public JMetaT<int> Common_MaxPreviewBlurRadius { get; } = new JMetaT<int>(50,
             "Default Preview Blur radius (pixels) bigger than 10",
             (N) => N >= 10
         );

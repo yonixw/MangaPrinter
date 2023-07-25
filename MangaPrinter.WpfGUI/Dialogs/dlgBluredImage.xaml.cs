@@ -1,4 +1,5 @@
-﻿using MangaPrinter.Core;
+﻿using MangaPrinter.Conf;
+using MangaPrinter.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
         }
 
         MyImageBind myImage;
-        public const double maxBlur = 40;
+        public double maxBlur = 40;
 
         void resetZoom()
         {
@@ -84,9 +85,17 @@ namespace MangaPrinter.WpfGUI.Dialogs
             return result;
         }
 
+
+        bool winLoaded = false;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Title = _title;
+
+            if (CoreConfLoader.JsonConfigInstance != null)
+            {
+                ConfigChanged(CoreConfLoader.JsonConfigInstance);
+            }
+            CoreConfLoader.onConfigFinishUpdate += ConfigChanged;
 
             BitmapImage bm = LoadBitmapWithoutLockingFile(_imageUrl);
             imgMain.DataContext = myImage = new MyImageBind() {
@@ -97,9 +106,23 @@ namespace MangaPrinter.WpfGUI.Dialogs
             };
 
             resetZoom();
+
+            winLoaded = true;
         }
 
-        bool inMove = false;
+        void ConfigChanged(JsonConfig config)
+        {
+            if (!Dispatcher.CheckAccess()) // CheckAccess returns true if you're on the dispatcher thread
+            {
+                Dispatcher.Invoke(() => ConfigChanged(config));
+                return;
+            }
+
+            maxBlur = CoreConf.I.Common_MaxPreviewBlurRadius;
+            slideBlur.Value = CoreConf.I.Common_PreviewBlurPrcnt;
+        }
+
+            bool inMove = false;
         Point startPointMouse, startPointWindow;
         private void imgMain_MouseDown(object sender, MouseButtonEventArgs e)
         {
