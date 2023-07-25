@@ -334,19 +334,22 @@
                                     <Label>Duplex</Label>
                                 </StackPanel>
                             </RadioButton>
-                            <RadioButton Margin="0,0,10,0" VerticalContentAlignment="Center" IsEnabled="False">
+                            <RadioButton Name="rbBindBookletStack" Margin="0,0,10,0" VerticalContentAlignment="Center">
                                 <StackPanel Orientation="Horizontal" >
                                     <Image Source="Icons/booklet.png" Height="32px" ></Image>
                                     <Label>
                                         <TextBlock >
-                                            <TextBlock.TextDecorations>
-                                                <TextDecoration Location="Strikethrough">
-                                                    <TextDecoration.Pen>
-                                                        <Pen Brush="Black" Thickness="3"  />
-                                                    </TextDecoration.Pen>
-                                                </TextDecoration>
-                                            </TextBlock.TextDecorations>
-                                            Booklet (on Roadmap)
+                                            Booklet (Stack)
+                                        </TextBlock>
+                                    </Label>
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Name="rbBindBookletSingles" Margin="0,0,10,0" VerticalContentAlignment="Center">
+                                <StackPanel Orientation="Horizontal" >
+                                    <Image Source="Icons/booklet.png" Height="32px" ></Image>
+                                    <Label>
+                                        <TextBlock >
+                                            Booklet (Singles)
                                         </TextBlock>
                                     </Label>
                                 </StackPanel>

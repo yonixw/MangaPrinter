@@ -82,14 +82,9 @@ namespace MangaPrinter.Conf
             (T) => CH.inListP(T, "rtl", "ltr")
         );
 
-        public JMetaT<string> Chapters_ImportDir { get; } = new JMetaT<string>("",
+        public JMetaT<string> Chapters_ImportDir { get; } = new JMetaT<string>(@"%USERPROFILE%\Documents\Mangas\",
            "Default location to point to when importing. Good if you want to point to HakuNeko folder, Empty for OS default",
            (T) => T != null
-       );
-
-        public JMetaT<string> Chapters_SmartScan { get; } = new JMetaT<string>("only3",
-           "Default mode for smart scan, still will need user accepting the dialog",
-           (T) => CH.inListP(T, "only3", "all", "none")
         );
 
         /* ===============  Binding  Common                   =============== */
@@ -128,7 +123,9 @@ namespace MangaPrinter.Conf
             new List<JPage>() { 
                 new JPage() { Name="Tailored A4 150DPI", HeightPixels=1266, WidthPixels=1648, TargetDensity=150 },
                 new JPage() { Name="A4 150DPI", HeightPixels=1240, WidthPixels=1754, TargetDensity=150 },
-                new JPage() { Name="A4 300DPI", HeightPixels=2480, WidthPixels=3508, TargetDensity=300 }
+                new JPage() { Name="A4 300DPI", HeightPixels=2480, WidthPixels=3508, TargetDensity=300 },
+                new JPage() { Name="Tailored A3 150DPI Landscape", HeightPixels=824, WidthPixels=633, TargetDensity=150 },
+                new JPage() { Name="A3 150DPI Landscape", HeightPixels=877, WidthPixels=620, TargetDensity=150 },
             },
            "List of available pages size, first is default",
            (L) => L != null && L.Count > 0 && L.TrueForAll(P => P.HeightPixels > 0 && P.WidthPixels > 0)

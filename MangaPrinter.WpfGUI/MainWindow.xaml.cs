@@ -121,7 +121,10 @@ namespace MangaPrinter.WpfGUI
                 );
             }
             cbPageSize.SelectedIndex = Math.Max(0, lastcbPageSizeSelected);
-            
+
+            rbBindDuplex.IsChecked = CoreConf.I.Binding_Type == "duplex";
+            rbBindBookletStack.IsChecked = CoreConf.I.Binding_Type == "booklet_print";
+            rbBindBookletSingles.IsChecked = CoreConf.I.Binding_Type == "booklet_single";
         }
 
         bool shouldUpdateStats = true;
@@ -182,6 +185,7 @@ namespace MangaPrinter.WpfGUI
         {
             dlgSaveTrick.Filter = "Folder|_Choose.Here_";
             dlgSaveTrick.FileName = "_Choose.Here_";
+            dlgSaveTrick.InitialDirectory = Environment.ExpandEnvironmentVariables(CoreConf.I.Chapters_ImportDir);
             dlgSaveTrick.CheckFileExists = false;
             dlgSaveTrick.Multiselect = false;
             dlgSaveTrick.ValidateNames = false;
