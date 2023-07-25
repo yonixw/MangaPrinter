@@ -34,8 +34,12 @@
                             <TextBox Margin="2" Name="txtSearch" 
                                      TextChanged="txtSearch_TextChanged"/>
                         </DockPanel>
-                        <ListView Name="lstItemLog" DockPanel.Dock="Bottom" Height="100">
-                        </ListView>
+                        <DockPanel DockPanel.Dock="Bottom">
+                            <TextBlock DockPanel.Dock="Top">
+                                Specifiec config logs:</TextBlock>
+                            <ListView Name="lstItemLog"  Height="100">
+                            </ListView>
+                        </DockPanel>
                         <ListView Name="lstMetas" SelectionChanged="lstMetas_SelectionChanged">
                             <ListView.ItemTemplate>
                                 <DataTemplate>

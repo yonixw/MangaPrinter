@@ -90,7 +90,9 @@ namespace MangaPrinter.WpfGUI.Dialogs
                 lastSelectionFullName = _kvj.Value.Key;
 
                 rtbJValue.Document.Blocks.Clear();
-                rtbJValue.AppendText(JsonEditHelpers.ToJsonValue(CoreConfLoader.JsonConfigInstance.Get<object>(lastSelectionFullName)));
+                rtbJValue.Document.Blocks.Add(new Paragraph(new Run(
+                    JsonEditHelpers.ToJsonValue(CoreConfLoader.JsonConfigInstance.Get<object>(lastSelectionFullName))
+                )));
 
                 lstItemLog.ItemsSource = null;
                 lstItemLog.ItemsSource = CoreConfLoader.JsonConfigInstance.Log(_kvj.Value.Key);
@@ -103,7 +105,11 @@ namespace MangaPrinter.WpfGUI.Dialogs
             if (_kvj != null && _kvj.HasValue && !String.IsNullOrEmpty(lastSelectionFullName))
             {
                 rtbJValue.Document.Blocks.Clear();
-                rtbJValue.AppendText(JsonEditHelpers.ToJsonValue(CoreConfLoader.JsonConfigInstance.Get<object>(lastSelectionFullName)));
+                rtbJValue.Document.Blocks.Add(new Paragraph(new Run(
+                    JsonEditHelpers.ToJsonValue(CoreConfLoader.JsonConfigInstance.Get<object>(lastSelectionFullName))
+                )));
+
+                //rtbJValue.AppendText();
             }
         }
 
@@ -113,7 +119,9 @@ namespace MangaPrinter.WpfGUI.Dialogs
             if (_kvj != null && _kvj.HasValue && !String.IsNullOrEmpty(lastSelectionFullName))
             {
                 rtbJValue.Document.Blocks.Clear();
-                rtbJValue.AppendText(JsonEditHelpers.ToJsonValue(_kvj.Value.Value.JSONDefault));
+                rtbJValue.Document.Blocks.Add(new Paragraph(new Run(
+                    JsonEditHelpers.ToJsonValue(_kvj.Value.Value.JSONDefault)
+                )));
             }
         }
 
@@ -168,6 +176,6 @@ namespace MangaPrinter.WpfGUI.Dialogs
             }
         }
 
-        
+      
     }
 }
