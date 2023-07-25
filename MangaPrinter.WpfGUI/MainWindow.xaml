@@ -468,7 +468,11 @@
             </TabItem>
 
             <TabItem Header="About">
-                <RichTextBox Name="rtbInfo" IsReadOnly="True">
+                <StackPanel>
+                    <DockPanel LastChildFill="False" Margin="5">
+                        <Button Width="150" Name="btnConfigMgr" Click="btnConfigMgr_Click">Config Manager</Button>
+                    </DockPanel>
+                    <RichTextBox Name="rtbInfo" IsReadOnly="True" Margin="5" BorderBrush="White">
                     <FlowDocument>
                         <Paragraph>
                             Manga Printer
@@ -496,6 +500,7 @@
                         </Paragraph>
                     </FlowDocument>
                 </RichTextBox>
+                </StackPanel>
             </TabItem>
 
         </TabControl>

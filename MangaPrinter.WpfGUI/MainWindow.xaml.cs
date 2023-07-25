@@ -974,6 +974,12 @@ namespace MangaPrinter.WpfGUI
                 );
         }
 
+        private void btnConfigMgr_Click(object sender, RoutedEventArgs e)
+        {
+            dlgConfigMngr dlg = new dlgConfigMngr();
+            dlg.ShowDialog();
+        }
+
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
             resetDlgSaveName();

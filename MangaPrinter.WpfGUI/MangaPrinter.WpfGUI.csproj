@@ -103,6 +103,9 @@
     <Compile Include="Dialogs\dlgChooseCutoffRatio.xaml.cs">
       <DependentUpon>dlgChooseCutoffRatio.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\dlgConfigMngr.xaml.cs">
+      <DependentUpon>dlgConfigMngr.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\dlgEmptyInk.xaml.cs">
       <DependentUpon>dlgEmptyInk.xaml</DependentUpon>
     </Compile>
@@ -132,6 +135,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\dlgChooseCutoffRatio.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\dlgConfigMngr.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
