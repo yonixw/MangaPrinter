@@ -72,6 +72,8 @@ namespace MangaPrinter.Conf
 
             if (value != null)
             {
+                value = JsonConfig.myConverters(value);
+
                 Tuple<Type, Type> myTypes = new Tuple<Type, Type>(value.GetType(), EntryType);
 
                 if (EntryType.Equals(value.GetType()))
@@ -149,7 +151,7 @@ namespace MangaPrinter.Conf
         public Dictionary<string, object> config_values = new Dictionary<string, object>();
 
         [JsonIgnore]
-        public List<string> ConfigMessages = new List<string>() { "[INFO] Config Init at " + DateTime.Now }; // Info, warn and errors
+        public List<string> ConfigMessages = new List<string>() { "[INFO] Config Init with defaults at " + DateTime.Now }; // Info, warn and errors
 
         public JsonConfig()
         {
@@ -169,6 +171,18 @@ namespace MangaPrinter.Conf
             }
         }
 
+        public static object myConverters (object o)
+        {
+            if (o == null) return null;
+
+            Type t = o.GetType();
+            if (t == typeof(Int64))
+                return Convert.ToInt32(o);
+            else if (t == typeof(Double))
+                return Convert.ToSingle(o);
+            else
+                return o;
+        }
 
         public void Update(string sourceName, Dictionary<string, object> data, bool raiseEvent = true)
         {
@@ -181,10 +195,12 @@ namespace MangaPrinter.Conf
                 if (configs_meta.ContainsKey(fullname))
                 {
                     JMeta _meta = configs_meta[fullname];
-                    bool isValid = _meta.Valid(data[fullname]);
+                    object value = data[fullname];
+
+                    bool isValid = _meta.Valid(value);
                     if (isValid && !_meta.ReadOnly)
                     {
-                        config_values[fullname] = data[fullname];
+                        config_values[fullname] = value;
                     }
                     config_source[fullname].Add(String.Format("Source={0}, Valid={1}", sourceName, isValid));
                 }
@@ -232,7 +248,7 @@ namespace MangaPrinter.Conf
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(config_values, Formatting.Indented, new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Auto // Auto is minimal added data
+                TypeNameHandling = TypeNameHandling.Objects // Auto is minimal added data
             });
         }
 
@@ -243,7 +259,6 @@ namespace MangaPrinter.Conf
             Update(sourceName,
                 Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(json, new JsonSerializerSettings
             {
-                Converters = new List<JsonConverter>() { new PreferInt32Converter()},
                 TypeNameHandling = TypeNameHandling.Auto // Auto is minimal added data
             }),
                 raiseEvent
@@ -259,7 +274,7 @@ namespace MangaPrinter.Conf
             return name;
         }
 
-        public Dictionary<string, JMeta> GetConfigMetas()
+        public static Dictionary<string, JMeta> GetConfigMetas()
         {
             Dictionary<string, JMeta> _config_metas = new Dictionary<string, JMeta>();
 
@@ -269,7 +284,7 @@ namespace MangaPrinter.Conf
                 if (fields[i].PropertyType.BaseType.Equals(typeof(JMeta)))
                 {
                     string fullname = NameToJsonName(fields[i].Name);
-                    object value = fields[i].GetValue(CoreConf.I);
+                    object value = myConverters( fields[i].GetValue(CoreConf.I) );
 
                     _config_metas.Add(fullname, (JMeta)value);
 
@@ -281,6 +296,8 @@ namespace MangaPrinter.Conf
         }
 
     }
+
+    
 
    
 }

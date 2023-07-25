@@ -974,10 +974,25 @@ namespace MangaPrinter.WpfGUI
                 );
         }
 
+        bool _config_open = false;
         private void btnConfigMgr_Click(object sender, RoutedEventArgs e)
         {
+            if (_config_open)
+            {
+                MessageBox.Show("Config dialog already open, can use one at a time.");
+                return;
+            }
+
+            _config_open = true;
             dlgConfigMngr dlg = new dlgConfigMngr();
-            dlg.ShowDialog();
+            dlg.Owner = this;
+            dlg.Closed += Config_Dlg_Closed;
+            dlg.Show();
+        }
+
+        private void Config_Dlg_Closed(object sender, EventArgs e)
+        {
+            _config_open = false;
         }
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)

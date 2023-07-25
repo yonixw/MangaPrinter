@@ -5,8 +5,75 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
         mc:Ignorable="d"
-        Title="dlgConfigMngr" Height="450" Width="800">
+        Title="Config Manager"
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterOwner"
+        Height="450" Width="800">
     <Grid>
-        
+        <TabControl>
+            <TabItem Header="Config Changes Log">
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+                        <Button Margin="5" Padding="5" Name="btnCpLogs" Click="btnCpLogs_Click">
+                            Copy All Logs
+                        </Button>
+                    </DockPanel>
+                    <ListView Name="lstLog">
+                    </ListView>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Config Editor">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel  Grid.Column="0">
+                        <DockPanel DockPanel.Dock="Top" Margin="5">
+                            <TextBlock DockPanel.Dock="Left">Search: </TextBlock>
+                            <TextBox Margin="2" Name="txtSearch" 
+                                     TextChanged="txtSearch_TextChanged"/>
+                        </DockPanel>
+                        <ListView Name="lstMetas" SelectionChanged="lstMetas_SelectionChanged">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{Binding Key}"/>
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding Value.Description}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </DockPanel>
+                    <DockPanel Grid.Column="1">
+                        <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+                            <TextBlock x:Name="txtSlctMeta" 
+                                       TextWrapping="Wrap"
+                                       Margin="5" FontWeight="Bold"/>
+                            <TextBlock Margin="5">Show:</TextBlock>
+                            <Button Margin="5" Name="btnCurrent" Click="btnCurrent_Click">
+                                Current Value</Button>
+                            <Button Margin="5" Name="btnDefault" Click="btnDefault_Click">
+                                Default</Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" DockPanel.Dock="Bottom">
+                            <TextBlock Margin="5">Actions:</TextBlock>
+                            <Button Margin="5" Name="btnValidate" Click="btnValidate_Click">
+                                Validate</Button>
+                            <Button Margin="5" Name="btnApply" Click="btnApply_Click">
+                                Apply</Button>
+                        </StackPanel>
+                        <RichTextBox Margin="5"
+                                     Name="rtbJValue"
+                                     HorizontalScrollBarVisibility="Visible"
+                                     VerticalScrollBarVisibility="Visible"
+                                     ></RichTextBox>
+                    </DockPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Load/Export">
+
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
