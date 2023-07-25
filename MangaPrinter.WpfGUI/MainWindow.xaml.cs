@@ -112,7 +112,7 @@ namespace MangaPrinter.WpfGUI
             int lastcbPageSizeSelected = cbPageSize.SelectedIndex;
             if (cbPageSize.ItemsSource == null)
             {
-                cbPageSize.ItemsSource = new ObservableCollection<JPage>(CoreConf.I.Binding_PageSizeList);
+                cbPageSize.ItemsSource = new ObservableCollection<JPage>(CoreConf.I.Binding_PageSizeList.Get().ToList());
             }
             else
             {

@@ -36,7 +36,7 @@ namespace MangaPrinter.Conf
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<object>(json, new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Auto // Auto is minimal added data
+                TypeNameHandling = TypeNameHandling.All // Auto is minimal added data
             });
         }
 
@@ -44,21 +44,11 @@ namespace MangaPrinter.Conf
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(value, Formatting.Indented, new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Objects
+                TypeNameHandling = TypeNameHandling.All
             });
         }
     }
-
-    public class CastHelpers
-    {
-        public static Dictionary<Tuple<Type,Type>, Func<object, object>> Casters = 
-            new Dictionary<Tuple<Type, Type>, Func<object, object>>()
-        {                
-            { new Tuple<Type,Type>(typeof(Int32),typeof(float)), (O)=>Convert.ToSingle(O) },
-
-        };
-    }
-
+    
    
 
 

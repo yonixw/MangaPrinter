@@ -50,7 +50,7 @@ namespace MangaPrinter.Conf
             Init(_jsonDefault, String.Join( "\n", _desc), _verifier, _deprecated, _readonly);
         }
 
-        public T Get<T>(object value = null)
+        public T GetAsType<T>(object value)
         {
             if (value != null)
             {
@@ -58,8 +58,6 @@ namespace MangaPrinter.Conf
 
                 if (value.GetType().Equals(EntryType))
                     return (T)value;
-               else if (CastHelpers.Casters.ContainsKey(myTypes))
-                    return (T)CastHelpers.Casters[myTypes](value);
             }
             return (T)JSONDefault;
 
@@ -78,8 +76,6 @@ namespace MangaPrinter.Conf
 
                 if (EntryType.Equals(value.GetType()))
                     return Verifier(value);
-                else if (CastHelpers.Casters.ContainsKey(myTypes))
-                    return Verifier(CastHelpers.Casters[myTypes](value));
             }
             
             return Verifier(JSONDefault);
@@ -226,9 +222,19 @@ namespace MangaPrinter.Conf
         {
             if (configs_meta.ContainsKey(fullname))
             {
-                return configs_meta[fullname].Get<T>(config_values[fullname]);
+                return configs_meta[fullname].GetAsType<T>(config_values[fullname]);
             }
             else 
+                throw new Exception("Cannot find config named: " + fullname);
+        }
+
+        public List<string> Log(string fullname)
+        {
+            if (config_source.ContainsKey(fullname))
+            {
+                return config_source[fullname];
+            }
+            else
                 throw new Exception("Cannot find config named: " + fullname);
         }
 
@@ -248,7 +254,7 @@ namespace MangaPrinter.Conf
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(config_values, Formatting.Indented, new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Objects // Auto is minimal added data
+                TypeNameHandling = TypeNameHandling.All // Auto is minimal added data
             });
         }
 
@@ -259,7 +265,7 @@ namespace MangaPrinter.Conf
             Update(sourceName,
                 Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(json, new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Auto // Auto is minimal added data
+                TypeNameHandling = TypeNameHandling.All // Auto is minimal added data
             }),
                 raiseEvent
                 );
