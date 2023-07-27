@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,8 +30,10 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
         ObservableCollection<string> changesLog = new ObservableCollection<string>();
         ObservableCollection<KeyValuePair<string,JMeta>> configMetas = new ObservableCollection<KeyValuePair<string, JMeta>>();
+        ObservableCollection<LoadFolderInfo> loadFolders = new ObservableCollection<LoadFolderInfo>();
+        ObservableCollection<string> loadFoldersFiles = new ObservableCollection<string>();
 
-        
+
 
         public void AddMany<T>(ObservableCollection<T> collection, IEnumerable<T> list) =>
                 list.ToList().ForEach(collection.Add);
@@ -38,6 +42,9 @@ namespace MangaPrinter.WpfGUI.Dialogs
         {
             lstLog.ItemsSource = changesLog;
             lstMetas.ItemsSource = configMetas;
+            lstFolders.ItemsSource = loadFolders;
+            txtFileName.Text = CoreConfLoader.ConfigSuffix;
+            lstFolderFiles.ItemsSource = loadFoldersFiles;
 
             if (CoreConfLoader.JsonConfigInstance != null)
             {
@@ -55,13 +62,21 @@ namespace MangaPrinter.WpfGUI.Dialogs
             }
 
             changesLog.Clear();
-            AddMany(changesLog, CoreConfLoader.JsonConfigInstance.ConfigMessages);
+            AddMany(changesLog, config.ConfigMessages);
 
             if (configMetas.Count == 0 && String.IsNullOrEmpty(txtSearch.Text))
             {
                 configMetas.Clear();
                 AddMany(configMetas, JsonConfig.GetConfigMetas().AsEnumerable());
             }
+
+
+            if (CoreConfLoader.I.LoadFolders.Count > 0)
+            {
+                loadFolders.Clear();
+                AddMany(loadFolders, CoreConfLoader.I.LoadFolders);
+            }
+                
         }
 
         private void btnCpLogs_Click(object sender, RoutedEventArgs e)
@@ -176,6 +191,112 @@ namespace MangaPrinter.WpfGUI.Dialogs
             }
         }
 
-      
+        LoadFolderInfo lastSelected = null;
+
+        private void lstFolders_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstFolders.SelectedItem == null) return;
+            lastSelected = (LoadFolderInfo)lstFolders.SelectedItem;
+
+            lblSelectedFolder.Content = "Files of: \"" + lastSelected.FolderTemplate + "\"";
+
+            loadFoldersFiles.Clear();
+
+            if (Directory.Exists(lastSelected.FolderRealPath))
+            {
+                FileInfo[] _fi = new DirectoryInfo(lastSelected.FolderRealPath)
+                    .GetFiles("*"+ CoreConfLoader.ConfigSuffix);
+
+                _fi.Select((FileInfo f) => f.Name)
+                    .ToList().ForEach((f) => loadFoldersFiles.Add(f));
+            }
+            
+        }
+
+        private void btnExportFile_Click(object sender, RoutedEventArgs e)
+        {
+            string error = null;
+            if (lastSelected == null)
+            {
+                MessageBox.Show("Please select folder");
+                return;
+            }
+
+            string fileName = txtFileName.Text;
+            string fullSavePath = System.IO.Path.Combine(lastSelected.FolderRealPath, fileName);
+
+            if (lastSelected == null)
+            {
+                error = "Please select a folder";
+            }
+            else if (!Directory.Exists(lastSelected.FolderRealPath))
+            {
+                error = "Folder does not exist, please create it first";
+            }
+            else if (String.IsNullOrEmpty(fileName))
+            {
+                error = "Filename cannot be empty";
+            }
+            else if (!Regex.IsMatch(fileName, "^[a-zA-Z0-9\\-_\\.]*" + CoreConfLoader.ConfigSuffix + "$"))
+            {
+                error = "Filename must end with " + CoreConfLoader.ConfigSuffix + "\nAnd not include any special character";
+            }
+
+
+            if (String.IsNullOrEmpty(error))
+            {
+                if (File.Exists(fullSavePath))
+                {
+                    MessageBoxResult overwriteDlg =
+                        MessageBox.Show("File already exists, overwrite?", "Overwrite", MessageBoxButton.YesNo);
+                    if (overwriteDlg == MessageBoxResult.No)
+                    {
+                        return;
+                    }
+                }
+
+                try
+                {
+                    File.WriteAllText(fullSavePath, CoreConfLoader.JsonConfigInstance.toJSON());
+                    MessageBox.Show("Exported successfully to:\n" + fullSavePath);
+                }
+                catch (Exception err)
+                {
+                    error = "Error exporting config, error=\n" + err.Message;
+                }
+            }
+
+            if (!String.IsNullOrEmpty(error))
+            {
+                MessageBox.Show(error);
+            }
+
+
+        }
+
+        private void btnLoadFileAlone_Click(object sender, RoutedEventArgs e)
+        {
+            LoadConfigFromSelected(false);
+        }
+
+
+        private void btnLoadFile_Click(object sender, RoutedEventArgs e)
+        {
+            LoadConfigFromSelected(true);
+        }
+
+        private void LoadConfigFromSelected(bool loadDefaultFiles)
+        {
+            string fileShortName = (string)lstFolderFiles.SelectedItem;
+
+            if (lastSelected != null && fileShortName != null)
+            {
+                string fullPath = System.IO.Path.Combine(lastSelected.FolderRealPath, fileShortName);
+                if (File.Exists(fullPath))
+                    CoreConfLoader.I.loadFromPath(fullPath, loadDefaultFiles);
+
+            }
+        }
+
     }
 }

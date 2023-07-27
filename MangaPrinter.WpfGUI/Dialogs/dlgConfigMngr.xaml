@@ -8,7 +8,8 @@
         Title="Config Manager"
         Loaded="Window_Loaded"
         WindowStartupLocation="CenterOwner"
-        Height="450" Width="800">
+        FontSize="11pt"
+        Height="500" Width="800">
     <Grid>
         <TabControl>
             <TabItem Header="Config Changes Log">
@@ -78,7 +79,49 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Load/Export">
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Bottom" Margin="5">
+                        <Label>Select file, </Label>
+                        <Button Click="btnLoadFileAlone_Click" Name="btnLoadFileAlone" Padding="3">Load Alone</Button>
+                        <Label>,</Label>
+                        <Button Click="btnLoadFile_Click" Name="btnLoadFile" Padding="3">Load in Addition</Button>
+                        <Label>Or</Label>
+                        <Button Click="btnExportFile_Click" Name="btnExportFile" Padding="3">Export</Button>
+                        <Label>current config as:</Label>
+                        <TextBox Name="txtFileName" Margin="3">mpconfig.json</TextBox>
+                    </DockPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <DockPanel Grid.Column="0">
+                            <Label DockPanel.Dock="Top">
+                                Folders being searched:
+                            </Label>
+                            <ListView Name="lstFolders" Margin="5"
+                                  SelectionChanged="lstFolders_SelectionChanged">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{Binding FolderTemplate}"/>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding FolderRealPath}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </DockPanel>
 
+                        <DockPanel Grid.Column="1">
+                            <Label Name="lblSelectedFolder" DockPanel.Dock="Top">
+                                .
+                            </Label>
+                            <ListView Name="lstFolderFiles" Margin="5">
+                            </ListView>
+                        </DockPanel>
+                    </Grid>
+                </DockPanel>
+                
             </TabItem>
         </TabControl>
     </Grid>

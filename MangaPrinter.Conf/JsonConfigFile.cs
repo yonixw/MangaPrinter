@@ -203,7 +203,7 @@ namespace MangaPrinter.Conf
             }
 
             if (
-                (new CoreConf()).Info_ConfigVersionMajor.Get(this) > CoreConf.CURR_CONFIG_MAJOR_VERSION
+                (new CoreConf()).Info_ConfigVersionMajor.Get(this) < CoreConf.CURR_CONFIG_MAJOR_VERSION
                )
             {
                 ConfigMessages.Add("[WARN] Config version has major update, from " + sourceName);
