@@ -51,7 +51,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
                 string[] pages = iC.Substring(1).Split(',');
                 foreach (string stringpage in pages)
                 {
-                    MangaPage mp = new MangaPage();
+                    MangaPage mp = new MangaPage() { IsOmmited = false};
                     mp.IsDouble = (stringpage == "1") ? false : true;
                     mc.Pages.Add(mp);
                 }

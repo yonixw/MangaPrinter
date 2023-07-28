@@ -17,6 +17,7 @@ namespace MangaPrinter.Core
 
         public string Name { get { return _baseGet(); } set { _baseSet(value); } }
         public bool IsDouble { get { return _baseGet(); } set { _baseSet(value); } }
+        public bool IsOmmited { get { return _baseGet(); } set { _baseSet(value); } }
         public float AspectRatio { get { return _baseGet(); } set { _baseSet(value); } }
         public float WhiteBlackRatio { get { return _baseGet(); } set { _baseSet(value); } }
         public string ImagePath { get { return _baseGet(); } set { _baseSet(value); } }
@@ -159,6 +160,7 @@ namespace MangaPrinter.Core
         MANGA,
         BEFORE_DOUBLE, MAKE_EVEN,
         ANTI_SPOILER,
+        OMMITED,
 
         LAST
     }

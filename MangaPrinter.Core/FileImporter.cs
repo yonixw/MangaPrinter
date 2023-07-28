@@ -117,7 +117,7 @@ namespace MangaPrinter.Core
                         AspectRatio = MangaPage.MinRatio, // Must be > 0, o.w. Infinity!
                         WhiteBlackRatio = 0.5f, // No too much, no too little until scan.
                         ImagePath = fiImage.FullName,
-                        IsDouble = false
+                        IsDouble = false, IsOmmited = false
                     };
                     if (MagickSupportedImagesExtentions.Contains(fiImage.Extension.ToLower()))
                     {

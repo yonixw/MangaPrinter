@@ -14,7 +14,7 @@ namespace MangaPrinter.Conf.Tests
         [TestMethod()]
         public void NoSubObjects()
         {
-            string test_fullname = JsonConfig.NameToJsonName(nameof(CoreConf.I.Window_FontSize));
+            string test_fullname = JsonConfig.NameToJsonName(nameof(CoreConf.I.Common_PreviewBlurPrcnt));
 
             JsonConfig conf = new JsonConfig();
             string json = conf.toJSON();
@@ -40,7 +40,7 @@ namespace MangaPrinter.Conf.Tests
             Assert.AreNotEqual(json, "");
             Assert.AreNotEqual(before, after);
 
-            conf.ResetToDefault(test_fullname);
+            conf.ResetToDefault(test_fullname,true);
             Assert.AreNotEqual(conf.Get<float>(test_fullname), after);
         }
 

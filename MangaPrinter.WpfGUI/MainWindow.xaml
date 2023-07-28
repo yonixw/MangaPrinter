@@ -270,6 +270,8 @@
                                     <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Single page checked"/>
                                     <MenuItem Name="mnuToDouble" Click="mnuToDouble_Click" Header="Double page checked"/>
                                     <Separator/>
+                                    <MenuItem Name="mnuToOmit" Click="mnuToOmit_Click" Header="Toggle Ommited checked"/>
+                                    <Separator/>
                                     <MenuItem Name="mnuPgSelectAll" Click="mnuPgSelectAll_Click" Header="Check All"/>
                                     <MenuItem Name="mnuPgSelectNone" Click="mnuPgSelectNone_Click" Header="Check None"/>
                                     <Separator/>
@@ -281,6 +283,7 @@
                                     <StackPanel Name="stackFilePage" Orientation="Horizontal">
                                         <CheckBox IsChecked="{Binding IsChecked}" Padding="3px"/>
                                         <Image Name="imgPage" Source="Icons/1Page.png"/>
+                                        <Image Name="imgPageOmit" Source="Icons/Omit.png" Visibility="Collapsed"/>
 
                                         <Label Name="lblDouble" FontWeight="Bold" Visibility="Collapsed">
                                             <TextBlock>
@@ -292,6 +295,7 @@
                                                 </TextBlock.Text>
                                             </TextBlock>
                                         </Label>
+                                        
                                         <Label Name="lblSingle" FontWeight="Bold" Visibility="Visible">
                                             <TextBlock>
                                                 <TextBlock.Text>
@@ -312,6 +316,11 @@
                                             <Setter TargetName="imgPage" Property="Source" Value="Icons/2Page.png"/>
                                             <Setter TargetName="lblDouble" Property="Visibility" Value="Visible"/>
                                             <Setter TargetName="lblSingle" Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding IsOmmited}" Value="True">
+                                            <Setter TargetName="imgPageOmit" Property="Visibility" Value="Visible"/>
+                                            <Setter TargetName="imgPage" Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
 
                                         <DataTrigger Binding="{Binding Path=AspectRatio, Converter={StaticResource lowerConvert}, ConverterParameter='Common_Alerts_TooVertical'}" Value="True">

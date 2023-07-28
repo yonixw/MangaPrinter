@@ -226,6 +226,9 @@
   <ItemGroup>
     <Resource Include="Icons\papper_plan.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Omit.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

@@ -15,9 +15,9 @@ namespace MangaPrinter.Core.TemplateBuilders
             *  Templates in duplex mode:
             *  ==================================
             *  
-            *  Side Type:   I   O   M   B   E   A
-            *  Single:      +   +   +   +   +   -
-            *  Double:      -   -   +   -   -   +
+            *  Side Type:   I   O   M   B   E   A  O
+            *  Single:      +   +   +   +   +   -  + 
+            *  Double:      -   -   +   -   -   +  +
         */
 
         
@@ -39,7 +39,8 @@ namespace MangaPrinter.Core.TemplateBuilders
             {
                 if (
                     face.Right.SideType != SingleSideType.MANGA &&
-                    face.Right.SideType != SingleSideType.ANTI_SPOILER
+                    face.Right.SideType != SingleSideType.ANTI_SPOILER &&
+                    face.Right.SideType != SingleSideType.OMMITED
                     )
                     throw new Exception(
                         string.Format("Got type {0} in double in duplex. It's unexpected.", face.Right.SideType)
@@ -150,6 +151,10 @@ namespace MangaPrinter.Core.TemplateBuilders
                         page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_AntiSpoiler,true),
                             contentH, contentW);
                         break;
+                    case SingleSideType.OMMITED:
+                        page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Ommited, true),
+                            contentH, contentW);
+                        break;
                     case SingleSideType.MANGA:
                         page = GraphicsUtils.loadFileZoomedCentered(face.Left.MangaPageSource.ImagePath,
                             contentH, contentW);
@@ -250,6 +255,10 @@ namespace MangaPrinter.Core.TemplateBuilders
                     break;
                 case SingleSideType.MAKE_EVEN:
                     page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_MakeEven, true),
+                       pageH, pageW);
+                    break;
+                case SingleSideType.OMMITED:
+                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Ommited, true),
                        pageH, pageW);
                     break;
                 case SingleSideType.MANGA:

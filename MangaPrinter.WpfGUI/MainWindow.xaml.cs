@@ -1001,6 +1001,18 @@ namespace MangaPrinter.WpfGUI
             _config_open = false;
         }
 
+        private void mnuToOmit_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstFileChapters.SelectedValue != null)
+            {
+                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                Chapter.Pages
+                    .Where(p => p.IsChecked)
+                    .ForEach(p => p.IsOmmited = !p.IsOmmited);
+                Chapter.updateChapterStats();
+            }
+        }
+
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
             resetDlgSaveName();
