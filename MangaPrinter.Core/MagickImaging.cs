@@ -52,10 +52,31 @@ namespace MangaPrinter.Core
             collection?.Write(pdfPath);
         }
 
+        public class DummyImages
+        {
+            public const string White200Sqr = "/dummy/white";
+        }
+
         public static Bitmap BitmapFromUrlExt(MangaPage page)
         {
-            string path = page.ImagePath;
             Bitmap result = null;
+
+            if (page.Effects != null && !String.IsNullOrEmpty(page.Effects.VirtualPath))
+            {
+                if (page.Effects.VirtualPath == DummyImages.White200Sqr)
+                {
+                    result = new Bitmap(200, 200);
+                    using (Graphics g = Graphics.FromImage(result))
+                    {
+                        g.FillRectangle(Brushes.White, new RectangleF(0, 0, 200, 200));
+                    }
+                    return result;
+                }
+
+                throw new Exception("Unkown dummy: " + page.Effects.VirtualPath);
+            }
+
+            string path = page.ImagePath;
             string extLower = Path.GetExtension(path).ToLower();
             if (FileImporter.BitmapSupportedImagesExtensions.Contains(extLower))
             {

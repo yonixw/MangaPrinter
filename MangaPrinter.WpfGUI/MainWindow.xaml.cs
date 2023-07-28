@@ -1043,7 +1043,7 @@ namespace MangaPrinter.WpfGUI
                     Chapter = Chapter,
                     ChildIndexStart = -1,
                     ChildIndexEnd = -1,
-                    Effects = new PageEffects() { VirtualPath = "/dummy/white" },
+                    Effects = new PageEffects() { VirtualPath = MagickImaging.DummyImages.White200Sqr },
                     IsDouble = false,
                     ImagePath = "virtual_path",
                     WhiteBlackRatio = 1,
