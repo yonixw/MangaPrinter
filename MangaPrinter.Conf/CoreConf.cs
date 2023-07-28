@@ -223,6 +223,9 @@ namespace MangaPrinter.Conf
 
         /* ===============  Templates -> Duplex   =============== */
 
+        public JMetaT<bool> Templates_Duplex_AddGutter { get; } = new JMetaT<bool>(true,
+           "Add a padding between two singles"
+        );
 
         public JMetaT<string> Templates_Duplex_Intro { get; } = new JMetaT<string>("Chapter start:\n{0}",
            "Text template to use on chapter start", CH.stringy

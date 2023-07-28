@@ -15,7 +15,6 @@ namespace MangaPrinter.Core.TemplateBuilders
 {
     public class GraphicsUtils
     {
-        static Pen borderPen = new Pen(Color.Black, 4);
 
         public struct FontScaled
         {
@@ -60,9 +59,6 @@ namespace MangaPrinter.Core.TemplateBuilders
 
             Font textFont = FindFontSizeByContent(g, drawText, b.Size, new Font(new FontFamily(fontName), 5)).font; // font size not imprtnt
             g.DrawString(drawText, textFont, Brushes.Black, 0, 0);
-
-            if (CoreConf.I.Templates_ShowBorders)
-                g.DrawRectangle(borderPen, new Rectangle(0, 0, width, height));
 
             return b;
         }
@@ -141,9 +137,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                     ((int)imageHeight - scaleHeight) / 2,
                     scaleWidth,
                     scaleHeight);
-                
-                if (CoreConf.I.Templates_ShowBorders)
-                    graph.DrawRectangle(borderPen, new Rectangle(0, 0, imageWidth, imageHeight));
+
             }
 
             if(!reuse)

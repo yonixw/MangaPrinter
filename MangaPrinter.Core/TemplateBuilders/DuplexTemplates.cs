@@ -27,6 +27,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         }
 
 
+        public static Pen borderPen = new Pen(Color.Black, 4);
         public static Pen blackPen = new Pen(Color.Black, 4);
         public static Brush blackBrush = new SolidBrush(Color.Black);
         public static Font fontSide = new Font(new FontFamily(CoreConf.I.Templates_TextFont), 5, FontStyle.Bold); // size will be changed
@@ -130,7 +131,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                     }
                 }
 
-                GraphicsUtils.FontScaled faceCountFS = GraphicsUtils.FindFontSizeByContent(
+                GraphicsUtils.FontScaled faceCountFS  /*Face count became PrintPagecount*/ = GraphicsUtils.FindFontSizeByContent(
                     g, FaceCountText, new Size(tmpW / 4, sideTextH), fontSide
                 );
                 GraphicsUtils.DrawTextCenterd(g, FaceCountText, faceCountFS, blackBrush,
@@ -161,6 +162,10 @@ namespace MangaPrinter.Core.TemplateBuilders
                         break;
                 }
                 g.DrawImage(page, new Point(padding, padding));
+
+                if (CoreConf.I.Templates_ShowBorders)
+                    g.DrawRectangle(borderPen, new Rectangle(padding,padding, contentW, contentH));
+
                 page.Dispose();
             }
 
@@ -205,7 +210,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                 }
 
 
-                GraphicsUtils.FontScaled faceCountFS = GraphicsUtils.FindFontSizeByContent(
+                GraphicsUtils.FontScaled faceCountFS /*Face count became PrintPagecount*/ = GraphicsUtils.FindFontSizeByContent(
                     g, FaceCountText, new Size(tmpW / 4, sideTextH), fontSide
                 );
                 GraphicsUtils.DrawTextCenterd(g, FaceCountText, faceCountFS, blackBrush,
@@ -219,9 +224,25 @@ namespace MangaPrinter.Core.TemplateBuilders
                     new PointF(tmpW * 0.75f * 0.5f, padding + contentH + padding / 2)
                 );
 
+                if (CoreConf.I.Templates_Duplex_AddGutter)
+                {
+                    DrawSide(pageW, pageH, g, face.Left, new Point(padding, padding), parentText);
+                    DrawSide(pageW, pageH, g, face.Right, new Point(padding * 2 + pageW, padding), parentText);
 
-                DrawSide(pageW, pageH, g, face.Left, new Point(padding, padding), parentText);
-                DrawSide(pageW, pageH, g, face.Right, new Point(padding*2 + pageW, padding), parentText);
+                    if (CoreConf.I.Templates_ShowBorders)
+                    {
+                        g.DrawRectangle(borderPen, new Rectangle(padding, padding, pageW, pageH));
+                        g.DrawRectangle(borderPen, new Rectangle(padding * 2 + pageW, padding, pageW, pageH));
+                    }
+                }
+                else
+                {
+                    DrawSide(pageW + padding/2, pageH, g, face.Left, new Point(padding, padding), parentText);
+                    DrawSide(pageW + padding/2, pageH, g, face.Right, new Point(padding + pageW + padding/2, padding), parentText);
+
+                    if (CoreConf.I.Templates_ShowBorders)
+                        g.DrawRectangle(borderPen, new Rectangle(padding, padding, pageW*2+padding, pageH));
+                }
             }
 
             return b;
