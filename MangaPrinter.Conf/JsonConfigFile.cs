@@ -28,6 +28,7 @@ namespace MangaPrinter.Conf
         {
             JSONDefault = _jsonDefault;
             EntryType = _jsonDefault.GetType();
+            ReadOnly = _readonly;
 
             Description = _desc;
             Deprecated = _deprecated;
@@ -92,6 +93,21 @@ namespace MangaPrinter.Conf
 
     public class JMetaT<T> : JMeta, IFullname
     {
+        public JMetaT<T> Listify(CHList<T> list)
+        {
+            if (list == null || list.GetOptions() == null || list.GetOptions().Count == 0)
+                throw new Exception("Cannot listify!");
+
+            Func<object, bool> _wrapper = (O) => CH.L<T>(O, (T) => list.inListP(T));
+            this.Verifier = _wrapper;
+
+            this.Description += "\nAllowed Values: " + String.Join(", ", list.GetOptions().Select(s => s.ToString()));
+
+            this.JSONDefault = list.GetOptions()[0];
+
+            return this;
+        }
+
         public JMetaT(T _jsonDefault, string[] _desc,
             Func<T, bool> _verifier = null, bool _deprecated = false, bool _readonly = false)
         {

@@ -52,10 +52,9 @@ namespace MangaPrinter.Conf
 
         /* ===============  Window                 =============== */
 
-        public JMetaT<string> Window_StartMode { get; } = new JMetaT<string>("centered",
-            "Start position mode of the main GUI window. Can be 'centered' or 'fixed' ",
-            (T) => CH.inListP(T, "centered", "fixed")
-        );
+        public JMetaT<string> Window_StartMode { get; } = new JMetaT<string>("",
+            "Start position mode of the main GUI window."
+        ).Listify(new CHList<string>("centered", "fixed"));
 
         public JMetaT<JSize> Window_LocationSize { get; } = new JMetaT<JSize>(new JSize() { X=0,Y=0, Width=1000, Height=900},
             "Start position and size of the main GUI window. Position only if mode='fixed'.",
@@ -72,10 +71,9 @@ namespace MangaPrinter.Conf
          (F) => F > 0.0f
        );
 
-        public JMetaT<string> Chapters_SortImportBy { get; } = new JMetaT<string>("by_name",
-            "How to sort files and folders: by_name or by_create_date",
-            (T) => CH.inListP(T, "by_name", "by_create_date")
-        );
+        public JMetaT<string> Chapters_SortImportBy { get; } = new JMetaT<string>("",
+            "How to sort files and folders"
+        ).Listify(new CHList<string>("by_name", "by_create_date"));
 
         public JMetaT<bool> Chapters_SmartNumberImport { get; } = new JMetaT<bool>(true,
             new[] {
@@ -88,10 +86,9 @@ namespace MangaPrinter.Conf
             "Import subfolders recursively"
         );
 
-        public JMetaT<string> Chapters_ChapDir { get; } = new JMetaT<string>("rtl",
-            "Default direction of new chapters. Japanese stuff is rtl (right-to-left) usually.",
-            (T) => CH.inListP(T, "rtl", "ltr")
-        );
+        public JMetaT<string> Chapters_ChapDir { get; } = new JMetaT<string>("",
+            "Default direction of new chapters. Japanese stuff is rtl (right-to-left) usually."
+        ).Listify(new CHList<string>("rtl", "ltr"));
 
         public JMetaT<string> Chapters_ImportDir { get; } = new JMetaT<string>(@"%USERPROFILE%\Documents\Mangas\",
            "Default location to point to when importing. Good if you want to point to HakuNeko folder, Empty for OS default",
@@ -100,10 +97,9 @@ namespace MangaPrinter.Conf
 
         /* ===============  Binding  Common                   =============== */
 
-        public JMetaT<string> Binding_Type { get; } = new JMetaT<string>("duplex",
-           "Binding method type",
-           (T) => CH.inListP(T, "duplex", "booklet_single", "booklet_print")
-        );
+        public JMetaT<string> Binding_Type { get; } = new JMetaT<string>("",
+           "Binding method type"
+        ).Listify(new CHList<string>("duplex", "booklet_single", "booklet_print"));
 
         public JMetaT<bool> Binding_AddStartPage { get; } = new JMetaT<bool>(true,
            "Add page before every chapter with text"

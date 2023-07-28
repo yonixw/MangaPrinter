@@ -17,17 +17,29 @@ namespace MangaPrinter.Conf
             return _F((T)_O);
         }
 
-        public static bool inListP<T>(T item, params T[] arr )
-        {
-            return Array.IndexOf(arr, item) > -1;
-        }
-
-        public static bool inList<T>(T item, T[] arr)
-        {
-            return Array.IndexOf(arr, item) > -1;
-        }
 
         public static Func<string, bool> stringy = (string s) => !String.IsNullOrEmpty(s);
+    }
+
+    public class CHList<T>
+    {
+        List<T> _options = null;
+
+        public CHList(params T[] options)
+        {
+            _options = options.ToList();
+        }
+
+        public bool inListP(T item)
+        {
+            return _options.FindIndex(e=>e.Equals(item)) > -1;
+        }
+
+        public List<T> GetOptions()
+        {
+            return _options;
+        }
+
     }
 
     public class JsonEditHelpers
