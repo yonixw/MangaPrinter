@@ -57,7 +57,7 @@ namespace MangaPrinter.Conf
           (P) => P >= 0 && P <= 1.1f
        );
 
-        public JMetaT<float> Common_Alerts_TooVertical { get; } = new JMetaT<float>(0.33f, // xaml converters expect float
+        public JMetaT<float> Common_Alerts_TooVertical { get; } = new JMetaT<float>(0.6f, // xaml converters expect float
           "Too vertical alert, value of (Width/Height)",
           (P) => P >= 0
        );
