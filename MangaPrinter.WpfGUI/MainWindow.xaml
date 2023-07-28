@@ -156,8 +156,8 @@
 
                         <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Import Direction:</Label>
                         <StackPanel Orientation="Horizontal" >
-                            <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (↼)</RadioButton>
-                            <RadioButton Name="rbLTR">LTR (⇀)</RadioButton>
+                            <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (&lt;&lt;)</RadioButton>
+                            <RadioButton Name="rbLTR">LTR (&gt;&gt;)</RadioButton>
                         </StackPanel>
 
                     </Menu>
@@ -468,14 +468,14 @@
                                                     <Label Content="{Binding Front.Right, Converter={StaticResource sideConvert}}"  />
                                                 </Border>
 
-                                                <Image Source="Icons/papper_plan.png"  Width="182" Height="62"
+                                                <Image Source="Icons/papper_plan2.png"  Width="182" Height="62"
                                                        Grid.Column="1" Grid.RowSpan="2"/>
 
                                                 <Label  Content="{Binding Back.Right, Converter={StaticResource sideConvert}}" Grid.Row="1" Grid.Column="2" />
                                                 <Label Content="{Binding Back.Left, Converter={StaticResource sideConvert}}"   Grid.Row="1" Grid.Column="0" />
 
-                                                <Button Click="MnuPrvwFront_Click" Grid.Row="0" Grid.Column="3">👁🔼</Button>
-                                                <Button Click="MnuPrvwBack_Click" Grid.Row="1" Grid.Column="3">👁🔽</Button>
+                                                <Button Click="MnuPrvwFront_Click" Grid.Row="0" Grid.Column="3">Top [Preview]</Button>
+                                                <Button Click="MnuPrvwBack_Click" Grid.Row="1" Grid.Column="3">Bottom [Preview]</Button>
                                             </Grid>
                                         </Border>
                                     </StackPanel>

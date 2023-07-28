@@ -85,8 +85,8 @@ namespace MangaPrinter.WpfGUI.Dialogs
                 OriginalImage = bm,
                 Image = dlgBluredImage.Bitmap2BitmapImage(
                         GraphicsUtils.sameAspectResize(bm,
-                        (int)(1.0f * bm.Width * (1.0f * this.Height / bm.Height)), 
-                        (int)this.Height, reuse: true)
+                        (int)(1.0f * bm.Width * (1.0f * cnvsImage.RenderSize.Height / bm.Height)), 
+                        (int)cnvsImage.RenderSize.Height, reuse: true)
                 ),
                 BlurRadius = slideBlur.Value * maxBlur / 100,
                 Zoom = 1f,
@@ -140,11 +140,15 @@ namespace MangaPrinter.WpfGUI.Dialogs
                 imgMain.DataContext = null;
                 myImage.Image = dlgBluredImage.Bitmap2BitmapImage(
                             GraphicsUtils.sameAspectResize(myImage.OriginalImage,
-                            (int)( myImage.Zoom *1.0f * myImage.OriginalImage.Width * (1.0f* this.Height / myImage.OriginalImage.Height)), 
-                            (int)(myImage.Zoom * this.Height ), reuse: true)
+                            (int)( myImage.Zoom *1.0f * myImage.OriginalImage.Width * (1.0f* cnvsImage.RenderSize.Height / myImage.OriginalImage.Height)), 
+                            (int)(myImage.Zoom * cnvsImage.RenderSize.Height), reuse: true)
                 );
                 imgMain.DataContext = myImage;
+
+                resetZoom();
             }
+
+            
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
