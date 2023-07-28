@@ -46,7 +46,7 @@ namespace MangaPrinter.WpfGUI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             lstFileChapters.ItemsSource = mangaChapters;
-            lstFileChaptersBinding.ItemsSource = new BindingList<SelectableMangaChapter>();
+            lstFileChaptersBinding.ItemsSource = new List<SelectableMangaChapter>();
             
             mangaChapters.ListChanged += MangaChapters_ListChanged;
 
@@ -839,7 +839,7 @@ namespace MangaPrinter.WpfGUI
         const string HTMLItem = "<li><span>{0}</span><br><span style='color: dimgray;'>{1}</span></li>";
         private void mnuExportTOC_Click(object sender, RoutedEventArgs e)
         {
-            if ( ((List<SelectableMangaChapter>)lstFileChaptersBinding.ItemsSource).Count == 0)
+            if (lstFileChaptersBinding.ItemsSource != null && ((List<SelectableMangaChapter>)lstFileChaptersBinding.ItemsSource).Count == 0)
             {
                 MessageBox.Show(this,"Please bind at least one chapter!");
                 return;

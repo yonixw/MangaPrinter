@@ -234,7 +234,14 @@ namespace MangaPrinter.WpfGUI.Dialogs
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (myImage != null)
+            {
                 myImage.Image = null;
+                if (myImage.OriginalImage != null)
+                {
+                    myImage.OriginalImage.Dispose();
+                    myImage.OriginalImage = null;
+                }
+            }
         }
 
         
