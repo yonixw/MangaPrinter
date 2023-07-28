@@ -937,7 +937,7 @@ namespace MangaPrinter.WpfGUI
                     {
                         pagesToInspect.Add(p);
                     }
-                    else if (p.Page.WhiteBlackRatio < CoreConf.I.Common_Alerts_InkFill)
+                    else if (p.Page.WhiteBlackRatio < CoreConf.I.Common_Alerts_InkFillLow || p.Page.WhiteBlackRatio > CoreConf.I.Common_Alerts_InkFillHigh)
                     {
                         pagesToInspect.Add(p);
                     }
@@ -974,8 +974,9 @@ namespace MangaPrinter.WpfGUI
                 "+ Checked pages\n" +
                 "+ Checked chapters (all pages)\n" +
                 "\n>> Smart delete includes found problems (if analyzed before):\n" +
-                "* 🔳 InkFill% < " + CoreConf.I.Common_Alerts_InkFill + "\n" +
-                "* ➗ TooVertical < "+ CoreConf.I.Common_Alerts_TooVertical + "\n"
+                "* 🔳 InkFill% > " + CoreConf.I.Common_Alerts_InkFillHigh + "\n" +
+                "* 🔳 InkFill% < " + CoreConf.I.Common_Alerts_InkFillLow + "\n" +
+                "* ➗ TooVertical < " + CoreConf.I.Common_Alerts_TooVertical + "\n"
                 );
         }
 

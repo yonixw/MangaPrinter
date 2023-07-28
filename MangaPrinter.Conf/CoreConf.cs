@@ -40,10 +40,15 @@ namespace MangaPrinter.Conf
             (N) => N >= 10
         );
 
-        public JMetaT<float> Common_Alerts_InkFill { get; } = new JMetaT<float>(0.1f,
-           "InkFill alert threshold, 0 (all ink) to 1 (no ink, blank page)",
-           (P) => P >= 0 && P <= 1f
+        public JMetaT<float> Common_Alerts_InkFillLow { get; } = new JMetaT<float>(0.1f,
+           "InkFill low threshold, 0 (all ink) to 1 (no ink, blank page)",
+           (P) => P >= 0 && P <= 1.1f
         );
+
+        public JMetaT<float> Common_Alerts_InkFillHigh { get; } = new JMetaT<float>(0.9f,
+          "InkFill high threshold, 0 (all ink) to 1 (no ink, blank page)",
+          (P) => P >= 0 && P <= 1.1f
+       );
 
         public JMetaT<float> Common_Alerts_TooVertical { get; } = new JMetaT<float>(0.33f,
           "Too vertical alert, value of (Width/Height)",

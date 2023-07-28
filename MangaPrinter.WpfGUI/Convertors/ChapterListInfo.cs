@@ -26,7 +26,7 @@ namespace MangaPrinter.WpfGUI.Convertors
                     observableCollection.Where(ch => ch.IsChecked).Count(),
                     observableCollection.Count,
                     observableCollection.Where(ch => ch.MinRatio < CoreConf.I.Common_Alerts_TooVertical).Count(),
-                    observableCollection.Where(ch => ch.MinWhiteRatio < CoreConf.I.Common_Alerts_InkFill).Count()
+                    observableCollection.Where(ch => ch.MinWhiteRatio < CoreConf.I.Common_Alerts_InkFillLow || ch.MinWhiteRatio > CoreConf.I.Common_Alerts_InkFillHigh).Count()
                     );
             }
 
