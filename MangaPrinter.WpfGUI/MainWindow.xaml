@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI"
         xmlns:converts="clr-namespace:MangaPrinter.WpfGUI.Convertors"
         xmlns:mangaobj="clr-namespace:MangaPrinter.Core;assembly=MangaPrinter.Core"
+        xmlns:conf="clr-namespace:MangaPrinter.Conf;assembly=MangaPrinter.Conf"
         mc:Ignorable="d"
         Title="Manga printer and binder manager" Height="900" Width="1000"
         FontSize="9.75pt" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded"
@@ -213,8 +214,8 @@
                                                 <Label Padding="5,0" Content="{Binding Name}" />
                                                 <StackPanel Orientation="Horizontal">
                                                     <Label Padding="5,0" Name="lblPagesCount" Content="{Binding Path=Pages.Count}" ContentStringFormat=" [{0} pages]" />
-                                                    <Label Padding="5,0" Name="lblPagesWhiteMinRatio" Content="{Binding MinWhiteRatio}" ContentStringFormat=" 🔳{0:0.00}" Visibility="Collapsed" />
-                                                    <Label Padding="5,0" Name="lblPagesMinRatio" Content="{Binding MinRatio}" ContentStringFormat=" ➗{0:F3}" Visibility="Collapsed" />
+                                                    <Label Padding="5,0" Name="lblPagesWhiteMinRatio" Content="{Binding MinWhiteRatio}" ContentStringFormat=" [🔳I/F {0:0.00}]" Visibility="Collapsed" />
+                                                    <Label Padding="5,0" Name="lblPagesMinRatio" Content="{Binding MinRatio}" ContentStringFormat=" [➗T/V {0:F3}]" Visibility="Collapsed" />
                                                     <Label Padding="5,0" Content="{Binding ParentName}"  Foreground="DimGray"/>
                                                 </StackPanel>
                                                 <Separator />
@@ -234,11 +235,11 @@
                                             </DataTrigger>
 
 
-                                            <DataTrigger Binding="{Binding Path=MinWhiteRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.10}" Value="True">
+                                            <DataTrigger Binding="{Binding Path=MinWhiteRatio, Converter={StaticResource lowerConvert}, ConverterParameter='Common_Alerts_InkFill'}" Value="True">
                                                 <Setter TargetName="lblPagesWhiteMinRatio" Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
 
-                                            <DataTrigger Binding="{Binding Path=MinRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.33}" Value="True">
+                                            <DataTrigger Binding="{Binding Path=MinRatio, Converter={StaticResource lowerConvert}, ConverterParameter='Common_Alerts_TooVertical'}" Value="True">
                                                 <Setter TargetName="lblPagesMinRatio" Property="Foreground" Value="Red"/>
                                                 <Setter TargetName="lblPagesMinRatio" Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
@@ -297,8 +298,8 @@
                                         </Label>
 
                                         <Label Content="{Binding Name}" />
-                                        <Label Name="lblWhiteRatio" Content="{Binding WhiteBlackRatio}" ContentStringFormat=" 🔳{0:0.00}" Visibility="Collapsed" />
-                                        <Label Name="lblPageRatio" Content="{Binding AspectRatio}" ContentStringFormat=" ➗{0:F3}" Visibility="Collapsed" />
+                                        <Label Name="lblWhiteRatio" Content="{Binding WhiteBlackRatio}" ContentStringFormat=" [🔳I/F {0:0.00}]" Visibility="Collapsed" />
+                                        <Label Name="lblPageRatio" Content="{Binding AspectRatio}" ContentStringFormat=" [➗T/V {0:F3}]" Visibility="Collapsed" />
                                     </StackPanel>
 
                                     <DataTemplate.Triggers>
@@ -308,12 +309,12 @@
                                             <Setter TargetName="lblSingle" Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
 
-                                        <DataTrigger Binding="{Binding Path=AspectRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.33}" Value="True">
+                                        <DataTrigger Binding="{Binding Path=AspectRatio, Converter={StaticResource lowerConvert}, ConverterParameter='Common_Alerts_TooVertical'}" Value="True">
                                             <Setter TargetName="lblPageRatio" Property="Foreground" Value="Red"/>
                                             <Setter TargetName="lblPageRatio" Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
 
-                                        <DataTrigger Binding="{Binding Path=WhiteBlackRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.10}" Value="True">
+                                        <DataTrigger Binding="{Binding Path=WhiteBlackRatio, Converter={StaticResource lowerConvert}, ConverterParameter='Common_Alerts_InkFill'}" Value="True">
                                             <Setter TargetName="lblWhiteRatio" Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </DataTemplate.Triggers>

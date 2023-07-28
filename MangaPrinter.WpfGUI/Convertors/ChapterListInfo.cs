@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using MangaPrinter.Conf;
 
 namespace MangaPrinter.WpfGUI.Convertors
 {
@@ -24,8 +25,8 @@ namespace MangaPrinter.WpfGUI.Convertors
                 return string.Format(strFormat,
                     observableCollection.Where(ch => ch.IsChecked).Count(),
                     observableCollection.Count,
-                    observableCollection.Where(ch => ch.MinRatio < 0.33f).Count(),
-                    observableCollection.Where(ch => ch.MinWhiteRatio < 0.10f).Count()
+                    observableCollection.Where(ch => ch.MinRatio < CoreConf.I.Common_Alerts_TooVertical).Count(),
+                    observableCollection.Where(ch => ch.MinWhiteRatio < CoreConf.I.Common_Alerts_InkFill).Count()
                     );
             }
 
