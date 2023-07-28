@@ -41,7 +41,55 @@ namespace MangaPrinter.WpfGUI.Dialogs
                     InputBuckets.Select((b)=>b.value),
                     InputBuckets.Select((b)=>b.count)
                     );
+
+                makeTextualGraph(0);
             }
+        }
+
+        const int textualGraphRows = 17;
+        void makeTextualGraph(int selectedIndex)
+        {
+            string result = "";
+
+            int maxCount = InputBuckets.Select(b => b.count).Max();
+            int minCount = InputBuckets.Select(b => b.count).Min();
+            float countStep = 1.0f * (maxCount - minCount) / textualGraphRows;
+
+            for (int row = 0; row < textualGraphRows; row++)
+            {
+                for (int bucket = 0; bucket < InputBuckets.Count; bucket++)
+                {
+                    result += InputBuckets[bucket].count > (textualGraphRows - row -1) * (countStep) ?
+                                    "#" : "- ";
+                    
+                }
+                result += "\n";
+            }
+
+            int countBefore = 0;
+            int countAfter = 0;
+            for (int bucket = 0; bucket < InputBuckets.Count; bucket++)
+            {
+                result += (selectedIndex == bucket) ? "^" : "- ";
+
+                if (bucket < selectedIndex)
+                {
+                    countBefore += InputBuckets[bucket].count;
+                }
+                if (bucket > selectedIndex)
+                {
+                    countAfter += InputBuckets[bucket].count;
+                }
+            }
+
+            x20x100.Text = result;
+            txtValue.Text = Math.Round(InputBuckets[selectedIndex].value,2).ToString();
+            txtValueCount.Text = InputBuckets[selectedIndex].count.ToString();
+            txtCountAftr.Text = countAfter.ToString();
+            txtCountBfr.Text = countBefore.ToString();
+
+            
+
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -49,10 +97,13 @@ namespace MangaPrinter.WpfGUI.Dialogs
             if (InputBuckets != null && InputBuckets.Count > 0)
             {
                 BucketIndex = (int)sldCutoff.Value;
+
                 IEnumerable<double> _x2 = new double[] { InputBuckets[BucketIndex].value, InputBuckets[BucketIndex].value };
                 IEnumerable<double> _y2 = new double[] { 0, maxCount };
 
                 gCutoff.Plot(_x2, _y2);
+
+                makeTextualGraph(BucketIndex);
             }
         }
 

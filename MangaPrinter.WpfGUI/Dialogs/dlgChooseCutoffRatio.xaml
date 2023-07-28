@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
         xmlns:d3="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF"
         mc:Ignorable="d"
-        Title="Choose cutoff ratio for double-page" Height="500" Width="800"  WindowStartupLocation="CenterScreen"
+        Title="Choose cutoff ratio for double-page" Height="550" Width="1000"  WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded" Closing="Window_Closing" FontSize="14">
     <Grid>
         <Grid.RowDefinitions>
@@ -14,18 +14,54 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <d3:Chart BottomTitle="Ratio (Page Width/Height)" LeftTitle="Count" Grid.Row="0"  Margin="5,5">
-            <Grid>
-                <d3:LineGraph x:Name="gRatio" Description="Ratio Distribution" Stroke="Blue" StrokeThickness="3"/>
-                <d3:LineGraph x:Name="gCutoff" Description="Cutoff" Stroke="Red" StrokeThickness="3"/>
-            </Grid>
-        </d3:Chart>
-        
+
+        <TabControl Grid.Row="0">
+            <TabItem >
+                <TabItem.Header>
+                    <TextBlock FontSize="15pt">Visual</TextBlock>
+                </TabItem.Header>
+                <d3:Chart BottomTitle="Ratio (Page Width/Height)" LeftTitle="Count"   Margin="5,5">
+                    <Grid>
+                        <d3:LineGraph x:Name="gRatio" Description="Ratio Distribution" Stroke="Blue" StrokeThickness="3"/>
+                        <d3:LineGraph x:Name="gCutoff" Description="Cutoff" Stroke="Red" StrokeThickness="3"/>
+                    </Grid>
+                </d3:Chart>
+            </TabItem>
+            <TabItem >
+                <TabItem.Header>
+                    <TextBlock FontSize="15pt">Textual</TextBlock>
+                </TabItem.Header>
+                <StackPanel>
+                    <TextBlock x:Name="x20x100">
+                   
+                    </TextBlock>
+                    <RichTextBox>
+                        <RichTextBox.Document>
+                            <FlowDocument>
+                                <Paragraph>
+                                    <TextBlock FontWeight="Bold">Value:</TextBlock>
+                                    <TextBlock x:Name="txtValue"></TextBlock>
+                                    <TextBlock FontWeight="Bold">Count:</TextBlock>
+                                    <TextBlock x:Name="txtValueCount"></TextBlock>
+                                    <LineBreak/>
+                                    <TextBlock FontWeight="Bold">Count Before:</TextBlock>
+                                    <TextBlock x:Name="txtCountBfr"></TextBlock>
+                                    <TextBlock FontWeight="Bold">Count After:</TextBlock>
+                                    <TextBlock x:Name="txtCountAftr"></TextBlock>
+                                </Paragraph>
+                            </FlowDocument>
+                        </RichTextBox.Document>
+                    </RichTextBox>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
         <StackPanel Grid.Row="1" Margin="5,5">
             <Label>Choose cutoff (in the middle?)</Label>
             <Slider Name="sldCutoff" Minimum="0" Maximum="99" SmallChange="1" LargeChange="1" 
                     Value="{Binding BucketIndex}" ValueChanged="Slider_ValueChanged"/>
         </StackPanel>
+
         <DockPanel Grid.Row="2" LastChildFill="False">
             <Button DockPanel.Dock="Right" Margin="5" Padding="5"
                     Name="btnAccept" Click="BtnAccept_Click">Accept</Button>
