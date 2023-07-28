@@ -238,7 +238,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                 else
                 {
                     DrawSide(pageW + padding/2, pageH, g, face.Left, new Point(padding, padding), parentText);
-                    DrawSide(pageW + padding/2, pageH, g, face.Right, new Point(padding + pageW + padding/2, padding), parentText);
+                    DrawSide(pageW + padding/2, pageH, g, face.Right, new Point(padding + pageW + padding/2 -1 /*avoid 1 pixel line*/, padding), parentText);
 
                     if (CoreConf.I.Templates_ShowBorders)
                         g.DrawRectangle(borderPen, new Rectangle(padding, padding, pageW*2+padding, pageH));

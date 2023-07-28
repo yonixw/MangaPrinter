@@ -191,7 +191,7 @@ namespace MangaPrinter.Conf
            (N) => N >= 0
          );
 
-        public JMetaT<int> Templates_MaxValueLength { get; } = new JMetaT<int>(25,
+        public JMetaT<int> Templates_MaxValueLength { get; } = new JMetaT<int>(70,
            "Max character before clipping any value, If can't break into lines, >= 0",
            (N) => N >= 0
          );

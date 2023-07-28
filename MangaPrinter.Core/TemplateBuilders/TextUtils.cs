@@ -46,7 +46,7 @@ namespace MangaPrinter.Core.TemplateBuilders
             if (canBreakLines && CoreConf.I.Templates_AddSwName)
             {
                 string SoftwareTxt = "MangaPrinter " + CoreConf.I.Info_GitVersion.Get().Split(' ')[0];
-                result += "\n\n" + SoftwareTxt;
+                result += "\n \n" + SoftwareTxt;
             }
 
             if (!canBreakLines && result.Length > CoreConf.I.Templates_MaxValueLength )

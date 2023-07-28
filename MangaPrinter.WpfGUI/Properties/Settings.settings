@@ -1,33 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MangaPrinter.WpfGUI.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
   <Profiles />
-  <Settings>
-    <Setting Name="doublePageWidth" Type="System.Single" Scope="Application">
-      <Value Profile="(Default)">1.15</Value>
-    </Setting>
-    <Setting Name="orderImportByName" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="importSubfolders" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="RTL" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="addStartPage" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="addEndPage" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="addAntiSpoiler" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="antiSpoilerStep" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">25</Value>
-    </Setting>
-    <Setting Name="exportPagePadding" Type="System.Single" Scope="Application">
-      <Value Profile="(Default)">2.2</Value>
-    </Setting>
-  </Settings>
+  <Settings />
 </SettingsFile>
