@@ -213,7 +213,7 @@
                                             <StackPanel Orientation="Vertical">
                                                 <Label Padding="5,0" Content="{Binding Name}" />
                                                 <StackPanel Orientation="Horizontal">
-                                                    <Label Padding="5,0" Name="lblPagesCount" Content="{Binding Path=Pages.Count}" ContentStringFormat=" [{0} pages]" />
+                                                    <Label Padding="5,0" Name="lblPagesCount" Content="{Binding Path=CalculatedPageCount}" ContentStringFormat=" [{0} pages]" />
                                                     <Label Padding="5,0" Name="lblPagesWhiteMinRatio" Content="{Binding MinWhiteRatio}" ContentStringFormat=" [🔳I/F&lt;{0:0.00}]" Visibility="Collapsed" />
                                                     <Label Padding="5,0" Name="lblPagesWhiteMaxRatio" Content="{Binding MaxWhiteRatio}" ContentStringFormat=" [🔳I/F&gt;{0:0.00}]" Visibility="Collapsed" />
                                                     <Label Padding="5,0" Name="lblPagesMinRatio" Content="{Binding MinRatio}" ContentStringFormat=" [➗T/V {0:F3}]" Visibility="Collapsed" />
@@ -223,15 +223,15 @@
                                             </StackPanel>
                                         </StackPanel>
                                         <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource greaterConvert}, ConverterParameter=25}" Value="True">
+                                            <DataTrigger Binding="{Binding Path=CalculatedPageCount, Converter={StaticResource greaterConvert}, ConverterParameter=Common_Alerts_PageCountHigh1}" Value="True">
                                                 <Setter TargetName="lblPagesCount" Property="FontWeight" Value="Bold"/>
                                             </DataTrigger>
 
-                                            <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource lowerConvert}, ConverterParameter=10}" Value="True">
+                                            <DataTrigger Binding="{Binding Path=CalculatedPageCount, Converter={StaticResource lowerConvert}, ConverterParameter=Common_Alerts_PageCountLow}" Value="True">
                                                 <Setter TargetName="lblPagesCount" Property="Foreground" Value="Red"/>
                                             </DataTrigger>
 
-                                            <DataTrigger Binding="{Binding Path=Pages.Count, Converter={StaticResource greaterConvert}, ConverterParameter=65}" Value="True">
+                                            <DataTrigger Binding="{Binding Path=CalculatedPageCount, Converter={StaticResource greaterConvert}, ConverterParameter=Common_Alerts_PageCountHigh2}" Value="True">
                                                 <Setter TargetName="lblPagesCount" Property="Foreground" Value="Red"/>
                                             </DataTrigger>
 

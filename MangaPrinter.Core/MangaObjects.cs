@@ -64,8 +64,18 @@ namespace MangaPrinter.Core
             NotifyChange("MaxRatio");
             NotifyChange("MinWhiteRatio");
             NotifyChange("MaxWhiteRatio");
+            NotifyChange("CalculatedPageCount");
             NotifyChange("Pages");
         }
+
+        public int CalculatedPageCount
+        {
+            get
+            {
+                return ((Pages?.Count() ?? 0) > 0) ? Pages.Last().ChildIndexEnd : 0;
+            }
+        }
+
 
         public float MinRatio
         {

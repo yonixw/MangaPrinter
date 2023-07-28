@@ -40,18 +40,33 @@ namespace MangaPrinter.Conf
             (N) => N >= 10
         );
 
-        public JMetaT<float> Common_Alerts_InkFillLow { get; } = new JMetaT<float>(0.1f,
+        public JMetaT<float> Common_Alerts_InkFillLow { get; } = new JMetaT<float>(0.1f, // xaml converters expect float
            "InkFill low threshold, 0 (all ink) to 1 (no ink, blank page)",
            (P) => P >= 0 && P <= 1.1f
         );
 
-        public JMetaT<float> Common_Alerts_InkFillHigh { get; } = new JMetaT<float>(0.9f,
+        public JMetaT<float> Common_Alerts_InkFillHigh { get; } = new JMetaT<float>(0.9f, // xaml converters expect float
           "InkFill high threshold, 0 (all ink) to 1 (no ink, blank page)",
           (P) => P >= 0 && P <= 1.1f
        );
 
-        public JMetaT<float> Common_Alerts_TooVertical { get; } = new JMetaT<float>(0.33f,
+        public JMetaT<float> Common_Alerts_TooVertical { get; } = new JMetaT<float>(0.33f, // xaml converters expect float
           "Too vertical alert, value of (Width/Height)",
+          (P) => P >= 0
+       );
+
+        public JMetaT<float> Common_Alerts_PageCountLow { get; } = new JMetaT<float>(10f, // xaml converters expect float
+          "Chapter pages, low threshold",
+          (P) => P >= 0 
+       );
+
+        public JMetaT<float> Common_Alerts_PageCountHigh1 { get; } = new JMetaT<float>(25f, // xaml converters expect float
+          "Chapter pages, high but expected threshold",
+          (P) => P >= 0
+       );
+
+        public JMetaT<float> Common_Alerts_PageCountHigh2 { get; } = new JMetaT<float>(35f, // xaml converters expect float
+          "Chapter pages, high but unexpected threshold",
           (P) => P >= 0
        );
 
