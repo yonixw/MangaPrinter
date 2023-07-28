@@ -377,7 +377,7 @@ namespace MangaPrinter.WpfGUI
             Core.MangaPage page = lstFilePages.SelectedValue as Core.MangaPage;
             if (page != null)
             {
-                Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(page.ImagePath, "File: " + page.Name);
+                Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(page, "File: " + page.Name);
                 dlgImage.ShowDialog();
             }
         }
@@ -593,8 +593,6 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
-
-        FileInfo tempImage = new FileInfo("_tmp_.png");
         private void MnuPrvwFront_Click(object sender, RoutedEventArgs e)
         {
             SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
@@ -605,14 +603,9 @@ namespace MangaPrinter.WpfGUI
                     page.singlePageWidth,page.singlePageHeight,
                     page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
-            if (tempImage.Exists)
-                tempImage.Delete();
 
-            b.Save(tempImage.FullName);
-            b.Dispose();
-
-            Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
-                    "Front face of page: " + p.PageNumber);
+            Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(null,
+                    "Front face of page: " + p.PageNumber,b);
             dlgImage.ShowDialog();
         }
 
@@ -625,14 +618,8 @@ namespace MangaPrinter.WpfGUI
                     page.singlePageWidth, page.singlePageHeight,
                     page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
-            if (tempImage.Exists)
-                tempImage.Delete();
-
-            b.Save(tempImage.FullName);
-            b.Dispose();
-
-            Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(tempImage.FullName,
-                    "Front face of page: " + p.PageNumber);
+            Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(null,
+                    "Front face of page: " + p.PageNumber, b);
             dlgImage.ShowDialog();
         }
 
@@ -719,7 +706,7 @@ namespace MangaPrinter.WpfGUI
                                          "Processing: " + ch.Name + " -> " + page.Name,
                                          (int)(100.0f * pageCounter / TotlaPageCount)
                                      );
-                                using (Bitmap b1 = MagickImaging.BitmapFromUrlExt(page.ImagePath))
+                                using (Bitmap b1 = MagickImaging.BitmapFromUrlExt(page))
                                 {
                                     using (Bitmap b2 =
                                         CoreConf.I.Info_IsNotWindows.Get() ?
@@ -1019,7 +1006,45 @@ namespace MangaPrinter.WpfGUI
                 SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
                 Chapter.Pages
                     .Where(p => p.IsChecked)
-                    .ForEach(p => p.IsOmmited = !p.IsOmmited);
+                    .ForEach(p => p.Effects.IsOmited = !p.Effects.IsOmited);
+                Chapter.updateChapterStats();
+            }
+        }
+
+        private void mnCrop_Click(object sender, RoutedEventArgs e)
+        {
+            Core.MangaPage page = lstFilePages.SelectedValue as Core.MangaPage;
+            if (page != null)
+            {
+                Dialogs.dlgBluredImageFastCrop dlgImage = 
+                    new Dialogs.dlgBluredImageFastCrop(page,  "File: " + page.Name);
+                dlgImage.ShowDialog();
+            }
+        }
+
+        private void mnuDummy_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstFileChapters.SelectedValue != null)
+            {
+                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                Core.MangaPage page = lstFilePages.SelectedValue as Core.MangaPage;
+                int index = 0;
+                if (page != null)
+                    index = Chapter.Pages.IndexOf(page);
+                
+
+                Chapter.Pages.Insert(Math.Max(0, index), new MangaPage()
+                {
+                    AspectRatio = 1f,
+                    Chapter = Chapter,
+                    ChildIndexStart = -1,
+                    ChildIndexEnd = -1,
+                    Effects = new PageEffects() { VirtualPath = "/dummy/white" },
+                    IsDouble = false,
+                    ImagePath = "virtual_path",
+                    WhiteBlackRatio = 1,
+                    Name = "Dummy Full White"
+                }); ;
                 Chapter.updateChapterStats();
             }
         }

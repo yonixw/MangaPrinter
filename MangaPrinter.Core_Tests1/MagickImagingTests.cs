@@ -13,15 +13,32 @@ namespace MangaPrinter.Core.Tests
     [TestClass()]
     public class MagickImagingTests
     {
+
+        MangaPage mockPage(string url)
+        {
+            return new MangaPage()
+            {
+                AspectRatio = 1f,
+                Chapter = null,
+                ChildIndexStart = -1,
+                ChildIndexEnd = -1,
+                Effects = new PageEffects() ,
+                IsDouble = false,
+                ImagePath = url,
+                WhiteBlackRatio = 1,
+                Name = "TestMock"
+            };
+        }
+
         [TestMethod()]
         public void WhitePercentageTest()
         {
-            using (Bitmap b1 = MagickImaging.BitmapFromUrlExt("./44.33931_per_white.png"))
+            using (Bitmap b1 = MagickImaging.BitmapFromUrlExt(mockPage("./44.33931_per_white.png")))
             {
                 Assert.AreEqual("0.4433931", MagickImaging.WhiteRatio(b1).ToString("F7"));
             }
 
-            using (Bitmap b1 = MagickImaging.BitmapFromUrlExt("./44.33931_per_white.png"))
+            using (Bitmap b1 = MagickImaging.BitmapFromUrlExt(mockPage("./44.33931_per_white.png")))
             {
                 using (Bitmap b2 = GraphicsUtils.MakeGrayscale3(b1))
                 {
@@ -29,7 +46,7 @@ namespace MangaPrinter.Core.Tests
                 }
             }
 
-            using (Bitmap b1 = MagickImaging.BitmapFromUrlExt("./44.33931_per_white.png"))
+            using (Bitmap b1 = MagickImaging.BitmapFromUrlExt(mockPage("./44.33931_per_white.png")))
             {
                 using (Bitmap b2 = GraphicsUtils.MakeBW1(b1)) // Hard threshold!!
                 {
@@ -37,7 +54,7 @@ namespace MangaPrinter.Core.Tests
                 }
             }
 
-            using (Bitmap b1 = MagickImaging.BitmapFromUrlExt("./44.33931_per_white_gray.png"))
+            using (Bitmap b1 = MagickImaging.BitmapFromUrlExt(mockPage("./44.33931_per_white_gray.png")))
             {
                 using (Bitmap b2 = GraphicsUtils.MakeBW1(b1)) // Hard threshold!!
                 {
@@ -45,7 +62,7 @@ namespace MangaPrinter.Core.Tests
                 }
             }
 
-            using (Bitmap b1 = MagickImaging.BitmapFromUrlExt("./44.33931_per_white_gray.png"))
+            using (Bitmap b1 = MagickImaging.BitmapFromUrlExt(mockPage("./44.33931_per_white_gray.png")))
             {
                 using (Bitmap b2 = GraphicsUtils.MakeGrayscale3(b1))
                 {

@@ -18,35 +18,18 @@ using System.Windows.Threading;
 
 namespace MangaPrinter.WpfGUI.Dialogs
 {
-
-    public class MyPointD : ModelBaseWpf
-    {
-        public double X { get { return _baseGet(); } set { _baseSet(value); } }
-        public double Y { get { return _baseGet(); } set { _baseSet(value); } }
-    }
-
-    public class MyImageBind : ModelBaseWpf
-    {
-        public BitmapImage Image { get { return _baseGet(); } set { _baseSet(value); } }
-        public double BlurRadius { get { return _baseGet(); } set { _baseSet(value); } }
-        public double Zoom { get { return _baseGet(); } set { _baseSet(value); } }
-        public MyPointD Offset { get { return _baseGet(); } set { _baseSet(value); } }
-    }
-
     /// <summary>
-    /// Interaction logic for dlgBluredImage.xaml
+    /// Interaction logic for dlgBluredImageFastCrop.xaml
     /// </summary>
-    public partial class dlgBluredImage : Window
+    public partial class dlgBluredImageFastCrop : Window
     {
-        private System.Drawing.Bitmap _custom;
-        private MangaPage _page;
         private string _title;
+        private MangaPage _page;
 
-        public dlgBluredImage(MangaPage page, string DialogTitle, System.Drawing.Bitmap custom = null)
+        public dlgBluredImageFastCrop( MangaPage Page, string DialogTitle)
         {
-            _page = page;
             _title = DialogTitle;
-            _custom = custom; // cases like front/back after build duplex face
+            _page = Page;
             InitializeComponent();
         }
 
@@ -61,36 +44,18 @@ namespace MangaPrinter.WpfGUI.Dialogs
             int finalHeight = (int)cnvsImage.ActualHeight;
             if (ratioMax <= ratioBitmap)
             {
-              finalHeight = (int)((float)cnvsImage.ActualWidth / ratioBitmap);
+                finalHeight = (int)((float)cnvsImage.ActualWidth / ratioBitmap);
             }
 
             // for future:
             //      int finalWidth =  (int)cnvsImage.ActualWidth;
             //      ... else: finalWidth = (int)((float)cnvsImage.ActualHeight * ratioBitmap);
-        
-            slideZoom.Value = (100.0f *  finalHeight)/ myImage.Image.Height;
+
+            slideZoom.Value = (100.0f * finalHeight) / myImage.Image.Height;
         }
-
-        public static BitmapImage Bitmap2BitmapImage(System.Drawing.Bitmap bitmap)
-        {
-            //https://social.msdn.microsoft.com/Forums/vstudio/en-US/dee7cb68-aca3-402b-b159-2de933f933f1/disposing-a-wpf-image-or-bitmapimage-so-the-source-picture-file-can-be-modified?forum=wpf
-
-            System.Windows.Media.Imaging.BitmapImage result = new System.Windows.Media.Imaging.BitmapImage();  // Create new BitmapImage  
-            System.IO.Stream stream = new System.IO.MemoryStream();  // Create new MemoryStream  
-
-            bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);  // Save the loaded Bitmap into the MemoryStream - Png format was the only one I tried that didn't cause an error (tried Jpg, Bmp, MemoryBmp)  
-            bitmap.Dispose();  // Dispose bitmap so it releases the source image file 
-            
-            result.BeginInit();  // Begin the BitmapImage's initialisation  
-            result.StreamSource = stream;  // Set the BitmapImage's StreamSource to the MemoryStream containing the image  
-            result.EndInit();  // End the BitmapImage's initialisation  
-
-            return result;
-        }
-
 
         bool winLoaded = false;
-        DispatcherTimer debounceTimer = 
+        DispatcherTimer debounceTimer =
             new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 500), IsEnabled = false };
 
 
@@ -104,17 +69,18 @@ namespace MangaPrinter.WpfGUI.Dialogs
             }
             CoreConfLoader.onConfigFinishUpdate += ConfigChanged;
 
-            System.Drawing.Bitmap bm =
-                _custom != null ? _custom : MagickImaging.BitmapFromUrlExt(_page);
-            imgMain.DataContext = myImage = new MyImageBind() {
-                Image = Bitmap2BitmapImage(
-                        GraphicsUtils.sameAspectResize(bm, 
-                        (int)(1.0f * bm.Width * (1.0f * cnvsImage.RenderSize.Height / bm.Height)), 
-                        (int)cnvsImage.RenderSize.Height, reuse: _custom != null)
+            System.Drawing.Bitmap bm = MagickImaging.BitmapFromUrlExt(_page);
+            imgMain.DataContext = myImage = new MyImageBind()
+            {
+                Image = dlgBluredImage.Bitmap2BitmapImage(
+                        GraphicsUtils.sameAspectResize(
+                        bm,
+                        (int)(1.0f * bm.Width * (1.0f * cnvsImage.RenderSize.Height / bm.Height)),
+                        (int)cnvsImage.RenderSize.Height)
                 ),
                 BlurRadius = slideBlur.Value * maxBlur / 100,
                 Zoom = 1f,
-                Offset = new MyPointD() { X=0,Y=0}
+                Offset = new MyPointD() { X = 0, Y = 0 }
             };
 
             debounceTimer.Tick += DebounceTimer_Tick;
@@ -139,13 +105,14 @@ namespace MangaPrinter.WpfGUI.Dialogs
                 (int)(this.Height * myImage.Zoom) > 0
                 )
             {
-                System.Drawing.Bitmap bm =
-                     _custom != null ? _custom : MagickImaging.BitmapFromUrlExt(_page);
                 imgMain.DataContext = null;
-                myImage.Image = Bitmap2BitmapImage(
-                            GraphicsUtils.sameAspectResize(bm,
-                            (int)( myImage.Zoom* 1.0f * bm.Width * (1.0f * cnvsImage.RenderSize.Height / bm.Height)),
-                            (int)(cnvsImage.RenderSize.Height * myImage.Zoom), reuse: _custom != null)
+                System.Drawing.Bitmap bm = MagickImaging.BitmapFromUrlExt(_page);
+                myImage.Image = dlgBluredImage.Bitmap2BitmapImage(
+                            GraphicsUtils.sameAspectResize(
+                            bm,
+                            //GraphicsUtils.bitmapCrop(myImage.OriginalImage,_pageEffects, reuse: true),
+                            (int)(myImage.Zoom * 1.0f * bm.Width * (1.0f * cnvsImage.RenderSize.Height / bm.Height)),
+                            (int)(cnvsImage.RenderSize.Height * myImage.Zoom), reuse: true)
                 );
                 imgMain.DataContext = myImage;
 
@@ -156,6 +123,11 @@ namespace MangaPrinter.WpfGUI.Dialogs
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            DebounceRender();
+        }
+
+        private void DebounceRender()
         {
             // Reset
             debounceTimer.IsEnabled = true;
@@ -245,7 +217,44 @@ namespace MangaPrinter.WpfGUI.Dialogs
             }
         }
 
-        
+        private void slideCrop_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if(txtCropPrcnt != null)
+                txtCropPrcnt.Text = Math.Round(slideCrop.Value,2).ToString() + "%";
+        }
+
+        private void btnTop_Click(object sender, RoutedEventArgs e)
+        {
+            _page.Effects.CropTop = (float)Math.Round(slideCrop.Value, 2);
+            DebounceRender();
+        }
+
+        private void btnRight_Click(object sender, RoutedEventArgs e)
+        {
+            _page.Effects.CropRight = (float)Math.Round(slideCrop.Value, 2);
+            DebounceRender();
+        }
+
+        private void btnBottom_Click(object sender, RoutedEventArgs e)
+        {
+            _page.Effects.CropBottom = (float)Math.Round(slideCrop.Value, 2);
+            DebounceRender();
+        }
+
+        private void btnLeft_Click(object sender, RoutedEventArgs e)
+        {
+            _page.Effects.CropLeft = (float)Math.Round(slideCrop.Value, 2);
+            DebounceRender();
+        }
+
+        private void btnAll_Click(object sender, RoutedEventArgs e)
+        {
+            _page.Effects.CropTop = 
+            _page.Effects.CropRight = 
+            _page.Effects.CropBottom =
+            _page.Effects.CropLeft = (float)Math.Round(slideCrop.Value, 2);
+            DebounceRender();
+        }
 
         public void Zoom(double percent)
         {
@@ -256,5 +265,6 @@ namespace MangaPrinter.WpfGUI.Dialogs
         }
     }
 
-    
+
 }
+

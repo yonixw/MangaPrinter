@@ -7,6 +7,26 @@ using System.Text;
 namespace MangaPrinter.Core
 {
    
+    public class PageEffects : ModelBaseWpf
+    {
+        public bool IsOmited { get { return _baseGet(); } set { _baseSet(value); } } 
+        public string VirtualPath { get { return _baseGet(); } set { _baseSet(value); } }
+
+        public float CropTop { get { return _baseGet(); } set { _baseSet(value); } }
+        public float CropRight { get { return _baseGet(); } set { _baseSet(value); } }
+        public float CropBottom { get { return _baseGet(); } set { _baseSet(value); } }
+        public float CropLeft { get { return _baseGet(); } set { _baseSet(value); } }
+
+        public PageEffects()
+        {
+            IsOmited = false;
+            VirtualPath = "";
+            CropTop = 0;
+            CropRight = 0;
+            CropBottom = 0;
+            CropLeft = 0;
+        }
+    }
 
     public class MangaPage : ModelBaseWpf
     {
@@ -17,7 +37,7 @@ namespace MangaPrinter.Core
 
         public string Name { get { return _baseGet(); } set { _baseSet(value); } }
         public bool IsDouble { get { return _baseGet(); } set { _baseSet(value); } }
-        public bool IsOmmited { get { return _baseGet(); } set { _baseSet(value); } }
+        public PageEffects Effects { get { return _baseGet(); } set { _baseSet(value); } }
         public float AspectRatio { get { return _baseGet(); } set { _baseSet(value); } }
         public float WhiteBlackRatio { get { return _baseGet(); } set { _baseSet(value); } }
         public string ImagePath { get { return _baseGet(); } set { _baseSet(value); } }

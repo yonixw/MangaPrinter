@@ -1,0 +1,77 @@
+﻿<Window x:Class="MangaPrinter.WpfGUI.Dialogs.dlgBluredImageFastCrop"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
+        mc:Ignorable="d"
+        Title="dlgBluredImageCrop" Height="450" Width="800" 
+        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" 
+        SizeChanged="Window_SizeChanged"
+        Closing="Window_Closing">
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2">
+            <StatusBarItem>
+                <Button Padding="5px" Name="btnRefit" Click="btnRefit_Click">Re-Fit image</Button>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Label>Blur% level:</Label>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Slider Name="slideBlur" Maximum="100" Width="150px" AutoToolTipPlacement="BottomRight" SmallChange="1" LargeChange="5" Value="100"  ValueChanged="slideBlur_ValueChanged"></Slider>
+            </StatusBarItem>
+
+            <StatusBarItem>
+                <Label>Zoom% level:</Label>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Slider Name="slideZoom" Maximum="1000" Width="150px" AutoToolTipPlacement="BottomRight" SmallChange="1" LargeChange="5" Value="100" ValueChanged="slideZoom_ValueChanged"></Slider>
+            </StatusBarItem>
+        </StatusBar>
+        
+        <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2">
+            <StatusBarItem>
+                <Label>Crop:</Label>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Slider Name="slideCrop" Minimum="0.1" Maximum="50.1" Width="300px" AutoToolTipPlacement="BottomRight" SmallChange="0.1" LargeChange="1" Value="1" ValueChanged="slideCrop_ValueChanged"></Slider>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock x:Name="txtCropPrcnt">%</TextBlock>
+            </StatusBarItem>
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center">From: </TextBlock>
+                    <TextBlock Width="10px"></TextBlock>
+                    <Button Padding="5px" Name="btnTop" Click="btnTop_Click">Top</Button>
+                    <TextBlock Width="10px"></TextBlock>
+                    <Button Padding="5px" Name="btnRight" Click="btnRight_Click">Right</Button>
+                    <TextBlock Width="10px"></TextBlock>
+                    <Button Padding="5px" Name="btnBottom" Click="btnBottom_Click">Bottom</Button>
+                    <TextBlock Width="10px"></TextBlock>
+                    <Button Padding="5px" Name="btnLeft" Click="btnLeft_Click">Left</Button>
+                    <TextBlock Width="10px"></TextBlock>
+                    <Button Padding="5px" Name="btnAll" Click="btnAll_Click">(All)</Button>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+        
+        <Canvas Name="cnvsImage" MouseLeave="cnvsImage_MouseLeave" MouseMove="cnvsImage_MouseMove" MouseUp="imgMain_MouseUp" MouseWheel="cnvsImage_MouseWheel">
+            <Image Name="imgMain" Canvas.Left="0" Canvas.Top="0" Panel.ZIndex="1"
+                   MouseDown="imgMain_MouseDown" MouseUp="imgMain_MouseUp" 
+                   Source="{Binding Image}">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="{Binding Zoom}" ScaleY="{Binding Zoom}"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform />
+                    </TransformGroup>
+                </Image.RenderTransform>
+                <Image.Effect>
+                    <BlurEffect Radius="{Binding BlurRadius}"/>
+                </Image.Effect>
+            </Image>
+        </Canvas>
+    </DockPanel>
+</Window>

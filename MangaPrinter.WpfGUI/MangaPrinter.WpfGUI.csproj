@@ -97,6 +97,9 @@
     <Compile Include="Dialogs\dlgBluredImage.xaml.cs">
       <DependentUpon>dlgBluredImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\dlgBluredImageFastCrop.xaml.cs">
+      <DependentUpon>dlgBluredImageFastCrop.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\dlgBluredImageListActions.xaml.cs">
       <DependentUpon>dlgBluredImageListActions.xaml</DependentUpon>
     </Compile>
@@ -127,6 +130,10 @@
       <DependentUpon>winWorking.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialogs\dlgBluredImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\dlgBluredImageFastCrop.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -157,7 +157,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                             contentH, contentW);
                         break;
                     case SingleSideType.MANGA:
-                        page = GraphicsUtils.loadFileZoomedCentered(face.Left.MangaPageSource.ImagePath,
+                        page = GraphicsUtils.loadFileZoomedCentered(face.Left.MangaPageSource,
                             contentH, contentW);
                         break;
                 }
@@ -283,7 +283,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                        pageH, pageW);
                     break;
                 case SingleSideType.MANGA:
-                    page = GraphicsUtils.loadFileZoomedCentered(side.MangaPageSource.ImagePath,
+                    page = GraphicsUtils.loadFileZoomedCentered(side.MangaPageSource,
                        pageH, pageW);
                     break;
             }

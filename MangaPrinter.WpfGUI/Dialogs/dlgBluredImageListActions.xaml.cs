@@ -28,7 +28,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
     /// </summary>
     public partial class dlgBluredImageListActions : Window
     {
-
+        private MangaPage _page;
         public string CustomTitle {get;set;}
 
         public ObservableCollection<ActionMangaPage<bool>> Pages { get; set; }
@@ -60,15 +60,10 @@ namespace MangaPrinter.WpfGUI.Dialogs
             myImage.Zoom =   finalHeight *1.0f / myImage.Image.Height;
         }
 
-        void LoadImage(string imageUrl)
+        void LoadImage(MangaPage page)
         {
             if (myImage != null)
             {
-                if (myImage.OriginalImage != null )
-                {
-                    myImage.OriginalImage.Dispose();
-                    myImage.OriginalImage = null;
-                }
                 myImage.Image = null;
             }
 
@@ -79,14 +74,13 @@ namespace MangaPrinter.WpfGUI.Dialogs
             }
 
 
-            System.Drawing.Bitmap bm = MagickImaging.BitmapFromUrlExt(imageUrl);
+            System.Drawing.Bitmap bm = MagickImaging.BitmapFromUrlExt(_page);
             imgMain.DataContext = myImage = new MyImageBind()
             {
-                OriginalImage = bm,
                 Image = dlgBluredImage.Bitmap2BitmapImage(
                         GraphicsUtils.sameAspectResize(bm,
                         (int)(1.0f * bm.Width * (1.0f * cnvsImage.RenderSize.Height / bm.Height)), 
-                        (int)cnvsImage.RenderSize.Height, reuse: true)
+                        (int)cnvsImage.RenderSize.Height)
                 ),
                 BlurRadius = slideBlur.Value * maxBlur / 100,
                 Zoom = 1f,
@@ -132,15 +126,15 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
             if (
                 myImage != null &&
-                myImage.OriginalImage != null &&
                 (int)(this.Width * myImage.Zoom) > 0 &&
                 (int)(this.Height * myImage.Zoom) > 0
                 )
             {
                 imgMain.DataContext = null;
+                System.Drawing.Bitmap bm = MagickImaging.BitmapFromUrlExt(_page);
                 myImage.Image = dlgBluredImage.Bitmap2BitmapImage(
-                            GraphicsUtils.sameAspectResize(myImage.OriginalImage,
-                            (int)( myImage.Zoom *1.0f * myImage.OriginalImage.Width * (1.0f* cnvsImage.RenderSize.Height / myImage.OriginalImage.Height)), 
+                            GraphicsUtils.sameAspectResize(bm,
+                            (int)( myImage.Zoom *1.0f * bm.Width * (1.0f* cnvsImage.RenderSize.Height / bm.Height)), 
                             (int)(myImage.Zoom * cnvsImage.RenderSize.Height), reuse: true)
                 );
                 imgMain.DataContext = myImage;
@@ -236,11 +230,6 @@ namespace MangaPrinter.WpfGUI.Dialogs
         {
             if (myImage != null)
             {
-                if (myImage.OriginalImage != null)
-                {
-                    myImage.OriginalImage.Dispose();
-                    myImage.OriginalImage = null;
-                }
                 myImage.Image = null;
             }
         }
@@ -250,7 +239,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
             if (lstPages.SelectedIndex > -1)
             {
                 ActionMangaPage<bool> p = (ActionMangaPage<bool>)lstPages.SelectedItem;
-                LoadImage(p.Page.ImagePath);
+                LoadImage(p.Page);
             }
         }
 

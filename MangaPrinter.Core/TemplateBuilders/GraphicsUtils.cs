@@ -63,16 +63,16 @@ namespace MangaPrinter.Core.TemplateBuilders
             return b;
         }
 
-        public static Bitmap loadFileZoomedCentered(string path, int newHeight, int newWidth)
+        public static Bitmap loadFileZoomedCentered(MangaPage page, int newHeight, int newWidth)
         {
             try
             {
-                return sameAspectResize(MagickImaging.BitmapFromUrlExt(path), newWidth, newHeight);
+                return sameAspectResize(MagickImaging.BitmapFromUrlExt(page), newWidth, newHeight);
                 // no stream because it has to stay open: https://stackoverflow.com/a/1053123/1997873
             }
             catch (OutOfMemoryException ex)
             {
-                MessageBox.Show("Can't load image file:\n" + path + "\n" + ex.ToString());
+                MessageBox.Show("Can't load image file:\n" + page.ImagePath + "\n" + ex.ToString());
 
             }
             return null;
@@ -110,6 +110,47 @@ namespace MangaPrinter.Core.TemplateBuilders
                 return image;
             }
         }
+
+        public static Bitmap bitmapCrop(Bitmap image, PageEffects _pe, bool reuse = false)
+        {
+            if (image != null)
+            {
+                int W = image.Width;
+                int H = image.Height;
+                int T = (int)Math.Floor(image.Height * 0.01f * _pe.CropTop);
+                int R = (int)Math.Floor(image.Width * 0.01f * _pe.CropRight);
+                int B = (int)Math.Floor(image.Height * 0.01f * _pe.CropBottom);
+                int L = (int)Math.Floor(image.Width * 0.01f * _pe.CropLeft);
+                var fillBrush = new SolidBrush(Color.White);
+
+                int newW = image.Width - R - L;
+                int newH = image.Height - T - B;
+
+                var bmp = new Bitmap(newW,newH);
+
+                using (var graph = Graphics.FromImage(bmp))
+                {
+                    // uncomment for higher quality output
+                    graph.InterpolationMode = InterpolationMode.High;
+                    graph.CompositingQuality = CompositingQuality.HighQuality;
+                    graph.SmoothingMode = SmoothingMode.AntiAlias;
+
+                    graph.FillRectangle(fillBrush, new RectangleF(0, 0, newH, newH));
+                    graph.DrawImage(image,
+                        0,0,
+                        new RectangleF(L,T,newW,newH),
+                        GraphicsUnit.Pixel);
+                }
+
+                if (!reuse)
+                    image.Dispose();
+                return bmp;
+
+            }
+            else
+                return image;
+        }
+
 
         // Put scaled image (content) inside bigger image, centered.
         public static Bitmap bitmapResize(Bitmap image, int contentWidth, int contentHeight,
@@ -207,7 +248,7 @@ namespace MangaPrinter.Core.TemplateBuilders
 
         public static Bitmap MakeBW1(Bitmap Original)
         {
-            // Todo, on linux, use MakeGrayscale3?
+            // on linux, use MakeGrayscale3
             return Original.Clone(
                 new Rectangle(0, 0, Original.Width, Original.Height),
                 System.Drawing.Imaging.PixelFormat.Format1bppIndexed

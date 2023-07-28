@@ -1,4 +1,5 @@
 ﻿using ImageMagick;
+using MangaPrinter.Core.TemplateBuilders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -51,8 +52,9 @@ namespace MangaPrinter.Core
             collection?.Write(pdfPath);
         }
 
-        public static Bitmap BitmapFromUrlExt(string path)
+        public static Bitmap BitmapFromUrlExt(MangaPage page)
         {
+            string path = page.ImagePath;
             Bitmap result = null;
             string extLower = Path.GetExtension(path).ToLower();
             if (FileImporter.BitmapSupportedImagesExtensions.Contains(extLower))
@@ -66,6 +68,12 @@ namespace MangaPrinter.Core
                     result = img.ToBitmap();
                 }
             }
+
+            if (page.Effects != null)
+            {
+                result = GraphicsUtils.bitmapCrop(result, page.Effects, reuse: false);
+            }
+
             return result;
         }
 

@@ -266,11 +266,13 @@
                             <ListBox.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Name="mnPreviewManga" Click="MnPreviewManga_Click" Header="Preview File"/>
+                                    <MenuItem Name="mnCrop" Click="mnCrop_Click" Header="Plan Crop Image"/>
                                     <Separator/>
                                     <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Single page checked"/>
                                     <MenuItem Name="mnuToDouble" Click="mnuToDouble_Click" Header="Double page checked"/>
                                     <Separator/>
                                     <MenuItem Name="mnuToOmit" Click="mnuToOmit_Click" Header="Toggle Ommited checked"/>
+                                    <MenuItem Name="mnuDummy" Click="mnuDummy_Click" Header="Insert Dummy"/>
                                     <Separator/>
                                     <MenuItem Name="mnuPgSelectAll" Click="mnuPgSelectAll_Click" Header="Check All"/>
                                     <MenuItem Name="mnuPgSelectNone" Click="mnuPgSelectNone_Click" Header="Check None"/>
@@ -318,7 +320,7 @@
                                             <Setter TargetName="lblSingle" Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
 
-                                        <DataTrigger Binding="{Binding IsOmmited}" Value="True">
+                                        <DataTrigger Binding="{Binding Path=Effects.IsOmited}" Value="True">
                                             <Setter TargetName="imgPageOmit" Property="Visibility" Value="Visible"/>
                                             <Setter TargetName="imgPage" Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
