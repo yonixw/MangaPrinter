@@ -78,7 +78,7 @@ namespace MangaPrinter.Core
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                //Console.WriteLine(ex);
             }
             return result;
         }
@@ -98,7 +98,7 @@ namespace MangaPrinter.Core
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                //Console.WriteLine(ex);
             }
             return result;
         }

@@ -395,7 +395,7 @@ namespace MangaPrinter.WpfGUI
             foreach (MangaPage page in allPages)
             {
                 var b = buckets.Last((bucket) => page.AspectRatio >= bucket.value);
-                Console.WriteLine("{0}.{1}: {2}", page.Chapter.Name, page.Name, page.AspectRatio);
+                //Console.WriteLine("{0}.{1}: {2}", page.Chapter.Name, page.Name, page.AspectRatio);
                 b.count++;
             }
 
@@ -937,11 +937,11 @@ namespace MangaPrinter.WpfGUI
                     {
                         pagesToInspect.Add(p);
                     }
-                    else if (p.Page.WhiteBlackRatio < 0.1)
+                    else if (p.Page.WhiteBlackRatio < CoreConf.I.Common_Alerts_InkFill)
                     {
                         pagesToInspect.Add(p);
                     }
-                    else if (p.Page.AspectRatio < 0.33)
+                    else if (p.Page.AspectRatio < CoreConf.I.Common_Alerts_TooVertical)
                     {
                         pagesToInspect.Add(p);
                     }
@@ -966,10 +966,10 @@ namespace MangaPrinter.WpfGUI
             MessageBox.Show(this,">> Smart delete includes choises:\n" +
                 "+ (Optional) First and last 3 pages of each chapter\n" +
                 "+ Checked pages\n" +
-                "+ Checked chapters\n" +
+                "+ Checked chapters (all pages)\n" +
                 "\n>> Smart delete includes found problems (if analyzed before):\n" +
-                "* 🔳 InkFill% < 0.1\n" +
-                "* ➗ TooVertical < 0.33\n" 
+                "* 🔳 InkFill% < " + CoreConf.I.Common_Alerts_InkFill + "\n" +
+                "* ➗ TooVertical < "+ CoreConf.I.Common_Alerts_TooVertical + "\n"
                 );
         }
 

@@ -15,7 +15,7 @@ namespace MangaPrinter.WpfGUI.Convertors
         {
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
-            const string strFormat = "({0}/{1}) Selected // {2} ➗TooVertical // {3} 🔳EmptyInk% ";
+            const string strFormat = "({0}/{1}) Selected // {2} ➗TooVertical // {3} 🔳InkFill% ";
             if (value == null) return
                 string.Format(strFormat, 0, 0, 0, 0);
 

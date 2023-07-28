@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
         mc:Ignorable="d"
-        Title="🔳 EmptyInk %" Height="165" Width="480" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+        Title="🔳 InkFill%" Height="165" Width="480" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
     <StackPanel>
         <Label Name="lblDescription" Content="Choose Option:" />
         <StackPanel Margin="15px 0 0 0">

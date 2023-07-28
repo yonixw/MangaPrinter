@@ -163,11 +163,11 @@
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <MenuItem Header="(1) Import folders" Style="{StaticResource MenuItemBtnStyle}" Margin="0 0 5px 0"
                                   Name="menuImprtFolders" Click="menuImprtFolders_Click" Foreground="Black" FontWeight="DemiBold"/>
-                        <MenuItem Header="🔳EmptyInk% Checked" Style="{StaticResource MenuItemBtnStyle}" Margin="0 0 5px 0"
+                        <MenuItem Header="🔳InkFill% Checked" Style="{StaticResource MenuItemBtnStyle}" Margin="0 0 5px 0"
                                   Name="btnCalcWhiteRatio" Click="btnCalcWhiteRatio_Click" Foreground="Black" Width="180px"/>
-                        <MenuItem Header=" + Empty chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="140px" Margin="0 0 5px 0"
+                        <MenuItem Header="New Chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="140px" Margin="0 0 5px 0"
                                   Name="mnuAddEmptyChapter" Click="mnuAddEmptyChapter_Click"/>
-                        <MenuItem Header="Smart Delete..." Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="120"  Margin="0 0 5px 0"
+                        <MenuItem Header="Smart Delete" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="130"  Margin="0 0 5px 0"
                                   Name="mnuQuickDelete" Click="mnuQuickDelete_Click"/>
                         <MenuItem Header="?" Name="mnuSmartDeleteInfo" Click="mnuSmartDeleteInfo_Click" ></MenuItem>
                         <MenuItem Header="Clear Data" Style="{StaticResource MenuItemBtnStyleRed}" Foreground="White" Width="100" Margin="0 0 5px 0"
@@ -334,7 +334,7 @@
                                     <Label>Duplex</Label>
                                 </StackPanel>
                             </RadioButton>
-                            <RadioButton Name="rbBindBookletStack" Margin="0,0,10,0" VerticalContentAlignment="Center">
+                            <RadioButton Name="rbBindBookletStack" Margin="0,0,10,0" VerticalContentAlignment="Center" IsEnabled="False">
                                 <StackPanel Orientation="Horizontal" >
                                     <Image Source="Icons/booklet.png" Height="32px" ></Image>
                                     <Label>
@@ -344,7 +344,7 @@
                                     </Label>
                                 </StackPanel>
                             </RadioButton>
-                            <RadioButton Name="rbBindBookletSingles" Margin="0,0,10,0" VerticalContentAlignment="Center">
+                            <RadioButton Name="rbBindBookletSingles" Margin="0,0,10,0" VerticalContentAlignment="Center" IsEnabled="False">
                                 <StackPanel Orientation="Horizontal" >
                                     <Image Source="Icons/booklet.png" Height="32px" ></Image>
                                     <Label>
