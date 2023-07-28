@@ -1,24 +1,32 @@
 # Info
 
-This docker comes pre installed with wine (version 8) for MangaPrinter (Windows WPF App) and HakuNeko (Electron App).
+This docker comes pre installed with wine (version 8), dotnet48 (from winetricks) and electron dependencies.
+It is ready for MangaPrinter (this Windows WPF App) and HakuNeko (Electron App).
 
-This docker uses a X11 server and gives access to the desktop using a web UI based on `noVNC`.
+The docker uses a X11 server and gives access to the desktop using a web UI based on `noVNC`.
 
 # How to run
 
-Assuming you want the downloaded files to stay persistent:
+Running requires docker. 
+
+Assuming you want the downloaded files to stay persistent in the `Mangas` folder:
+
+1. Run
 
 ```
 docker run --rm -it --shm-size=256m -v "$(pwd)/Mangas:/root/Mangas" -p 5901:5901 yonixw/mangaprinter
 ```
 
-Access the desktop at `http://localhost:5901`, and right click on it for available programs. The relevant manga apps are under the `DockerCustom` menu.
+2. Open your browser and go to the desktop web interface at `http://localhost:5901`
+3. Enter the default password: `manga` (can be changed with environment `VNC_PASSWD`)
+4. Right click on the black desktop for available programs. Look under the `DockerCustom` menu.
 
- Default password is "manga" and can be changed with environment `VNC_PASSWD`.
 
 # Limitations
 
-You cannot run this docker on a limited environment (like docker in docker and not privileged). Mainly because wine 8 will not work. For example, it cannot be used in [Gitpod.io](https://www.gitpod.io/) which gives you a limited dev environment.
+The latest docker image size is 6GB after download (2GB download)
+
+You cannot run this docker image on a limited environment (like non sudo environments). Mainly because wine 8 will not work. For example, it cannot be used in [Gitpod.io](https://www.gitpod.io/) which gives you a limited dev environment.
 
 # Links 
 
