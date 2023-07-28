@@ -953,12 +953,18 @@ namespace MangaPrinter.WpfGUI
                 });
             });
             dlg.Pages = pagesToInspect;
+
             if (dlg.ShowDialog() ?? false)
             {
                 pagesToInspect
                     .Where(p => p.Result==true)
-                    .ForEach(p => p.Page.Chapter.Pages.Remove(p.Page));
+                    .ForEach(p => { 
+                        p.Page.Chapter.Pages.Remove(p.Page); 
+                        p.Page.Chapter.updateChapterStats(); 
+                    });
             }
+
+            
         }
 
         private void mnuSmartDeleteInfo_Click(object sender, RoutedEventArgs e)
