@@ -14,10 +14,10 @@ Assuming you want the downloaded files to stay persistent in the `Mangas` folder
 1. Run
 
 ```
-docker run --rm -it --shm-size=256m -v "$(pwd)/Mangas:/root/Mangas" -p 5901:5901 yonixw/mangaprinter
+docker run --rm -it --shm-size=256m -v "$(pwd)/Mangas:/root/Mangas" -p 15901:5901 yonixw/mangaprinter
 ```
 
-2. Open your browser and go to the desktop web interface at `http://localhost:5901`
+2. Open your browser and go to the desktop web interface at `http://localhost:15901`
 3. Enter the default password: `manga` (can be changed with environment `VNC_PASSWD`)
 4. Right click on the black desktop for available programs. Look under the `DockerCustom` menu.
 
