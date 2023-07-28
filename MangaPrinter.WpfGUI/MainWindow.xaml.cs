@@ -713,7 +713,11 @@ namespace MangaPrinter.WpfGUI
                                         // MakeGrayscale3 slower than MakeBW1 but supported in linux, i think
                                         GraphicsUtils.MakeGrayscale3(b1) : GraphicsUtils.MakeBW1(b1) )
                                     {
-                                        page.WhiteBlackRatio = MagickImaging.WhiteRatio(b1);
+                                        page.WhiteBlackRatio = MagickImaging.WhiteRatio(b2);
+                                        page.AspectRatio =
+                                            b2.Height > 0 ?
+                                                1.0f * b2.Width / b2.Height :
+                                                MangaPage.MinRatio;
                                     }
                                 }
                             }
