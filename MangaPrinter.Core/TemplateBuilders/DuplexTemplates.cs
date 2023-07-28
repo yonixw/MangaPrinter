@@ -29,8 +29,8 @@ namespace MangaPrinter.Core.TemplateBuilders
 
         public static Pen blackPen = new Pen(Color.Black, 4);
         public static Brush blackBrush = new SolidBrush(Color.Black);
-        public static Font fontSide = new Font(new FontFamily("Arial"), 5, FontStyle.Bold); // size will be changed
-        public static Font fontPageText = new Font(new FontFamily("Arial"), 5);
+        public static Font fontSide = new Font(new FontFamily(CoreConf.I.Templates_TextFont), 5, FontStyle.Bold); // size will be changed
+        public static Font fontPageText = new Font(new FontFamily(CoreConf.I.Templates_TextFont), 5);
 
         public Bitmap BuildFace(PrintFace face,  int spW, int spH, int padding, bool colors, bool parentText)
         {
@@ -68,10 +68,12 @@ namespace MangaPrinter.Core.TemplateBuilders
         }
         private static string GetFaceCountText(PrintFace face)
         {
-            string result = "Page No. " + face.FaceNumber;
+            // Todo, total face numbers, total A-S count?
+            string result = String.Format(CoreConf.I.Templates_MetaText_PageNum, face.FaceNumber);
             if (face.BatchPaperNumber > -1)
-                result += " (AntiSpoiler " + (face.BatchPaperNumber + 1) + ")";
-            return result;
+                result += " " + String.Format(CoreConf.I.Templates_MetaText_AntiSpoilerNum, face.BatchPaperNumber + 1);
+
+            return TextUtils.PostProcess(result,false);
         }
 
         private string GetMeta(PrintSide face)
@@ -82,8 +84,11 @@ namespace MangaPrinter.Core.TemplateBuilders
             }
             string chName = face.MangaPageSource.Chapter.Name;
             string chFolder = face.MangaPageSource.Chapter.ParentName;
-            string meta = string.Format("{0} > {1} > {2}", chFolder, chName, PrintPage.lastFullExportMetadata);
-            return meta;
+
+            string meta = string.Format(CoreConf.I.Templates_MetaText_Structure, 
+                chFolder, chName, PrintPage.lastFullExportMetadata);
+
+            return TextUtils.PostProcess(meta,false);
         }
 
         private Bitmap TemplateDouble(PrintFace face, int spW, int spH, int padding)
@@ -106,19 +111,22 @@ namespace MangaPrinter.Core.TemplateBuilders
                 int sideIndex = face.Right.SideNumber;
                 string FaceCountText = GetFaceCountText(face);
 
-                if (isRTL)
+                if (CoreConf.I.Templates_ShowDirectionArrows)
                 {
-                    GraphicsUtils.DrawArrowHeadRow(g, blackPen,
-                        new Point(tmpW - padding, padding / 2),
-                        new Point(padding, padding / 2),
-                        padding);
-                }
-                else
-                {
-                    GraphicsUtils.DrawArrowHeadRow(g, blackPen,
-                       new Point(padding, padding / 2),
-                       new Point(tmpW - padding, padding / 2),
-                       padding);
+                    if (isRTL)
+                    {
+                        GraphicsUtils.DrawArrowHeadRow(g, blackPen,
+                            new Point(tmpW - padding, padding / 2),
+                            new Point(padding, padding / 2),
+                            padding);
+                    }
+                    else
+                    {
+                        GraphicsUtils.DrawArrowHeadRow(g, blackPen,
+                           new Point(padding, padding / 2),
+                           new Point(tmpW - padding, padding / 2),
+                           padding);
+                    }
                 }
 
                 GraphicsUtils.FontScaled faceCountFS = GraphicsUtils.FindFontSizeByContent(
@@ -139,7 +147,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                 switch (face.Left.SideType)
                 {
                     case SingleSideType.ANTI_SPOILER:
-                        page = GraphicsUtils.createImageWithText(CoreConf.I.Templates_Duplex_AntiSpoiler.Get(),
+                        page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_AntiSpoiler,true),
                             contentH, contentW);
                         break;
                     case SingleSideType.MANGA:
@@ -149,9 +157,6 @@ namespace MangaPrinter.Core.TemplateBuilders
                 }
                 g.DrawImage(page, new Point(padding, padding));
                 page.Dispose();
-
-                // border
-                //g.DrawRectangle(blackPen, new Rectangle(padding, padding, contentW, contentH));
             }
 
             return b;
@@ -176,19 +181,22 @@ namespace MangaPrinter.Core.TemplateBuilders
             {
                 string FaceCountText = GetFaceCountText(face);
 
-                if (isRTL)
+                if (CoreConf.I.Templates_ShowDirectionArrows)
                 {
-                    GraphicsUtils.DrawArrowHeadRow(g, blackPen,
-                        new Point(tmpW - padding, padding / 2),
-                        new Point(padding, padding / 2),
-                        padding);
-                }
-                else
-                {
-                    GraphicsUtils.DrawArrowHeadRow(g, blackPen,
-                       new Point(padding, padding / 2),
-                       new Point(tmpW - padding, padding / 2),
-                       padding);
+                    if (isRTL)
+                    {
+                        GraphicsUtils.DrawArrowHeadRow(g, blackPen,
+                            new Point(tmpW - padding, padding / 2),
+                            new Point(padding, padding / 2),
+                            padding);
+                    }
+                    else
+                    {
+                        GraphicsUtils.DrawArrowHeadRow(g, blackPen,
+                           new Point(padding, padding / 2),
+                           new Point(tmpW - padding, padding / 2),
+                           padding);
+                    }
                 }
 
 
@@ -209,9 +217,6 @@ namespace MangaPrinter.Core.TemplateBuilders
 
                 DrawSide(pageW, pageH, g, face.Left, new Point(padding, padding), parentText);
                 DrawSide(pageW, pageH, g, face.Right, new Point(padding*2 + pageW, padding), parentText);
-
-                // border
-                //g.DrawRectangle(blackPen, new Rectangle(padding, padding, pageW, pageH));
             }
 
             return b;
@@ -220,7 +225,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         private void DrawSide(int pageW, int pageH, Graphics g,  PrintSide side, Point pagePlace, bool parentName)
         {
             Bitmap page = null;
-            string chapterName = "<init ch name>";
+            string chapterName = "(Missing Ch. Name)";
             if (side.SideType == SingleSideType.INTRO || side.SideType == SingleSideType.OUTRO)
             {
                 chapterName = (parentName ? side.MangaPageSource.Chapter.ParentName + '\n' : "") +
@@ -230,21 +235,21 @@ namespace MangaPrinter.Core.TemplateBuilders
             switch (side.SideType)
             {
                 case SingleSideType.INTRO:
-                    page = GraphicsUtils.createImageWithText(CoreConf.I.Templates_Duplex_Intro.Get()
-                        .Replace("{0}", chapterName),
+                    page = GraphicsUtils.createImageWithText(
+                        TextUtils.PostProcess(String.Format(CoreConf.I.Templates_Duplex_Intro, chapterName),true),
                       pageH, pageW);
                     break;
                 case SingleSideType.OUTRO:
-                    page = GraphicsUtils.createImageWithText(CoreConf.I.Templates_Duplex_Outro.Get()
-                        .Replace("{0}", chapterName),
+                    page = GraphicsUtils.createImageWithText(
+                        TextUtils.PostProcess(String.Format(CoreConf.I.Templates_Duplex_Outro, chapterName), true),
                       pageH, pageW);
                     break;
                 case SingleSideType.BEFORE_DOUBLE:
-                    page = GraphicsUtils.createImageWithText(CoreConf.I.Templates_Duplex_BeforeDouble.Get(),
+                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_BeforeDouble, true),
                       pageH, pageW);
                     break;
                 case SingleSideType.MAKE_EVEN:
-                    page = GraphicsUtils.createImageWithText(CoreConf.I.Templates_Duplex_MakeEven.Get(),
+                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_MakeEven, true),
                        pageH, pageW);
                     break;
                 case SingleSideType.MANGA:

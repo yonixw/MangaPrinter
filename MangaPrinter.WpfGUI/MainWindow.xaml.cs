@@ -79,7 +79,7 @@ namespace MangaPrinter.WpfGUI
                 Left = locationSize.Y;
             }
 
-            txtGitInfo.Text = CoreConf.I.Info_GitVersion.Get().Replace("\"", "").Split(';')[0];
+            txtGitInfo.Text = CoreConf.I.Info_GitVersion;
             txtConfigInfo.Text = String.Format("{0}.{1}",
                 CoreConf.CURR_CONFIG_MAJOR_VERSION, CoreConf.CURR_CONFIG_MINOR_VERSION);
 
@@ -474,7 +474,6 @@ namespace MangaPrinter.WpfGUI
             bool startPage = cbAddStart.IsChecked ?? false;
             bool endPage = cbAddEnd.IsChecked ?? false;
             int antiSpoiler = (cbUseAntiSpoiler.IsChecked ?? false) ? int.Parse(txtSpoilerPgNm.Text) : 0;
-            bool printParent = cbIncludeParent.IsChecked ?? false;
 
             var allSelectedChapters = mangaChapters.Where(ch=>ch.IsChecked).ToList();
 
@@ -483,7 +482,7 @@ namespace MangaPrinter.WpfGUI
                 ObservableCollection<SelectablePrintPage> result = new ObservableCollection<SelectablePrintPage>();
 
                 (new Core.ChapterBuilders.DuplexBuilder())
-                    .Build(allSelectedChapters.Cast<MangaChapter>().ToList(), startPage, endPage, antiSpoiler,printParent)
+                    .Build(allSelectedChapters.Cast<MangaChapter>().ToList(), startPage, endPage, antiSpoiler)
                     .ForEach((p) => result.Add(PrintPage.Extend<SelectablePrintPage>(p)));
 
                 return result;

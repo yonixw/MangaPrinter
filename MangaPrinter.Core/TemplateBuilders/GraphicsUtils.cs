@@ -1,4 +1,5 @@
 ﻿using ImageMagick;
+using MangaPrinter.Conf;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -55,11 +56,13 @@ namespace MangaPrinter.Core.TemplateBuilders
         {
             Bitmap b = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(b);
-            g.DrawRectangle(Pens.White, new Rectangle(0, 0, width, height));
+            g.FillRectangle(Brushes.White, new Rectangle(0, 0, width, height));
 
             Font textFont = FindFontSizeByContent(g, drawText, b.Size, new Font(new FontFamily(fontName), 5)).font; // font size not imprtnt
             g.DrawString(drawText, textFont, Brushes.Black, 0, 0);
-            g.DrawRectangle(borderPen, new Rectangle(0, 0, width, height));
+
+            if (CoreConf.I.Templates_ShowBorders)
+                g.DrawRectangle(borderPen, new Rectangle(0, 0, width, height));
 
             return b;
         }
@@ -135,7 +138,9 @@ namespace MangaPrinter.Core.TemplateBuilders
                     ((int)imageHeight - scaleHeight) / 2,
                     scaleWidth,
                     scaleHeight);
-                graph.DrawRectangle(borderPen, new Rectangle(0, 0, imageWidth, imageHeight));
+                
+                if (CoreConf.I.Templates_ShowBorders)
+                    graph.DrawRectangle(borderPen, new Rectangle(0, 0, imageWidth, imageHeight));
             }
 
             image.Dispose();

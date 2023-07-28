@@ -12,7 +12,8 @@ namespace MangaPrinter.Conf
 
         /* ===============  Information             =============== */
 
-        public JMetaT<string> Info_GitVersion { get; } = new JMetaT<string>(Properties.Resources.GitInfo,
+        public JMetaT<string> Info_GitVersion { get; } = new JMetaT<string>(
+            Properties.Resources.GitInfo.Replace("\"", "").Split(';')[0], // remove surrounding qoutes and ignore commit msg
             "Version of the software on build time", _readonly: true
         );
 
@@ -108,7 +109,8 @@ namespace MangaPrinter.Conf
          );
 
         public JMetaT<bool> Binding_AddParentFolder { get; } = new JMetaT<bool>(true,
-           "Works when the folder structure is Name>Chapter000>Page000.jpg, and you import top folder."
+           new[]{"Add parent folder to chapter name","" +
+               "Works when the folder structure is Name>Chapter000>Page000.jpg, and you import top folder." }
         );
 
         public JMetaT<bool> Binding_KeepColors { get; } = new JMetaT<bool>(false,
@@ -156,14 +158,16 @@ namespace MangaPrinter.Conf
            (N) => N >= 0
          );
 
-        public JMetaT<int> Templates_MaxValueLength { get; } = new JMetaT<int>(80,
-           "Max character before clipping any value, >= 0",
+        public JMetaT<int> Templates_MaxValueLength { get; } = new JMetaT<int>(25,
+           "Max character before clipping any value, If can't break into lines, >= 0",
            (N) => N >= 0
          );
 
         public JMetaT<string> Templates_TextFont { get; } = new JMetaT<string>("Arial",
            "Font to use on templates, might crash if not installed on OS", CH.stringy
         );
+
+        // TODO: every list of options, add to description
 
         // TODO: list of all available meta replace !PNAME! (chapter, parent, page number?, batch number A-S?)
 

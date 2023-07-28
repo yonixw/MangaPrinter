@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="TemplateBuilders\DuplexTemplates.cs" />
     <Compile Include="TemplateBuilders\GraphicsUtils.cs" />
+    <Compile Include="TemplateBuilders\TextUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

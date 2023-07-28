@@ -54,10 +54,15 @@ namespace MangaPrinter.Conf
         {
             if (value != null)
             {
-                Tuple<Type, Type> myTypes = new Tuple<Type, Type>(value.GetType(), EntryType);
-
                 if (value.GetType().Equals(EntryType))
                     return (T)value;
+
+                // For int and floats... which is js numbers
+                object convertTry = JsonConfig.myTypeConverters(JsonConfig.myConverters(value), EntryType);
+                if (convertTry.GetType().Equals(EntryType))
+                    return (T)convertTry;
+
+
             }
             return (T)JSONDefault;
 
@@ -71,8 +76,6 @@ namespace MangaPrinter.Conf
             if (value != null)
             {
                 value = JsonConfig.myConverters(value);
-
-                Tuple<Type, Type> myTypes = new Tuple<Type, Type>(value.GetType(), EntryType);
 
                 if (EntryType.Equals(value.GetType()))
                     return Verifier(value);
@@ -176,6 +179,19 @@ namespace MangaPrinter.Conf
                 return Convert.ToInt32(o);
             else if (t == typeof(Double))
                 return Convert.ToSingle(o);
+            else
+                return o;
+        }
+
+        public static object myTypeConverters(object o, Type target)
+        {
+            if (o == null) return null;
+
+            Type t = o.GetType();
+            if (t == typeof(Int32) && target == typeof(Single))
+                return Convert.ToSingle(o);
+            else if (t == typeof(Single) && target == typeof(Int32))
+                return Convert.ToInt32(Math.Floor((Single)o));
             else
                 return o;
         }

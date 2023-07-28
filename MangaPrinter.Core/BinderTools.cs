@@ -12,14 +12,14 @@ namespace MangaPrinter.Core
 
     public interface IBindBuilder
     {
-        List<PrintPage> Build(List<MangaChapter> ch, bool startPage, bool endPage, int antiSpoiler = 0, bool parentFolder = true);
+        List<PrintPage> Build(List<MangaChapter> ch, bool startPage, bool endPage, int antiSpoiler = 0);
     }
 
     public class BookletChapterBuilder : IBindBuilder
     {
 
 
-        List<PrintPage> IBindBuilder.Build(List<MangaChapter> ch, bool startPage, bool endPage, int antiSpoiler,bool parentFolder)
+        List<PrintPage> IBindBuilder.Build(List<MangaChapter> ch, bool startPage, bool endPage, int antiSpoiler)
         {
             // looping from both end\start sides .... so middle can have some blanks
             // No way to save doubles... splitted into 2 faces singles
