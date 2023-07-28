@@ -160,7 +160,7 @@ namespace MangaPrinter.Core
         MANGA,
         BEFORE_DOUBLE, MAKE_EVEN,
         ANTI_SPOILER,
-        OMMITED,
+        OMITED,
 
         LAST
     }

@@ -41,7 +41,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                 if (
                     face.Right.SideType != SingleSideType.MANGA &&
                     face.Right.SideType != SingleSideType.ANTI_SPOILER &&
-                    face.Right.SideType != SingleSideType.OMMITED
+                    face.Right.SideType != SingleSideType.OMITED
                     )
                     throw new Exception(
                         string.Format("Got type {0} in double in duplex. It's unexpected.", face.Right.SideType)
@@ -152,8 +152,8 @@ namespace MangaPrinter.Core.TemplateBuilders
                         page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_AntiSpoiler,true),
                             contentH, contentW);
                         break;
-                    case SingleSideType.OMMITED:
-                        page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Ommited, true),
+                    case SingleSideType.OMITED:
+                        page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Omited, true),
                             contentH, contentW);
                         break;
                     case SingleSideType.MANGA:
@@ -278,8 +278,8 @@ namespace MangaPrinter.Core.TemplateBuilders
                     page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_MakeEven, true),
                        pageH, pageW);
                     break;
-                case SingleSideType.OMMITED:
-                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Ommited, true),
+                case SingleSideType.OMITED:
+                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Omited, true),
                        pageH, pageW);
                     break;
                 case SingleSideType.MANGA:

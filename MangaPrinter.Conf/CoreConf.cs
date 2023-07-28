@@ -217,7 +217,7 @@ namespace MangaPrinter.Conf
         );
 
 
-        public JMetaT<string> Templates_Ommited { get; } = new JMetaT<string>("(Manually Ommited)",
+        public JMetaT<string> Templates_Omited { get; } = new JMetaT<string>("(Manually Omited)",
            "Text template to use when ommiting files", CH.stringy
         );
 
