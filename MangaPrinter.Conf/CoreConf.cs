@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,8 @@ namespace MangaPrinter.Conf
             "Version of the software on build time", _readonly: true
         );
 
+
+
         public const int CURR_CONFIG_MAJOR_VERSION = 1; // Breaking!    (change, delete)
         public const int CURR_CONFIG_MINOR_VERSION = 1; // Not breaking (add only)
 
@@ -27,6 +30,10 @@ namespace MangaPrinter.Conf
         public JMetaT<int> Info_ConfigVersionMinor { get; } = new JMetaT<int>(CURR_CONFIG_MINOR_VERSION,
            "Minor Version of the config, which changes when new config options are added"
         );
+
+        public JMetaT<bool> Info_IsNotWindows { get; } = new JMetaT<bool>(Process.GetProcessesByName("winlogon").Length == 0,
+          "Is the program running under linux", _readonly: true
+       );
 
         /* ===============  Common                 =============== */
 

@@ -508,7 +508,7 @@
                                 </LinearGradientBrush>
                             </Paragraph.Background>
                             <TextBlock TextDecorations="Underline">
-                                Build version information:
+                            Debug Information:
                             </TextBlock>
                             <LineBreak />
                             Git: 
@@ -516,6 +516,9 @@
                             <LineBreak />
                             Config:
                             <TextBlock x:Name="txtConfigInfo"/>
+                            <LineBreak />
+                            Non Windows OS:
+                            <TextBlock x:Name="txtNonWindows"/>
                         </Paragraph>
                     </FlowDocument>
                 </RichTextBox>

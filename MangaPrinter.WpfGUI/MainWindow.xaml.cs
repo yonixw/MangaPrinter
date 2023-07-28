@@ -126,6 +126,8 @@ namespace MangaPrinter.WpfGUI
             rbBindDuplex.IsChecked = CoreConf.I.Binding_Type == "duplex";
             rbBindBookletStack.IsChecked = CoreConf.I.Binding_Type == "booklet_print";
             rbBindBookletSingles.IsChecked = CoreConf.I.Binding_Type == "booklet_single";
+
+            txtNonWindows.Text = CoreConf.I.Info_IsNotWindows.Get().ToString();
         }
 
         bool shouldUpdateStats = true;
@@ -184,6 +186,12 @@ namespace MangaPrinter.WpfGUI
 
         private void menuImprtFolders_Click(object sender, RoutedEventArgs e)
         {
+            if (CoreConf.I.Info_IsNotWindows.Get())
+            {
+                MessageBox.Show("We detected you are not running under Windows.\nPlease choose a import path with no special characters.\nThanks.");
+            }
+
+
             dlgSaveTrick.Filter = "Folder|_Choose.Here_";
             dlgSaveTrick.FileName = "_Choose.Here_";
             dlgSaveTrick.InitialDirectory = Environment.ExpandEnvironmentVariables(CoreConf.I.Chapters_ImportDir);
