@@ -125,8 +125,8 @@ namespace MangaPrinter.Core
                         {
                             page.AspectRatio =
                                 webP.Height > 0 ?
-                                webP.Width / webP.Height :
-                                0;
+                                1.0f * webP.Width  / webP.Height :
+                                MangaPage.MinRatio;
                             page.IsDouble = page.AspectRatio >= cutoff;
                         }
 
@@ -140,8 +140,8 @@ namespace MangaPrinter.Core
                         {
                             page.AspectRatio =
                                 jpeg.PhysicalDimension.Height > 0 ?
-                                jpeg.PhysicalDimension.Width / jpeg.PhysicalDimension.Height :
-                                0;
+                                1.0f * jpeg.PhysicalDimension.Width / jpeg.PhysicalDimension.Height :
+                                MangaPage.MinRatio;
                             page.IsDouble = page.AspectRatio >= cutoff;
                         }
                     }
