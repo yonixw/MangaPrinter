@@ -83,7 +83,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         }
 
         // Put scaled image (content) inside bigger image, centered.
-        public static Bitmap sameAspectResize(Bitmap image, int targetWidth, int targetHeight)
+        public static Bitmap sameAspectResize(Bitmap image, int targetWidth, int targetHeight, bool reuse = false)
         {
             if (targetHeight > 0 && targetWidth > 0)
             {
@@ -102,8 +102,11 @@ namespace MangaPrinter.Core.TemplateBuilders
                 {
                     finalHeight = (int)((float)targetWidth / ratioBitmap);
                 }
-                Bitmap imageResized = bitmapResize(image, finalWidth, finalHeight, targetWidth, targetHeight);
-                image.Dispose();
+                Bitmap imageResized = bitmapResize(image, finalWidth, finalHeight, targetWidth, targetHeight, reuse);
+                
+                if (!reuse)
+                    image.Dispose();
+
                 return imageResized;
             }
             else
@@ -114,7 +117,7 @@ namespace MangaPrinter.Core.TemplateBuilders
 
         // Put scaled image (content) inside bigger image, centered.
         public static Bitmap bitmapResize(Bitmap image, int contentWidth, int contentHeight,
-            int imageWidth, int imageHeight)
+            int imageWidth, int imageHeight, bool reuse = false)
         {
             float scale = Math.Min(1.0f * contentWidth / image.Width, 1.0f * contentHeight / image.Height);
             var fillBrush = new SolidBrush(Color.White);
@@ -143,7 +146,8 @@ namespace MangaPrinter.Core.TemplateBuilders
                     graph.DrawRectangle(borderPen, new Rectangle(0, 0, imageWidth, imageHeight));
             }
 
-            image.Dispose();
+            if(!reuse)
+                image.Dispose();
             return bmp;
         }
 

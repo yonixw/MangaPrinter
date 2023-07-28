@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
         xmlns:converts="clr-namespace:MangaPrinter.WpfGUI.Convertors"
         mc:Ignorable="d"
-        Title="dlgBluredImageListActions" Height="450" Width="800" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+        Title="dlgBluredImageListActions" Height="450" Width="800" 
+        SizeChanged="Window_SizeChanged"
+        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <Window.Resources>
         <converts:LowerConvert x:Key="lowerConvert"/>
     </Window.Resources>

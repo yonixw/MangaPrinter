@@ -1,5 +1,6 @@
 ﻿using MangaPrinter.Conf;
 using MangaPrinter.Core;
+using MangaPrinter.Core.TemplateBuilders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace MangaPrinter.WpfGUI.Dialogs
 {
@@ -25,6 +27,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
     public class MyImageBind : ModelBaseWpf
     {
+        public System.Drawing.Bitmap OriginalImage { get { return _baseGet(); } set { _baseSet(value); } }
         public BitmapImage Image { get { return _baseGet(); } set { _baseSet(value); } }
         public double BlurRadius { get { return _baseGet(); } set { _baseSet(value); } }
         public double Zoom { get { return _baseGet(); } set { _baseSet(value); } }
@@ -67,14 +70,13 @@ namespace MangaPrinter.WpfGUI.Dialogs
             slideZoom.Value = (100.0f *  finalHeight)/ myImage.Image.Height;
         }
 
-        public static BitmapImage LoadBitmapWithoutLockingFile(string url)
+        public static BitmapImage Bitmap2BitmapImage(System.Drawing.Bitmap bitmap)
         {
             //https://social.msdn.microsoft.com/Forums/vstudio/en-US/dee7cb68-aca3-402b-b159-2de933f933f1/disposing-a-wpf-image-or-bitmapimage-so-the-source-picture-file-can-be-modified?forum=wpf
 
             System.Windows.Media.Imaging.BitmapImage result = new System.Windows.Media.Imaging.BitmapImage();  // Create new BitmapImage  
             System.IO.Stream stream = new System.IO.MemoryStream();  // Create new MemoryStream  
 
-            System.Drawing.Bitmap bitmap = MagickImaging.BitmapFromUrlExt(url);  // Create new Bitmap (System.Drawing.Bitmap) from the existing image file (albumArtSource set to its path name)  
             bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);  // Save the loaded Bitmap into the MemoryStream - Png format was the only one I tried that didn't cause an error (tried Jpg, Bmp, MemoryBmp)  
             bitmap.Dispose();  // Dispose bitmap so it releases the source image file 
             
@@ -87,6 +89,10 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
 
         bool winLoaded = false;
+        DispatcherTimer debounceTimer = 
+            new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 500), IsEnabled = false };
+
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Title = _title;
@@ -97,17 +103,60 @@ namespace MangaPrinter.WpfGUI.Dialogs
             }
             CoreConfLoader.onConfigFinishUpdate += ConfigChanged;
 
-            BitmapImage bm = LoadBitmapWithoutLockingFile(_imageUrl);
+            System.Drawing.Bitmap bm = MagickImaging.BitmapFromUrlExt(_imageUrl);
             imgMain.DataContext = myImage = new MyImageBind() {
-                Image = bm,
+                OriginalImage = bm,
+                Image = Bitmap2BitmapImage(
+                        GraphicsUtils.sameAspectResize(bm, 
+                        (int)(1.0f * bm.Width * (1.0f * this.Height / bm.Height)), 
+                        (int)this.Height, reuse: true)
+                ),
                 BlurRadius = slideBlur.Value * maxBlur / 100,
                 Zoom = 1f,
                 Offset = new MyPointD() { X=0,Y=0}
             };
 
+            debounceTimer.Tick += DebounceTimer_Tick;
+
             resetZoom();
 
             winLoaded = true;
+        }
+
+        private void DebounceTimer_Tick(object sender, EventArgs e)
+        {
+            // Blur is relative to real image dimentions.
+            // To make it feel the same, we will resize image based on form size, 
+            // But will multiply with zoom to allow the user to read details he zoomed on...
+
+            debounceTimer.Stop();
+            debounceTimer.IsEnabled = false;
+
+            if (
+                myImage != null &&
+                myImage.OriginalImage != null &&
+                (int)(this.Width * myImage.Zoom) > 0 &&
+                (int)(this.Height * myImage.Zoom) > 0
+                )
+            {
+                imgMain.DataContext = null;
+                myImage.Image = Bitmap2BitmapImage(
+                            GraphicsUtils.sameAspectResize(myImage.OriginalImage,
+                            (int)( myImage.Zoom* 1.0f * myImage.OriginalImage.Width * (1.0f * this.Height / myImage.OriginalImage.Height)),
+                            (int)(this.Height * myImage.Zoom), reuse: true)
+                );
+                imgMain.DataContext = myImage;
+            }
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // Reset
+            debounceTimer.IsEnabled = true;
+            debounceTimer.Stop();
+
+            // Debounce again
+            debounceTimer.Start();
         }
 
         void ConfigChanged(JsonConfig config)
@@ -122,8 +171,9 @@ namespace MangaPrinter.WpfGUI.Dialogs
             slideBlur.Value = CoreConf.I.Common_PreviewBlurPrcnt;
         }
 
-            bool inMove = false;
+        bool inMove = false;
         Point startPointMouse, startPointWindow;
+
         private void imgMain_MouseDown(object sender, MouseButtonEventArgs e)
         {
             inMove = true;
@@ -186,6 +236,8 @@ namespace MangaPrinter.WpfGUI.Dialogs
             if (myImage != null)
                 myImage.Image = null;
         }
+
+        
 
         public void Zoom(double percent)
         {

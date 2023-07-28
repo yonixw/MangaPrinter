@@ -1,5 +1,6 @@
 ﻿using MangaPrinter.Conf;
 using MangaPrinter.Core;
+using MangaPrinter.Core.TemplateBuilders;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace MangaPrinter.WpfGUI.Dialogs
 {
@@ -61,18 +63,31 @@ namespace MangaPrinter.WpfGUI.Dialogs
         void LoadImage(string imageUrl)
         {
             if (myImage != null)
+            {
+                if (myImage.OriginalImage != null )
+                {
+                    myImage.OriginalImage.Dispose();
+                    myImage.OriginalImage = null;
+                }
                 myImage.Image = null;
+            }
 
             // Reset blur on new picture
             if (!(cbKeepBlur.IsChecked ?? false))
             {
-                slideBlur.Value = 100;
+                slideBlur.Value = CoreConf.I.Common_PreviewBlurPrcnt;
             }
 
-            BitmapImage bm = dlgBluredImage.LoadBitmapWithoutLockingFile(imageUrl);
+
+            System.Drawing.Bitmap bm = MagickImaging.BitmapFromUrlExt(imageUrl);
             imgMain.DataContext = myImage = new MyImageBind()
             {
-                Image = bm,
+                OriginalImage = bm,
+                Image = dlgBluredImage.Bitmap2BitmapImage(
+                        GraphicsUtils.sameAspectResize(bm,
+                        (int)(1.0f * bm.Width * (1.0f * this.Height / bm.Height)), 
+                        (int)this.Height, reuse: true)
+                ),
                 BlurRadius = slideBlur.Value * maxBlur / 100,
                 Zoom = 1f,
                 Offset = new MyPointD() { X = 0, Y = 0 }
@@ -80,6 +95,11 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
             resetZoom();
         }
+
+        DispatcherTimer debounceTimer =
+           new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 500), IsEnabled = false };
+
+
 
         bool winLoaded = false;
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -95,7 +115,46 @@ namespace MangaPrinter.WpfGUI.Dialogs
             CoreConfLoader.onConfigFinishUpdate += ConfigChanged;
 
 
+            debounceTimer.Tick += DebounceTimer_Tick;
+
             winLoaded = true;
+        }
+
+
+        private void DebounceTimer_Tick(object sender, EventArgs e)
+        {
+            // Blur is relative to real image dimentions.
+            // To make it feel the same, we will resize image based on form size, 
+            // But will multiply with zoom to allow the user to read details he zoomed on...
+
+            debounceTimer.Stop();
+            debounceTimer.IsEnabled = false;
+
+            if (
+                myImage != null &&
+                myImage.OriginalImage != null &&
+                (int)(this.Width * myImage.Zoom) > 0 &&
+                (int)(this.Height * myImage.Zoom) > 0
+                )
+            {
+                imgMain.DataContext = null;
+                myImage.Image = dlgBluredImage.Bitmap2BitmapImage(
+                            GraphicsUtils.sameAspectResize(myImage.OriginalImage,
+                            (int)( myImage.Zoom *1.0f * myImage.OriginalImage.Width * (1.0f* this.Height / myImage.OriginalImage.Height)), 
+                            (int)(myImage.Zoom * this.Height ), reuse: true)
+                );
+                imgMain.DataContext = myImage;
+            }
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // Reset
+            debounceTimer.IsEnabled = true;
+            debounceTimer.Stop();
+
+            // Debounce again
+            debounceTimer.Start();
         }
 
         void ConfigChanged(JsonConfig config)
@@ -200,7 +259,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
             if (lstPages.SelectedIndex > -1)
             {
                 ActionMangaPage<bool> p = (ActionMangaPage<bool>)lstPages.SelectedItem;
-                LoadImage(p.Page.ImagePath);
+                //LoadImage(p.Page.ImagePath);
                 p.Result = true;
             }
         }
