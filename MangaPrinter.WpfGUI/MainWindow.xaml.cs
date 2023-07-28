@@ -982,9 +982,9 @@ namespace MangaPrinter.WpfGUI
                 "+ Checked pages\n" +
                 "+ Checked chapters (all pages)\n" +
                 "\n>> Smart delete includes found problems (if analyzed before):\n" +
-                "* 🔳 InkFill% > " + CoreConf.I.Common_Alerts_InkFillHigh + "\n" +
-                "* 🔳 InkFill% < " + CoreConf.I.Common_Alerts_InkFillLow + "\n" +
-                "* ➗ TooVertical < " + CoreConf.I.Common_Alerts_TooVertical + "\n"
+                "* 🔳 InkFill% > " + CoreConf.I.Common_Alerts_InkFillHigh.Get() + "\n" +
+                "* 🔳 InkFill% < " + CoreConf.I.Common_Alerts_InkFillLow.Get() + "\n" +
+                "* ➗ TooVertical < " + CoreConf.I.Common_Alerts_TooVertical.Get() + "\n"
                 );
         }
 
