@@ -24,6 +24,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         {
             { "I", Core.SingleSideType.INTRO},
             { "O", Core.SingleSideType.OUTRO},
+            { "X", Core.SingleSideType.OMITED},
             { "M", Core.SingleSideType.MANGA},
             { "B", Core.SingleSideType.BEFORE_DOUBLE},
             { "E", Core.SingleSideType.MAKE_EVEN},
@@ -35,8 +36,23 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         //      * Front side first, Left face first -> LTR (a->b) a,b while RTL (a->b) b,a
         //  S,M,B / D,M / S,M,M / S,M,E / ....
 
-        public static void TestResult(string inputMangaChapters, string outputPrintFaces,
-            bool startPage, bool endPage, int antiSpoiler=0)
+
+        public static void TestResultDuplex(string inputMangaChapters, string outputPrintFaces,
+            bool startPage, bool endPage, int antiSpoiler = 0)
+        {
+            TestResult(new MangaPrinter.Core.ChapterBuilders.DuplexBuilder(), inputMangaChapters, outputPrintFaces,
+                startPage, endPage, antiSpoiler);
+        }
+
+        public static void TestResultBooklet(string inputMangaChapters, string outputPrintFaces,
+           bool startPage, bool endPage, int antiSpoiler = 0)
+        {
+            TestResult(new MangaPrinter.Core.ChapterBuilders.BookletBinder(), inputMangaChapters, outputPrintFaces,
+                startPage, endPage, antiSpoiler);
+        }
+
+        public static void TestResult(IBindBuilder builder,string inputMangaChapters, string outputPrintFaces,
+            bool startPage, bool endPage, int antiSpoiler=0 )
         {
             // ------------ MOCK INPUT --------------
 
@@ -62,7 +78,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             // ------------ REAL OUTPUT --------------
 
             List<PrintPage> resultPages = 
-                (new Core.ChapterBuilders.DuplexBuilder()).Build(allChapters, startPage, endPage, antiSpoiler);
+                builder.Build(allChapters, startPage, endPage, antiSpoiler);
 
             List<PrintFace>
                 resultFaces = resultPages.SelectMany<PrintPage, PrintFace>((p) => new[] { p.Front, p.Back }).ToList();

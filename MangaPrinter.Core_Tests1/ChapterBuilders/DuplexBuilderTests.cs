@@ -30,7 +30,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             var input = "L2,1,1,1  /  L1,1";
             var output = "L>D,M / L>S,M,M / L>S,M,E / L>S,M,M";
 
-            Utils.TestResult(input, output, false, false, 0);
+            Utils.TestResultDuplex(input, output, false, false, 0);
         }
 
         [TestMethod()]
@@ -39,7 +39,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             var input = "L1,2,1,2";
             var output = "L>S,M,B / L>D,M / L>S,M,B / L>D,M";
 
-            Utils.TestResult(input, output, false, false, 0);
+            Utils.TestResultDuplex(input, output, false, false, 0);
         }
 
         [TestMethod()]
@@ -48,7 +48,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             var input = "R1,2,1,2";
             var output = "R>S,B,M / R>D,M / R>S,B,M / R>D,M";
 
-            Utils.TestResult(input, output, false, false, 0);
+            Utils.TestResultDuplex(input, output, false, false, 0);
         }
 
         [TestMethod()]
@@ -57,7 +57,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             var input = "L2,1,1,1  /  L1,1";
             var output = "L>S,I,B / L>D,M / L>S,M,M / L>S,M,O / L>S,I,M / L>S,M,O";
 
-            Utils.TestResult(input, output, true, true, 0);
+            Utils.TestResultDuplex(input, output, true, true, 0);
         }
 
         [TestMethod()]
@@ -66,7 +66,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             var input = "L2,1,1,1,1  /  L1,1";
             var output = "L>S,I,B / L>D,M / L>S,M,M / L>S,M,M / L>S,O,E / L>S,I,M / L>S,M,O / R>S,E,E";
 
-            Utils.TestResult(input, output, true, true, 0);
+            Utils.TestResultDuplex(input, output, true, true, 0);
         }
 
         [TestMethod()]
@@ -75,7 +75,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             var input = "R2,1,1,1,1  /  R1,1";
             var output = "R>S,B,I / R>D,M / R>S,M,M / R>S,M,M / R>S,E,O / R>S,M,I / R>S,O,M / R>S,E,E";
 
-            Utils.TestResult(input, output, true, true, 0);
+            Utils.TestResultDuplex(input, output, true, true, 0);
         }
 
         [TestMethod()]
@@ -84,7 +84,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             var input = "R2,1,1,1,1  /  R1,1";
             var output = "R>S,B,I / R>D,M / R>S,M,M / R>S,M,M / R>S,M,I / R>S,E,M";
 
-            Utils.TestResult(input, output, true, false, 0);
+            Utils.TestResultDuplex(input, output, true, false, 0);
         }
 
         [TestMethod()]
@@ -93,7 +93,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             var input = "R1,1,2";
             var output = "R>S,M,M / R>D,M";
 
-            Utils.TestResult(input, output, false,false, 0);
+            Utils.TestResultDuplex(input, output, false,false, 0);
         }
 
 
@@ -104,7 +104,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             var output = "L>S,M,E / R>S,E,E";
 
 
-            Utils.TestResult(input, output, false, false, 0);
+            Utils.TestResultDuplex(input, output, false, false, 0);
         }
 
 
@@ -115,7 +115,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             var output = "R>D,A / R>S,B,I / R>D,M / R>S,M,M / R>S,M,M / R>S,E,O / R>D,A / R>S,M,I / R>S,O,M / R>D,A";
            
 
-            Utils.TestResult(input, output, true, true, 3  /* => 6 faces*/ );
+            Utils.TestResultDuplex(input, output, true, true, 3  /* => 6 faces*/ );
         }
 
         [TestMethod()]
@@ -125,7 +125,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             var output = "R>D,A / R>S,B,I / R>D,M / R>S,M,M / R>S,M,M / R>S,E,O / R>D,A / R>S,M,I / R>S,M,M / R>S,E,O / R>D,A / R>S,E,E";
 
 
-            Utils.TestResult(input, output, true, true, 3  /* => 6 faces*/ );
+            Utils.TestResultDuplex(input, output, true, true, 3  /* => 6 faces*/ );
         }
 
 
@@ -141,7 +141,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             // * Middle anti-spoiler takes from 1 page before (so it still left!)
             // * Last anti spoiler takes again, from 1 before so need to match last episode RTL.
 
-            Utils.TestResult(input, output, true, true, 3  /* => 6 faces*/ );
+            Utils.TestResultDuplex(input, output, true, true, 3  /* => 6 faces*/ );
         }
 
 
@@ -158,7 +158,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             // * Last anti spoiler takes again, from 1 before so need to match last episode RTL.
 
 
-            Utils.TestResult(input, output, true, true, 2  /* => 4 faces*/ );
+            Utils.TestResultDuplex(input, output, true, true, 2  /* => 4 faces*/ );
         }
     }
 }

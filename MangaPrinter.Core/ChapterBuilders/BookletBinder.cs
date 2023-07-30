@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MangaPrinter.Core.ChapterBuilders
 {
-    class BookletBinder : IBindBuilder
+    public class BookletBinder : IBindBuilder
     {
         public List<PrintPage> Build(List<MangaChapter> ch, bool startPage, bool endPage, int antiSpoiler = 0,
                 bool isBookletRTL = true)
@@ -35,11 +35,16 @@ namespace MangaPrinter.Core.ChapterBuilders
                         PageNumber = 0,
                         Front = new PrintFace()
                         {
-                            FaceNumber = i * 2
+                            FaceNumber = i / 2, 
+                            IsRTL =isBookletRTL,
+                            PrintFaceType=FaceType.SINGLES
+                            
                         },
                         Back = new PrintFace()
                         {
-                            FaceNumber = i * 2 + 1
+                            FaceNumber = i / 2,
+                            IsRTL = isBookletRTL,
+                            PrintFaceType = FaceType.SINGLES
                         },
                     };
                 }
@@ -48,7 +53,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                 }
 
                 // 2xFace -> 1top,1bottom
-                PrintFace sourceFace = i%2==0? duplexBase[i].Front : duplexBase[i].Back;
+                PrintFace sourceFace = i%2==0? duplexBase[i/2].Front : duplexBase[i/2].Back;
                 bool isSourceDouble = sourceFace.Left == sourceFace.Right;
                 bool isSourceRTL = sourceFace.IsRTL;
 
