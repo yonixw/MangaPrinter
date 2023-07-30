@@ -173,7 +173,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                         
                         SideType = p.Effects.IsOmited ? SingleSideType.OMITED : SingleSideType.MANGA,
                         MangaPageSource = p,
-                        MangaPageSourceType = SideMangaPageType.ALL
+                        MangaPageSourceType = MangaSoure.ALL
                     };
                 }
                 else
@@ -203,7 +203,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                     
                     SideType = p.Effects.IsOmited ? SingleSideType.OMITED : SingleSideType.MANGA,
                     MangaPageSource = p,
-                    MangaPageSourceType = SideMangaPageType.ALL // only in booklet we need to know right\left
+                    MangaPageSourceType = MangaSoure.ALL // only in booklet we need to know right\left
                 };
 
                 face.Left = face.Right = side;
@@ -222,7 +222,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                        
                         SideType = p.Effects.IsOmited ? SingleSideType.OMITED : SingleSideType.MANGA,
                         MangaPageSource = p,
-                        MangaPageSourceType = SideMangaPageType.ALL
+                        MangaPageSourceType = MangaSoure.ALL
                     };
                 }
                 else
@@ -266,7 +266,7 @@ namespace MangaPrinter.Core.ChapterBuilders
 
                     SideType = p.Effects.IsOmited ? SingleSideType.OMITED : SingleSideType.MANGA,
                     MangaPageSource = p,
-                    MangaPageSourceType = SideMangaPageType.ALL // only in booklet we need to know right\left
+                    MangaPageSourceType = MangaSoure.ALL // only in booklet we need to know right\left
                 };
 
                 face.Left = face.Right = side;

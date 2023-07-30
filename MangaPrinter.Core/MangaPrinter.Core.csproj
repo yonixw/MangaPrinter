@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinderTools.cs" />
+    <Compile Include="ChapterBuilders\BookletBinder.cs" />
     <Compile Include="ChapterBuilders\DuplexBuilder.cs" />
     <Compile Include="FileImporter.cs" />
     <Compile Include="MagickImaging.cs" />
