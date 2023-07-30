@@ -87,10 +87,11 @@ namespace MangaPrinter.Core.ChapterBuilders
             if (antiSpoiler > 0)
             {
                 int batchCounter = 0;
-                for (int i = 0; i < faceResults.Count; i++)
+                int arrayLength = faceResults.Count;
+                for (int i = 0; i < arrayLength; i++)
                 {
                     faceResults[i].BatchPaperNumber = batchCounter;
-                    if (i % 2 == 0) {
+                    if (i % 2 == (antiSpoilerAdded % 2)) {
                         if (batchCounter < antiSpoiler)
                             batchCounter++;
                         else

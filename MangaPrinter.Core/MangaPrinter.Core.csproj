@@ -61,6 +61,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="TemplateBuilders\BookletTemplates.cs" />
     <Compile Include="TemplateBuilders\DuplexTemplates.cs" />
     <Compile Include="TemplateBuilders\GraphicsUtils.cs" />
     <Compile Include="TemplateBuilders\TextUtils.cs" />

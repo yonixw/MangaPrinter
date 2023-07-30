@@ -74,6 +74,69 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             Utils.TestResultBooklet(bookletRtl, input, outputBooklet, false, false, 0);
         }
 
+        [TestMethod()]
+        public void xSimpleNoDoubleEvenCover()
+        {
+            var input = "L1";
+            var output = "L>S,M,E / R>S,E,E";
+            var bookletRtl = new BookletOptions() {
+                isBookletRTL = false,
+                bookletCoverFirst = new MangaPage()
+                
+            };
+
+            var outputBooklet = String.Join(" / ", new[] {
+                "L>S,M,E",
+
+                "L>S,M,E",
+                "L>S,E,E",
+
+                "L>S,E,E",
+                });
+
+
+            Utils.TestResultDuplex(input, output, false, false, 0);
+            Console.WriteLine("--");
+            Utils.TestResultBooklet(bookletRtl, input, outputBooklet, false, false, 0);
+        }
+
+        [TestMethod()]
+        public void xSimpleNoDoubleEvenCoverEvenNoAddAS()
+        {
+            var input = "L1/L1/L1/L1/L1";
+            var output = "L>S,M,E / L>S,M,E / L>S,M,E / L>S,M,E/ L>S,M,E / R>S,E,E";
+            var bookletRtl = new BookletOptions()
+            {
+                isBookletRTL = false,
+                bookletCoverFirst = new MangaPage()
+
+            };
+
+            var outputBooklet = String.Join(" / ", new[] {
+                "L>S,M,A",
+
+                "L>S,M,E",
+                "L>S,E,E",
+
+                "L>S,A,A",
+
+                "L>S,M,E",
+                "L>S,E,M",
+
+                "L>S,A,A",
+
+                "L>S,M,E",
+                "L>S,E,M",
+
+                "L>S,A,A", // last not adding another one
+                });
+
+
+            Utils.TestResultDuplex(input, output, false, false, 0);
+            Console.WriteLine("--");
+            Utils.TestResultBooklet(bookletRtl, input, outputBooklet, false, false, 1);
+        }
+
 
         [TestMethod()]
         public void xSimpleIntroOutroEvenAntiRTL()
