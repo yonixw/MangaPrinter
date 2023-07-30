@@ -187,7 +187,7 @@ namespace MangaPrinter.Core
         LAST
     }
 
-    public enum MangaSoure
+    public enum DoubleSoure
     {
         ALL, // only in booklet we need to know right\left
         LEFT, RIGHT // For cutting original image file.
@@ -205,7 +205,7 @@ namespace MangaPrinter.Core
 
         // If Manga page:
         public MangaPage MangaPageSource { get { return _baseGet(); } set { _baseSet(value); } }
-        public MangaSoure MangaPageSourceType { get { return _baseGet(); } set { _baseSet(value); } }
+        public DoubleSoure DoubleSourceType { get { return _baseGet(); } set { _baseSet(value); } }
 
         public override string ToString()
         {

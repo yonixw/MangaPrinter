@@ -11,7 +11,7 @@ namespace MangaPrinter.Core.ChapterBuilders
     {
 
         public List<PrintPage> Build(List<MangaChapter> chapters,
-            bool addStartPage, bool addEndPage, int addAntiSpoiler = 0)
+            bool addStartPage, bool addEndPage, int addAntiSpoiler = 0, bool isBookletRTL = true)
         {
             // For loop from 1 to end and add pages as necessary.
             // Double Template should have 0px between 2 pages.
@@ -173,7 +173,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                         
                         SideType = p.Effects.IsOmited ? SingleSideType.OMITED : SingleSideType.MANGA,
                         MangaPageSource = p,
-                        MangaPageSourceType = MangaSoure.ALL
+                        DoubleSourceType = DoubleSoure.ALL
                     };
                 }
                 else
@@ -203,7 +203,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                     
                     SideType = p.Effects.IsOmited ? SingleSideType.OMITED : SingleSideType.MANGA,
                     MangaPageSource = p,
-                    MangaPageSourceType = MangaSoure.ALL // only in booklet we need to know right\left
+                    DoubleSourceType = DoubleSoure.ALL // only in booklet we need to know right\left
                 };
 
                 face.Left = face.Right = side;
@@ -222,7 +222,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                        
                         SideType = p.Effects.IsOmited ? SingleSideType.OMITED : SingleSideType.MANGA,
                         MangaPageSource = p,
-                        MangaPageSourceType = MangaSoure.ALL
+                        DoubleSourceType = DoubleSoure.ALL
                     };
                 }
                 else
@@ -266,7 +266,7 @@ namespace MangaPrinter.Core.ChapterBuilders
 
                     SideType = p.Effects.IsOmited ? SingleSideType.OMITED : SingleSideType.MANGA,
                     MangaPageSource = p,
-                    MangaPageSourceType = MangaSoure.ALL // only in booklet we need to know right\left
+                    DoubleSourceType = DoubleSoure.ALL // only in booklet we need to know right\left
                 };
 
                 face.Left = face.Right = side;
