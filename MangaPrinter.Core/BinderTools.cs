@@ -8,12 +8,17 @@ using System.Collections.ObjectModel;
 namespace MangaPrinter.Core
 {
 
-    
+    public class BookletOptions
+    {
+        public bool isBookletRTL = true;
+        public MangaPage bookletCoverFirst = null;
+        public MangaPage bookletCoverLast = null;
+    }
 
     public interface IBindBuilder
     {
         List<PrintPage> Build(List<MangaChapter> ch, bool startPage, bool endPage,
-            int antiSpoiler = 0, bool isBookletRTL = true);
+            int antiSpoiler = 0, BookletOptions bookletOption = null);
     }    
 
    

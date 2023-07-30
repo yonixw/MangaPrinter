@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace MangaPrinter.Core.ChapterBuilders
 {
     public class BookletBinder : IBindBuilder
     {
         public List<PrintPage> Build(List<MangaChapter> ch, bool startPage, bool endPage, int antiSpoiler = 0,
-                bool isBookletRTL = true)
+               BookletOptions bookletOptions = null)
         {
+            BookletOptions _O = bookletOptions ?? new BookletOptions();
+
             List<PrintPage> duplexBase = new DuplexBuilder().Build(ch, startPage, endPage, 0);
 
-            List<PrintPage> result = new List<PrintPage>();
-            
+            List<PrintFace> faceResults = new List<PrintFace>();
+
             PrintSide setSide(PrintFace f, bool right, PrintSide side)
             {
                 if (right) f.Right = side;
@@ -22,64 +20,188 @@ namespace MangaPrinter.Core.ChapterBuilders
                 return side;
             }
 
-
-            for (int i = 0; i < duplexBase.Count *2 ; i++) // going down
+            for (int i = 0; i < duplexBase.Count * 2; i++) // going down
             {
                 bool goingDown = i < duplexBase.Count;
 
-                PrintPage tPage;
+                PrintFace Front, Back;
+
                 if (goingDown)
                 {
-                    tPage = new PrintPage()
+                    Front = new PrintFace()
                     {
-                        PageNumber = 0,
-                        Front = new PrintFace()
-                        {
-                            FaceNumber = i / 2, 
-                            IsRTL =isBookletRTL,
-                            PrintFaceType=FaceType.SINGLES
-                            
-                        },
-                        Back = new PrintFace()
-                        {
-                            FaceNumber = i / 2,
-                            IsRTL = isBookletRTL,
-                            PrintFaceType = FaceType.SINGLES
-                        },
+                        FaceNumber = i / 2,
+                        IsRTL = _O.isBookletRTL,
+                        PrintFaceType = FaceType.SINGLES
+
+                    };
+                    Back = new PrintFace()
+                    {
+                        FaceNumber = i / 2,
+                        IsRTL = _O.isBookletRTL,
+                        PrintFaceType = FaceType.SINGLES
                     };
                 }
-                else {
-                    tPage = result[duplexBase.Count * 2 - 1 - i]; // last i is first page again=0
+                else
+                {
+                    // last i is first page again=0
+                    Front = faceResults[((2*duplexBase.Count-i)-1)*2 ];
+                    Back = faceResults[((2 * duplexBase.Count - i) - 1) * 2 +1];
                 }
 
                 // 2xFace -> 1top,1bottom
-                PrintFace sourceFace = i%2==0? duplexBase[i/2].Front : duplexBase[i/2].Back;
+                PrintFace sourceFace = i % 2 == 0 ? duplexBase[i / 2].Front : duplexBase[i / 2].Back;
                 bool isSourceDouble = sourceFace.Left == sourceFace.Right;
                 bool isSourceRTL = sourceFace.IsRTL;
 
-                PrintSide topSide = setSide(goingDown?  tPage.Front : tPage.Back, 
-                    goingDown? isBookletRTL : !isBookletRTL,  // opposite in going up
+                PrintSide topSide = setSide(goingDown ? Front : Back,
+                    goingDown ? _O.isBookletRTL : !_O.isBookletRTL,  // opposite in going up
                     (isSourceRTL ? sourceFace.Right : sourceFace.Left));
-                if (isSourceDouble && 
-                    (topSide.SideType==SingleSideType.MANGA || topSide.SideType == SingleSideType.ANTI_SPOILER) )
+                if (isSourceDouble &&
+                    (topSide.SideType == SingleSideType.MANGA || 
+                    topSide.SideType == SingleSideType.ANTI_SPOILER ||
+                    topSide.SideType == SingleSideType.OMITED))
                 {
                     topSide.DoubleSourceType = isSourceRTL ? DoubleSoure.RIGHT : DoubleSoure.LEFT;
                 }
 
-                PrintSide bottomSide = setSide(goingDown ? tPage.Back : tPage.Front,
-                     goingDown ? isBookletRTL : !isBookletRTL,  // opposite in going up
+                PrintSide bottomSide = setSide(goingDown ? Back: Front,
+                     goingDown ? _O.isBookletRTL : !_O.isBookletRTL,  // opposite in going up
                     (!isSourceRTL ? sourceFace.Right : sourceFace.Left));
                 if (isSourceDouble &&
-                    (bottomSide.SideType == SingleSideType.MANGA || bottomSide.SideType == SingleSideType.ANTI_SPOILER))
+                   (topSide.SideType == SingleSideType.MANGA ||
+                   topSide.SideType == SingleSideType.ANTI_SPOILER ||
+                   topSide.SideType == SingleSideType.OMITED))
                 {
-                    bottomSide.DoubleSourceType = isSourceRTL ? DoubleSoure.RIGHT : DoubleSoure.LEFT;
+                    bottomSide.DoubleSourceType = !isSourceRTL ? DoubleSoure.RIGHT : DoubleSoure.LEFT;
                 }
 
                 if (goingDown)
-                    result.Add(tPage);
+                {
+                    faceResults.Add(Front);
+                    faceResults.Add(Back);
+                }
+            }
+
+            int antiSpoilerAdded = 0;
+            if (antiSpoiler > 0)
+            {
+                int batchCounter = 0;
+                for (int i = 0; i < faceResults.Count; i++)
+                {
+                    faceResults[i].BatchPaperNumber = batchCounter;
+                    if (i % 2 == 0) {
+                        if (batchCounter < antiSpoiler)
+                            batchCounter++;
+                        else
+                        {
+                            antiSpoilerAdded++;
+                            batchCounter = 0;
+                            faceResults.Insert(i, new PrintFace()
+                            {
+                                IsRTL = _O.isBookletRTL,
+                                Left = new PrintSide() { 
+                                    SideType=SingleSideType.ANTI_SPOILER,
+                                    DoubleSourceType=DoubleSoure.LEFT
+                                },
+                                Right = new PrintSide()
+                                {
+                                    SideType = SingleSideType.ANTI_SPOILER,
+                                    DoubleSourceType = DoubleSoure.RIGHT
+                                },
+                                BatchPaperNumber = 0,
+                                PrintFaceType=FaceType.SINGLES
+                            });
+                        }
+                    }
+
+                }
+            }
+
+            void setupExtraFaceSide(PrintFace _f, bool right, MangaPage cover)
+            {
+                if (cover != null)
+                {
+                    setSide(_f, right, new PrintSide()
+                    {
+                        DoubleSourceType = DoubleSoure.ALL, // We don't support spliting double on cover
+                        MangaPageSource = cover,
+                        SideType = SingleSideType.MANGA
+                    });
+                }
+                else if (antiSpoiler > 0)
+                {
+                    setSide(_f, right, new PrintSide()
+                    {
+                        DoubleSourceType = DoubleSoure.ALL,
+                        SideType = SingleSideType.ANTI_SPOILER
+                    });
+                }
+                else
+                {
+                    setSide(_f, right, new PrintSide()
+                    {
+                        DoubleSourceType = DoubleSoure.ALL,
+                        SideType = SingleSideType.MAKE_EVEN
+                    });
+                }
+            }
+
+            PrintFace extraFaceBefore = new PrintFace()
+            {
+                IsRTL = _O.isBookletRTL,
+                PrintFaceType = FaceType.SINGLES
+            };
+
+            setupExtraFaceSide(extraFaceBefore, _O.isBookletRTL, _O.bookletCoverFirst);
+            setupExtraFaceSide(extraFaceBefore, !_O.isBookletRTL, _O.bookletCoverLast);
+
+            faceResults.Insert(0,extraFaceBefore);
+
+            PrintFace extraFaceAfter = new PrintFace()
+            {
+                IsRTL = _O.isBookletRTL,
+                PrintFaceType = FaceType.SINGLES
+            };
+
+            setupExtraFaceSide(extraFaceAfter, _O.isBookletRTL, null);
+            setupExtraFaceSide(extraFaceAfter, !_O.isBookletRTL, null);
+
+            faceResults.Add(extraFaceAfter);
+
+            if (antiSpoiler > 0 && antiSpoilerAdded %2 ==1)
+            {
+                PrintFace extraFaceAS = new PrintFace()
+                {
+                    IsRTL = _O.isBookletRTL,
+                    PrintFaceType = FaceType.SINGLES
+                };
+
+                setupExtraFaceSide(extraFaceAS, _O.isBookletRTL, null);
+                setupExtraFaceSide(extraFaceAS, !_O.isBookletRTL, null);
+
+                faceResults.Add(extraFaceAS);
+            }
+
+            if (faceResults.Count %2 != 0)
+            {
+                throw new System.Exception("Unexpected faces count! " + faceResults.Count);
+            }
+
+
+            List<PrintPage> result = new List<PrintPage>();
+            for (int i = 0; i < faceResults.Count; i +=2)
+            {
+                result.Add(new PrintPage()
+                {
+                    Front = faceResults[i],
+                    Back = faceResults[i + 1],
+                    PageNumber = i/2
+                });
             }
 
             return result;
+           
         }
 
     }

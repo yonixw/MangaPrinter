@@ -28,7 +28,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         public void xMakeEvenSimple()
         {
             var input = "L2,1,1,1  /  L1,1";
-            var bookletRtl = true;
+            var bookletRtl = new BookletOptions() { isBookletRTL = false};
             var outputDuplex = String.Join(" / ",new[] {
                 "L>D,M",
                 "L>S,M,M",
@@ -36,13 +36,18 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
                 "L>S,M,M"
                 });
             var outputBooklet = String.Join(" / ", new[] {
+                "L>S,E,E",
+
                 "L>S,M,M",
                 "L>S,M,M",
+                "L>S,M,E",
                 "L>S,M,M",
-                "L>S,E,M"
+
+                "L>S,E,E",
                 });
 
             Utils.TestResultDuplex(input, outputDuplex, false, false, 0);
+            Console.WriteLine("--");
             Utils.TestResultBooklet(bookletRtl,input, outputBooklet, false, false, 0);
         }
 
@@ -52,9 +57,21 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         {
             var input = "L1";
             var output = "L>S,M,E / R>S,E,E";
+            var bookletRtl = new BookletOptions() { isBookletRTL = false };
+
+            var outputBooklet = String.Join(" / ", new[] {
+                "L>S,E,E",
+
+                "L>S,M,E",
+                "L>S,E,E",
+
+                "L>S,E,E",
+                });
 
 
-            Utils.TestResultBooklet(false,input, output, false, false, 0);
+            Utils.TestResultDuplex(input, output, false, false, 0);
+            Console.WriteLine("--");
+            Utils.TestResultBooklet(bookletRtl, input, outputBooklet, false, false, 0);
         }
 
 
@@ -62,10 +79,37 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         public void xSimpleIntroOutroEvenAntiRTL()
         {
             var input = "R2,1,1,1,1  /  R1,1";
-            var output = "R>D,A / R>S,B,I / R>D,M / R>S,M,M / R>S,M,M / R>S,E,O / R>D,A / R>S,M,I / R>S,O,M / R>D,A";
-           
+            var outputWithAS = "R>D,A / R>S,B,I / R>D,M / R>S,M,M / R>S,M,M /" +
+                " R>S,E,O / R>D,A / R>S,M,I / R>S,O,M / R>D,A";
+            var outputWithoutAS = "R>S,B,I / R>D,M / R>S,M,M / R>S,M,M / " +
+                "R>S,E,O / R>S,M,I / R>S,O,M / R>S,E,E";
 
-            Utils.TestResultBooklet(false,input, output, true, true, 3  /* => 6 faces*/ );
+            var bookletRtl = new BookletOptions() { isBookletRTL = true };
+            var outputBooklet = String.Join(" / ", new[] {
+                "R>S,A,A",
+
+                "R>S,E,I",
+                "R>S,E,B",
+
+                "R>S,O,M",
+                "R>S,M,M",
+
+                "R>S,M,M",
+                "R>S,I,M",
+
+                "R>S,A,A",
+
+                "R>S,E,M",
+                "R>S,O,M",
+
+                "R>S,A,A",
+                "R>S,A,A",
+                });
+
+            Utils.TestResultDuplex(input, outputWithAS, true, true, 3  /* => 6 faces*/ );
+            Utils.TestResultDuplex(input, outputWithoutAS, true, true, 0 );
+            Console.WriteLine("--");
+            Utils.TestResultBooklet(bookletRtl, input, outputBooklet, true, true, 3  /* => 6 faces*/);
         }
 
       
