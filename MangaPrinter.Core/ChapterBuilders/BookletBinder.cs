@@ -58,7 +58,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                 bool isSourceRTL = sourceFace.IsRTL;
 
                 PrintSide topSide = setSide(goingDown?  tPage.Front : tPage.Back, 
-                    isBookletRTL,  // opposite in going up
+                    goingDown? isBookletRTL : !isBookletRTL,  // opposite in going up
                     (isSourceRTL ? sourceFace.Right : sourceFace.Left));
                 if (isSourceDouble && 
                     (topSide.SideType==SingleSideType.MANGA || topSide.SideType == SingleSideType.ANTI_SPOILER) )
@@ -67,8 +67,8 @@ namespace MangaPrinter.Core.ChapterBuilders
                 }
 
                 PrintSide bottomSide = setSide(goingDown ? tPage.Back : tPage.Front,
-                    isBookletRTL,  // opposite in going up
-                    (isSourceRTL ? sourceFace.Right : sourceFace.Left));
+                     goingDown ? isBookletRTL : !isBookletRTL,  // opposite in going up
+                    (!isSourceRTL ? sourceFace.Right : sourceFace.Left));
                 if (isSourceDouble &&
                     (bottomSide.SideType == SingleSideType.MANGA || bottomSide.SideType == SingleSideType.ANTI_SPOILER))
                 {

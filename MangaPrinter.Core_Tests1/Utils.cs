@@ -44,15 +44,15 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
                 startPage, endPage, antiSpoiler);
         }
 
-        public static void TestResultBooklet(string inputMangaChapters, string outputPrintFaces,
+        public static void TestResultBooklet(bool bookletRTL, string inputMangaChapters, string outputPrintFaces,
            bool startPage, bool endPage, int antiSpoiler = 0)
         {
             TestResult(new MangaPrinter.Core.ChapterBuilders.BookletBinder(), inputMangaChapters, outputPrintFaces,
-                startPage, endPage, antiSpoiler);
+                startPage, endPage, antiSpoiler, bookletRTL);
         }
 
         public static void TestResult(IBindBuilder builder,string inputMangaChapters, string outputPrintFaces,
-            bool startPage, bool endPage, int antiSpoiler=0 )
+            bool startPage, bool endPage, int antiSpoiler=0 , bool bookletRTL = true)
         {
             // ------------ MOCK INPUT --------------
 
@@ -78,7 +78,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             // ------------ REAL OUTPUT --------------
 
             List<PrintPage> resultPages = 
-                builder.Build(allChapters, startPage, endPage, antiSpoiler);
+                builder.Build(allChapters, startPage, endPage, antiSpoiler, bookletRTL);
 
             List<PrintFace>
                 resultFaces = resultPages.SelectMany<PrintPage, PrintFace>((p) => new[] { p.Front, p.Back }).ToList();

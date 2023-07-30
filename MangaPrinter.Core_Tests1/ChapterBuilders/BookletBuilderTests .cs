@@ -25,34 +25,47 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
 
 
         [TestMethod()]
-        public void MakeEvenSimple()
+        public void xMakeEvenSimple()
         {
             var input = "L2,1,1,1  /  L1,1";
-            var output = "L>D,M / L>S,M,M / L>S,M,E / L>S,M,M";
+            var bookletRtl = true;
+            var outputDuplex = String.Join(" / ",new[] {
+                "L>D,M",
+                "L>S,M,M",
+                "L>S,M,E",
+                "L>S,M,M"
+                });
+            var outputBooklet = String.Join(" / ", new[] {
+                "L>S,M,M",
+                "L>S,M,M",
+                "L>S,M,M",
+                "L>S,E,M"
+                });
 
-            Utils.TestResultBooklet(input, output, false, false, 0);
+            Utils.TestResultDuplex(input, outputDuplex, false, false, 0);
+            Utils.TestResultBooklet(bookletRtl,input, outputBooklet, false, false, 0);
         }
 
 
         [TestMethod()]
-        public void SimpleNoDoubleEven()
+        public void xSimpleNoDoubleEven()
         {
             var input = "L1";
             var output = "L>S,M,E / R>S,E,E";
 
 
-            Utils.TestResultBooklet(input, output, false, false, 0);
+            Utils.TestResultBooklet(false,input, output, false, false, 0);
         }
 
 
         [TestMethod()]
-        public void SimpleIntroOutroEvenAntiRTL()
+        public void xSimpleIntroOutroEvenAntiRTL()
         {
             var input = "R2,1,1,1,1  /  R1,1";
             var output = "R>D,A / R>S,B,I / R>D,M / R>S,M,M / R>S,M,M / R>S,E,O / R>D,A / R>S,M,I / R>S,O,M / R>D,A";
            
 
-            Utils.TestResultBooklet(input, output, true, true, 3  /* => 6 faces*/ );
+            Utils.TestResultBooklet(false,input, output, true, true, 3  /* => 6 faces*/ );
         }
 
       
