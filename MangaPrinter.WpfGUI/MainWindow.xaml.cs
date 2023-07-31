@@ -652,7 +652,7 @@ namespace MangaPrinter.WpfGUI
                     page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
             Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(null,
-                    "Front face of page: " + p.PageNumber, b);
+                    "Back face of page: " + p.PageNumber, b);
             dlgImage.ShowDialog();
         }
 
