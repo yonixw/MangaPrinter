@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using MangaPrinter.Conf;
+using MangaPrinter.Core;
 
 namespace MangaPrinter.WpfGUI.Convertors
 {
@@ -20,8 +21,8 @@ namespace MangaPrinter.WpfGUI.Convertors
             if (value == null) return
                 string.Format(strFormat, 0, 0, 0, 0);
 
-                BindingList <SelectableMangaChapter> observableCollection 
-                    = value as BindingList<SelectableMangaChapter>;
+                BindingList <MangaChapter> observableCollection 
+                    = value as BindingList<MangaChapter>;
                 return string.Format(strFormat,
                     observableCollection.Where(ch => ch.IsChecked).Count(),
                     observableCollection.Count,

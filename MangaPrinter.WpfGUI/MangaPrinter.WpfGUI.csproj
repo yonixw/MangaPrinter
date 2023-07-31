@@ -121,7 +121,6 @@
     <Compile Include="Dialogs\dlgString.xaml.cs">
       <DependentUpon>dlgString.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ExtendedClasses\SelectableMangaChapter.cs" />
     <Compile Include="ExtendedClasses\SelectablePrintPage.cs" />
     <Compile Include="Convertors\PrintSideLabelConvert.cs" />
     <Compile Include="Utils\BucketInfo.cs" />

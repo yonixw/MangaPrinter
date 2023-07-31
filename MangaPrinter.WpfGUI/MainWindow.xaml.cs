@@ -35,7 +35,7 @@ namespace MangaPrinter.WpfGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        BindingList<SelectableMangaChapter> mangaChapters = new BindingList<SelectableMangaChapter>();
+        BindingList<MangaChapter> mangaChapters = new BindingList<MangaChapter>();
 
 
         public MainWindow()
@@ -47,7 +47,7 @@ namespace MangaPrinter.WpfGUI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             lstFileChapters.ItemsSource = mangaChapters;
-            lstFileChaptersBinding.ItemsSource = new List<SelectableMangaChapter>();
+            lstFileChaptersBinding.ItemsSource = new List<MangaChapter>();
             
             mangaChapters.ListChanged += MangaChapters_ListChanged;
 
@@ -221,7 +221,7 @@ namespace MangaPrinter.WpfGUI
                     return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl, orderFunc, importErrors, updateFunc);
                 },
                 isProgressKnwon: false)
-                .ForEach(ch => mangaChapters.Add(MangaChapter.Extend<SelectableMangaChapter>(ch)));
+                .ForEach(ch => mangaChapters.Add(MangaChapter.Extend<MangaChapter>(ch)));
 
                 if (importErrors.Count >0)
                 {
@@ -250,7 +250,7 @@ namespace MangaPrinter.WpfGUI
             //ListBoxAction<Core.MangaPage>(lstFilePages, page => { page.IsDouble = false; page.Chapter.updatePageNumber(); });
             if (lstFileChapters.SelectedValue!=null)
             {
-                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                MangaChapter Chapter = (MangaChapter)lstFileChapters.SelectedValue;
                 Chapter.Pages
                     .Where(p => p.IsChecked)
                     .ForEach(p => p.IsDouble = false);
@@ -262,7 +262,7 @@ namespace MangaPrinter.WpfGUI
         {
             if (lstFileChapters.SelectedValue != null)
             {
-                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                MangaChapter Chapter = (MangaChapter)lstFileChapters.SelectedValue;
                 Chapter.Pages
                     .Where(p => p.IsChecked)
                     .ForEach(p => p.IsDouble = true);
@@ -306,7 +306,7 @@ namespace MangaPrinter.WpfGUI
             };
             if (dlgName.ShowDialog() ?? false)
             {
-                mangaChapters.Add(MangaChapter.Extend<SelectableMangaChapter>(new Core.MangaChapter()
+                mangaChapters.Add(MangaChapter.Extend<MangaChapter>(new Core.MangaChapter()
                 {
                     IsRTL = rbRTL.IsChecked ?? false,
                     Pages = new ObservableCollection<Core.MangaPage>(),
@@ -324,7 +324,7 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuDeleteCh_Click(object sender, RoutedEventArgs e)
         {
-            List<SelectableMangaChapter> tempList =  mangaChapters.Where(ch => ch.IsChecked).ToList();
+            List<MangaChapter> tempList =  mangaChapters.Where(ch => ch.IsChecked).ToList();
             tempList.ForEach(ch => mangaChapters.Remove(ch));
         }
 
@@ -518,7 +518,7 @@ namespace MangaPrinter.WpfGUI
             if (e.AddedItems.Count == 0) return;
 
 
-            SelectableMangaChapter c = (SelectableMangaChapter)e.AddedItems[0] ?? (SelectableMangaChapter)e.RemovedItems[0];
+            MangaChapter c = (MangaChapter)e.AddedItems[0] ?? (MangaChapter)e.RemovedItems[0];
             selectPrintChapters = false;
             lstFileChaptersBinding.SelectedItem = c;
             selectPrintChapters = true;
@@ -564,7 +564,7 @@ namespace MangaPrinter.WpfGUI
             foreach (var c in mangaChapters) c.Selected = false;
 
             bool cSelected = false;
-            foreach (SelectableMangaChapter c in mangaChapters)
+            foreach (MangaChapter c in mangaChapters)
             {
                 if (
                      p.Front.Left.MangaPageSource?.Chapter.Name == c.Name ||
@@ -777,7 +777,7 @@ namespace MangaPrinter.WpfGUI
         {
             if (lstFileChapters.SelectedValue != null)
             {
-                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                MangaChapter Chapter = (MangaChapter)lstFileChapters.SelectedValue;
                 Chapter.Pages
                     .ForEach(p => p.IsChecked = true);
             }
@@ -787,7 +787,7 @@ namespace MangaPrinter.WpfGUI
         {
             if (lstFileChapters.SelectedValue != null)
             {
-                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                MangaChapter Chapter = (MangaChapter)lstFileChapters.SelectedValue;
                 Chapter.Pages
                     .ForEach(p => p.IsChecked = false);
             }
@@ -797,7 +797,7 @@ namespace MangaPrinter.WpfGUI
         {
             if (lstFileChapters.SelectedValue != null)
             {
-                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                MangaChapter Chapter = (MangaChapter)lstFileChapters.SelectedValue;
                 List<MangaPage> tempPages = Chapter.Pages.Where(p => p.IsChecked ).ToList();
                 tempPages.ForEach(p => Chapter.Pages.Remove(p));
                 Chapter.updateChapterStats();
@@ -857,7 +857,7 @@ namespace MangaPrinter.WpfGUI
         const string HTMLItem = "<li><span>{0}</span><br><span style='color: dimgray;'>{1}</span></li>";
         private void mnuExportTOC_Click(object sender, RoutedEventArgs e)
         {
-            if (lstFileChaptersBinding.ItemsSource != null && ((List<SelectableMangaChapter>)lstFileChaptersBinding.ItemsSource).Count == 0)
+            if (lstFileChaptersBinding.ItemsSource != null && ((List<MangaChapter>)lstFileChaptersBinding.ItemsSource).Count == 0)
             {
                 MessageBox.Show(this,"Please bind at least one chapter!");
                 return;
@@ -902,10 +902,10 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuChInsertUp_Click(object sender, RoutedEventArgs e)
         {
-            List<SelectableMangaChapter> myChecked = mangaChapters.Where(c => c.IsChecked).Reverse().ToList();
+            List<MangaChapter> myChecked = mangaChapters.Where(c => c.IsChecked).Reverse().ToList();
 
             // Remove only if found 
-            ListBoxAction<SelectableMangaChapter>(lstFileChapters, (ch) =>
+            ListBoxAction<MangaChapter>(lstFileChapters, (ch) =>
             {
                 // If  not chose a checked
                 if (myChecked.IndexOf(ch) > -1)
@@ -919,10 +919,10 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuChInsertDown_Click(object sender, RoutedEventArgs e)
         {
-            List<SelectableMangaChapter> myChecked = mangaChapters.Where(c => c.IsChecked).Reverse().ToList();
+            List<MangaChapter> myChecked = mangaChapters.Where(c => c.IsChecked).Reverse().ToList();
 
             // Remove only if found
-            ListBoxAction<SelectableMangaChapter>(lstFileChapters, (ch) =>
+            ListBoxAction<MangaChapter>(lstFileChapters, (ch) =>
             {
                 // If  not chose a checked
                 if (myChecked.IndexOf(ch) > -1)
@@ -1023,7 +1023,7 @@ namespace MangaPrinter.WpfGUI
         {
             if (lstFileChapters.SelectedValue != null)
             {
-                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                MangaChapter Chapter = (MangaChapter)lstFileChapters.SelectedValue;
                 Chapter.Pages
                     .Where(p => p.IsChecked)
                     .ForEach(p => p.Effects.IsOmited = !p.Effects.IsOmited);
@@ -1046,7 +1046,7 @@ namespace MangaPrinter.WpfGUI
         {
             if (lstFileChapters.SelectedValue != null)
             {
-                SelectableMangaChapter Chapter = (SelectableMangaChapter)lstFileChapters.SelectedValue;
+                MangaChapter Chapter = (MangaChapter)lstFileChapters.SelectedValue;
                 Core.MangaPage page = lstFilePages.SelectedValue as Core.MangaPage;
                 int index = 0;
                 if (page != null)

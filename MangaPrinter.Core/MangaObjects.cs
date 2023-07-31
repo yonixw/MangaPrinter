@@ -63,10 +63,13 @@ namespace MangaPrinter.Core
         public ObservableCollection<MangaPage> Pages { get { return _baseGet(); } set { _baseSet(value); } }
         public bool IsRTL { get { return _baseGet(); } set { _baseSet(value); } }
 
+        public bool Selected { get { return _baseGet(); } set { _baseSet(value); } }
+
         public MangaChapter()
         {
             Pages = new ObservableCollection<MangaPage>();
             Pages.CollectionChanged += Pages_CollectionChanged;
+            Selected = false;
         }
 
 
