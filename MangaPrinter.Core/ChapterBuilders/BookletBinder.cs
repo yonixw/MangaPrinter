@@ -164,7 +164,7 @@ namespace MangaPrinter.Core.ChapterBuilders
             {
                 IsRTL = _O.isBookletRTL,
                 PrintFaceType = FaceType.SINGLES,
-                BatchPaperNumber = antiSpoiler > 0 ? antiSpoilerAdded++ : 0
+                BatchPaperNumber = antiSpoiler > 0 ? antiSpoilerAdded+1 : 0
             };
 
             setupExtraFaceSide(extraFaceAfter, _O.isBookletRTL, null);
@@ -178,7 +178,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                 {
                     IsRTL = _O.isBookletRTL,
                     PrintFaceType = FaceType.SINGLES,
-                    BatchPaperNumber = antiSpoiler > 0 ? antiSpoilerAdded++ : 0
+                    BatchPaperNumber = antiSpoiler > 0 ? antiSpoilerAdded+2 : 0
                 };
 
                 setupExtraFaceSide(extraFaceAS, _O.isBookletRTL, null);
