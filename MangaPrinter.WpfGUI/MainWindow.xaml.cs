@@ -495,7 +495,7 @@ namespace MangaPrinter.WpfGUI
 
                 if (mangaChapters.Where(ch => ch.IsChecked).Last().Pages.Count > 0)
                 {
-                    _boptions.bookletCoverFirst =
+                    _boptions.bookletCoverLast =
                         mangaChapters.Where(ch => ch.IsChecked).Last().Pages.Last();
                 }
             }
