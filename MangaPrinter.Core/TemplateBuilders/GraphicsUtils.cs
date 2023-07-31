@@ -207,6 +207,8 @@ namespace MangaPrinter.Core.TemplateBuilders
         public static void DrawArrow(Graphics gr, Pen pen, PointF p1, PointF p2,
             float headLenth)
         //http://csharphelper.com/blog/2014/12/draw-lines-with-arrowheads-in-c/
+        //http://web.archive.org/web/20190216001430/http://csharphelper.com/blog/2014/12/draw-lines-with-arrowheads-in-c/
+
         {
             // Draw the shaft.
             gr.DrawLine(pen, p1, p2);
