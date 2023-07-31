@@ -135,7 +135,11 @@
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
 
 
-                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold" Content="Double-Page min ratio (w/h):" />
+                        <Label IsEnabled="False"  Content="Double-Page min ratio (w/h):" Foreground="Black" >
+                            <Label.Effect>
+                                <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
+                            </Label.Effect>
+                        </Label>
                         <TextBox Name="txtPageMaxWidth" Width="100px" Text="0.85" 
                                 TextChanged="txtPageMaxWidth_TextChanged" TextAlignment="Center"/>
 
@@ -143,18 +147,26 @@
 
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Import order:</Label>
+                        <CheckBox IsChecked="True" Name="cbSubfolders">Include subfolders</CheckBox>
+                        <CheckBox IsChecked="True" Name="cbNumberFix">Better 0-9 Sort</CheckBox>
+                        
+                        <Label IsEnabled="False" Foreground="Black" >
+                            <Label.Effect>
+                                <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
+                            </Label.Effect>
+                            Import order:
+                        </Label>
                         <StackPanel Orientation="Horizontal">
                             <RadioButton Name="rbByName" Margin="0,0,10,0">Name</RadioButton>
                             <RadioButton Name="rbByDate" IsChecked="True">Create Date</RadioButton>
                         </StackPanel>
 
-                        <CheckBox IsChecked="True" Name="cbSubfolders">Include subfolders</CheckBox>
-                        <CheckBox IsChecked="True" Name="cbNumberFix">Better 0-9 Sort</CheckBox>
-
-
-
-                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Import Direction:</Label>
+                        <Label IsEnabled="False" Foreground="Black">
+                            <Label.Effect>
+                                <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
+                            </Label.Effect>
+                            Import Direction:
+                        </Label>
                         <StackPanel Orientation="Horizontal" >
                             <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (&lt;&lt;)</RadioButton>
                             <RadioButton Name="rbLTR">LTR (&gt;&gt;)</RadioButton>
@@ -347,7 +359,12 @@
             <TabItem Header="Binding" Height="23" VerticalAlignment="Top">
                 <DockPanel>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Book binding:</Label>
+                        <Label IsEnabled="False" Foreground="Black">
+                            <Label.Effect>
+                                <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
+                            </Label.Effect>
+                            Book binding:
+                        </Label>
                         <StackPanel Orientation="Horizontal">
                             <RadioButton Name="rbBindDuplex" IsChecked="True" Margin="0,0,10,0" VerticalContentAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
@@ -355,7 +372,7 @@
                                     <Label>Duplex</Label>
                                 </StackPanel>
                             </RadioButton>
-                            <RadioButton Name="rbBindBookletStack" Margin="0,0,10,0" VerticalContentAlignment="Center" IsEnabled="False">
+                            <RadioButton Name="rbBindBookletStack" Margin="0,0,10,0" VerticalContentAlignment="Center" >
                                 <StackPanel Orientation="Horizontal" >
                                     <Image Source="Icons/booklet.png" Height="32px" ></Image>
                                     <Label>
@@ -365,7 +382,7 @@
                                     </Label>
                                 </StackPanel>
                             </RadioButton>
-                            <RadioButton Name="rbBindBookletSingles" Margin="0,0,10,0" VerticalContentAlignment="Center" IsEnabled="False">
+                            <RadioButton Name="rbBindBookletSingles" Margin="0,0,10,0" VerticalContentAlignment="Center" >
                                 <StackPanel Orientation="Horizontal" >
                                     <Image Source="Icons/booklet.png" Height="32px" ></Image>
                                     <Label>
@@ -376,11 +393,26 @@
                                 </StackPanel>
                             </RadioButton>
                         </StackPanel>
+                        <Label IsEnabled="False" Foreground="Black">
+                            <Label.Effect>
+                                <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
+                            </Label.Effect>
+                            Booklet Direction:
+                        </Label>
+                        <StackPanel Orientation="Horizontal" >
+                            <RadioButton Name="rbBookRTL" IsChecked="True" Margin="0,0,10,0">RTL (&lt;&lt;)</RadioButton>
+                            <RadioButton Name="rbBookLTR">LTR (&gt;&gt;)</RadioButton>
+                        </StackPanel>
 
 
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Chapter:</Label>
+                        <Label IsEnabled="False" Foreground="Black">
+                            <Label.Effect>
+                                <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
+                            </Label.Effect>
+                            Chapter:
+                        </Label>
                         <CheckBox Name="cbAddStart" IsChecked="True">Add Start Page</CheckBox>
                         <CheckBox Name="cbAddEnd" IsChecked="True">Add End Page</CheckBox>
 
@@ -391,7 +423,12 @@
                         <CheckBox Name="cbIncludeParent" IsChecked="True">Include folder name</CheckBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <Label IsEnabled="False" FontStyle="Italic" FontWeight="Bold">Export:</Label>
+                        <Label IsEnabled="False" Foreground="Black">
+                            <Label.Effect>
+                                <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
+                            </Label.Effect>
+                            Export:
+                        </Label>
                         <Label Content="Page Size:" IsEnabled="False" />
                         <ComboBox Name="cbPageSize" Width="150px" IsEditable="False">
                             <ComboBox.ItemTemplate>
