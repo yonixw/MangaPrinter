@@ -186,20 +186,46 @@ namespace MangaPrinter.Core.TemplateBuilders
 
                 if (CoreConf.I.Templates_ShowDirectionArrows)
                 {
-                    if (isRTL)
+                    // RightSide
+                    if (face.Right.MangaPageSource != null)
                     {
-                        GraphicsUtils.DrawArrowHeadRow(g, blackPen,
-                            new Point(tmpW - padding, padding / 2),
-                            new Point(padding, padding / 2),
-                            padding);
+                        if (face.Right.MangaPageSource.Chapter.IsRTL)
+                        {
+                            GraphicsUtils.DrawArrowHeadRow(g, blackPen,
+                               new Point(tmpW - padding, padding / 2),
+                               new Point(tmpW/2 - padding, padding / 2),
+                               padding);
+                        }
+                        else
+                        {
+                            GraphicsUtils.DrawArrowHeadRow(g, blackPen,
+                               new Point(tmpW / 2 - padding, padding / 2),
+                               new Point(tmpW - padding, padding / 2),
+                                padding);
+                        }
                     }
-                    else
+
+                    // LeftSide
+                    if (face.Left.MangaPageSource != null)
                     {
-                        GraphicsUtils.DrawArrowHeadRow(g, blackPen,
-                           new Point(padding, padding / 2),
-                           new Point(tmpW - padding, padding / 2),
-                           padding);
+                        if (face.Left.MangaPageSource.Chapter.IsRTL)
+                        {
+                            GraphicsUtils.DrawArrowHeadRow(g, blackPen,
+                               new Point(tmpW/2 - padding, padding / 2),
+                               new Point(padding, padding / 2),
+                               padding);
+                        }
+                        else
+                        {
+                            GraphicsUtils.DrawArrowHeadRow(g, blackPen,
+                              new Point(padding, padding / 2),
+                              new Point(tmpW/2 - padding, padding / 2),
+                              padding);
+                        }
                     }
+
+
+
                 }
 
 
