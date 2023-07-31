@@ -126,7 +126,7 @@ namespace MangaPrinter.Conf
 
         public JMetaT<string> Binding_Type { get; } = new JMetaT<string>("",
            "Binding method type"
-        ).Listify(new CHList<string>("duplex", "booklet_single", "booklet_print"));
+        ).Listify(new CHList<string>("duplex", "booklet"));
 
         public JMetaT<bool> Binding_AddStartPage { get; } = new JMetaT<bool>(true,
            "Add page before every chapter with text"

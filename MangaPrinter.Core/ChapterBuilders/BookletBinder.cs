@@ -223,7 +223,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                 {
                     Front = faceResults[i],
                     Back = faceResults[i + 1],
-                    PageNumber = i/2
+                    PageNumber = i/2+1
                 });
             }
 

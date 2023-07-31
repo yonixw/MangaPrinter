@@ -126,7 +126,6 @@ namespace MangaPrinter.WpfGUI
 
             rbBindDuplex.IsChecked = CoreConf.I.Binding_Type == "duplex";
             rbBindBookletStack.IsChecked = CoreConf.I.Binding_Type == "booklet_print";
-            rbBindBookletSingles.IsChecked = CoreConf.I.Binding_Type == "booklet_single";
 
             txtNonWindows.Text = CoreConf.I.Info_IsNotWindows.Get().ToString();
         }
@@ -480,9 +479,27 @@ namespace MangaPrinter.WpfGUI
                 return;
             }
 
-            BookletOptions _boptions = new BookletOptions() { 
-               isBookletRTL = rbBookRTL.IsChecked ?? false 
+            BookletOptions _boptions = new BookletOptions() {
+                isBookletRTL = rbBookRTL.IsChecked ?? false
             };
+
+            if (cbCover.IsChecked ?? false)
+            {
+                // Already assuming more than 1 chapter checked
+
+                if (mangaChapters.Where(ch => ch.IsChecked).First().Pages.Count > 0)
+                {
+                    _boptions.bookletCoverFirst =
+                        mangaChapters.Where(ch => ch.IsChecked).First().Pages.First();
+                }
+
+                if (mangaChapters.Where(ch => ch.IsChecked).Last().Pages.Count > 0)
+                {
+                    _boptions.bookletCoverFirst =
+                        mangaChapters.Where(ch => ch.IsChecked).Last().Pages.Last();
+                }
+            }
+
             IBindBuilder bindBuilder = 
                 ( rbBindDuplex.IsChecked ?? false ) ? 
                 (IBindBuilder)new DuplexBuilder() :
@@ -1067,6 +1084,72 @@ namespace MangaPrinter.WpfGUI
                 }); ;
                 Chapter.updateChapterStats();
             }
+        }
+
+        private void LeftButton_Click(object sender, RoutedEventArgs e)
+        {
+            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
+
+            bool bookletRTL = (rbBookRTL.IsChecked ?? false);
+
+            PrintFace newPage = new PrintFace()
+            {
+                BatchPaperNumber = p.Front.BatchPaperNumber,
+                IsRTL = bookletRTL,
+                FaceNumber = p.Front.FaceNumber,
+                PrintFaceType = FaceType.SINGLES,
+
+                Left = bookletRTL ? p.Back.Left: p.Front.Left,
+                Right = !bookletRTL ? p.Back.Left : p.Front.Left,
+            };
+
+            
+
+            var faces = new PrintFace[] { newPage };
+            var sides = new PrintSide[] {  };
+
+            var page = new PhysicalPageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
+
+            var b = (new DuplexTemplates()).BuildFace(faces, sides,
+                    page.singlePageWidth, page.singlePageHeight,
+                    page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
+
+
+            Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(null,
+                    "Left face of page: " + p.PageNumber, b);
+            dlgImage.ShowDialog();
+        }
+
+        private void RightButton_Click(object sender, RoutedEventArgs e)
+        {
+            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
+
+            bool bookletRTL = (rbBookRTL.IsChecked ?? false);
+
+            PrintFace newPage = new PrintFace()
+            {
+                BatchPaperNumber = p.Front.BatchPaperNumber,
+                IsRTL = bookletRTL,
+                FaceNumber = p.Front.FaceNumber,
+                PrintFaceType = FaceType.SINGLES,
+
+                Right = bookletRTL ? p.Front.Right : p.Back.Right,
+                Left = !bookletRTL ? p.Front.Right : p.Back.Right,
+            };
+
+            var faces = new PrintFace[] { newPage };
+            var sides = new PrintSide[] { };
+
+            var page = new PhysicalPageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
+
+            var b = (new DuplexTemplates()).BuildFace(faces, sides,
+                    page.singlePageWidth, page.singlePageHeight,
+                    page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
+
+
+            Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(null,
+                    "Right face of page: " + p.PageNumber, b);
+            dlgImage.ShowDialog();
         }
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)

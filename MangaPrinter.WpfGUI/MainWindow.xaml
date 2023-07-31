@@ -377,34 +377,27 @@
                                     <Image Source="Icons/booklet.png" Height="32px" ></Image>
                                     <Label>
                                         <TextBlock >
-                                            Booklet (Stack)
-                                        </TextBlock>
-                                    </Label>
-                                </StackPanel>
-                            </RadioButton>
-                            <RadioButton Name="rbBindBookletSingles" Margin="0,0,10,0" VerticalContentAlignment="Center" >
-                                <StackPanel Orientation="Horizontal" >
-                                    <Image Source="Icons/booklet.png" Height="32px" ></Image>
-                                    <Label>
-                                        <TextBlock >
-                                            Booklet (Singles)
+                                            Booklet
                                         </TextBlock>
                                     </Label>
                                 </StackPanel>
                             </RadioButton>
                         </StackPanel>
+                    
+                    </Menu>
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" Foreground="Black">
                             <Label.Effect>
                                 <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
                             </Label.Effect>
-                            Booklet Direction:
+                            Booklet Only:
                         </Label>
                         <StackPanel Orientation="Horizontal" >
                             <RadioButton Name="rbBookRTL" IsChecked="True" Margin="0,0,10,0">RTL (&lt;&lt;)</RadioButton>
                             <RadioButton Name="rbBookLTR">LTR (&gt;&gt;)</RadioButton>
                         </StackPanel>
-
-
+                        <CheckBox Name="cbCover" IsChecked="True">Keep First/Last pages as cover</CheckBox>
+                        <CheckBox Name="cbBookletSingles" IsChecked="True">Export booklet sides </CheckBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" Foreground="Black">
@@ -427,9 +420,8 @@
                             <Label.Effect>
                                 <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
                             </Label.Effect>
-                            Export:
+                            Page Size:
                         </Label>
-                        <Label Content="Page Size:" IsEnabled="False" />
                         <ComboBox Name="cbPageSize" Width="150px" IsEditable="False">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -437,6 +429,7 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+                        
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <MenuItem Header="(2) (Re)Bind Checked" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Click="MenuItem_Click" Width="190" Margin="0 0 5px 0"/>
@@ -491,9 +484,13 @@
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" /> <!-- Image-->
                                                     <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
+
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="auto" /> <!-- Middle buttons -->
+                                                    <ColumnDefinition Width="auto" />
+                                                    
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="*" />
@@ -513,8 +510,10 @@
                                                 <Label  Content="{Binding Back.Right, Converter={StaticResource sideConvert}}" Grid.Row="1" Grid.Column="2" />
                                                 <Label Content="{Binding Back.Left, Converter={StaticResource sideConvert}}"   Grid.Row="1" Grid.Column="0" />
 
-                                                <Button Click="MnuPrvwFront_Click" Grid.Row="0" Grid.Column="3">Top [Preview]</Button>
-                                                <Button Click="MnuPrvwBack_Click" Grid.Row="1" Grid.Column="3">Bottom [Preview]</Button>
+                                                <Button Click="LeftButton_Click" Grid.Row="0" Grid.Column="3" Grid.RowSpan="2">Left</Button>
+                                                <Button Click="MnuPrvwFront_Click" Grid.Row="0" Grid.Column="4">Top View</Button>
+                                                <Button Click="MnuPrvwBack_Click" Grid.Row="1" Grid.Column="4">Bottom View</Button>
+                                                <Button Click="RightButton_Click" Grid.Row="0" Grid.Column="5" Grid.RowSpan="2">Right</Button>
                                             </Grid>
                                         </Border>
                                     </StackPanel>
