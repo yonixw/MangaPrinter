@@ -181,7 +181,7 @@ namespace MangaPrinter.Conf
            "Add software name to text templates"
         );
 
-        public JMetaT<float> Templates_PaddingPrcnt { get; } = new JMetaT<float>(1.8f, //2.2?
+        public JMetaT<float> Templates_PaddingPrcnt { get; } = new JMetaT<float>(2.2f,
           "Padding of the 4 outer direction, in precent, >= 0, around the main content",
           (F) => F > 0.0
         );
