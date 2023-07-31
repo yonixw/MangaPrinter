@@ -221,7 +221,7 @@ namespace MangaPrinter.WpfGUI
                     return fileImporter.getChapters(DirPath, subFolders, cutoff, rtl, orderFunc, importErrors, updateFunc);
                 },
                 isProgressKnwon: false)
-                .ForEach(ch => mangaChapters.Add(MangaChapter.Extend<MangaChapter>(ch)));
+                .ForEach(ch => mangaChapters.Add(ch));
 
                 if (importErrors.Count >0)
                 {
