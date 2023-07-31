@@ -54,6 +54,13 @@ namespace MangaPrinter.Core.ChapterBuilders
                 bool isSourceDouble = sourceFace.Left == sourceFace.Right;
                 bool isSourceRTL = sourceFace.IsRTL;
 
+                if (isSourceDouble && sourceFace.Right.SideType==SingleSideType.MANGA)
+                {
+                    // Seperate objects because double are the same 
+                    sourceFace.Left = new PrintSide(sourceFace.Left);
+                    sourceFace.Right = new PrintSide(sourceFace.Right);
+                }
+
                 PrintSide topSide = setSide(goingDown ? Front : Back,
                     goingDown ? _O.isBookletRTL : !_O.isBookletRTL,  // opposite in going up
                     (isSourceRTL ? sourceFace.Right : sourceFace.Left));
@@ -69,9 +76,9 @@ namespace MangaPrinter.Core.ChapterBuilders
                      goingDown ? _O.isBookletRTL : !_O.isBookletRTL,  // opposite in going up
                     (!isSourceRTL ? sourceFace.Right : sourceFace.Left));
                 if (isSourceDouble &&
-                   (topSide.SideType == SingleSideType.MANGA ||
-                   topSide.SideType == SingleSideType.ANTI_SPOILER ||
-                   topSide.SideType == SingleSideType.OMITED))
+                   (bottomSide.SideType == SingleSideType.MANGA ||
+                   bottomSide.SideType == SingleSideType.ANTI_SPOILER ||
+                   bottomSide.SideType == SingleSideType.OMITED))
                 {
                     bottomSide.DoubleSourceType = !isSourceRTL ? DoubleSoure.RIGHT : DoubleSoure.LEFT;
                 }

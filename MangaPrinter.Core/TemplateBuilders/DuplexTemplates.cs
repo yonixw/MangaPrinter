@@ -307,7 +307,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                     break;
                 case SingleSideType.MANGA:
                     page = GraphicsUtils.loadFileZoomedCentered(side.MangaPageSource,
-                       pageH, pageW);
+                       pageH, pageW, side.DoubleSourceType);
                     break;
             }
             g.DrawImage(page, pagePlace);

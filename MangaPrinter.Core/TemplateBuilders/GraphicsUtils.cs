@@ -63,11 +63,32 @@ namespace MangaPrinter.Core.TemplateBuilders
             return b;
         }
 
-        public static Bitmap loadFileZoomedCentered(MangaPage page, int newHeight, int newWidth)
+        public static Bitmap loadFileZoomedCentered(MangaPage page, int newHeight, int newWidth, DoubleSoure doubleSoure = DoubleSoure.ALL)
         {
             try
             {
-                return sameAspectResize(MagickImaging.BitmapFromUrlExt(page), newWidth, newHeight);
+                Bitmap fullFile = MagickImaging.BitmapFromUrlExt(page);
+                if(doubleSoure != DoubleSoure.ALL)
+                {
+                    if (doubleSoure == DoubleSoure.LEFT)
+                    {
+                        return sameAspectResize(
+                            bitmapCrop(fullFile, new PageEffects() { CropRight = 50 })
+                            , newWidth, newHeight);
+                    }
+                    else if (doubleSoure == DoubleSoure.RIGHT)
+                    {
+                        return sameAspectResize(
+                           bitmapCrop(fullFile, new PageEffects() { CropLeft = 50 })
+                           , newWidth, newHeight);
+                    }
+                }
+                else
+                {
+                    return sameAspectResize(fullFile, newWidth, newHeight);
+                }
+
+                
                 // no stream because it has to stay open: https://stackoverflow.com/a/1053123/1997873
             }
             catch (OutOfMemoryException ex)

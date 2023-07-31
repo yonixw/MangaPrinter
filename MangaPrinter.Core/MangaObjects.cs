@@ -210,6 +210,16 @@ namespace MangaPrinter.Core
         public MangaPage MangaPageSource { get { return _baseGet(); } set { _baseSet(value); } }
         public DoubleSoure DoubleSourceType { get { return _baseGet(); } set { _baseSet(value); } }
 
+        public PrintSide() { }
+
+        public PrintSide(PrintSide source)
+        {
+            SideType = source.SideType;
+            SideNumber = source.SideNumber;
+            MangaPageSource = source.MangaPageSource;
+            DoubleSourceType = source.DoubleSourceType;
+        }
+
         public override string ToString()
         {
             string result = string.Format("({0}) {1}",SideNumber,SideType);

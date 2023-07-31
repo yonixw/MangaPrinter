@@ -6,16 +6,8 @@ using System.Threading.Tasks;
 
 namespace MangaPrinter.Core.TemplateBuilders
 {
-    /* 
-          *  Templates in duplex mode:
-          *  ==================================
-          *  
-          *  Side Type:            I   O   M   B   E   A  OM
-          *  Single:               +   +   +   +   +   +  + 
-          *  Double (source):      -   -   +   -   -   +  +
-      */
-
     class BookletTemplates
     {
+        // Duplex not reimplemented, we just added single support for DuplexTemplates
     }
 }
