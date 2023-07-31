@@ -101,6 +101,33 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         }
 
         [TestMethod()]
+        public void xDoubleCoverAndAS()
+        {
+            var input = "L1";
+            var output = "L>D,A / L>S,M,E / L>D,A / L>D,A";
+            var bookletRtl = new BookletOptions()
+            {
+                isBookletRTL = false,
+                bookletCoverFirst = new MangaPage(),
+                bookletCoverLast = new MangaPage()
+            };
+
+            var outputBooklet = String.Join(" / ", new[] {
+                "L>S,M,M",
+
+                "L>S,M,E",
+                "L>S,E,E",
+
+                "L>S,A,A",
+                });
+
+
+            Utils.TestResultDuplex(input, output, false, false, 100);
+            Console.WriteLine("--");
+            Utils.TestResultBooklet(bookletRtl, input, outputBooklet, false, false, 100);
+        }
+
+        [TestMethod()]
         public void xSimpleNoDoubleEvenCoverEvenNoAddAS()
         {
             var input = "L1/L1/L1/L1/L1";

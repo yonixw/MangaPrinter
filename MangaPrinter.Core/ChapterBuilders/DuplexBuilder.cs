@@ -95,6 +95,16 @@ namespace MangaPrinter.Core.ChapterBuilders
                     Faces.Add(_f);
                     _f.IsRTL = Faces[Faces.Count - 1 - 1].IsRTL;
                 }
+
+                if (Faces.Count > 1 && Faces.Count % 2 == 1)
+                {
+                    // Add spoiler to the last page, again:
+                    PrintSide _s = new PrintSide() { SideType = SingleSideType.ANTI_SPOILER };
+                    PrintFace _f = new PrintFace() { PrintFaceType = FaceType.DOUBLE, IsRTL = true }; // RTL not important
+                    _f.Left = _f.Right = _s;
+                    Faces.Add(_f);
+                    _f.IsRTL = Faces[Faces.Count - 1 - 1].IsRTL;
+                }
             }
 
             if (Faces.Count % 2 == 1)
@@ -116,7 +126,7 @@ namespace MangaPrinter.Core.ChapterBuilders
 
                 face.Left = sideLeft;
                 face.Right = sideRight;
-            }
+            } 
 
             int pageIndex = 1;
             int sideCounter = 1;

@@ -122,8 +122,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         public void SimpleIntroOutroEvenAntiRTL2()
         {
             var input = "R2,1,1,1,1  /  R1,1,1";
-            var output = "R>D,A / R>S,B,I / R>D,M / R>S,M,M / R>S,M,M / R>S,E,O / R>D,A / R>S,M,I / R>S,M,M / R>S,E,O / R>D,A / R>S,E,E";
-
+            var output = "R>D,A / R>S,B,I / R>D,M / R>S,M,M / R>S,M,M / R>S,E,O / R>D,A / R>S,M,I / R>S,M,M / R>S,E,O / R>D,A / R>D,A";
 
             Utils.TestResultDuplex(input, output, true, true, 3  /* => 6 faces*/ );
         }
@@ -134,7 +133,7 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         {
             var input = "R2,1,2,1,1 / L1,2,1,2 / R2,1,1,2";
             var output = 
-                "R>D,A / R>S,B,I / R>D,M / R>S,B,M / R>D,M / R>S,M,M / R>D,A / R>S,E,O / L>S,I,M / L>D,M / L>S,M,B / L>D,M / L>D,A / L>S,O,E / R>S,B,I / R>D,M / R>S,M,M / R>D,M / R>D,A / R>S,E,O / R>D,A / R>S,E,E";
+                "R>D,A / R>S,B,I / R>D,M / R>S,B,M / R>D,M / R>S,M,M / R>D,A / R>S,E,O / L>S,I,M / L>D,M / L>S,M,B / L>D,M / L>D,A / L>S,O,E / R>S,B,I / R>D,M / R>S,M,M / R>D,M / R>D,A / R>S,E,O / R>D,A / R>D,A";
 
             // Notes:
             // * First anti-spolier takes from face 2
