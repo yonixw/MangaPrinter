@@ -397,7 +397,7 @@
                             <RadioButton Name="rbBookLTR">LTR (&gt;&gt;)</RadioButton>
                         </StackPanel>
                         <CheckBox Name="cbCover" IsChecked="True">Keep First/Last pages as cover</CheckBox>
-                        <CheckBox Name="cbBookletSingles" IsChecked="True">Export booklet sides </CheckBox>
+                        <CheckBox Name="cbBookletSingles" IsChecked="True">Export Singles</CheckBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" Foreground="Black">
@@ -435,9 +435,9 @@
                         <MenuItem Header="(2) (Re)Bind Checked" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Click="MenuItem_Click" Width="190" Margin="0 0 5px 0"/>
                         <MenuItem Header="Export Chapter List" Style="{StaticResource MenuItemBtnStyle}"  Foreground="Black" Name="mnuExportTOC" Click="mnuExportTOC_Click" Margin="0 0 5px 0"/>
                         <MenuItem Header="(3) Export PDF!" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Name="mnuExport" Click="MnuExport_Click" Margin="0 0 5px 0" />
-                        <CheckBox Name="cbExportMinimal" IsChecked="False">Export to images</CheckBox>
+                        <CheckBox Name="cbExportMinimal" IsChecked="False">Don't PDF pack</CheckBox>
                         <Hyperlink Name="lblHelpExportMinimal" Click="LblHelpExportMinimal_Click">( ? )</Hyperlink>
-                        <CheckBox Name="cbKeepColors" IsChecked="False">Keep colors</CheckBox>
+                        <CheckBox Name="cbKeepColors" IsChecked="False">Export with colors</CheckBox>
                         <Hyperlink Name="lblKeepColorsHelp" Click="lblKeepColorsHelp_Click">( ? )</Hyperlink>
 
                     </Menu>
