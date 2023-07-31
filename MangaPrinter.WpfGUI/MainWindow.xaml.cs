@@ -480,6 +480,9 @@ namespace MangaPrinter.WpfGUI
                 return;
             }
 
+            BookletOptions _boptions = new BookletOptions() { 
+               isBookletRTL = rbBookRTL.IsChecked ?? false 
+            };
             IBindBuilder bindBuilder = 
                 ( rbBindDuplex.IsChecked ?? false ) ? 
                 (IBindBuilder)new DuplexBuilder() :
@@ -496,7 +499,7 @@ namespace MangaPrinter.WpfGUI
                 ObservableCollection<SelectablePrintPage> result = new ObservableCollection<SelectablePrintPage>();
 
                 bindBuilder
-                    .Build(allSelectedChapters.Cast<MangaChapter>().ToList(), startPage, endPage, antiSpoiler)
+                    .Build(allSelectedChapters.Cast<MangaChapter>().ToList(), startPage, endPage, antiSpoiler, _boptions)
                     .ForEach((p) => result.Add(PrintPage.Extend<SelectablePrintPage>(p)));
 
                 return result;

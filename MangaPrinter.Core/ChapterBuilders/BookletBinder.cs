@@ -87,7 +87,7 @@ namespace MangaPrinter.Core.ChapterBuilders
             if (antiSpoiler > 0)
             {
                 int batchCounter = 0;
-                int arrayLength = faceResults.Count;
+                int arrayLength = faceResults.Count; // make it constant
                 for (int i = 0; i < arrayLength; i++)
                 {
                     faceResults[i].BatchPaperNumber = batchCounter;
@@ -151,7 +151,8 @@ namespace MangaPrinter.Core.ChapterBuilders
             PrintFace extraFaceBefore = new PrintFace()
             {
                 IsRTL = _O.isBookletRTL,
-                PrintFaceType = FaceType.SINGLES
+                PrintFaceType = FaceType.SINGLES,
+                BatchPaperNumber = 0
             };
 
             setupExtraFaceSide(extraFaceBefore, _O.isBookletRTL, _O.bookletCoverFirst);
@@ -162,7 +163,8 @@ namespace MangaPrinter.Core.ChapterBuilders
             PrintFace extraFaceAfter = new PrintFace()
             {
                 IsRTL = _O.isBookletRTL,
-                PrintFaceType = FaceType.SINGLES
+                PrintFaceType = FaceType.SINGLES,
+                BatchPaperNumber = antiSpoiler > 0 ? antiSpoilerAdded++ : 0
             };
 
             setupExtraFaceSide(extraFaceAfter, _O.isBookletRTL, null);
@@ -175,7 +177,8 @@ namespace MangaPrinter.Core.ChapterBuilders
                 PrintFace extraFaceAS = new PrintFace()
                 {
                     IsRTL = _O.isBookletRTL,
-                    PrintFaceType = FaceType.SINGLES
+                    PrintFaceType = FaceType.SINGLES,
+                    BatchPaperNumber = antiSpoiler > 0 ? antiSpoilerAdded++ : 0
                 };
 
                 setupExtraFaceSide(extraFaceAS, _O.isBookletRTL, null);
@@ -189,10 +192,26 @@ namespace MangaPrinter.Core.ChapterBuilders
                 throw new System.Exception("Unexpected faces count! " + faceResults.Count);
             }
 
+            int sideCounter = 0;
+
+            void setSideCount(bool bRTL, int faceID )
+            {
+                (bRTL ? (faceResults[faceID].Right) : (faceResults[faceID].Left)).SideNumber
+                    = sideCounter;
+                (bRTL ? (faceResults[faceID].Left) : (faceResults[faceID].Right)).SideNumber
+                    = faceResults.Count * 2 - sideCounter;
+
+                sideCounter++;
+            }
 
             List<PrintPage> result = new List<PrintPage>();
             for (int i = 0; i < faceResults.Count; i +=2)
             {
+                setSideCount(bookletOptions.isBookletRTL, i);
+                setSideCount(bookletOptions.isBookletRTL, i+1);
+                faceResults[i].FaceNumber = i;
+                faceResults[i+1].FaceNumber = i+1;
+
                 result.Add(new PrintPage()
                 {
                     Front = faceResults[i],

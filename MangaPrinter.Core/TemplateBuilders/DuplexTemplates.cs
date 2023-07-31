@@ -37,7 +37,7 @@ namespace MangaPrinter.Core.TemplateBuilders
             PrintFace face = faces[0];
 
             Bitmap result = null;
-            if (face.Left == face.Right) // double
+            if (face.Left == face.Right  ) // double
             {
                 if (
                     face.Right.SideType != SingleSideType.MANGA &&
@@ -53,15 +53,6 @@ namespace MangaPrinter.Core.TemplateBuilders
             }
             else
             {
-                if (face.Right.SideType == SingleSideType.ANTI_SPOILER ) // Only in duplex, booklet can have it!
-                    throw new Exception(
-                        string.Format("Got type {0} in right single in duplex. It's unexpected.", face.Right.SideType)
-                        );
-                if (face.Left.SideType == SingleSideType.ANTI_SPOILER)  // Only in duplex, booklet can have it!
-                    throw new Exception(
-                        string.Format("Got type {0} in left single in duplex. It's unexpected.", face.Left.SideType)
-                        );
-
                 result = TemplateSingle(face, spW, spH, padding, parentText);
             }
 
@@ -282,6 +273,10 @@ namespace MangaPrinter.Core.TemplateBuilders
                     break;
                 case SingleSideType.OMITED:
                     page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Omited, true),
+                       pageH, pageW);
+                    break;
+                case SingleSideType.ANTI_SPOILER:
+                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_AntiSpoiler, true),
                        pageH, pageW);
                     break;
                 case SingleSideType.MANGA:
