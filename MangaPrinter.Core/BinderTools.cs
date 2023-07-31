@@ -21,5 +21,11 @@ namespace MangaPrinter.Core
             int antiSpoiler = 0, BookletOptions bookletOption = null);
     }    
 
+
+    public interface ITemplateBuilder
+    {
+        System.Drawing.Bitmap BuildFace(
+            PrintFace[] faces, PrintSide[] sides, int spW, int spH, int padding, bool colors, bool parentText);
+    }
    
 }

@@ -26,7 +26,8 @@ namespace MangaPrinter.Core.ChapterBuilders
             {
                 MangaPage SinglePageNULL = new MangaPage() {
                     IsDouble = false, Chapter = ch,
-                    Effects = new PageEffects()}; 
+                    Effects = new PageEffects()
+                }; 
 
                 if (addStartPage)
                     HandleFace( ref isFirst, Faces, ch, SinglePageNULL, SingleSideType.INTRO);
@@ -50,6 +51,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                     PrintSide side = new PrintSide()
                     {
                         SideType = SingleSideType.MAKE_EVEN,
+                        MangaPageSource = SinglePageNULL
                     };
 
                     if (ch.IsRTL)
@@ -260,6 +262,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                 {
 
                     SideType = SingleSideType.BEFORE_DOUBLE,
+                    MangaPageSource = p
                 };
 
                 if (ch.IsRTL)

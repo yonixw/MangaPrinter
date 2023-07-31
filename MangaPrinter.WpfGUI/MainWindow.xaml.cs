@@ -26,6 +26,7 @@ using PdfSharp.Pdf;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
 using PdfSharp;
 using MangaPrinter.Conf;
+using MangaPrinter.Core.ChapterBuilders;
 
 namespace MangaPrinter.WpfGUI
 {
@@ -479,6 +480,11 @@ namespace MangaPrinter.WpfGUI
                 return;
             }
 
+            IBindBuilder bindBuilder = 
+                ( rbBindDuplex.IsChecked ?? false ) ? 
+                (IBindBuilder)new DuplexBuilder() :
+                (IBindBuilder)new BookletBinder();
+
             bool startPage = cbAddStart.IsChecked ?? false;
             bool endPage = cbAddEnd.IsChecked ?? false;
             int antiSpoiler = (cbUseAntiSpoiler.IsChecked ?? false) ? int.Parse(txtSpoilerPgNm.Text) : 0;
@@ -489,7 +495,7 @@ namespace MangaPrinter.WpfGUI
             {
                 ObservableCollection<SelectablePrintPage> result = new ObservableCollection<SelectablePrintPage>();
 
-                (new Core.ChapterBuilders.DuplexBuilder())
+                bindBuilder
                     .Build(allSelectedChapters.Cast<MangaChapter>().ToList(), startPage, endPage, antiSpoiler)
                     .ForEach((p) => result.Add(PrintPage.Extend<SelectablePrintPage>(p)));
 
@@ -575,14 +581,14 @@ namespace MangaPrinter.WpfGUI
             selectPrintChapters = true;
         }
 
-        class PageInfo
+        class PhysicalPageInfo
         {
             public int singlePageWidth = 0;
             public int singlePageHeight = 0;
             public int paddingPx = 0;
             public int pageDepth = 0;
 
-            public PageInfo(JPage page, float paddingPercent)
+            public PhysicalPageInfo(JPage page, float paddingPercent)
             {
                 if (page == null)
                     throw new Exception("Can't find page!!!");
@@ -597,9 +603,12 @@ namespace MangaPrinter.WpfGUI
         {
             SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
 
-            var page = new PageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
+            var faces = new PrintFace[] { p.Front };
+            var sides = new PrintSide[] { p.Front.Right, p.Front.Left };
 
-            var b = (new DuplexTemplates()).BuildFace(p.Front,
+            var page = new PhysicalPageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
+
+            var b = (new DuplexTemplates()).BuildFace(faces, sides,
                     page.singlePageWidth,page.singlePageHeight,
                     page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
@@ -612,9 +621,13 @@ namespace MangaPrinter.WpfGUI
         private void MnuPrvwBack_Click(object sender, RoutedEventArgs e)
         {
             SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
-            var page = new PageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
+            var page = new PhysicalPageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
 
-            var b = (new DuplexTemplates()).BuildFace(p.Back,
+            var faces = new PrintFace[] { p.Back };
+            var sides = new PrintSide[] { p.Back.Right, p.Back.Left };
+
+
+            var b = (new DuplexTemplates()).BuildFace(faces, sides,
                     page.singlePageWidth, page.singlePageHeight,
                     page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
@@ -1064,7 +1077,7 @@ namespace MangaPrinter.WpfGUI
                 PrintPage.lastFullExportMetadata = fi.Name.Replace(fi.Extension,"");
                 int saveCounter = 0;
 
-                var pageInfo = new PageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
+                var pageInfo = new PhysicalPageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
 
                 int pW = pageInfo.singlePageWidth;
                 int pH = pageInfo.singlePageHeight;
@@ -1085,7 +1098,7 @@ namespace MangaPrinter.WpfGUI
                 Exception ex = winWorking.waitForTask<Exception>(this, (updateFunc) =>
                 {
 
-                    DuplexTemplates dt = new DuplexTemplates();
+                    ITemplateBuilder dt = new DuplexTemplates();
                     foreach (SelectablePrintPage page in allPrintPages)
                     {
 
@@ -1093,7 +1106,10 @@ namespace MangaPrinter.WpfGUI
                         {
                             updateFunc("[1/3] Export page " + page.PageNumber, (int)(100.0f * saveCounter / 2 / pagesCount));
 
-                            var b = dt.BuildFace(page.Front, pW, pH, pad, keepColors, parentText);
+                            var faces = new PrintFace[] { page.Front };
+                            var sides = new PrintSide[] { page.Front.Right, page.Front.Left };
+
+                            var b = dt.BuildFace(faces, sides, pW, pH, pad, keepColors, parentText);
                             var bName = System.IO.Path.Combine(
                                     fi.Directory.FullName,
                                     "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".jpg"
@@ -1102,7 +1118,10 @@ namespace MangaPrinter.WpfGUI
                             filesToDelete.Add(bName);
                             b.Dispose();
 
-                            b = dt.BuildFace(page.Back, pW, pH, pad, keepColors, parentText);
+                            faces = new PrintFace[] { page.Back };
+                            sides = new PrintSide[] { page.Back.Right, page.Back.Left };
+
+                            b = dt.BuildFace(faces, sides, pW, pH, pad, keepColors, parentText);
                             bName = System.IO.Path.Combine(
                                    fi.Directory.FullName,
                                    "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".jpg"

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MangaPrinter.Core.TemplateBuilders
 {
-    public class DuplexTemplates
+    public class DuplexTemplates : ITemplateBuilder
     {
         /* 
             *  Templates in duplex mode:
@@ -26,15 +26,16 @@ namespace MangaPrinter.Core.TemplateBuilders
             
         }
 
-
         public static Pen borderPen = new Pen(Color.Black, 4);
         public static Pen blackPen = new Pen(Color.Black, 4);
         public static Brush blackBrush = new SolidBrush(Color.Black);
         public static Font fontSide = new Font(new FontFamily(CoreConf.I.Templates_TextFont), 5, FontStyle.Bold); // size will be changed
         public static Font fontPageText = new Font(new FontFamily(CoreConf.I.Templates_TextFont), 5);
 
-        public Bitmap BuildFace(PrintFace face,  int spW, int spH, int padding, bool colors, bool parentText)
+        public Bitmap BuildFace(PrintFace[] faces, PrintSide[] sides,  int spW, int spH, int padding, bool colors, bool parentText)
         {
+            PrintFace face = faces[0];
+
             Bitmap result = null;
             if (face.Left == face.Right) // double
             {
@@ -68,6 +69,7 @@ namespace MangaPrinter.Core.TemplateBuilders
             // TODO: dispose bitmaps?
             return result;
         }
+        
         private static string GetFaceCountText(PrintFace face)
         {
             // Todo, total face numbers, total A-S count?
