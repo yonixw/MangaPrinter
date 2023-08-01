@@ -396,6 +396,7 @@
                             <RadioButton Name="rbBookRTL" IsChecked="True" Margin="0,0,10,0">RTL (&lt;&lt;)</RadioButton>
                             <RadioButton Name="rbBookLTR">LTR (&gt;&gt;)</RadioButton>
                         </StackPanel>
+                        <Hyperlink Name="lblBkltRTL" Click="lblBkltRTL_Click">( ! )</Hyperlink>
                         <CheckBox Name="cbCover" IsChecked="True">Keep First/Last pages as cover</CheckBox>
                         <CheckBox Name="cbBookletSingles" IsChecked="True">Export Singles</CheckBox>
                     </Menu>
@@ -443,9 +444,9 @@
                     </Menu>
                     <Grid >
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="5"/>
-                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="7*"/>
                         </Grid.ColumnDefinitions>
                         <ListBox Name="lstFileChaptersBinding" Grid.Column="0" 
                                  SelectionMode="Multiple"  SelectionChanged="LstFileChaptersBinding_SelectionChanged">
@@ -511,7 +512,9 @@
                                                     <ColumnDefinition Width="*" /> <!-- Image-->
                                                     <ColumnDefinition Width="*" />
 
-                                                    <ColumnDefinition Width="auto" /> <!-- Middle buttons -->
+                                                    <ColumnDefinition Width="auto" /> <!-- buttons -->
+                                                    <ColumnDefinition Width="auto" /> <!-- buttons -->
+                                                    <ColumnDefinition Width="auto" /> <!-- buttons -->
                                                     
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
@@ -532,8 +535,13 @@
                                                 <Label  Content="{Binding Back.Right, Converter={StaticResource sideConvert}}" Grid.Row="1" Grid.Column="2" />
                                                 <Label Content="{Binding Back.Left, Converter={StaticResource sideConvert}}"   Grid.Row="1" Grid.Column="0" />
 
-                                                <Button Click="MnuPrvwFront_Click" Grid.Row="0" Grid.Column="4">Top View</Button>
-                                                <Button Click="MnuPrvwBack_Click" Grid.Row="1" Grid.Column="4">Bottom View</Button>
+                                                <Button Click="MnuPrvwFront_Click" Grid.Row="0" Grid.Column="3">D/Front</Button>
+                                                <Button Click="MnuPrvwBack_Click" Grid.Row="1" Grid.Column="3">D/Back</Button>
+
+                                                <Button Click="MnuPrvLM_BKLT_Click" Grid.Row="0" Grid.Column="4">B/L-1</Button>
+                                                <Button Click="MnuPrvLP_BKLT_Click" Grid.Row="1" Grid.Column="4">B/L+1</Button>
+                                                <Button Click="MnuPrvRM_BKLT_Click" Grid.Row="0" Grid.Column="5">B/R-1</Button>
+                                                <Button Click="MnuPrvRP_BKLT_Click" Grid.Row="1" Grid.Column="5">B/R+1</Button>
                                             </Grid>
                                         </Border>
                                     </StackPanel>

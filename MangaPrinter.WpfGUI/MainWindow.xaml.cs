@@ -490,6 +490,7 @@ namespace MangaPrinter.WpfGUI
                 isBookletRTL = rbBookRTL.IsChecked ?? false
             };
 
+
             if (cbCover.IsChecked ?? false)
             {
                 // Already assuming more than 1 chapter checked
@@ -504,6 +505,14 @@ namespace MangaPrinter.WpfGUI
                 {
                     _boptions.bookletCoverLast =
                         mangaChapters.Where(ch => ch.IsChecked).Last().Pages.Last();
+                }
+            }
+
+            if (rbBindBookletStack.IsChecked ?? false)
+            {
+                if (mangaChapters.Where(ch=>ch.IsRTL != _boptions.isBookletRTL).Count() > 0)
+                {
+                    warnIncosistentBookletDir(true);
                 }
             }
 
@@ -626,39 +635,13 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
-        private void MnuPrvwFront_Click(object sender, RoutedEventArgs e)
+
+        private Bitmap PreviewFace(PrintFace f, int pageNumber, string subject, bool showDialog = true)
         {
-            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
-
-            if (p == null) return;
-
             int faceCount = lstPrintPages.Items.Count * 2;
 
-            var faces = new PrintFace[] { p.Front };
-            var sides = new PrintSide[] { p.Front.Right, p.Front.Left };
-
-            var page = new PhysicalPageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
-
-            var b = (new FlatTemplates()).BuildFace(faces, sides, faceCount,
-                    page.singlePageWidth,page.singlePageHeight,
-                    page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
-
-
-            Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(null,
-                    "Front face of page: " + p.PageNumber,b);
-            dlgImage.ShowDialog();
-        }
-
-        private void MnuPrvwBack_Click(object sender, RoutedEventArgs e)
-        {
-            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
-
-            if (p == null) return;
-
-            int faceCount = lstPrintPages.Items.Count * 2;
-
-            var faces = new PrintFace[] { p.Back };
-            var sides = new PrintSide[] { p.Back.Right, p.Back.Left };
+            var faces = new PrintFace[] { f };
+            var sides = new PrintSide[] { };
 
             var page = new PhysicalPageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
 
@@ -666,9 +649,192 @@ namespace MangaPrinter.WpfGUI
                     page.singlePageWidth, page.singlePageHeight,
                     page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
+            if (showDialog)
+            {
+                Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(null,
+                    subject + " preview, page: " + pageNumber, b);
+                dlgImage.ShowDialog();
+
+                // Dialog Dispose
+                return null;
+            }
+            else
+            {
+                return b;
+            }
+        }
+
+
+        private void MnuPrvwFront_Click(object sender, RoutedEventArgs e)
+        {
+            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
+            if (p == null) return;
+
+            PreviewFace(p.Front, p.PageNumber, "Front/Top");
+        }
+
+        private void MnuPrvwBack_Click(object sender, RoutedEventArgs e)
+        {
+            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
+            if (p == null) return;
+
+            PreviewFace(p.Back, p.PageNumber, "Back/Bottom");
+        }
+
+       
+
+        private void PreviewBookletWithOther(
+            SelectablePrintPage p, bool isRTL, bool isLeftSide, bool isPrev,
+            string subject)
+        {
+            PageEffects pageEffects = isLeftSide ?
+                    new PageEffects() { CropRight = 50 } :
+                    new PageEffects() { CropLeft = 50 };
+
+            Bitmap sideFront = GraphicsUtils.bitmapCrop(
+                        PreviewFace( p.Front , p.PageNumber, "", false),
+                        pageEffects
+            );
+            Bitmap sideBack = GraphicsUtils.bitmapCrop(
+                       PreviewFace(p.Back, p.PageNumber, "", false),
+                       pageEffects
+           );
+
+            Bitmap MySideFace;
+            if (!isRTL)
+            {
+                if (isLeftSide)
+                {
+                    MySideFace = GraphicsUtils.bmpJoinHorizon(sideFront, sideBack);
+                }
+                else
+                {
+                    MySideFace = GraphicsUtils.bmpJoinHorizon(sideBack, sideFront);
+                }
+            }
+            else
+            {
+                if (!isLeftSide)
+                {
+                    MySideFace = GraphicsUtils.bmpJoinHorizon(sideBack, sideFront);
+                }
+                else
+                {
+                    MySideFace = GraphicsUtils.bmpJoinHorizon(sideFront, sideBack);
+                }
+            }
+
+
+            int pIndex = allPrintPages.IndexOf(p);
+            int rtlPrevIndex = (!isRTL ? -1 : +1);
+            if (!isLeftSide) rtlPrevIndex *= -1;
+            if (!isPrev) rtlPrevIndex *= -1;
+            rtlPrevIndex += pIndex;
+
+            Bitmap MyOtherSideFace;
+
+            if (rtlPrevIndex >= 0)
+            {
+                SelectablePrintPage _other = allPrintPages[rtlPrevIndex];
+
+
+                Bitmap otherSideFront = GraphicsUtils.bitmapCrop(
+                       PreviewFace(_other.Front, _other.PageNumber, "", false),
+                       pageEffects
+               );
+                Bitmap otherSideBack = GraphicsUtils.bitmapCrop(
+                           PreviewFace(_other.Back, _other.PageNumber, "", false),
+                           pageEffects
+               );
+
+                if (!isRTL)
+                {
+                    if (isLeftSide)
+                    {
+                        MyOtherSideFace = GraphicsUtils.bmpJoinHorizon(otherSideFront, otherSideBack);
+                    }
+                    else
+                    {
+                        MyOtherSideFace = GraphicsUtils.bmpJoinHorizon(otherSideBack, otherSideFront);
+                    }
+                }
+                else
+                {
+                    if (!isLeftSide)
+                    {
+                        MyOtherSideFace = GraphicsUtils.bmpJoinHorizon(otherSideBack, otherSideFront);
+                    }
+                    else
+                    {
+                        MyOtherSideFace = GraphicsUtils.bmpJoinHorizon(otherSideFront, otherSideBack);
+                    }
+                }
+            }
+            else
+            {
+                MyOtherSideFace = new Bitmap(1, 1);
+            }
+
             Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(null,
-                    "Back face of page: " + p.PageNumber, b);
+                   subject + " preview",
+                   isPrev && !isRTL || !isPrev && isRTL ?
+                        GraphicsUtils.bmpJoinHorizon(MyOtherSideFace, MySideFace) :
+                        GraphicsUtils.bmpJoinHorizon(MySideFace, MyOtherSideFace)
+            );
             dlgImage.ShowDialog();
+        }
+
+        private void MnuPrvLM_BKLT_Click(object sender, RoutedEventArgs e)
+        {
+            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
+            if (p == null || allPrintPages == null || allPrintPages.Count == 0) return;
+
+
+            bool isRTL = p.Front.IsRTL;
+            bool isLeftSide = true;
+            bool isPrev = true;
+
+            PreviewBookletWithOther(p, isRTL, isLeftSide, isPrev, "Left-1");
+        }
+
+        private void MnuPrvLP_BKLT_Click(object sender, RoutedEventArgs e)
+        {
+            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
+            if (p == null || allPrintPages == null || allPrintPages.Count == 0) return;
+
+
+            bool isRTL = p.Front.IsRTL;
+            bool isLeftSide = true;
+            bool isPrev = false;
+
+            PreviewBookletWithOther(p, isRTL, isLeftSide, isPrev, "Left+1");
+        }
+
+        private void MnuPrvRM_BKLT_Click(object sender, RoutedEventArgs e)
+        {
+            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
+            if (p == null || allPrintPages == null || allPrintPages.Count == 0) return;
+
+
+            bool isRTL = p.Front.IsRTL;
+            bool isLeftSide = false;
+            bool isPrev = true;
+
+            PreviewBookletWithOther(p, isRTL, isLeftSide, isPrev, "Right-1");
+        }
+
+        private void MnuPrvRP_BKLT_Click(object sender, RoutedEventArgs e)
+        {
+            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
+            if (p == null || allPrintPages == null || allPrintPages.Count == 0) return;
+
+
+            bool isRTL = p.Front.IsRTL;
+            bool isLeftSide = false;
+            bool isPrev = false;
+
+            PreviewBookletWithOther(p, isRTL, isLeftSide, isPrev, "Right+1");
+
         }
 
         private void LblHelpExportMinimal_Click(object sender, RoutedEventArgs e)
@@ -1099,6 +1265,27 @@ namespace MangaPrinter.WpfGUI
                 }); ;
                 Chapter.updateChapterStats();
             }
+        }
+
+        private void lblBkltRTL_Click(object sender, RoutedEventArgs e)
+        {
+            warnIncosistentBookletDir(false);
+        }
+
+        private static void warnIncosistentBookletDir(bool found)
+        {
+            MessageBox.Show(String.Join("\n", new[]
+             {
+                found ? "Chapter with different direction found!" : "",
+                "Please note that if any chapter direction (ltr/rtl) is different",
+                "from the booklet direction, double pages of it will be reversed!",
+                "",
+                "So it will be better to export 2 bookmarks and combine them im real paper",
+                "rather than doing it in this software.",
+                "",
+                "Duplex is different since no two chapters will be on the same real paper,",
+                "so this software changes based on chapter."
+            }));
         }
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)

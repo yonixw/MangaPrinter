@@ -243,6 +243,10 @@ namespace MangaPrinter.WpfGUI.Dialogs
             {
                 myImage.Image = null;
             }
+            if (_custom != null)
+            {
+                _custom.Dispose();
+            }
         }
 
         

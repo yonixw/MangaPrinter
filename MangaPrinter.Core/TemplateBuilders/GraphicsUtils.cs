@@ -132,6 +132,29 @@ namespace MangaPrinter.Core.TemplateBuilders
             }
         }
 
+        public static Bitmap bmpJoinHorizon(Bitmap left, Bitmap right)
+        {
+            int newW = left.Width + right.Width;
+            int newH = Math.Max(left.Height, right.Height);
+            var bmp = new Bitmap( newW, newH );
+
+            using (var graph = Graphics.FromImage(bmp))
+            {
+                // uncomment for higher quality output
+                graph.InterpolationMode = InterpolationMode.High;
+                graph.CompositingQuality = CompositingQuality.HighQuality;
+                graph.SmoothingMode = SmoothingMode.AntiAlias;
+                
+                var fillBrush = new SolidBrush(Color.White);
+                graph.FillRectangle(fillBrush, new RectangleF(0, 0, newW, newH));
+
+                graph.DrawImage(left, 0, 0);
+                graph.DrawImage(right, left.Width, 0);
+            }
+
+            return bmp;
+        }
+
         public static Bitmap bitmapCrop(Bitmap image, PageEffects _pe, bool reuse = false)
         {
             if (image != null)
@@ -156,7 +179,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                     graph.CompositingQuality = CompositingQuality.HighQuality;
                     graph.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    graph.FillRectangle(fillBrush, new RectangleF(0, 0, newH, newH));
+                    graph.FillRectangle(fillBrush, new RectangleF(0, 0, newW, newH));
                     graph.DrawImage(image,
                         0,0,
                         new RectangleF(L,T,newW,newH),
