@@ -480,6 +480,30 @@
                                     <StackPanel Orientation="Horizontal" >
                                         <Label Content="{Binding PageNumber, StringFormat='{}({0})'}" />
 
+                                        <TextBlock Text="Duplex" Height="14" Name="lblDuplex"
+                                             RenderTransformOrigin="0.5,0.5" >
+                                            <TextBlock.RenderTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform/>
+                                                    <SkewTransform/>
+                                                    <RotateTransform Angle="-90"/>
+                                                    <TranslateTransform/>
+                                                </TransformGroup>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+
+                                        <TextBlock Text="Booklet" Height="14" Name="lblBooklet"  Visibility="Collapsed"
+                                             RenderTransformOrigin="0.5,0.5" >
+                                            <TextBlock.RenderTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform/>
+                                                    <SkewTransform/>
+                                                    <RotateTransform Angle="-90"/>
+                                                    <TranslateTransform/>
+                                                </TransformGroup>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+
                                         <Border BorderThickness="2" BorderBrush="Orange">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -487,9 +511,7 @@
                                                     <ColumnDefinition Width="*" /> <!-- Image-->
                                                     <ColumnDefinition Width="*" />
 
-                                                    <ColumnDefinition Width="auto" />
                                                     <ColumnDefinition Width="auto" /> <!-- Middle buttons -->
-                                                    <ColumnDefinition Width="auto" />
                                                     
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
@@ -510,13 +532,18 @@
                                                 <Label  Content="{Binding Back.Right, Converter={StaticResource sideConvert}}" Grid.Row="1" Grid.Column="2" />
                                                 <Label Content="{Binding Back.Left, Converter={StaticResource sideConvert}}"   Grid.Row="1" Grid.Column="0" />
 
-                                                <Button Click="LeftButton_Click" Grid.Row="0" Grid.Column="3" Grid.RowSpan="2">Left</Button>
                                                 <Button Click="MnuPrvwFront_Click" Grid.Row="0" Grid.Column="4">Top View</Button>
                                                 <Button Click="MnuPrvwBack_Click" Grid.Row="1" Grid.Column="4">Bottom View</Button>
-                                                <Button Click="RightButton_Click" Grid.Row="0" Grid.Column="5" Grid.RowSpan="2">Right</Button>
                                             </Grid>
                                         </Border>
                                     </StackPanel>
+
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Front.isBooklet}" Value="True">
+                                            <Setter TargetName="lblDuplex" Property="Visibility" Value="Collapsed"/>
+                                            <Setter TargetName="lblBooklet" Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

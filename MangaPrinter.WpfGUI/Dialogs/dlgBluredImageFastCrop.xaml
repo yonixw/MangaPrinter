@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
         mc:Ignorable="d"
-        Title="dlgBluredImageCrop" Height="450" Width="800" 
+        Title="dlgBluredImageCrop" Height="600" Width="1000" 
         Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" 
         SizeChanged="Window_SizeChanged"
         Closing="Window_Closing">

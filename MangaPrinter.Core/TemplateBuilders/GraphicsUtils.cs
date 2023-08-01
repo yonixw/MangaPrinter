@@ -313,6 +313,12 @@ namespace MangaPrinter.Core.TemplateBuilders
             g.Dispose();
             return newBitmap;
         }
+
+        public Bitmap rotateImage(Bitmap original)
+        {
+            //  https://stackoverflow.com/questions/2225363/c-sharp-rotate-bitmap-90-degrees
+            throw new Exception("Yoni: Not implemented");
+        }
     }
 
     

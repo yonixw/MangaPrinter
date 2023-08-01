@@ -623,12 +623,16 @@ namespace MangaPrinter.WpfGUI
         {
             SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
 
+            if (p == null) return;
+
+            int faceCount = lstPrintPages.Items.Count * 2;
+
             var faces = new PrintFace[] { p.Front };
             var sides = new PrintSide[] { p.Front.Right, p.Front.Left };
 
             var page = new PhysicalPageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
 
-            var b = (new DuplexTemplates()).BuildFace(faces, sides,
+            var b = (new FlatTemplates()).BuildFace(faces, sides, faceCount,
                     page.singlePageWidth,page.singlePageHeight,
                     page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
@@ -641,13 +645,17 @@ namespace MangaPrinter.WpfGUI
         private void MnuPrvwBack_Click(object sender, RoutedEventArgs e)
         {
             SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
-            var page = new PhysicalPageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
+
+            if (p == null) return;
+
+            int faceCount = lstPrintPages.Items.Count * 2;
 
             var faces = new PrintFace[] { p.Back };
             var sides = new PrintSide[] { p.Back.Right, p.Back.Left };
 
+            var page = new PhysicalPageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
 
-            var b = (new DuplexTemplates()).BuildFace(faces, sides,
+            var b = (new FlatTemplates()).BuildFace(faces, sides, faceCount,
                     page.singlePageWidth, page.singlePageHeight,
                     page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
 
@@ -1086,72 +1094,6 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
-        private void LeftButton_Click(object sender, RoutedEventArgs e)
-        {
-            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
-
-            bool bookletRTL = (rbBookRTL.IsChecked ?? false);
-
-            PrintFace newPage = new PrintFace()
-            {
-                BatchPaperNumber = p.Front.BatchPaperNumber,
-                IsRTL = bookletRTL,
-                FaceNumber = p.Front.FaceNumber,
-                PrintFaceType = FaceType.SINGLES,
-
-                Left = bookletRTL ? p.Back.Left: p.Front.Left,
-                Right = !bookletRTL ? p.Back.Left : p.Front.Left,
-            };
-
-            
-
-            var faces = new PrintFace[] { newPage };
-            var sides = new PrintSide[] {  };
-
-            var page = new PhysicalPageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
-
-            var b = (new DuplexTemplates()).BuildFace(faces, sides,
-                    page.singlePageWidth, page.singlePageHeight,
-                    page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
-
-
-            Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(null,
-                    "Left face of page: " + p.PageNumber, b);
-            dlgImage.ShowDialog();
-        }
-
-        private void RightButton_Click(object sender, RoutedEventArgs e)
-        {
-            SelectablePrintPage p = (SelectablePrintPage)(((System.Windows.FrameworkElement)sender).DataContext);
-
-            bool bookletRTL = (rbBookRTL.IsChecked ?? false);
-
-            PrintFace newPage = new PrintFace()
-            {
-                BatchPaperNumber = p.Front.BatchPaperNumber,
-                IsRTL = bookletRTL,
-                FaceNumber = p.Front.FaceNumber,
-                PrintFaceType = FaceType.SINGLES,
-
-                Right = bookletRTL ? p.Front.Right : p.Back.Right,
-                Left = !bookletRTL ? p.Front.Right : p.Back.Right,
-            };
-
-            var faces = new PrintFace[] { newPage };
-            var sides = new PrintSide[] { };
-
-            var page = new PhysicalPageInfo(((JPage)cbPageSize.SelectedItem), CoreConf.I.Templates_PaddingPrcnt);
-
-            var b = (new DuplexTemplates()).BuildFace(faces, sides,
-                    page.singlePageWidth, page.singlePageHeight,
-                    page.paddingPx, cbKeepColors.IsChecked ?? false, cbIncludeParent.IsChecked ?? false);
-
-
-            Dialogs.dlgBluredImage dlgImage = new Dialogs.dlgBluredImage(null,
-                    "Right face of page: " + p.PageNumber, b);
-            dlgImage.ShowDialog();
-        }
-
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
             resetDlgSaveName();
@@ -1184,7 +1126,8 @@ namespace MangaPrinter.WpfGUI
                 Exception ex = winWorking.waitForTask<Exception>(this, (updateFunc) =>
                 {
 
-                    ITemplateBuilder dt = new DuplexTemplates();
+                    ITemplateBuilder dt = new FlatTemplates();
+                    int faceCount = allPrintPages.Count * 2;
                     foreach (SelectablePrintPage page in allPrintPages)
                     {
 
@@ -1195,7 +1138,7 @@ namespace MangaPrinter.WpfGUI
                             var faces = new PrintFace[] { page.Front };
                             var sides = new PrintSide[] { page.Front.Right, page.Front.Left };
 
-                            var b = dt.BuildFace(faces, sides, pW, pH, pad, keepColors, parentText);
+                            var b = dt.BuildFace(faces, sides, faceCount, pW, pH, pad, keepColors, parentText);
                             var bName = System.IO.Path.Combine(
                                     fi.Directory.FullName,
                                     "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".jpg"
@@ -1207,7 +1150,7 @@ namespace MangaPrinter.WpfGUI
                             faces = new PrintFace[] { page.Back };
                             sides = new PrintSide[] { page.Back.Right, page.Back.Left };
 
-                            b = dt.BuildFace(faces, sides, pW, pH, pad, keepColors, parentText);
+                            b = dt.BuildFace(faces, sides, faceCount, pW, pH, pad, keepColors, parentText);
                             bName = System.IO.Path.Combine(
                                    fi.Directory.FullName,
                                    "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".jpg"

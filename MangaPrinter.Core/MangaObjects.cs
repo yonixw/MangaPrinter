@@ -234,6 +234,12 @@ namespace MangaPrinter.Core
 
     public class PrintFace : ModelBaseWpf
     {
+        // For switching meta for booklet
+        public bool isBooklet { get { return _baseGet(); } set { _baseSet(value); } }
+        public bool isFront { get { return _baseGet(); } set { _baseSet(value); } }
+
+
+
         public int FaceNumber { get { return _baseGet(); } set { _baseSet(value); } }
         public int BatchPaperNumber { get { return _baseGet(); } set { _baseSet(value); } } // For anti-spoiler batches
         public FaceType PrintFaceType { get { return _baseGet(); } set { _baseSet(value); } }

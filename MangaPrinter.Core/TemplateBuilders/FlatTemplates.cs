@@ -1,15 +1,10 @@
 ﻿using MangaPrinter.Conf;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MangaPrinter.Core.TemplateBuilders
 {
-    public class DuplexTemplates : ITemplateBuilder
+    public class FlatTemplates : ITemplateBuilder
     {
         /* 
             *  Templates in duplex mode:
@@ -21,7 +16,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         */
 
         
-        public DuplexTemplates()
+        public FlatTemplates()
         {
             
         }
@@ -32,7 +27,7 @@ namespace MangaPrinter.Core.TemplateBuilders
         public static Font fontSide = new Font(new FontFamily(CoreConf.I.Templates_TextFont), 5, FontStyle.Bold); // size will be changed
         public static Font fontPageText = new Font(new FontFamily(CoreConf.I.Templates_TextFont), 5);
 
-        public Bitmap BuildFace(PrintFace[] faces, PrintSide[] sides,  int spW, int spH, int padding, bool colors, bool parentText)
+        public Bitmap BuildFace(PrintFace[] faces, PrintSide[] sides, int faceCount,  int spW, int spH, int padding, bool colors, bool parentText)
         {
             PrintFace face = faces[0];
 
@@ -48,12 +43,12 @@ namespace MangaPrinter.Core.TemplateBuilders
                         string.Format("Got type {0} in double in duplex. It's unexpected.", face.Right.SideType)
                         );
 
-                result = TemplateDouble(face, spW, spH, padding);
+                result = TemplateDouble(face, faceCount, spW, spH, padding);
 
             }
             else
             {
-                result = TemplateSingle(face, spW, spH, padding, parentText);
+                result = TemplateSingle(face, faceCount, spW, spH, padding, parentText);
             }
 
             if (result != null && !colors) result = GraphicsUtils.MakeGrayscale3(result);
@@ -61,17 +56,18 @@ namespace MangaPrinter.Core.TemplateBuilders
             return result;
         }
         
-        private static string GetFaceCountText(PrintFace face)
+        private static string GetFaceCountText(PrintFace face, int number, int delta = 0)
         {
             // Todo, total face numbers, total A-S count?
-            string result = String.Format(CoreConf.I.Templates_MetaText_PageNum, face.FaceNumber);
+            string result = String.Format(CoreConf.I.Templates_MetaText_PageNum, 
+               number);
             if (face.BatchPaperNumber > -1)
                 result += " " + String.Format(CoreConf.I.Templates_MetaText_AntiSpoilerNum, face.BatchPaperNumber + 1);
 
             return TextUtils.PostProcess(result,false);
         }
 
-        private string GetMeta(PrintSide face)
+        private string GetNamesMeta(PrintSide face)
         {
             if (face.MangaPageSource == null)
             {
@@ -86,7 +82,48 @@ namespace MangaPrinter.Core.TemplateBuilders
             return TextUtils.PostProcess(meta,false);
         }
 
-        private Bitmap TemplateDouble(PrintFace face, int spW, int spH, int padding)
+        private void bindMetas(PrintFace face, int FaceCount, out string metaLeftTxt, out string metaRightTxt)
+        {
+            if (face.isBooklet)
+            {
+                // Face numbers trick explained here:
+                // https://github.com/yonixw/MangaPrinter/issues/15#issuecomment-1660892656
+                if (face.IsRTL) { 
+                    if (face.isFront)
+                    {
+                        metaRightTxt = GetNamesMeta(face.Right);
+                         metaLeftTxt =  GetFaceCountText(face,
+                             (2 * FaceCount - face.FaceNumber) /2 +1 );
+                    }
+                    else
+                    {
+                         metaLeftTxt = GetNamesMeta(face.Left);
+                         metaRightTxt = GetFaceCountText(face, face.FaceNumber /2  );
+                    }
+                }
+                else
+                {
+                    if (face.isFront)
+                    {
+                        metaRightTxt = GetNamesMeta(face.Right);
+                         metaLeftTxt = GetFaceCountText(face, face.FaceNumber/2 );
+                    }
+                    else
+                    {
+                        metaLeftTxt = GetNamesMeta(face.Left);
+                         metaRightTxt = GetFaceCountText(face,
+                             (2 * FaceCount - face.FaceNumber) /2 +1);
+                    }
+                }
+            }
+            else//duplex
+            {
+                metaLeftTxt = GetNamesMeta(face.IsRTL ? face.Right : face.Left);
+                metaRightTxt = GetFaceCountText(face, face.FaceNumber);
+            }
+        }
+
+        private Bitmap TemplateDouble(PrintFace face, int FaceCount, int spW, int spH, int padding)
         {
             int tmpW = spW * 2 + padding * 3;
             int tmpH = spH + padding * 2;
@@ -98,13 +135,13 @@ namespace MangaPrinter.Core.TemplateBuilders
 
             bool isRTL = face.IsRTL;
 
-            string metaInfo = GetMeta(isRTL ? face.Right : face.Left);
+            string metaLeftTxt, metaRightTxt;
+            bindMetas(face, FaceCount, out metaLeftTxt, out metaRightTxt);
 
             Bitmap b = new Bitmap(tmpW, tmpH);
             using (Graphics g = Graphics.FromImage(b))
             {
-                int sideIndex = face.Right.SideNumber;
-                string FaceCountText = GetFaceCountText(face);
+                //int sideIndex = face.Right.SideNumber;
 
                 if (CoreConf.I.Templates_ShowDirectionArrows)
                 {
@@ -124,25 +161,25 @@ namespace MangaPrinter.Core.TemplateBuilders
                     }
                 }
 
-                GraphicsUtils.FontScaled faceCountFS  /*Face count became PrintPagecount*/ = GraphicsUtils.FindFontSizeByContent(
-                    g, FaceCountText, new Size(tmpW / 4, sideTextH), fontSide
+                GraphicsUtils.FontScaled metaRight  /*Face is one view of page*/ = GraphicsUtils.FindFontSizeByContent(
+                    g, metaRightTxt, new Size((int)(tmpW * 0.5f), sideTextH), fontSide
                 );
-                GraphicsUtils.DrawTextCenterd(g, FaceCountText, faceCountFS, blackBrush,
-                    new PointF(tmpW * 0.75f + tmpW * 0.25f * 0.5f, padding + contentH + padding / 2)
+                GraphicsUtils.DrawTextCenterd(g, metaRightTxt, metaRight, blackBrush,
+                    new PointF(tmpW * 0.5f + tmpW * 0.5f * 0.5f, padding + contentH + padding / 2)
                 );
 
-                GraphicsUtils.FontScaled metaFS = GraphicsUtils.FindFontSizeByContent(
-                    g, metaInfo, new Size((int)(tmpW * 0.75f), sideTextH), fontSide
+                GraphicsUtils.FontScaled metaLeft = GraphicsUtils.FindFontSizeByContent(
+                    g, metaLeftTxt, new Size((int)(tmpW * 0.5f), sideTextH), fontSide
                 );
-                GraphicsUtils.DrawTextCenterd(g, metaInfo, metaFS, blackBrush,
-                    new PointF(tmpW * 0.75f * 0.5f, padding + contentH + padding / 2)
+                GraphicsUtils.DrawTextCenterd(g, metaLeftTxt, metaLeft, blackBrush,
+                    new PointF(tmpW * 0.5f * 0.5f, padding + contentH + padding / 2)
                 );
 
                 Bitmap page = null;
                 switch (face.Left.SideType)
                 {
                     case SingleSideType.ANTI_SPOILER:
-                        page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_AntiSpoiler,true),
+                        page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_AntiSpoiler, true),
                             contentH, contentW);
                         break;
                     case SingleSideType.OMITED:
@@ -157,7 +194,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                 g.DrawImage(page, new Point(padding, padding));
 
                 if (CoreConf.I.Templates_ShowBorders)
-                    g.DrawRectangle(borderPen, new Rectangle(padding,padding, contentW, contentH));
+                    g.DrawRectangle(borderPen, new Rectangle(padding, padding, contentW, contentH));
 
                 page.Dispose();
             }
@@ -165,7 +202,7 @@ namespace MangaPrinter.Core.TemplateBuilders
             return b;
         }
 
-        private Bitmap TemplateSingle(PrintFace face, int spW, int spH, int padding, bool parentText)
+        private Bitmap TemplateSingle(PrintFace face, int faceCount, int spW, int spH, int padding, bool parentText)
         {
             int tmpW = spW * 2 + padding *3;
             int tmpH = spH + padding * 2;
@@ -177,13 +214,13 @@ namespace MangaPrinter.Core.TemplateBuilders
             int sideTextH = padding;
 
             bool isRTL = face.IsRTL;
-            string metaInfo = GetMeta(isRTL ? face.Right : face.Left);
+
+            string metaLeftTxt, metaRightTxt;
+            bindMetas(face, faceCount, out metaLeftTxt, out metaRightTxt);
 
             Bitmap b = new Bitmap(tmpW, tmpH);
             using (Graphics g = Graphics.FromImage(b))
             {
-                string FaceCountText = GetFaceCountText(face);
-
                 if (CoreConf.I.Templates_ShowDirectionArrows)
                 {
                     // RightSide
@@ -229,18 +266,18 @@ namespace MangaPrinter.Core.TemplateBuilders
                 }
 
 
-                GraphicsUtils.FontScaled faceCountFS /*Face count became PrintPagecount*/ = GraphicsUtils.FindFontSizeByContent(
-                    g, FaceCountText, new Size(tmpW / 4, sideTextH), fontSide
+                GraphicsUtils.FontScaled metaRight  = GraphicsUtils.FindFontSizeByContent(
+                    g, metaRightTxt, new Size((int)(tmpW * 0.5f), sideTextH), fontSide
                 );
-                GraphicsUtils.DrawTextCenterd(g, FaceCountText, faceCountFS, blackBrush,
-                    new PointF(tmpW * 0.75f + tmpW * 0.25f * 0.5f, padding + contentH + padding / 2)
+                GraphicsUtils.DrawTextCenterd(g, metaRightTxt, metaRight, blackBrush,
+                    new PointF(tmpW * 0.5f + tmpW * 0.5f * 0.5f, padding + contentH + padding / 2)
                 );
 
-                GraphicsUtils.FontScaled metaFS = GraphicsUtils.FindFontSizeByContent(
-                    g, metaInfo, new Size((int)(tmpW * 0.75f), sideTextH), fontSide
+                GraphicsUtils.FontScaled metaLeft = GraphicsUtils.FindFontSizeByContent(
+                    g, metaLeftTxt, new Size((int)(tmpW * 0.5f), sideTextH), fontSide
                 );
-                GraphicsUtils.DrawTextCenterd(g, metaInfo, metaFS, blackBrush,
-                    new PointF(tmpW * 0.75f * 0.5f, padding + contentH + padding / 2)
+                GraphicsUtils.DrawTextCenterd(g, metaLeftTxt, metaLeft, blackBrush,
+                    new PointF(tmpW * 0.5f * 0.5f, padding + contentH + padding / 2)
                 );
 
                 if (CoreConf.I.Templates_Duplex_AddGutter)

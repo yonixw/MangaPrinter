@@ -164,6 +164,11 @@ namespace MangaPrinter.Core.ChapterBuilders
                 };
                 pp.Front.FaceNumber = (i) + 1; // not stating from zero
                 pp.Back.FaceNumber = (i+1)+1;
+
+                pp.Front.isBooklet = pp.Back.isBooklet = false;
+                pp.Front.isFront = true;
+                pp.Back.isFront = false;
+
                 pc.Add(pp);
             }
 

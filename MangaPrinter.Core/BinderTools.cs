@@ -25,7 +25,7 @@ namespace MangaPrinter.Core
     public interface ITemplateBuilder
     {
         System.Drawing.Bitmap BuildFace(
-            PrintFace[] faces, PrintSide[] sides, int spW, int spH, int padding, bool colors, bool parentText);
+            PrintFace[] faces, PrintSide[] sides, int faceCount, int spW, int spH, int padding, bool colors, bool parentText);
     }
    
 }

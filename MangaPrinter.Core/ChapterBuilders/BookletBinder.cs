@@ -216,8 +216,14 @@ namespace MangaPrinter.Core.ChapterBuilders
             {
                 setSideCount(bookletOptions.isBookletRTL, i);
                 setSideCount(bookletOptions.isBookletRTL, i+1);
-                faceResults[i].FaceNumber = i;
-                faceResults[i+1].FaceNumber = i+1;
+
+                faceResults[i].FaceNumber = i + 1; // +1=not start from 0
+                faceResults[i + 1].FaceNumber = (i + 1) + 1;
+
+                faceResults[i].IsRTL = faceResults[i + 1].IsRTL = _O.isBookletRTL; // doing it again to make sure
+                faceResults[i].isBooklet = faceResults[i+1].isBooklet = true;
+                faceResults[i].isFront = true;
+                faceResults[i+1].isFront = false;
 
                 result.Add(new PrintPage()
                 {
