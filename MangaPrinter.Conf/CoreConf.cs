@@ -154,6 +154,18 @@ namespace MangaPrinter.Conf
            "Don't combine exported images into PDF"
         );
 
+        public JMetaT<bool> Binding_Booklet_Cover { get; } = new JMetaT<bool>(false,
+           "Keep first/last pages as cover"
+        );
+
+        public JMetaT<bool> Binding_Booklet_ExportSingles { get; } = new JMetaT<bool>(false,
+           "Export singles for booklet"
+        );
+
+        public JMetaT<string> Binding_Booklet_RTL { get; } = new JMetaT<string>("",
+           "Booklet binding direction"
+       ).Listify(new CHList<string>("rtl","ltr"));
+
         public JMetaT<List<JPage>> Binding_PageSizeList { get; } = new JMetaT<List<JPage>>(
             new List<JPage>() { 
                 new JPage() { Name="Tailored A4 150DPI", HeightPixels=1266, WidthPixels=1648, TargetDensity=150 },
@@ -217,33 +229,33 @@ namespace MangaPrinter.Conf
         );
 
 
-        public JMetaT<string> Templates_Omited { get; } = new JMetaT<string>("(Manually Omited)",
+        /* ===============  Templates -> Duplex   =============== */
+
+        public JMetaT<string> Templates_Render_Omited { get; } = new JMetaT<string>("(Manually Omited)",
            "Text template to use when ommiting files", CH.stringy
         );
 
-        /* ===============  Templates -> Duplex   =============== */
-
-        public JMetaT<bool> Templates_Duplex_AddGutter { get; } = new JMetaT<bool>(true,
+        public JMetaT<bool> Templates_Render_AddGutter { get; } = new JMetaT<bool>(true,
            "Add a padding between two singles"
         );
 
-        public JMetaT<string> Templates_Duplex_Intro { get; } = new JMetaT<string>("Chapter start:\n{0}",
+        public JMetaT<string> Templates_Render_Intro { get; } = new JMetaT<string>("Chapter start:\n{0}",
            "Text template to use on chapter start", CH.stringy
         );
 
-        public JMetaT<string> Templates_Duplex_Outro { get; } = new JMetaT<string>("Chapter end:\n{0}",
+        public JMetaT<string> Templates_Render_Outro { get; } = new JMetaT<string>("Chapter end:\n{0}",
            "Text template to use on chapter end", CH.stringy
         );
 
-        public JMetaT<string> Templates_Duplex_BeforeDouble { get; } = new JMetaT<string>("Filler Before Double",
+        public JMetaT<string> Templates_Render_BeforeDouble { get; } = new JMetaT<string>("Filler Before Double",
            "Text template to use when adjusting double-page", CH.stringy
         );
 
-        public JMetaT<string> Templates_Duplex_MakeEven { get; } = new JMetaT<string>("Filler After Chapter",
+        public JMetaT<string> Templates_Render_MakeEven { get; } = new JMetaT<string>("Filler After Chapter",
            "Text template to use when adjusting chapter even length", CH.stringy
         );
 
-        public JMetaT<string> Templates_Duplex_AntiSpoiler { get; } = new JMetaT<string>("Anti Spoiler",
+        public JMetaT<string> Templates_Render_AntiSpoiler { get; } = new JMetaT<string>("Anti Spoiler",
            "Text template to use for anti spoiler pages", CH.stringy
         );
 

@@ -125,9 +125,16 @@ namespace MangaPrinter.WpfGUI
             cbPageSize.SelectedIndex = Math.Max(0, lastcbPageSizeSelected);
 
             rbBindDuplex.IsChecked = CoreConf.I.Binding_Type == "duplex";
-            rbBindBookletStack.IsChecked = CoreConf.I.Binding_Type == "booklet_print";
+            rbBindBookletStack.IsChecked = CoreConf.I.Binding_Type == "booklet";
 
             txtNonWindows.Text = CoreConf.I.Info_IsNotWindows.Get().ToString();
+
+            rbBookRTL.IsChecked = CoreConf.I.Binding_Booklet_RTL == "rtl";
+            rbBookLTR.IsChecked = CoreConf.I.Binding_Booklet_RTL == "ltr";
+
+            cbCover.IsChecked = CoreConf.I.Binding_Booklet_Cover;
+            cbBookletSingles.IsChecked = CoreConf.I.Binding_Booklet_ExportSingles;
+
         }
 
         bool shouldUpdateStats = true;

@@ -179,11 +179,11 @@ namespace MangaPrinter.Core.TemplateBuilders
                 switch (face.Left.SideType)
                 {
                     case SingleSideType.ANTI_SPOILER:
-                        page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_AntiSpoiler, true),
+                        page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Render_AntiSpoiler, true),
                             contentH, contentW);
                         break;
                     case SingleSideType.OMITED:
-                        page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Omited, true),
+                        page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Render_Omited, true),
                             contentH, contentW);
                         break;
                     case SingleSideType.MANGA:
@@ -280,7 +280,7 @@ namespace MangaPrinter.Core.TemplateBuilders
                     new PointF(tmpW * 0.5f * 0.5f, padding + contentH + padding / 2)
                 );
 
-                if (CoreConf.I.Templates_Duplex_AddGutter)
+                if (CoreConf.I.Templates_Render_AddGutter)
                 {
                     DrawSide(pageW, pageH, g, face.Left, new Point(padding, padding), parentText);
                     DrawSide(pageW, pageH, g, face.Right, new Point(padding * 2 + pageW, padding), parentText);
@@ -318,28 +318,28 @@ namespace MangaPrinter.Core.TemplateBuilders
             {
                 case SingleSideType.INTRO:
                     page = GraphicsUtils.createImageWithText(
-                        TextUtils.PostProcess(String.Format(CoreConf.I.Templates_Duplex_Intro, chapterName),true),
+                        TextUtils.PostProcess(String.Format(CoreConf.I.Templates_Render_Intro, chapterName),true),
                       pageH, pageW);
                     break;
                 case SingleSideType.OUTRO:
                     page = GraphicsUtils.createImageWithText(
-                        TextUtils.PostProcess(String.Format(CoreConf.I.Templates_Duplex_Outro, chapterName), true),
+                        TextUtils.PostProcess(String.Format(CoreConf.I.Templates_Render_Outro, chapterName), true),
                       pageH, pageW);
                     break;
                 case SingleSideType.BEFORE_DOUBLE:
-                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_BeforeDouble, true),
+                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Render_BeforeDouble, true),
                       pageH, pageW);
                     break;
                 case SingleSideType.MAKE_EVEN:
-                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_MakeEven, true),
+                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Render_MakeEven, true),
                        pageH, pageW);
                     break;
                 case SingleSideType.OMITED:
-                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Omited, true),
+                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Render_Omited, true),
                        pageH, pageW);
                     break;
                 case SingleSideType.ANTI_SPOILER:
-                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Duplex_AntiSpoiler, true),
+                    page = GraphicsUtils.createImageWithText(TextUtils.PostProcess(CoreConf.I.Templates_Render_AntiSpoiler, true),
                        pageH, pageW);
                     break;
                 case SingleSideType.MANGA:
