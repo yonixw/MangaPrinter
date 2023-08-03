@@ -104,9 +104,9 @@ namespace MangaPrinter.WpfGUI
 
             //todo txtPrintPadding.Text = Config.exportPagePadding.ToString();
 
-            cbExportMinimal.IsChecked = CoreConf.I.Binding_ExportImages;
+            cbExportMinimal.IsChecked = CoreConf.I.Binding_SkipPDF;
 
-            cbKeepColors.IsChecked = CoreConf.I.Binding_KeepColors;
+            cbKeepColors.IsChecked = CoreConf.I.Binding_SkipGrayscale;
 
             cbIncludeParent.IsChecked = CoreConf.I.Binding_AddParentFolder;
 

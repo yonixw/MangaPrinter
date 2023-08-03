@@ -146,11 +146,11 @@ namespace MangaPrinter.Conf
                "Works when the folder structure is Name>Chapter000>Page000.jpg, and you import top folder." }
         );
 
-        public JMetaT<bool> Binding_KeepColors { get; } = new JMetaT<bool>(false,
+        public JMetaT<bool> Binding_SkipGrayscale { get; } = new JMetaT<bool>(false,
            "Don't convert images to black and white. Some printers can't print those files because they become too big."
         );
 
-        public JMetaT<bool> Binding_ExportImages { get; } = new JMetaT<bool>(false,
+        public JMetaT<bool> Binding_SkipPDF { get; } = new JMetaT<bool>(false,
            "Don't combine exported images into PDF"
         );
 
