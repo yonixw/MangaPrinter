@@ -247,6 +247,11 @@ namespace MangaPrinter.Core
         public bool IsRTL { get { return _baseGet(); } set { _baseSet(value); } } // for template + side index
         public PrintSide Left { get { return _baseGet(); } set { _baseSet(value); } }
         public PrintSide Right { get { return _baseGet(); } set { _baseSet(value); } }
+
+        public PrintFace()
+        {
+            BatchPaperNumber = 0;
+        }
        
         // You get the page to print from this class
     }

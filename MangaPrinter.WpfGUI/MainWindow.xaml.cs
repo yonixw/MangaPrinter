@@ -1052,15 +1052,91 @@ namespace MangaPrinter.WpfGUI
             return chaptersInfo;
         }
 
+        private static void ProcessBkltPage(bool goingDown, int pageCounter,
+            List<string> chaptersInfo, ref MangaChapter lastChapter,
+            ref int lastChapterStart, SelectablePrintPage page)
+        {
+            var Faces = goingDown ?
+                new[] { page?.Front, page?.Back }:
+                new[] { page?.Back, page?.Front };
+            foreach (var Face in Faces)
+            {
+                var Side = goingDown ?
+                    (Face.IsRTL ? Face.Right : Face.Left) :
+                    (Face.IsRTL ? Face.Left : Face.Right);
+
+                if (Side.MangaPageSource?.Chapter != null)
+                {
+                    var ch = Side.MangaPageSource.Chapter;
+                    if ((ch == null && lastChapter != null) || !ch.isEqual(lastChapter))
+                    {
+                        chaptersInfo.Add(
+                            string.Format(HTMLItem, 
+                                lastChapter?.Name + string.Format(" [{0}-{1}]",lastChapterStart, pageCounter),
+                                lastChapter?.ParentName)
+                        );
+                        lastChapter = ch;
+                        lastChapterStart = pageCounter;
+                    }
+                }
+            }
+        }
+
+        private List<string> getBindedRangeBooklet()
+        {
+            List<string> chaptersInfo = new List<string>();
+
+            MangaChapter lastChapter = null;
+            int lastChapterStart = -1;
+            int pageCounter = 1;
+
+            foreach (var _p in allPrintPages)
+            {
+                var page = (SelectablePrintPage)_p;
+                ProcessBkltPage(true, pageCounter, chaptersInfo, ref lastChapter,
+                    ref lastChapterStart, page);
+                pageCounter++;
+            }
+
+            foreach (PrintPage _p in Enumerable.Reverse<PrintPage>(allPrintPages).ToList())
+            {
+                var page = (SelectablePrintPage)_p;
+                ProcessBkltPage(false, pageCounter, chaptersInfo, ref lastChapter,
+                    ref lastChapterStart, page);
+                pageCounter++;
+            }
+            pageCounter--;
+
+            // Add unclosed chapter:
+            if (lastChapter != null)
+            {
+                chaptersInfo.Add(
+                    string.Format(HTMLItem, lastChapter?.Name + string.Format(" [{0}-{1}]", lastChapterStart, pageCounter), lastChapter?.ParentName)
+                );
+            }
+
+            if (chaptersInfo.Count > 0)
+            {
+                chaptersInfo.RemoveAt(0); // The first element is null chapter
+            }
+
+            return chaptersInfo;
+        }
+
+        
+
         const string HTMLItem = "<li><span>{0}</span><br><span style='color: dimgray;'>{1}</span></li>";
         private void mnuExportTOC_Click(object sender, RoutedEventArgs e)
         {
-            if (lstFileChaptersBinding.ItemsSource != null && ((List<MangaChapter>)lstFileChaptersBinding.ItemsSource).Count == 0)
+            if (lstFileChaptersBinding.ItemsSource != null && 
+                ((List<MangaChapter>)lstFileChaptersBinding.ItemsSource).Count == 0 && 
+                allPrintPages.Count > 0)
             {
                 MessageBox.Show(this,"Please bind at least one chapter!");
                 return;
             }
 
+            bool isBooklet = allPrintPages[0].Front.isBooklet;
 
             bool bindedOnly = true;
 
@@ -1076,7 +1152,7 @@ namespace MangaPrinter.WpfGUI
                 const string EndHTML = "</ol>";
 
                 var list = bindedOnly ?
-                    getBindedRange()
+                    (isBooklet? getBindedRangeBooklet(): getBindedRange())
                     :
                      mangaChapters.Select(ch => string.Format(HTMLItem, ch.Name, ch.ParentName)).ToList();
 
