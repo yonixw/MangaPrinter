@@ -98,6 +98,9 @@ namespace MangaPrinter.WpfGUI.Dialogs
             {
                 BucketIndex = (int)sldCutoff.Value;
 
+                lstExampleItems.ItemsSource = null;
+                lstExampleItems.ItemsSource = InputBuckets[BucketIndex].bucketItemsDesc;
+
                 IEnumerable<double> _x2 = new double[] { InputBuckets[BucketIndex].value, InputBuckets[BucketIndex].value };
                 IEnumerable<double> _y2 = new double[] { 0, maxCount };
 

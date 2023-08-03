@@ -10,5 +10,6 @@ namespace MangaPrinter.WpfGUI.Utils
         public int index = 0;
         public double value = 0;
         public int count = 0;
+        public List<string> bucketItemsDesc = new List<string>();
     };
 }

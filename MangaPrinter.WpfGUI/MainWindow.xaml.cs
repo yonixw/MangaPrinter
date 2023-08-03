@@ -412,6 +412,13 @@ namespace MangaPrinter.WpfGUI
                 var b = buckets.Last((bucket) => page.AspectRatio >= bucket.value);
                 //Console.WriteLine("{0}.{1}: {2}", page.Chapter.Name, page.Name, page.AspectRatio);
                 b.count++;
+                b.bucketItemsDesc.Add(
+                    !page.IsDouble?
+                        String.Format("{0}] {1}, p.{2} ({3})",
+                            b.bucketItemsDesc.Count, page.Chapter.Name, page.ChildIndexStart, page.AspectRatio) :
+                        String.Format("{0}] {1}, p.{2}-p.{3} ({4})",
+                            b.bucketItemsDesc.Count, page.Chapter.Name, page.ChildIndexStart, page.ChildIndexEnd, page.AspectRatio) 
+                    );
             }
 
             return buckets;

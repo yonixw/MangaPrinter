@@ -6,12 +6,13 @@
         xmlns:local="clr-namespace:MangaPrinter.WpfGUI.Dialogs"
         xmlns:d3="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF"
         mc:Ignorable="d"
-        Title="Choose cutoff ratio for double-page" Height="550" Width="1000"  WindowStartupLocation="CenterScreen"
+        Title="Choose cutoff ratio for double-page" Height="700" Width="1000"  WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded" Closing="Window_Closing" FontSize="14">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -62,7 +63,10 @@
                     Value="{Binding BucketIndex}" ValueChanged="Slider_ValueChanged"/>
         </StackPanel>
 
-        <DockPanel Grid.Row="2" LastChildFill="False">
+        <ListBox Name="lstExampleItems" Grid.Row="2">
+        </ListBox>
+
+        <DockPanel Grid.Row="3" LastChildFill="False">
             <Button DockPanel.Dock="Right" Margin="5" Padding="5"
                     Name="btnAccept" Click="BtnAccept_Click">Accept</Button>
             <Button DockPanel.Dock="Right" Margin="5" Padding="5" Background="LightPink"
