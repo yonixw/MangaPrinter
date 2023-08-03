@@ -1307,9 +1307,11 @@ namespace MangaPrinter.WpfGUI
 
                 int pagesCount = allPrintPages.Count;
                 bool convertPdf = !(cbExportMinimal.IsChecked??false);
+                bool bkltSingles = cbBookletSingles.IsChecked ?? false;
                 bool keepColors = cbKeepColors.IsChecked ?? false;
                 bool parentText = cbIncludeParent.IsChecked ?? false;
-                List<string> filesToDelete = new List<string>();
+                
+                List<string> filesRendered = new List<string>();
 
                 DateTime timeTemp;
                 TimeSpan timeTemplates = TimeSpan.FromSeconds(0);
@@ -1322,6 +1324,19 @@ namespace MangaPrinter.WpfGUI
 
                     ITemplateBuilder dt = new FlatTemplates();
                     int faceCount = allPrintPages.Count * 2;
+
+                    string saveNDispose(FileInfo _fi, ref int _saveCounter, Bitmap _b)
+                    {
+                        string bName = System.IO.Path.Combine(
+                            _fi.Directory.FullName,
+                            "_temp_" + String.Format("{0:000000000}", _saveCounter++) + ".jpg"
+                        );
+                        _b.Save(bName);
+                        _b.Dispose();
+                        return bName;
+                    }
+
+
                     foreach (SelectablePrintPage page in allPrintPages)
                     {
 
@@ -1329,31 +1344,61 @@ namespace MangaPrinter.WpfGUI
                         {
                             updateFunc("[1/3] Export page " + page.PageNumber, (int)(100.0f * saveCounter / 2 / pagesCount));
 
-                            var faces = new PrintFace[] { page.Front };
-                            var sides = new PrintSide[] { page.Front.Right, page.Front.Left };
+                            if (!(page.Front.isBooklet && bkltSingles))
+                            {
+                                var sides = new PrintSide[] { };
 
-                            var b = dt.BuildFace(faces, sides, faceCount, pW, pH, pad, keepColors, parentText);
-                            var bName = System.IO.Path.Combine(
-                                    fi.Directory.FullName,
-                                    "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".jpg"
-                                    );
-                            b.Save(bName);
-                            filesToDelete.Add(bName);
-                            b.Dispose();
+                                var faces = new PrintFace[] { page.Front };
+                                var b = dt.BuildFace(faces, sides, faceCount, pW, pH, pad, keepColors, parentText);
+                                filesRendered.Add(saveNDispose(fi, ref saveCounter, b));
 
-                            faces = new PrintFace[] { page.Back };
-                            sides = new PrintSide[] { page.Back.Right, page.Back.Left };
+                                faces = new PrintFace[] { page.Back };
+                                b = dt.BuildFace(faces, sides, faceCount, pW, pH, pad, keepColors, parentText);
+                                filesRendered.Add(saveNDispose(fi, ref saveCounter, b));
 
-                            b = dt.BuildFace(faces, sides, faceCount, pW, pH, pad, keepColors, parentText);
-                            bName = System.IO.Path.Combine(
-                                   fi.Directory.FullName,
-                                   "_temp_" + String.Format("{0:000000000}", saveCounter++) + ".jpg"
-                                   );
-                            b.Save(bName);
-                            filesToDelete.Add(bName);
-                            b.Dispose();
+                                b = null;
+                            }
+                            else
+                            {
+                                var sides = new PrintSide[] { };
 
-                            b = null;
+                                var front = dt.BuildFace(new PrintFace[] { page.Front },
+                                    sides, faceCount, pW, pH, pad, keepColors, parentText);
+                                var front_right = GraphicsUtils.bitmapCrop(front, 
+                                    new PageEffects() { CropLeft = 50 }, reuse: true);
+                                var front_left = GraphicsUtils.bitmapCrop(front, 
+                                    new PageEffects() { CropRight = 50 }, reuse: false); // !reuse->dispose front
+
+                                var back = dt.BuildFace(new PrintFace[] { page.Back },
+                                    sides, faceCount, pW, pH, pad, keepColors, parentText);
+                                var back_right = GraphicsUtils.bitmapCrop(back, 
+                                    new PageEffects() { CropLeft = 50 }, reuse: true);
+                                var back_left = GraphicsUtils.bitmapCrop(back, 
+                                    new PageEffects() { CropRight = 50 }, reuse: false); // !reuse->dispose back
+
+                                int midIndx = filesRendered.Count / 2;
+                                if (page.Front.IsRTL)
+                                {
+                                    // Insert specifiec location in reverse
+                                    filesRendered.Insert(midIndx, saveNDispose(fi, ref saveCounter, front_left));
+                                    filesRendered.Insert(midIndx, saveNDispose(fi, ref saveCounter, back_left));
+                                    filesRendered.Insert(midIndx, saveNDispose(fi, ref saveCounter, back_right));
+                                    filesRendered.Insert(midIndx, saveNDispose(fi, ref saveCounter, front_right));
+                                }
+                                else
+                                {
+                                    // Insert specifiec location in reverse
+                                    filesRendered.Insert(midIndx, saveNDispose(fi, ref saveCounter, front_right));
+                                    filesRendered.Insert(midIndx, saveNDispose(fi, ref saveCounter, back_right));
+                                    filesRendered.Insert(midIndx, saveNDispose(fi, ref saveCounter, back_left));
+                                    filesRendered.Insert(midIndx, saveNDispose(fi, ref saveCounter, front_left));
+                                }
+
+                                front_left.Dispose();
+                                front_right.Dispose();
+                                back_left.Dispose();
+                                back_right.Dispose();
+                            }
                         }
                         catch (Exception ex1)
                         {
@@ -1383,9 +1428,9 @@ namespace MangaPrinter.WpfGUI
                                     {
                                         Action<int> onUpdateIndex = new Action<int>((index) =>
                                             {
-                                                updateFunc("[2/3] Adding pdf page " + index, (int)(100.0f * index / filesToDelete.Count));
+                                                updateFunc("[2/3] Adding pdf page " + index, (int)(100.0f * index / filesRendered.Count));
                                             });
-                                        pdfMagik.MakeList(filesToDelete, fi.Directory.FullName,pageInfo.pageDepth, updateIndex: onUpdateIndex);
+                                        pdfMagik.MakeList(filesRendered, fi.Directory.FullName,pageInfo.pageDepth, updateIndex: onUpdateIndex);
                                     }
                                     catch (Exception ex2)
                                     {
@@ -1426,7 +1471,7 @@ namespace MangaPrinter.WpfGUI
                     {
                         if (convertPdf)
                         {
-                            foreach (var f in filesToDelete)
+                            foreach (var f in filesRendered)
                                 File.Delete(f); 
                         }
 
@@ -1444,6 +1489,8 @@ namespace MangaPrinter.WpfGUI
                 }
 
             }
+
+            
         }
 
         #endregion

@@ -396,9 +396,11 @@
                             <RadioButton Name="rbBookRTL" IsChecked="True" Margin="0,0,10,0">RTL (&lt;&lt;)</RadioButton>
                             <RadioButton Name="rbBookLTR">LTR (&gt;&gt;)</RadioButton>
                         </StackPanel>
-                        <Hyperlink Name="lblBkltRTL" Click="lblBkltRTL_Click">( ! )</Hyperlink>
+                        <Hyperlink Name="lblBkltRTL" Click="lblBkltRTL_Click">[ i ]</Hyperlink>
                         <CheckBox Name="cbCover" IsChecked="True">Keep First/Last pages as cover</CheckBox>
-                        <CheckBox Name="cbBookletSingles" IsChecked="True">Export Singles</CheckBox>
+                        <CheckBox Name="cbBookletSingles" IsChecked="True">
+                            <TextBlock Background="#FFEAFFD2">Export Singles</TextBlock>
+                        </CheckBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <Label IsEnabled="False" Foreground="Black">
