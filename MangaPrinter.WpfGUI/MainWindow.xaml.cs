@@ -100,8 +100,8 @@ namespace MangaPrinter.WpfGUI
             cbAddStart.IsChecked = CoreConf.I.Binding_AddStartPage;
             cbAddEnd.IsChecked = CoreConf.I.Binding_AddEndPage;
 
-            cbUseAntiSpoiler.IsChecked = CoreConf.I.Binding_AniSpoilerBatch > 0;
-            txtSpoilerPgNm.Text = CoreConf.I.Binding_AniSpoilerBatch.Get().ToString();
+            cbUseAntiSpoiler.IsChecked = CoreConf.I.Binding_AntiSpoilerBatch > 0;
+            txtSpoilerPgNm.Text = CoreConf.I.Binding_AntiSpoilerBatch.Get().ToString();
 
             //todo txtPrintPadding.Text = Config.exportPagePadding.ToString();
 
@@ -500,7 +500,7 @@ namespace MangaPrinter.WpfGUI
         private void txtSpoilerPgNm_TextChanged(object sender, TextChangedEventArgs e)
         {
             int? batch = verifyInteger(txtSpoilerPgNm,
-                CoreConf.I.Binding_AniSpoilerBatch.Get().ToString());
+                CoreConf.I.Binding_AntiSpoilerBatch.Get().ToString());
 
             if (batch != null)
             {
@@ -508,7 +508,7 @@ namespace MangaPrinter.WpfGUI
             }
             else
             {
-                cbUseAntiSpoiler.IsChecked = CoreConf.I.Binding_AniSpoilerBatch > 0;
+                cbUseAntiSpoiler.IsChecked = CoreConf.I.Binding_AntiSpoilerBatch > 0;
             }
         }
 

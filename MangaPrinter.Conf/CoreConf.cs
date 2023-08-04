@@ -136,7 +136,7 @@ namespace MangaPrinter.Conf
           "Add page after every chapter with text"
         );
 
-        public JMetaT<int> Binding_AniSpoilerBatch { get; } = new JMetaT<int>(26,
+        public JMetaT<int> Binding_AntiSpoilerBatch { get; } = new JMetaT<int>(26,
            "How many pages to print between Anti-spoiler pages. 0=No anti spoiler at all",
            (N) => N >= 0
          );
