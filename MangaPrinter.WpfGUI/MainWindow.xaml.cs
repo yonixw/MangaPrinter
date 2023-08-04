@@ -197,7 +197,8 @@ namespace MangaPrinter.WpfGUI
         {
             if (CoreConf.I.Info_IsNotWindows.Get())
             {
-                MessageBox.Show("We detected you are not running under Windows.\nPlease choose a import path with no special characters.\nThanks.");
+                MessageBox.Show(this,
+                    "We detected you are not running under Windows.\nPlease choose a import path with no special characters.\nThanks.");
             }
 
 
@@ -1260,7 +1261,7 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuQuickDelete_Click(object sender, RoutedEventArgs e)
         {
-            bool addFirstLast3 = MessageBox.Show("Add 3 First/Last pages?", "Smart Delete", MessageBoxButton.YesNo)
+            bool addFirstLast3 = MessageBox.Show(this,"Add 3 First/Last pages?", "Smart Delete", MessageBoxButton.YesNo)
                 == MessageBoxResult.Yes;
 
             dlgBluredImageListActions dlg = new dlgBluredImageListActions();
@@ -1327,7 +1328,7 @@ namespace MangaPrinter.WpfGUI
         {
             if (_config_open)
             {
-                MessageBox.Show("Config dialog already open, can use one at a time.");
+                MessageBox.Show(this,"Config dialog already open, can use one at a time.");
                 return;
             }
 
@@ -1398,9 +1399,9 @@ namespace MangaPrinter.WpfGUI
             warnIncosistentBookletDir(false);
         }
 
-        private static void warnIncosistentBookletDir(bool found)
+        private void warnIncosistentBookletDir(bool found)
         {
-            MessageBox.Show(String.Join("\n", new[]
+            MessageBox.Show(this, String.Join("\n", new[]
              {
                 found ? "Chapter with different direction found!" : "",
                 "Please note that if any chapter direction (ltr/rtl) is different",

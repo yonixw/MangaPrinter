@@ -155,16 +155,16 @@ namespace MangaPrinter.WpfGUI.Dialogs
                     if ( _kvj.Value.Value.Valid(JsonEditHelpers.FromJsonValue(textRange.Text))
                     )
                     {
-                        MessageBox.Show("[OK] Valid.");
+                        MessageBox.Show(this,"[OK] Valid.");
                     }
                     else
                     {
-                        MessageBox.Show("[ERR] Not valid!");
+                        MessageBox.Show(this,"[ERR] Not valid!");
                     }
                 }
                 catch (Exception err)
                 {
-                    MessageBox.Show("[ERR] Not valid!" + "\n---\n" + err.Message);
+                    MessageBox.Show(this,"[ERR] Not valid!" + "\n---\n" + err.Message);
                 }                
             }
         }
@@ -218,7 +218,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
             string error = null;
             if (lastSelected == null)
             {
-                MessageBox.Show("Please select folder");
+                MessageBox.Show(this,"Please select folder");
                 return;
             }
 
@@ -248,7 +248,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
                 if (File.Exists(fullSavePath))
                 {
                     MessageBoxResult overwriteDlg =
-                        MessageBox.Show("File already exists, overwrite?", "Overwrite", MessageBoxButton.YesNo);
+                        MessageBox.Show(this,"File already exists, overwrite?", "Overwrite", MessageBoxButton.YesNo);
                     if (overwriteDlg == MessageBoxResult.No)
                     {
                         return;
@@ -258,7 +258,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
                 try
                 {
                     File.WriteAllText(fullSavePath, CoreConfLoader.JsonConfigInstance.toJSON());
-                    MessageBox.Show("Exported successfully to:\n" + fullSavePath);
+                    MessageBox.Show(this,"Exported successfully to:\n" + fullSavePath);
                 }
                 catch (Exception err)
                 {
@@ -268,7 +268,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
             if (!String.IsNullOrEmpty(error))
             {
-                MessageBox.Show(error);
+                MessageBox.Show(this,error);
             }
 
 
