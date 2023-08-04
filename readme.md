@@ -26,6 +26,9 @@ Here is where Manga Printer comes to help. It will let you:
 ## Download for windows :
 [Download latest release](https://github.com/yonixw/MangaPrinter/releases/latest)
 
+## Running in Linux:
+[Linux Readme](LinuxDockers/README.md)
+
 ## The process being explained with pictures: 
 When using the software, right click on list items for more options (e.g. preview)
 
