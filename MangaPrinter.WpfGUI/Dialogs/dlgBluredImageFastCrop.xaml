@@ -34,7 +34,7 @@
                 <Label>Crop:</Label>
             </StatusBarItem>
             <StatusBarItem>
-                <Slider Name="slideCrop" Minimum="0.1" Maximum="50.1" Width="300px" AutoToolTipPlacement="BottomRight" SmallChange="0.1" LargeChange="1" Value="1" ValueChanged="slideCrop_ValueChanged"></Slider>
+                <Slider Name="slideCrop" Minimum="0.1" Maximum="48.9" Width="300px" AutoToolTipPlacement="BottomRight" SmallChange="0.1" LargeChange="1" Value="1" ValueChanged="slideCrop_ValueChanged"></Slider>
             </StatusBarItem>
             <StatusBarItem>
                 <TextBlock x:Name="txtCropPrcnt">%</TextBlock>

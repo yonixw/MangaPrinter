@@ -1412,7 +1412,44 @@ namespace MangaPrinter.WpfGUI
             }));
         }
 
-      
+        private void mnMangaPgStats_Click(object sender, RoutedEventArgs e)
+        {
+            MangaPage page = lstFilePages.SelectedValue as MangaPage;
+            if (page != null)
+            {
+                object[] Message = new object[]
+                {
+                    "[*] File path:",
+                    page.ImagePath + " " + page.Effects.VirtualPath,
+                    "[*] Name:",
+                    page.Name,
+                    "[*] Ink Fill: (0 = Full, 1 = Empty)",
+                    "[*] 0.5=Default/Not Calculated",
+                    page.WhiteBlackRatio,
+                    "[*] Ratio (Width/Height):",
+                    page.AspectRatio,
+                    "[*] Calculated Index Start:",
+                    page.ChildIndexStart,
+                    "[*] Calculated Index Start:",
+                    page.ChildIndexEnd,
+                    "[*] Considered 2 images (IsDouble):",
+                    page.IsDouble,
+                    "[*] Is Omited:",
+                    page.Effects.IsOmited,
+                    "[*] Crop top %:",
+                    page.Effects.CropTop,
+                    "[*] Crop right %:",
+                    page.Effects.CropRight,
+                    "[*] Crop bottom %:",
+                    page.Effects.CropBottom,
+                    "[*] Crop left %:",
+                    page.Effects.CropLeft,
+                };
+
+                MessageBox.Show(string.Join(Environment.NewLine, Message.Select(i => i.ToString())));
+            }
+        }
+
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
             resetDlgSaveName();

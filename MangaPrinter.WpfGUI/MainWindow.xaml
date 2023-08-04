@@ -279,6 +279,7 @@
                                 <ContextMenu>
                                     <MenuItem Name="mnPreviewManga" Click="MnPreviewManga_Click" Header="Preview File"/>
                                     <MenuItem Name="mnCrop" Click="mnCrop_Click" Header="Plan Crop Image"/>
+                                    <MenuItem Name="mnMangaPgStats" Click="mnMangaPgStats_Click" Header="File Stats"/>
                                     <Separator/>
                                     <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Single page checked"/>
                                     <MenuItem Name="mnuToDouble" Click="mnuToDouble_Click" Header="Double page checked"/>
