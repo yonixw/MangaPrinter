@@ -55,7 +55,21 @@
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>
-        
+
+        <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <Label>(Multipliers)</Label>
+                    <Label>Brightness</Label>
+                    <Slider Name="slideBright" Minimum="0.01" Maximum="5" Width="240px" AutoToolTipPlacement="BottomRight" SmallChange="0.01" LargeChange="1" Value="1" ValueChanged="slideBright_ValueChanged"></Slider>
+                    <Label>Contrast</Label>
+                    <Slider Name="slideContrast" Minimum="0.01" Maximum="5" Width="240px" AutoToolTipPlacement="BottomRight" SmallChange="0.01" LargeChange="1" Value="1" ValueChanged="slideContrast_ValueChanged"></Slider>
+                    <Label>Gamma</Label>
+                    <Slider Name="slideGamma" Minimum="0.01" Maximum="10" Width="240px" AutoToolTipPlacement="BottomRight" SmallChange="0.01" LargeChange="1" Value="1" ValueChanged="slideGamma_ValueChanged"></Slider>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+
         <Canvas Name="cnvsImage" MouseLeave="cnvsImage_MouseLeave" MouseMove="cnvsImage_MouseMove" MouseUp="imgMain_MouseUp" MouseWheel="cnvsImage_MouseWheel">
             <Image Name="imgMain" Canvas.Left="0" Canvas.Top="0" Panel.ZIndex="1"
                    MouseDown="imgMain_MouseDown" MouseUp="imgMain_MouseUp" 

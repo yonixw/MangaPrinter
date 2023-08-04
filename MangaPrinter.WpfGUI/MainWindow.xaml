@@ -312,7 +312,9 @@
                             <ListBox.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Name="mnPreviewManga" Click="MnPreviewManga_Click" Header="Preview File"/>
-                                    <MenuItem Name="mnCrop" Click="mnCrop_Click" Header="Plan Crop Image"/>
+                                    <Separator/>
+                                    <MenuItem Name="mnCrop" Click="mnCrop_Click" Header="Plan Image Crop/Lighting"/>
+                                    <MenuItem Name="mnApplyLight" Click="mnApplyLight_Click" Header="Apply Lighting checked"/>
                                     <MenuItem Name="mnMangaPgStats" Click="mnMangaPgStats_Click" Header="File Stats"/>
                                     <Separator/>
                                     <MenuItem Name="mnuToSingle" Click="mnuToSingle_Click" Header="Single page checked"/>

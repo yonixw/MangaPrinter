@@ -1448,6 +1448,12 @@ namespace MangaPrinter.WpfGUI
                     page.Effects.CropBottom,
                     "[*] Crop left %:",
                     page.Effects.CropLeft,
+                    "[*] Brightness:",
+                    page.Effects.Brightness,
+                    "[*] Contrast:",
+                    page.Effects.Contrast,
+                    "[*] Gamma:",
+                    page.Effects.Gamma,
                 };
 
                 MessageBox.Show(this,string.Join(Environment.NewLine, Message.Select(i => i.ToString())));
@@ -1469,7 +1475,25 @@ namespace MangaPrinter.WpfGUI
                 , "Help", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-
+        private void mnApplyLight_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxAction<Core.MangaPage>(lstFilePages, page => {
+                if (lstFileChapters.SelectedValue != null)
+                {
+                    MangaChapter Chapter = (MangaChapter)lstFileChapters.SelectedValue;
+                    Chapter.Pages
+                        .Where(p => p.IsChecked)
+                        .ForEach(p =>
+                        {
+                            p.Effects.Contrast = page.Effects.Contrast;
+                            p.Effects.Brightness = page.Effects.Brightness;
+                            p.Effects.Gamma = page.Effects.Gamma;
+                        });
+                    Chapter.updateChapterStats();
+                }
+            });
+           
+        }
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {

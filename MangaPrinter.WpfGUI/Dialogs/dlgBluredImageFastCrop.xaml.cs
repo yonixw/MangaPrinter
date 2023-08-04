@@ -256,6 +256,24 @@ namespace MangaPrinter.WpfGUI.Dialogs
             DebounceRender();
         }
 
+        private void slideBright_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            _page.Effects.Brightness = (float)slideBright.Value;
+            DebounceRender();
+        }
+
+        private void slideContrast_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            _page.Effects.Contrast = (float)slideContrast.Value;
+            DebounceRender();
+        }
+
+        private void slideGamma_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            _page.Effects.Gamma = (float)slideGamma.Value;
+            DebounceRender();
+        }
+
         public void Zoom(double percent)
         {
             if (myImage != null)
