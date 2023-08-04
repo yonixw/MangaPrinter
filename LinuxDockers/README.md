@@ -26,7 +26,7 @@ docker run --rm -it --shm-size=256m -v "$(pwd)/Mangas:/root/Mangas" -p 15901:590
 To fix linux names after download, use `detox` to run:
 
 ```
-apt update && apt install detox && detox -r /root/Mangas/
+apt update && apt install -y detox && detox -r /root/Mangas/
 ```
 
 # Limitations
