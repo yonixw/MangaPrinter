@@ -31,6 +31,7 @@ set -e # exit on any fail
 
 wget -q -O MangaPrinter_latest.zip $ZIP_PATH
 
-unzip -o MangaPrinter_latest.zip
+# windows zip slashes cause fail, so we will try anyway :/
+unzip -o MangaPrinter_latest.zip || (echo "Unzip problem.. trying anyway.." && sleep 3)
 
 find . | grep -i "mangaprinter" | grep -E "\.exe$" | xargs wine
