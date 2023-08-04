@@ -38,8 +38,9 @@
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="FontSize" Value="14" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="Background">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush">
                 <Setter.Value>
                     <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
                         <GradientStop Color="#FFF05D5D" Offset="0"/>
@@ -132,7 +133,7 @@
         <TabControl>
             <TabItem Header="Chapter and Files">
                 <DockPanel>
-                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt" BorderBrush="#FFB0B0B0" BorderThickness="0 0 0 1">
 
 
                         <Label IsEnabled="False"  Content="Double-Page min ratio (w/h):" Foreground="Black" >
@@ -143,29 +144,44 @@
                         <TextBox Name="txtPageMaxWidth" Width="100px" Text="0.85" 
                                 TextChanged="txtPageMaxWidth_TextChanged" TextAlignment="Center"/>
 
-                        <Button Name="btnNewCutoffRatio" Click="BtnNewCutoffRatio_Click">Choose better cutoff</Button>
+                        <Button Name="btnNewCutoffRatio" Click="BtnNewCutoffRatio_Click">
+                            <StackPanel Orientation="Horizontal" >
+                                <Image Source="Icons/More/cut.png" Height="24px" Margin="2px" ></Image>
+                                <Label>
+                                    <TextBlock >
+                                          Fit Cutoff
+                                    </TextBlock>
+                                </Label>
+                            </StackPanel>
+                            </Button>
 
                     </Menu>
-                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
-                        <CheckBox IsChecked="True" Name="cbSubfolders">Include subfolders</CheckBox>
-                        <CheckBox IsChecked="True" Name="cbNumberFix">Better 0-9 Sort</CheckBox>
-                        
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt" BorderBrush="#FFB0B0B0" BorderThickness="0 0 0 1">
                         <Label IsEnabled="False" Foreground="Black" >
                             <Label.Effect>
                                 <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
                             </Label.Effect>
-                            Import order:
+                            Import:
+                        </Label>
+                        <CheckBox IsChecked="True" Name="cbSubfolders">Include subfolders</CheckBox>
+                        <CheckBox IsChecked="True" Name="cbNumberFix">Better 0-9 Sort</CheckBox>
+                        <Label Width="2" Padding="10" BorderThickness="1 0 0 0" BorderBrush="#FF7C7C7C"></Label>
+                        <Label IsEnabled="False" Foreground="Black" >
+                            <Label.Effect>
+                                <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
+                            </Label.Effect>
+                            Order:
                         </Label>
                         <StackPanel Orientation="Horizontal">
                             <RadioButton Name="rbByName" Margin="0,0,10,0">Name</RadioButton>
                             <RadioButton Name="rbByDate" IsChecked="True">Create Date</RadioButton>
                         </StackPanel>
-
+                        <Label Width="2" Padding="10" BorderThickness="1 0 0 0" BorderBrush="#FF7C7C7C"></Label>
                         <Label IsEnabled="False" Foreground="Black">
                             <Label.Effect>
                                 <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
                             </Label.Effect>
-                            Import Direction:
+                            Reading Direction:
                         </Label>
                         <StackPanel Orientation="Horizontal" >
                             <RadioButton Name="rbRTL" IsChecked="True" Margin="0,0,10,0">RTL (&lt;&lt;)</RadioButton>
@@ -178,12 +194,30 @@
                                   Name="menuImprtFolders" Click="menuImprtFolders_Click" Foreground="Black" FontWeight="DemiBold"/>
                         <MenuItem Header="🔳InkFill% Checked" Style="{StaticResource MenuItemBtnStyle}" Margin="0 0 5px 0"
                                   Name="btnCalcWhiteRatio" Click="btnCalcWhiteRatio_Click" Foreground="Black" Width="180px"/>
-                        <MenuItem Header="New Chapter" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="140px" Margin="0 0 5px 0"
-                                  Name="mnuAddEmptyChapter" Click="mnuAddEmptyChapter_Click"/>
-                        <MenuItem Header="Smart Delete" Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="130"  Margin="0 0 5px 0"
-                                  Name="mnuQuickDelete" Click="mnuQuickDelete_Click"/>
-                        <MenuItem Header="?" Name="mnuSmartDeleteInfo" Click="mnuSmartDeleteInfo_Click" ></MenuItem>
-                        <MenuItem Header="Clear Data" Style="{StaticResource MenuItemBtnStyleRed}" Foreground="White" Width="100" Margin="0 0 5px 0"
+                        <MenuItem Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="140"  Margin="0 0 5px 0"
+                                  Name="mnuQuickDelete" Click="mnuQuickDelete_Click">
+                            <MenuItem.Header >
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Icons/More/quick.png" Height="24" Margin="2px"></Image>
+                                    <TextBlock Margin="5px">Quick Delete</TextBlock>
+                                </StackPanel>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem  Name="mnuSmartDeleteInfo" Click="mnuSmartDeleteInfo_Click" BorderThickness="0">
+                            <MenuItem.Header>
+                                <Image Source="Icons/More/info.png" Height="16" Margin="2px"></Image>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem Style="{StaticResource MenuItemBtnStyle}" Foreground="Black" Width="160px" Margin="0 0 5px 0"
+                                  Name="mnuAddEmptyChapter" Click="mnuAddEmptyChapter_Click">
+                            <MenuItem.Header >
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Icons/More/plus.png" Height="20" Margin="2px"></Image>
+                                    <TextBlock Margin="5px">Empty chapter</TextBlock>
+                                </StackPanel>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem Header="Clear Data" Style="{StaticResource MenuItemBtnStyleRed}" Foreground="Black" Width="100" Margin="0 0 5px 0"
                                   Name="mnuClearAllData" Click="MnuClearAllData_Click"/>
                     </Menu>
 
@@ -362,7 +396,8 @@
             </TabItem>
             <TabItem Header="Binding" Height="23" VerticalAlignment="Top">
                 <DockPanel>
-                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt"
+                          BorderBrush="#FFB0B0B0" BorderThickness="0 0 0 1">
                         <Label IsEnabled="False" Foreground="Black">
                             <Label.Effect>
                                 <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
@@ -389,7 +424,8 @@
                         </StackPanel>
                     
                     </Menu>
-                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt"
+                          BorderBrush="#FFB0B0B0" BorderThickness="0 0 0 1">
                         <Label IsEnabled="False" Foreground="Black">
                             <Label.Effect>
                                 <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
@@ -397,16 +433,49 @@
                             Booklet Only:
                         </Label>
                         <StackPanel Orientation="Horizontal" >
-                            <RadioButton Name="rbBookRTL" IsChecked="True" Margin="0,0,10,0">RTL (&lt;&lt;)</RadioButton>
-                            <RadioButton Name="rbBookLTR">LTR (&gt;&gt;)</RadioButton>
+                            <RadioButton Name="rbBookRTL" IsChecked="True" Margin="0,0,10,0" VerticalContentAlignment="Center">
+                                <StackPanel Orientation="Horizontal" >
+                                    <Image Source="Icons/More/book_rtl.png" Height="32px" ></Image>
+                                    <Label>
+                                        <TextBlock >
+                                           RTL
+                                        </TextBlock>
+                                    </Label>
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton Name="rbBookLTR" VerticalContentAlignment="Center">
+                                <StackPanel Orientation="Horizontal" >
+                                    <Image Source="Icons/More/book_ltr.png" Height="32px" ></Image>
+                                    <Label>
+                                        <TextBlock >
+                                           LTR
+                                        </TextBlock>
+                                    </Label>
+                                </StackPanel>
+                            </RadioButton>
                         </StackPanel>
-                        <Hyperlink Name="lblBkltRTL" Click="lblBkltRTL_Click">( ! )</Hyperlink>
+                        <MenuItem  Name="lblBkltRTL" Click="lblBkltRTL_Click" BorderThickness="0">
+                            <MenuItem.Header>
+                                <Image Source="Icons/More/info.png" Height="16" Margin="2px"></Image>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <Label Width="2" Padding="10" BorderThickness="1 0 0 0" BorderBrush="#FF7C7C7C"></Label>
                         <CheckBox Name="cbCover" IsChecked="True">Keep First/Last pages as cover</CheckBox>
-                        <CheckBox Name="cbBookletSingles" IsChecked="True">
-                            Export as Sides
+                        <Label Width="2" Padding="10" BorderThickness="1 0 0 0" BorderBrush="#FF7C7C7C"></Label>
+                        <CheckBox Name="cbBookletSingles" IsChecked="True" VerticalContentAlignment="Center">
+                            <StackPanel Orientation="Horizontal" >
+                                <Image Source="Icons/More/singles.png" Height="32px" ></Image>
+                                <Label>
+                                    <TextBlock >
+                                           Export as Sides
+                                    </TextBlock>
+                                </Label>
+                            </StackPanel>
+                            
                         </CheckBox>
                     </Menu>
-                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt"
+                          BorderBrush="#FFB0B0B0" BorderThickness="0 0 0 1">
                         <Label IsEnabled="False" Foreground="Black">
                             <Label.Effect>
                                 <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
@@ -415,21 +484,23 @@
                         </Label>
                         <CheckBox Name="cbAddStart" IsChecked="True">Add Start Page</CheckBox>
                         <CheckBox Name="cbAddEnd" IsChecked="True">Add End Page</CheckBox>
-
+                        <Label Width="2" Padding="10" BorderThickness="1 0 0 0" BorderBrush="#FF7C7C7C"></Label>
                         <CheckBox Name="cbUseAntiSpoiler" IsChecked="True">Anti-spoiler every:</CheckBox>
-                        <TextBox Width="100px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
+                        <TextBox Width="50px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
                             25</TextBox>
-                        <Label Content="pages" IsEnabled="False" />
+                        <TextBlock IsEnabled="False" >pages</TextBlock>
+                        <Label Width="2" Padding="10" BorderThickness="1 0 0 0" BorderBrush="#FF7C7C7C"></Label>
                         <CheckBox Name="cbIncludeParent" IsChecked="True">Include folder name</CheckBox>
                     </Menu>
-                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
+                    <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt" 
+                            BorderBrush="#FFB0B0B0" BorderThickness="0 0 0 1">
                         <Label IsEnabled="False" Foreground="Black">
                             <Label.Effect>
                                 <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
                             </Label.Effect>
                             Export:
                         </Label>
-                        <Label>Page Size</Label>
+                        <Label>Base Page Size</Label>
                         <ComboBox Name="cbPageSize" Width="150px" IsEditable="False">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -437,17 +508,50 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+                        <Label Width="2" Padding="10" BorderThickness="1 0 0 0" BorderBrush="#FF7C7C7C"></Label>
                         <CheckBox Name="cbExportMinimal" IsChecked="False">Skip PDF</CheckBox>
-                        <Hyperlink Name="lblHelpExportMinimal" Click="LblHelpExportMinimal_Click">( ? )</Hyperlink>
-                        <CheckBox Name="cbKeepColors" IsChecked="False">Skip Grayscale</CheckBox>
-                        <Hyperlink Name="lblKeepColorsHelp" Click="lblKeepColorsHelp_Click">( ? )</Hyperlink>
-                        <CheckBox Name="cbMirror2nd" IsChecked="False">Mirror 2nd</CheckBox>
-                        <Hyperlink Name="lblMirror2nd" Click="lblMirror2nd_Click">( ? )</Hyperlink>
+                        <MenuItem  Name="lblHelpExportMinimal" Click="LblHelpExportMinimal_Click" BorderThickness="0">
+                            <MenuItem.Header>
+                                <Image Source="Icons/More/info.png" Height="16" Margin="2px"></Image>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <Label Width="2" Padding="10" BorderThickness="1 0 0 0" BorderBrush="#FF7C7C7C"></Label>
+                        <CheckBox Name="cbKeepColors" IsChecked="False" VerticalContentAlignment="Center">
+                            <StackPanel Orientation="Horizontal" >
+                                <Image Source="Icons/More/colors2.png" Height="32px" ></Image>
+                                <Label>
+                                    <TextBlock >
+                                           Skip Grayscale
+                                    </TextBlock>
+                                </Label>
+                            </StackPanel>
+                        </CheckBox>
+                        <MenuItem  Name="lblKeepColorsHelp" Click="lblKeepColorsHelp_Click" BorderThickness="0">
+                            <MenuItem.Header>
+                                <Image Source="Icons/More/info.png" Height="16" Margin="2px"></Image>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <Label Width="2" Padding="10" BorderThickness="1 0 0 0" BorderBrush="#FF7C7C7C"></Label>
+                        <CheckBox Name="cbMirror2nd" IsChecked="False" VerticalContentAlignment="Center">
+                            <StackPanel Orientation="Horizontal" >
+                                <Image Source="Icons/More/mirror.png" Height="32px" ></Image>
+                                <Label>
+                                    <TextBlock >
+                                          Mirror 2nd
+                                    </TextBlock>
+                                </Label>
+                            </StackPanel>
+                        </CheckBox>
+                        <MenuItem  Name="lblMirror2nd" Click="lblMirror2nd_Click" BorderThickness="0">
+                            <MenuItem.Header>
+                                <Image Source="Icons/More/info.png" Height="16" Margin="2px"></Image>
+                            </MenuItem.Header>
+                        </MenuItem>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <MenuItem Header="(2) (Re)Bind Checked" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Click="MenuItem_Click" Width="190" Margin="0 0 5px 0"/>
                         <MenuItem Header="Export Chapter List" Style="{StaticResource MenuItemBtnStyle}"  Foreground="Black" Name="mnuExportTOC" Click="mnuExportTOC_Click" Margin="0 0 5px 0"/>
-                        <MenuItem Header="(3) Export PDF!" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Name="mnuExport" Click="MnuExport_Click" Margin="0 0 5px 0" />
+                        <MenuItem Header="(3) Export!" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Name="mnuExport" Click="MnuExport_Click" Margin="0 0 5px 0" />
                         
 
                     </Menu>
@@ -571,16 +675,38 @@
             <TabItem Header="About">
                 <StackPanel>
                     <DockPanel LastChildFill="False" Margin="5">
-                        <Button Width="150" Name="btnConfigMgr" Click="btnConfigMgr_Click">Config Manager</Button>
+                        <Button Width="150" Name="btnConfigMgr" Click="btnConfigMgr_Click">
+                            <StackPanel Orientation="Horizontal" Margin="5px">
+                                <Image Source="Icons/More/settings.png" Height="16px" Margin="2px" />
+                                <TextBlock HorizontalAlignment="Center">Config Manager</TextBlock>
+                            </StackPanel>
+                        </Button>
                     </DockPanel>
                     <RichTextBox Name="rtbInfo" IsReadOnly="True" Margin="5" BorderBrush="White">
                     <FlowDocument>
                         <Paragraph>
-                            Manga Printer
+                            <Underline>*** Manga Printer</Underline>
+                                
                             <LineBreak />
-                            <Hyperlink NavigateUri="https://github.com/yonixw/MangaPrinter" >
+                                <Image Source="Icons/More/www.png" Height="24px" Margin="2px"   />
+                                <Hyperlink BaselineAlignment="Center"   >
                                 https://github.com/yonixw/MangaPrinter
                             </Hyperlink>
+                        </Paragraph>
+                            <Paragraph>
+                                <Underline>*** Icon Attributions</Underline>
+                                <LineBreak/>
+                                 (see files in icons folder)
+                                <LineBreak/>
+                                Git Logo by   Jason Long
+                                <Hyperlink >
+                                    (https://twitter.com/jasonlong)
+                                </Hyperlink>
+                                <LineBreak />
+                                Flaticon:
+                                <Hyperlink >
+                                    (https://www.flaticon.com)
+                                </Hyperlink> Settings
                         </Paragraph>
                         <Paragraph FontWeight="Bold">
                             <Paragraph.Background>
@@ -590,17 +716,22 @@
                                 </LinearGradientBrush>
                             </Paragraph.Background>
                             <TextBlock TextDecorations="Underline">
-                            Debug Information:
+                            *** Debug Information:
                             </TextBlock>
                             <LineBreak />
-                            Git: 
-                            <TextBlock x:Name="txtGitInfo"/>
+                                <Image Source="Icons/More/git.png" Height="16px" Margin="2px"  />
+                                <TextBlock BaselineOffset="20">Git:</TextBlock>
+                                <TextBlock x:Name="txtGitInfo" BaselineOffset="20"/>
                             <LineBreak />
-                            Config:
-                            <TextBlock x:Name="txtConfigInfo"/>
+                                <Image Source="Icons/More/settings.png" Height="16px" Margin="2px"  />
+                                <TextBlock BaselineOffset="20">Config: </TextBlock>
+                                <TextBlock x:Name="txtConfigInfo" BaselineOffset="20"/>
                             <LineBreak />
-                            Non Windows OS:
-                            <TextBlock x:Name="txtNonWindows"/>
+                                <Image Source="Icons/More/linux.png" Height="24px" Margin="2px" />
+                                <TextBlock BaselineOffset="26">Non Windows OS:</TextBlock>
+                                <TextBlock x:Name="txtNonWindows" BaselineOffset="26">
+       
+                                </TextBlock>
                         </Paragraph>
                     </FlowDocument>
                 </RichTextBox>

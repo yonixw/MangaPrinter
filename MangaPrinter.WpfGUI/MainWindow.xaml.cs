@@ -27,6 +27,7 @@ using TheArtOfDev.HtmlRenderer.PdfSharp;
 using PdfSharp;
 using MangaPrinter.Conf;
 using MangaPrinter.Core.ChapterBuilders;
+using System.Diagnostics;
 
 namespace MangaPrinter.WpfGUI
 {
@@ -1261,11 +1262,11 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuQuickDelete_Click(object sender, RoutedEventArgs e)
         {
-            bool addFirstLast3 = MessageBox.Show(this,"Add 3 First/Last pages?", "Smart Delete", MessageBoxButton.YesNo)
+            bool addFirstLast3 = MessageBox.Show(this,"Add 3 First/Last pages?", "Quick Delete", MessageBoxButton.YesNo)
                 == MessageBoxResult.Yes;
 
             dlgBluredImageListActions dlg = new dlgBluredImageListActions();
-            dlg.CustomTitle = "Smart Delete pages";
+            dlg.CustomTitle = "Quick Delete pages";
             ObservableCollection<ActionMangaPage<bool>> pagesToInspect = new ObservableCollection<ActionMangaPage<bool>>();
             int i = 0;
             mangaChapters.ForEach(ch =>
@@ -1312,15 +1313,15 @@ namespace MangaPrinter.WpfGUI
 
         private void mnuSmartDeleteInfo_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(this,">> Smart delete includes choises:\n" +
+            MessageBox.Show(this,">> Quick delete includes choises:\n" +
                 "+ (Optional) First and last 3 pages of each chapter\n" +
                 "+ Checked pages\n" +
                 "+ Checked chapters (all pages)\n" +
-                "\n>> Smart delete includes found problems (if analyzed before):\n" +
+                "\n>> Quick delete includes found problems (if analyzed before):\n" +
                 "* 🔳 InkFill% > " + CoreConf.I.Common_Alerts_InkFillHigh.Get() + "\n" +
                 "* 🔳 InkFill% < " + CoreConf.I.Common_Alerts_InkFillLow.Get() + "\n" +
                 "* ➗ TooVertical < " + CoreConf.I.Common_Alerts_TooVertical.Get() + "\n"
-                );
+                , "Help", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         bool _config_open = false;
@@ -1403,7 +1404,7 @@ namespace MangaPrinter.WpfGUI
         {
             MessageBox.Show(this, String.Join("\n", new[]
              {
-                found ? "Chapter with different direction found!" : "",
+                (found ? "Chapter with different direction found!\n" : "") +
                 "Please note that if any chapter direction (ltr/rtl) is different",
                 "from the booklet direction, double pages of it will be reversed!",
                 "",
@@ -1412,7 +1413,7 @@ namespace MangaPrinter.WpfGUI
                 "",
                 "Duplex is different since no two chapters will be on the same real paper,",
                 "so this software changes based on chapter."
-            }));
+            }), "Help", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void mnMangaPgStats_Click(object sender, RoutedEventArgs e)
@@ -1467,6 +1468,8 @@ namespace MangaPrinter.WpfGUI
             MessageBox.Show(this, string.Join(Environment.NewLine, helpMessage)
                 , "Help", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
+
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {

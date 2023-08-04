@@ -238,6 +238,48 @@
   <ItemGroup>
     <Resource Include="Icons\papper_plan2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\Colors.png" />
+    <Resource Include="Icons\More\Colors.txt" />
+    <Resource Include="Icons\More\settings.png" />
+    <Resource Include="Icons\More\settings32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\book_ltr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\book_rtl.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\mirror.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\www.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\singles.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\Colors2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\cut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\linux.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\git.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\quick.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\More\plus.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
