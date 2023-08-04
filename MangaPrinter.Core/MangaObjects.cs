@@ -56,6 +56,11 @@ namespace MangaPrinter.Core
         public MangaChapter Chapter { get { return _baseGet(); } set { _baseSet(value); } }
         public int ChildIndexStart { get { return _baseGet(); } set { _baseSet(value); } }
         public int ChildIndexEnd { get { return _baseGet(); } set { _baseSet(value); } }
+
+        public MangaPage()
+        {
+            Effects = new PageEffects();
+        }
     }
 
     public class ActionMangaPage<R> : ModelBaseWpf

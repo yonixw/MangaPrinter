@@ -1279,19 +1279,19 @@ namespace MangaPrinter.WpfGUI
                     // Add first/lest 3
                     if (addFirstLast3 && (i < 3 || i + 3 >= ch.Pages.Count))
                     {
-                        pagesToInspect.Add(p);
+                       if (!pagesToInspect.Contains(p)) pagesToInspect.Add(p);
                     }
                     else if (p.Page.WhiteBlackRatio < CoreConf.I.Common_Alerts_InkFillLow || p.Page.WhiteBlackRatio > CoreConf.I.Common_Alerts_InkFillHigh)
                     {
-                        pagesToInspect.Add(p);
+                        if (!pagesToInspect.Contains(p)) pagesToInspect.Add(p);
                     }
                     else if (p.Page.AspectRatio < CoreConf.I.Common_Alerts_TooVertical)
                     {
-                        pagesToInspect.Add(p);
+                        if (!pagesToInspect.Contains(p)) pagesToInspect.Add(p);
                     }
                     else if (p.Page.IsChecked || p.Page.Chapter.IsChecked)
                     {
-                        pagesToInspect.Add(p);
+                        if (!pagesToInspect.Contains(p)) pagesToInspect.Add(p);
                     }
                     i++;
                 });

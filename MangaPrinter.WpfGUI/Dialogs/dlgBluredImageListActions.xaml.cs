@@ -28,7 +28,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
     /// </summary>
     public partial class dlgBluredImageListActions : Window
     {
-        private MangaPage _page;
+        private MangaPage _debounce_page;
         public string CustomTitle {get;set;}
 
         public ObservableCollection<ActionMangaPage<bool>> Pages { get; set; }
@@ -74,7 +74,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
             }
 
 
-            System.Drawing.Bitmap bm = MagickImaging.BitmapFromUrlExt(_page);
+            System.Drawing.Bitmap bm = MagickImaging.BitmapFromUrlExt(page);
             imgMain.DataContext = myImage = new MyImageBind()
             {
                 Image = dlgBluredImage.Bitmap2BitmapImage(
@@ -125,13 +125,14 @@ namespace MangaPrinter.WpfGUI.Dialogs
             debounceTimer.IsEnabled = false;
 
             if (
+                _debounce_page != null &&
                 myImage != null &&
                 (int)(this.Width * myImage.Zoom) > 0 &&
                 (int)(this.Height * myImage.Zoom) > 0
                 )
             {
                 imgMain.DataContext = null;
-                System.Drawing.Bitmap bm = MagickImaging.BitmapFromUrlExt(_page);
+                System.Drawing.Bitmap bm = MagickImaging.BitmapFromUrlExt(_debounce_page);
                 myImage.Image = dlgBluredImage.Bitmap2BitmapImage(
                             GraphicsUtils.sameAspectResize(bm,
                             (int)( myImage.Zoom *1.0f * bm.Width * (1.0f* cnvsImage.RenderSize.Height / bm.Height)), 
@@ -239,6 +240,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
             if (lstPages.SelectedIndex > -1)
             {
                 ActionMangaPage<bool> p = (ActionMangaPage<bool>)lstPages.SelectedItem;
+                _debounce_page = p.Page;
                 LoadImage(p.Page);
             }
         }
