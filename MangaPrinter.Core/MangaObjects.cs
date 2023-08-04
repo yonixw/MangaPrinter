@@ -12,10 +12,17 @@ namespace MangaPrinter.Core
         public bool IsOmited { get { return _baseGet(); } set { _baseSet(value); } } 
         public string VirtualPath { get { return _baseGet(); } set { _baseSet(value); } }
 
+        // Crop in percent from 0.1 to 48.8, so max from both sides is 48.9*2<100
         public float CropTop { get { return _baseGet(); } set { _baseSet(value); } }
         public float CropRight { get { return _baseGet(); } set { _baseSet(value); } }
         public float CropBottom { get { return _baseGet(); } set { _baseSet(value); } }
         public float CropLeft { get { return _baseGet(); } set { _baseSet(value); } }
+
+        // 1 is same as input, because it is multiplied (in a color matrix) 
+        // and 2 is double etc.
+        public float Brightness { get { return _baseGet(); } set { _baseSet(value); } }
+        public float Contrast { get { return _baseGet(); } set { _baseSet(value); } }
+        public float Gamma { get { return _baseGet(); } set { _baseSet(value); } } 
 
         public PageEffects()
         {
@@ -25,6 +32,10 @@ namespace MangaPrinter.Core
             CropRight = 0;
             CropBottom = 0;
             CropLeft = 0;
+
+            Brightness = 1.0f;
+            Contrast = 1.0f;
+            Gamma = 1.0f;
         }
     }
 
