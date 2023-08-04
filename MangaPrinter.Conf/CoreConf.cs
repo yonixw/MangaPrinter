@@ -162,6 +162,10 @@ namespace MangaPrinter.Conf
            "Export singles for booklet"
         );
 
+        public JMetaT<bool> Binding_Booklet_MirrorSnd { get; } = new JMetaT<bool>(false,
+           "Mirror every 2nd page"
+        );
+
         public JMetaT<string> Binding_Booklet_RTL { get; } = new JMetaT<string>("",
            "Booklet binding direction"
        ).Listify(new CHList<string>("rtl","ltr"));

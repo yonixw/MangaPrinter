@@ -400,10 +400,10 @@
                             <RadioButton Name="rbBookRTL" IsChecked="True" Margin="0,0,10,0">RTL (&lt;&lt;)</RadioButton>
                             <RadioButton Name="rbBookLTR">LTR (&gt;&gt;)</RadioButton>
                         </StackPanel>
-                        <Hyperlink Name="lblBkltRTL" Click="lblBkltRTL_Click">[ i ]</Hyperlink>
+                        <Hyperlink Name="lblBkltRTL" Click="lblBkltRTL_Click">( ! )</Hyperlink>
                         <CheckBox Name="cbCover" IsChecked="True">Keep First/Last pages as cover</CheckBox>
                         <CheckBox Name="cbBookletSingles" IsChecked="True">
-                            <TextBlock Background="#FFEAFFD2">Export Singles</TextBlock>
+                            Export as Sides
                         </CheckBox>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
@@ -427,8 +427,9 @@
                             <Label.Effect>
                                 <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#FF7C7C7C"/>
                             </Label.Effect>
-                            Page Size:
+                            Export:
                         </Label>
+                        <Label>Page Size</Label>
                         <ComboBox Name="cbPageSize" Width="150px" IsEditable="False">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -436,16 +437,18 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        
+                        <CheckBox Name="cbExportMinimal" IsChecked="False">Skip PDF</CheckBox>
+                        <Hyperlink Name="lblHelpExportMinimal" Click="LblHelpExportMinimal_Click">( ? )</Hyperlink>
+                        <CheckBox Name="cbKeepColors" IsChecked="False">Skip Grayscale</CheckBox>
+                        <Hyperlink Name="lblKeepColorsHelp" Click="lblKeepColorsHelp_Click">( ? )</Hyperlink>
+                        <CheckBox Name="cbMirror2nd" IsChecked="False">Mirror 2nd</CheckBox>
+                        <Hyperlink Name="lblMirror2nd" Click="lblMirror2nd_Click">( ? )</Hyperlink>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Padding="5px" FontSize="9.75pt">
                         <MenuItem Header="(2) (Re)Bind Checked" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Click="MenuItem_Click" Width="190" Margin="0 0 5px 0"/>
                         <MenuItem Header="Export Chapter List" Style="{StaticResource MenuItemBtnStyle}"  Foreground="Black" Name="mnuExportTOC" Click="mnuExportTOC_Click" Margin="0 0 5px 0"/>
                         <MenuItem Header="(3) Export PDF!" Style="{StaticResource MenuItemBtnStyle}" FontWeight="DemiBold" Foreground="Black" Name="mnuExport" Click="MnuExport_Click" Margin="0 0 5px 0" />
-                        <CheckBox Name="cbExportMinimal" IsChecked="False">Skip PDF</CheckBox>
-                        <Hyperlink Name="lblHelpExportMinimal" Click="LblHelpExportMinimal_Click">( ? )</Hyperlink>
-                        <CheckBox Name="cbKeepColors" IsChecked="False">Skip Grayscale</CheckBox>
-                        <Hyperlink Name="lblKeepColorsHelp" Click="lblKeepColorsHelp_Click">( ? )</Hyperlink>
+                        
 
                     </Menu>
                     <Grid >

@@ -155,6 +155,11 @@ namespace MangaPrinter.Core.TemplateBuilders
             return bmp;
         }
 
+        public static void bmpMirrotHorizon(Bitmap src)
+        {
+            src.RotateFlip(RotateFlipType.RotateNoneFlipY); // around y = horizontal filp
+        }
+
         public static Bitmap bitmapCrop(Bitmap image, PageEffects _pe, bool reuse = false)
         {
             if (image != null)
@@ -341,6 +346,17 @@ namespace MangaPrinter.Core.TemplateBuilders
         {
             //  https://stackoverflow.com/questions/2225363/c-sharp-rotate-bitmap-90-degrees
             throw new Exception("Yoni: Not implemented");
+
+            // Was planned when I thout about mirroring for booklet, but instead did 2 metas
+            //      that will replace place if booklet
+
+            // But for future
+            // Maybe add as option in PageEffects? Bright/Contrast also for ?
+
+            //PageEffects p = new PageEffects();
+
+            // Use:
+            // original.RotateFlip( ... 90 ... 180 etc ... )
         }
     }
 

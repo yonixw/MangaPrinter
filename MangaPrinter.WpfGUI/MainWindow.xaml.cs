@@ -135,6 +135,8 @@ namespace MangaPrinter.WpfGUI
             cbCover.IsChecked = CoreConf.I.Binding_Booklet_Cover;
             cbBookletSingles.IsChecked = CoreConf.I.Binding_Booklet_ExportSingles;
 
+            cbMirror2nd.IsChecked = CoreConf.I.Binding_Booklet_MirrorSnd;
+
         }
 
         bool shouldUpdateStats = true;
@@ -1446,8 +1448,23 @@ namespace MangaPrinter.WpfGUI
                     page.Effects.CropLeft,
                 };
 
-                MessageBox.Show(string.Join(Environment.NewLine, Message.Select(i => i.ToString())));
+                MessageBox.Show(this,string.Join(Environment.NewLine, Message.Select(i => i.ToString())));
             }
+        }
+
+        private void lblMirror2nd_Click(object sender, RoutedEventArgs e)
+        {
+            string[] helpMessage = new[] {
+               "If you print through a 3rd party printer service, sometimes you can't choose flip " +
+               "direction of 2 side print.",
+               "So instead of short side flip print, you will get long side flip print.",
+               "This feature lets you mitigate this issue by mirroring each second page when exporting.",
+               "",
+               "This will not be applied to booklet side export."
+            };
+
+            MessageBox.Show(this, string.Join(Environment.NewLine, helpMessage)
+                , "Help", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void MnuExport_Click(object sender, RoutedEventArgs e)
@@ -1471,6 +1488,7 @@ namespace MangaPrinter.WpfGUI
                 bool convertPdf = !(cbExportMinimal.IsChecked??false);
                 bool bkltSingles = cbBookletSingles.IsChecked ?? false;
                 bool keepColors = cbKeepColors.IsChecked ?? false;
+                bool mirror2nd = cbMirror2nd.IsChecked ?? false;
                 bool parentText = cbIncludeParent.IsChecked ?? false;
                 
                 List<string> filesRendered = new List<string>();
@@ -1516,6 +1534,8 @@ namespace MangaPrinter.WpfGUI
 
                                 faces = new PrintFace[] { page.Back };
                                 b = dt.BuildFace(faces, sides, faceCount, pW, pH, pad, keepColors, parentText);
+                                if (mirror2nd)
+                                    GraphicsUtils.bmpMirrotHorizon(b);
                                 filesRendered.Add(saveNDispose(fi, ref saveCounter, b));
 
                                 b = null;
