@@ -1575,10 +1575,10 @@ namespace MangaPrinter.WpfGUI
 
                         try
                         {
-                            updateFunc("[1/3] Export page " + page.PageNumber, (int)(100.0f * saveCounter / 2 / pagesCount));
 
                             if (!(page.Front.isBooklet && bkltSingles))
                             {
+                                updateFunc("[1/3] Export page " + page.PageNumber, (int)(100.0f * saveCounter / 2 / pagesCount));
                                 var sides = new PrintSide[] { };
 
                                 var faces = new PrintFace[] { page.Front };
@@ -1595,6 +1595,7 @@ namespace MangaPrinter.WpfGUI
                             }
                             else
                             {
+                                updateFunc("[1/3] Export page " + page.PageNumber, (int)(100.0f * saveCounter / 8 / pagesCount));
                                 var sides = new PrintSide[] { };
 
                                 var front = dt.BuildFace(new PrintFace[] { page.Front },
