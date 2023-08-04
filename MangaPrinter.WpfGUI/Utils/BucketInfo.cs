@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MangaPrinter.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace MangaPrinter.WpfGUI.Utils
         public int index = 0;
         public double value = 0;
         public int count = 0;
-        public List<string> bucketItemsDesc = new List<string>();
+        public List<string> bucketPagesDesc = new List<string>();
+        public List<MangaPage> bucketPages = new List<MangaPage>();
     };
 }

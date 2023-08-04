@@ -69,6 +69,8 @@
         <DockPanel Grid.Row="3" LastChildFill="False">
             <Button DockPanel.Dock="Right" Margin="5" Padding="5"
                     Name="btnAccept" Click="BtnAccept_Click">Accept</Button>
+            <Button DockPanel.Dock="Right" Margin="5" Padding="5"
+                    Name="btnSmartDel" Click="btnSmartDel_Click">Quick Delete</Button>
             <Button DockPanel.Dock="Right" Margin="5" Padding="5" Background="LightPink"
                     Name="btnCancel" Click="BtnCancel_Click">Cancel</Button>
         </DockPanel>

@@ -416,13 +416,12 @@ namespace MangaPrinter.WpfGUI
                 var b = buckets.Last((bucket) => page.AspectRatio >= bucket.value);
                 //Console.WriteLine("{0}.{1}: {2}", page.Chapter.Name, page.Name, page.AspectRatio);
                 b.count++;
-                b.bucketItemsDesc.Add(
-                    !page.IsDouble?
+                b.bucketPages.Add(page);
+                b.bucketPagesDesc.Add(!page.IsDouble ?
                         String.Format("{0}] {1}, p.{2} ({3})",
-                            b.bucketItemsDesc.Count, page.Chapter.Name, page.ChildIndexStart, page.AspectRatio) :
+                            b.bucketPagesDesc.Count, page.Chapter.Name, page.ChildIndexStart, page.AspectRatio) :
                         String.Format("{0}] {1}, p.{2}-p.{3} ({4})",
-                            b.bucketItemsDesc.Count, page.Chapter.Name, page.ChildIndexStart, page.ChildIndexEnd, page.AspectRatio) 
-                    );
+                            b.bucketPagesDesc.Count, page.Chapter.Name, page.ChildIndexStart, page.ChildIndexEnd, page.AspectRatio));
             }
 
             return buckets;
@@ -437,12 +436,38 @@ namespace MangaPrinter.WpfGUI
             },
             isProgressKnwon: false);
             dlg.ShowDialog();
+
             if ((dlg.DialogResult ?? false) && (dlg.InputBuckets != null) && (dlg.InputBuckets.Count > 0))
             {
                 double newAspectCutoff = Math.Round(dlg.InputBuckets[dlg.BucketIndex].value, 2);
                 txtPageMaxWidth.Text = newAspectCutoff.ToString();
                 UpdateApectCutoff(newAspectCutoff);
             }
+
+            if (!(dlg.DialogResult ?? false) && dlg.doSmartDelete 
+                && (dlg.InputBuckets != null) && (dlg.InputBuckets.Count > 0))
+            {
+                //dlg.InputBuckets[dlg.BucketIndex].bucketPages
+
+                dlgBluredImageListActions dlg2 = new dlgBluredImageListActions();
+                dlg2.CustomTitle = "Quick Delete pages (Aspect ratio)";
+
+                dlg2.Pages = new ObservableCollection<ActionMangaPage<bool>>(
+                    dlg.InputBuckets[dlg.BucketIndex].bucketPages
+                        .Select(_p => new ActionMangaPage<bool>() { Page = _p, Result = false })
+               );
+
+                if (dlg2.ShowDialog() ?? false)
+                {
+                    dlg2.Pages
+                        .Where(p => p.Result == true)
+                        .ForEach(p => {
+                            p.Page.Chapter.Pages.Remove(p.Page);
+                            p.Page.Chapter.updateChapterStats();
+                        });
+                }
+            }
+
         }
 
         private void UpdateApectCutoff(double newAspectCutoff)

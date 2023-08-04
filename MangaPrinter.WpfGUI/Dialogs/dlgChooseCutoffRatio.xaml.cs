@@ -31,6 +31,8 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
         private int maxCount = 1;
 
+        public bool doSmartDelete = false;
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (InputBuckets != null && InputBuckets.Count > 0)
@@ -99,7 +101,7 @@ namespace MangaPrinter.WpfGUI.Dialogs
                 BucketIndex = (int)sldCutoff.Value;
 
                 lstExampleItems.ItemsSource = null;
-                lstExampleItems.ItemsSource = InputBuckets[BucketIndex].bucketItemsDesc;
+                lstExampleItems.ItemsSource = InputBuckets[BucketIndex].bucketPagesDesc;
 
                 IEnumerable<double> _x2 = new double[] { InputBuckets[BucketIndex].value, InputBuckets[BucketIndex].value };
                 IEnumerable<double> _y2 = new double[] { 0, maxCount };
@@ -123,6 +125,12 @@ namespace MangaPrinter.WpfGUI.Dialogs
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
+        }
+
+        private void btnSmartDel_Click(object sender, RoutedEventArgs e)
+        {
+            doSmartDelete = true;
             DialogResult = false;
         }
     }
