@@ -1181,6 +1181,47 @@ namespace MangaPrinter.WpfGUI
             }
         }
 
+        private void mnuPgInsertUp_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxAction<Core.MangaChapter>(lstFileChapters, (selCh) =>
+            {
+                List<MangaPage> myChecked = selCh.Pages.Where(p => p.IsChecked).Reverse().ToList();
+
+                // Remove only if found 
+                ListBoxAction<MangaPage>(lstFilePages, (selPage) =>
+                {
+                    // If  not chose a checked
+                    if (myChecked.IndexOf(selPage) > -1)
+                        return;
+
+                    myChecked.ForEach(p => selCh.Pages.Remove(p));
+                    int index = selCh.Pages.IndexOf(selPage);
+                    myChecked.ForEach(p => selCh.Pages.Insert(index, p));
+                });
+            });
+        }
+
+        private void mnuPgInsertDown_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxAction<Core.MangaChapter>(lstFileChapters, (selCh) =>
+            {
+                List<MangaPage> myChecked = selCh.Pages.Where(p => p.IsChecked).Reverse().ToList();
+
+                // Remove only if found 
+                ListBoxAction<MangaPage>(lstFilePages, (selPage) =>
+                {
+                    // If  not chose a checked
+                    if (myChecked.IndexOf(selPage) > -1)
+                        return;
+
+                    myChecked.ForEach(p => selCh.Pages.Remove(p));
+                    int index = selCh.Pages.IndexOf(selPage);
+                    myChecked.ForEach(p => selCh.Pages.Insert(index+1, p));
+                });
+            });
+        }
+
+
         private void mnuChInsertUp_Click(object sender, RoutedEventArgs e)
         {
             List<MangaChapter> myChecked = mangaChapters.Where(c => c.IsChecked).Reverse().ToList();
@@ -1371,6 +1412,7 @@ namespace MangaPrinter.WpfGUI
             }));
         }
 
+      
         private void MnuExport_Click(object sender, RoutedEventArgs e)
         {
             resetDlgSaveName();

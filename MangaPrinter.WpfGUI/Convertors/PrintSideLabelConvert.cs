@@ -26,6 +26,9 @@ namespace MangaPrinter.WpfGUI.Convertors
                 Brush color = Brushes.Black;
                 switch(obj.SideType)
                 {
+                    case SingleSideType.OMITED:
+                        color = Brushes.Black;
+                        break;
                     case SingleSideType.MANGA:
                         color = Brushes.Orange;
                         break;
@@ -43,7 +46,7 @@ namespace MangaPrinter.WpfGUI.Convertors
                 }
                 result.Inlines.Add(new Run(string.Format(" {0}", obj.SideType)) { Foreground = color });
 
-                if (obj.SideType == SingleSideType.MANGA)
+                if (obj.SideType == SingleSideType.MANGA || obj.SideType == SingleSideType.OMITED)
                     if (obj.MangaPageSource.IsDouble)
                         result.Inlines.Add(new Italic(new Run(
                                 string.Format(" (p{0}-{1})", obj.MangaPageSource.ChildIndexStart, obj.MangaPageSource.ChildIndexEnd)

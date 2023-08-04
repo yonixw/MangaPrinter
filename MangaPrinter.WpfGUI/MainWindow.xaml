@@ -286,6 +286,9 @@
                                     <MenuItem Name="mnuToOmit" Click="mnuToOmit_Click" Header="Toggle Ommited checked"/>
                                     <MenuItem Name="mnuDummy" Click="mnuDummy_Click" Header="Insert Dummy"/>
                                     <Separator/>
+                                    <MenuItem Name="mnuPgInsertUp" Click="mnuPgInsertUp_Click" Header="Move checked above"/>
+                                    <MenuItem Name="mnuPgInsertDown" Click="mnuPgInsertDown_Click" Header="Move checked bellow"/>
+                                    <Separator/>
                                     <MenuItem Name="mnuPgSelectAll" Click="mnuPgSelectAll_Click" Header="Check All"/>
                                     <MenuItem Name="mnuPgSelectNone" Click="mnuPgSelectNone_Click" Header="Check None"/>
                                     <Separator/>
