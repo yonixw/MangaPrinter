@@ -93,6 +93,10 @@ namespace MangaPrinter.Core
             if (page.Effects != null)
             {
                 result = GraphicsUtils.bitmapCrop(result, page.Effects, reuse: false);
+
+                if(page.Effects.Brightness != 1.0f ||
+                    page.Effects.Contrast != 1.0f ||
+                    page.Effects.Gamma != 1.0f )
                 result = GraphicsUtils.bitmapLighting(result, page.Effects, reuse: false);
             }
 

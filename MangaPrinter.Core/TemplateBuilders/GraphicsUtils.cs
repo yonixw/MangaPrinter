@@ -166,9 +166,9 @@ namespace MangaPrinter.Core.TemplateBuilders
             // https://stackoverflow.com/a/15408608/1997873
 
             Bitmap adjustedImage = new Bitmap(originalImage.Width,originalImage.Height);
-            float brightness = 1.0f; // no change in brightness
-            float contrast = 2.0f; // twice the contrast
-            float gamma = 1.0f; // no change in gamma
+            float brightness = _pe.Brightness; 
+            float contrast = _pe.Contrast; 
+            float gamma = _pe.Gamma; 
 
             float adjustedBrightness = brightness - 1.0f;
             // create matrix that will brighten and contrast the image
