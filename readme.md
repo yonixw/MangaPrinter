@@ -29,6 +29,14 @@ Here is where Manga Printer comes to help. It will let you:
 ##  Running in Linux:
 ![](MangaPrinter.WpfGUI/Icons/More/linux.png) [Linux Readme](LinuxDockers/README.md)
 
+## The process being explained with videos:
+
+1. Importing and fixing commong issues - TBD
+2. Duplex Binding - TBD
+3. Booklet Binding - TBD
+4. Configuraions - https://youtu.be/ACURi1TLLTU
+5. Running from docker (Linux) - https://youtu.be/nQXFGGVf52Y
+
 ## The process being explained with pictures: 
 When using the software, right click on list items for more options (e.g. preview)
 
