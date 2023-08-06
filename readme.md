@@ -31,11 +31,11 @@ Here is where Manga Printer comes to help. It will let you:
 
 ## The process being explained with videos:
 
-1. Importing and fixing commong issues (23:35) - https://youtu.be/vAnB7fNV588
-2. Duplex Binding (17:40) - https://youtu.be/sBuj90tdme8
-3. Booklet Binding, Assumes you saw Duplex (11:15) - https://youtu.be/UdmwzkMMWhg
-5. Config Manager (10:17) - https://youtu.be/ACURi1TLLTU
-6. Running from docker (Linux) (6:40) - https://youtu.be/nQXFGGVf52Y
+1. [Importing and fixing commong issues (23:35)](https://youtu.be/vAnB7fNV588&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
+2. [Duplex Binding (17:40)](https://youtu.be/sBuj90tdme8&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
+3. [Booklet Binding (11:15), Assumes you saw Duplex](https://youtu.be/UdmwzkMMWhg&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
+5. [Config Manager (10:17)](https://youtu.be/ACURi1TLLTU&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
+6. [Running from docker (Linux) (6:40)](https://youtu.be/nQXFGGVf52Y&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
 
 ## The process being explained with pictures: 
 When using the software, right click on list items for more options (e.g. preview)
