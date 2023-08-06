@@ -1,60 +1,64 @@
 # Manga Printer
 
-The tool that will let you print manga from the internet!
+The tool that will let you print your manga/comics images
 
 ## The problem:
 
 Downloading manga from the internet (**Legally of course, like from [MANGA Plus by SHUEISHA](https://mangaplus.shueisha.co.jp/)**) can result in complex situations:
-* You have some files with double pages and some contain singles. 
+* You have some files with double panels and some with a single panel. 
 * Simply cutting every double page into 2 files of singles will not work because you need to consider whether the chapter is being read from right to left or vice versa. 
-* Also, since the chapter was stripped from any advertisement pages in-between, some doubles will be split across printed pages if not treated correctly.
+* Also, since the chapter was stripped from any advertisement pages in between, some doubles will be split across printed pages if not treated correctly.
 
 ## The solution:
 
-Here is where Manga Printer comes to help. It will let you:
+Here is where MangaPrinter comes to help. It will let you:
+
 
 * Manage both chapters and pages
-* Decide on the go whether a page is single or double
-* Add a page in the start and end of each chapter 
-* Auto manage everything so all double pages will stay together
-* Add anti-spoiler pages to help you when you cut or staple the printed pages
 * Preview each step with blur built in to avoid spoilers!
+* Decide on the go whether a page is single or double
+* Add a special page at the start and end of each chapter 
+* Include page numbers
+* Manage double panels so they will stay together
+* Add anti-spoiler pages to help you when you cut or staple the printed pages
 * Add RTL\LTR arrows and page numbers to make reading a breeze.
-* Amazing GUI to choose ratio aspect of the double pages (width in px is problematic)
+* Many tools to solve common issues on manga files
 * Export to PDF without any extra installs\tools!
+* Run on Windows and Linux (with docker)
 
-## Download for windows :
-[Download latest release](https://github.com/yonixw/MangaPrinter/releases/latest)
+## Running on windows :
+[Download the latest release](https://github.com/yonixw/MangaPrinter/releases/latest)
 
-##  Running in Linux:
+##  Running on Linux:
 ![](MangaPrinter.WpfGUI/Icons/More/linux.png) [Linux Readme](LinuxDockers/README.md)
 
 ## The process being explained with videos:
 
-1. [Importing and fixing commong issues (23:35)](https://youtu.be/vAnB7fNV588&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
+1. [Importing and fixing common issues (23:35)](https://youtu.be/vAnB7fNV588&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
 2. [Duplex Binding (17:40)](https://youtu.be/sBuj90tdme8&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
 3. [Booklet Binding (11:15), Assumes you saw Duplex](https://youtu.be/UdmwzkMMWhg&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
 5. [Config Manager (10:17)](https://youtu.be/ACURi1TLLTU&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
 6. [Running from docker (Linux) (6:40)](https://youtu.be/nQXFGGVf52Y&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
 
-## The process being explained with pictures: 
-When using the software, right click on list items for more options (e.g. preview)
+## The process explained with pictures: 
 
 1. Import all image files and let the program auto detect doubles:
-![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/1.png)
+
+![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/v2_1.png)
 
 2. (Optional) Choose the double-page aspect ratio cutoff with a histogram dialog 
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/2.png)
 
 3. Rebind all chapters with your flavor of extra pages (Intro, Outro, Anti spoiler)
-![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/3.PNG)
+
+![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/v2_3.png)
 
 4. Export to pdf with one click! Result sample:
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/4.png)
 
-5. Print! With duplex binding it's easy to remember: Start with odd page and end with even.
+5. Print! 
 
 ## Performance
-We care about your PC. We try to use less than 1GB of Memory when possible. Here you can see an example CPU% and Memory usage during the converting process:
+The software tries to use less than 1GB of Memory when possible. Here you can see an example CPU% and Memory usage during the export to pdf process:
 
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/5Performance.png)
