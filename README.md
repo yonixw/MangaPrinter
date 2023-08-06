@@ -47,6 +47,7 @@ Here is where MangaPrinter comes to help. It will let you:
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/v2_1.png)
 
 2. Use a Tool - For Example, Choose the double-page aspect ratio cutoff with a histogram dialog 
+
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/2.png)
 
 3. Rebind all chapters with your flavor of extra pages (Intro, Outro, Anti spoiler)
@@ -54,6 +55,7 @@ Here is where MangaPrinter comes to help. It will let you:
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/v2_3.png)
 
 4. Export to pdf with one click! Result sample:
+
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/4.png)
 
 5. Print! 
