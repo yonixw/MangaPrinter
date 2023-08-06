@@ -1,6 +1,6 @@
 # Manga Printer
 
-The tool that will let you print your manga/comics images
+The tool that will let you print your manga/comics images in the best way
 
 ## The problem:
 
@@ -42,7 +42,7 @@ Here is where MangaPrinter comes to help. It will let you:
 
 ## The process explained with pictures: 
 
-1. Import all image files and let the program auto detect doubles:
+1. Import all images and let the program auto-detect doubles, and alert you about common issues:
 
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/v2_1.png)
 
@@ -50,7 +50,7 @@ Here is where MangaPrinter comes to help. It will let you:
 
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/2.png)
 
-3. Rebind all chapters with your flavor of extra pages (Intro, Outro, Anti spoiler)
+3. Rebind any chapters with your flavor of extra pages (Intro, Outro, Anti spoiler)
 
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/v2_3.png)
 
