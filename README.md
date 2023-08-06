@@ -18,11 +18,11 @@ Here is where MangaPrinter comes to help. It will let you:
 * Preview each step with blur built in to avoid spoilers!
 * Decide on the go whether a page is single or double
 * Add a special page at the start and end of each chapter 
-* Include page numbers
+* Include page numbers and chapter names in the result
 * Manage double panels so they will stay together
 * Add anti-spoiler pages to help you when you cut or staple the printed pages
 * Add RTL\LTR arrows and page numbers to make reading a breeze.
-* Many tools to solve common issues on manga files
+* Use many tools to solve common issues on manga files
 * Export to PDF without any extra installs\tools!
 * Run on Windows and Linux (with docker)
 
@@ -36,9 +36,9 @@ Here is where MangaPrinter comes to help. It will let you:
 
 1. [Importing and fixing common issues (23:35)](https://youtu.be/vAnB7fNV588&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
 2. [Duplex Binding (17:40)](https://youtu.be/sBuj90tdme8&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
-3. [Booklet Binding (11:15), Assumes you saw Duplex](https://youtu.be/UdmwzkMMWhg&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
-5. [Config Manager (10:17)](https://youtu.be/ACURi1TLLTU&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
-6. [Running from docker (Linux) (6:40)](https://youtu.be/nQXFGGVf52Y&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
+3. [Booklet Binding (11:15)](https://youtu.be/UdmwzkMMWhg&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD) - Assumes you saw Duplex
+5. [Config Manager (10:17)](https://youtu.be/ACURi1TLLTU&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD) - Optional
+6. [Running from docker (Linux) (6:40)](https://youtu.be/nQXFGGVf52Y&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD) - Optional
 
 ## The process explained with pictures: 
 
@@ -46,7 +46,7 @@ Here is where MangaPrinter comes to help. It will let you:
 
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/v2_1.png)
 
-2. (Optional) Choose the double-page aspect ratio cutoff with a histogram dialog 
+2. Use a Tool - For Example, Choose the double-page aspect ratio cutoff with a histogram dialog 
 ![](https://raw.githubusercontent.com/yonixw/MangaPrinter/master/ReadmeImages/2.png)
 
 3. Rebind all chapters with your flavor of extra pages (Intro, Outro, Anti spoiler)
