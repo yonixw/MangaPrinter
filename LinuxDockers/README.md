@@ -33,7 +33,6 @@ apt update && apt install -y detox && detox -r /root/Mangas/
 
 The latest docker image size is 6GB after download (2GB download)
 
-You cannot run this docker image on a limited environment (like non sudo environments). Mainly because wine 8 will not work. For example, it cannot be used in [Gitpod.io](https://www.gitpod.io/) which gives you a limited dev environment.
 
 # Links 
 

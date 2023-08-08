@@ -1,37 +1,37 @@
 mkdir -p ~/Downloads
 cd ~/Downloads
 
-ZIP_PATH=$(curl -L https://github.com/manga-download/hakuneko/releases/latest | grep -oE '[^"]+\/releases\/[^"]+\.deb' | grep "amd64" )
-EXPAND_PATH=$(curl -L https://github.com/manga-download/hakuneko/releases/latest | grep -oE '[^"]+\/expanded_assets\/[^"]+' )
+#######################################################
 
-echo "EXPAND_PATH=$EXPAND_PATH"
+#!/usr/bin/env bash
+# from: https://github.com/MuhammedKalkan/OpenLens/issues/130
 
-# If empty, grep from expanded_assets
-if [[ -z $ZIP_PATH ]]
+GH_DL_REPO=manga-download/hakuneko
+# WARN: double check no weird stuff with $GH_DL_FILTER
+GH_DL_SAVEPATH=HakuNeko_latest.deb
+GH_DL_FILTER=amd64.deb
+
+set -e
+
+LATEST_URL=$(curl https://api.github.com/repos/$GH_DL_REPO/releases/latest | 
+    jq -r '.assets[] |  .browser_download_url' | grep -i "$GH_DL_FILTER")
+
+echo "LATEST_URL=$LATEST_URL"
+
+
+if [[ -z $LATEST_URL ]]
 then
-        ZIP_PATH=$(curl $EXPAND_PATH  | grep -oE '[^"]+release[^"]+\.deb' | grep "amd64")
+ echo "Couldn't get latest link, exiting."
+ exit 1
 fi
 
-echo "ZIP_PATH=$ZIP_PATH"
+curl -L $LATEST_URL > "$GH_DL_SAVEPATH"
 
+#######################################################
 
-if [[ -z $ZIP_PATH ]]
-then
-        echo "Can't find latest release from MangaPrinter, exiting..."
-        exit -1
-fi
+set +e
 
-if [[ ! $ZIP_PATH = http* ]]
-then
-        echo "Adding https github to link"
-        ZIP_PATH=https://github.com$ZIP_PATH
-fi
-
-set -e # exit on any fail
-
-wget -q -O HakuNeko_latest.deb $ZIP_PATH
-
-dpkg -i HakuNeko_latest.deb
+dpkg -i "$GH_DL_SAVEPATH"
 
 export QT_X11_NO_MITSHM=1
 /usr/lib/hakuneko-desktop/hakuneko \
@@ -39,3 +39,4 @@ export QT_X11_NO_MITSHM=1
 	--disable-gpu  --in-process-gpu --disable-software-rasterizer \
 	--no-xshm --disable-dev-shm-usage
 
+sleep 3
