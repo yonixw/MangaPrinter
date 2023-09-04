@@ -146,11 +146,10 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
                 "L>S,E,E",
 
                 "L>S,A,A",
-
                 "L>S,M,E",
-                "L>S,E,M",
 
                 "L>S,A,A",
+                "L>S,E,M",
 
                 "L>S,M,E",
                 "L>S,E,M",

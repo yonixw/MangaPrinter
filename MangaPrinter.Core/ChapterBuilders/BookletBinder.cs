@@ -105,7 +105,12 @@ namespace MangaPrinter.Core.ChapterBuilders
                         {
                             antiSpoilerAdded++;
                             batchCounter = 0;
-                            faceResults.Insert(i, new PrintFace()
+
+                            int indexToInsert = i;
+                            if (indexToInsert % 2 == 1 && indexToInsert > 0)
+                                indexToInsert--; // From back to front
+
+                            faceResults.Insert(indexToInsert, new PrintFace()
                             {
                                 IsRTL = _O.isBookletRTL,
                                 Left = new PrintSide() { 
