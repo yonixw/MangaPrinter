@@ -57,6 +57,14 @@ namespace MangaPrinter.Core
             public const string White200Sqr = "/dummy/white";
         }
 
+        public static void setDefaultRes(Bitmap b)
+        {
+            using (Bitmap def = new Bitmap(10,10))
+            {
+                b.SetResolution(def.HorizontalResolution, def.VerticalResolution); 
+            }
+        }
+
         public static Bitmap BitmapFromUrlExt(MangaPage page)
         {
             Bitmap result = null;
@@ -90,14 +98,22 @@ namespace MangaPrinter.Core
                 }
             }
 
+            setDefaultRes(result);
+
             if (page.Effects != null)
             {
-                result = GraphicsUtils.bitmapCrop(result, page.Effects, reuse: false);
+                if (
+                    page.Effects.CropBottom > 0 ||
+                    page.Effects.CropTop > 0 ||
+                    page.Effects.CropLeft > 0 ||
+                    page.Effects.CropRight > 0 
+                    )
+                    result = GraphicsUtils.bitmapCrop(result, page.Effects, reuse: false);
 
                 if(page.Effects.Brightness != 1.0f ||
                     page.Effects.Contrast != 1.0f ||
                     page.Effects.Gamma != 1.0f )
-                result = GraphicsUtils.bitmapLighting(result, page.Effects, reuse: false);
+                    result = GraphicsUtils.bitmapLighting(result, page.Effects, reuse: false);
             }
 
             return result;
