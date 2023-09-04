@@ -1,6 +1,7 @@
 mkdir -p ~/Downloads
 cd ~/Downloads
 
+
 #######################################################
 
 #!/usr/bin/env bash
@@ -8,7 +9,7 @@ cd ~/Downloads
 
 GH_DL_REPO=yonixw/MangaPrinter
 # WARN: double check no weird stuff with $GH_DL_FILTER
-GH_DL_SAVEPATH=MangaPrinter_latest.zip
+GH_DL_SAVEPATH=MangaPrinter_latest_64.zip
 GH_DL_FILTER=.zip
 
 set -e
@@ -33,6 +34,6 @@ set +e
 # windows zip slashes cause fail, so we will try anyway :/
 unzip -o "$GH_DL_SAVEPATH" || (echo "Unzip problem.. trying anyway.." && sleep 3)
 
-find . | grep -i "mangaprinter" | grep -E "\.exe$" | xargs wine
+find . | grep -i "mangaprinter" | grep -E "\.exe$" | xargs wine64
 
 sleep 3
