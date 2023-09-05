@@ -106,11 +106,7 @@ namespace MangaPrinter.Core.ChapterBuilders
                             antiSpoilerAdded++;
                             batchCounter = 0;
 
-                            int indexToInsert = i;
-                            if (indexToInsert % 2 == 1 && indexToInsert > 0)
-                                indexToInsert--; // From back to front
-
-                            faceResults.Insert(indexToInsert, new PrintFace()
+                            faceResults.Insert(i, new PrintFace()
                             {
                                 IsRTL = _O.isBookletRTL,
                                 Left = new PrintSide() { 
@@ -184,19 +180,38 @@ namespace MangaPrinter.Core.ChapterBuilders
 
             faceResults.Add(extraFaceAfter);
 
-            if (antiSpoiler > 0 && antiSpoilerAdded %2 ==1)
+            if (antiSpoiler > 0)
             {
-                PrintFace extraFaceAS = new PrintFace()
+
+                // Fix cases of A-S at the print duplex back
+                for (int i = 1; i < faceResults.Count -1; i+=2)
                 {
-                    IsRTL = _O.isBookletRTL,
-                    PrintFaceType = FaceType.SINGLES,
-                    BatchPaperNumber = antiSpoiler > 0 ? antiSpoilerAdded+2 : 0
-                };
+                    if (
+                        faceResults[i].Left.SideType == SingleSideType.ANTI_SPOILER ||
+                        faceResults[i].Right.SideType == SingleSideType.ANTI_SPOILER
+                    )
+                    {
+                        var face = faceResults[i];
+                        faceResults.RemoveAt(i);
+                        faceResults.Insert(i - 1, face);
+                    }
+                }
+                
 
-                setupExtraFaceSide(extraFaceAS, _O.isBookletRTL, null);
-                setupExtraFaceSide(extraFaceAS, !_O.isBookletRTL, null);
+                if (antiSpoilerAdded %2 ==1) // last will added behind?
+                {
+                    PrintFace extraFaceAS = new PrintFace()
+                    {
+                        IsRTL = _O.isBookletRTL,
+                        PrintFaceType = FaceType.SINGLES,
+                        BatchPaperNumber = antiSpoiler > 0 ? antiSpoilerAdded+2 : 0
+                    };
 
-                faceResults.Add(extraFaceAS);
+                    setupExtraFaceSide(extraFaceAS, _O.isBookletRTL, null);
+                    setupExtraFaceSide(extraFaceAS, !_O.isBookletRTL, null);
+
+                    faceResults.Add(extraFaceAS);
+                }
             }
 
             if (faceResults.Count %2 != 0)

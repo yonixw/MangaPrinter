@@ -141,17 +141,17 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
 
             var outputBooklet = String.Join(" / ", new[] {
                 "L>S,M,A",
-
                 "L>S,M,E",
+
+                "L>S,A,A",
                 "L>S,E,E",
 
-                "L>S,A,A",
                 "L>S,M,E",
-
-                "L>S,A,A",
                 "L>S,E,M",
 
+                "L>S,A,A",
                 "L>S,M,E",
+
                 "L>S,E,M",
 
                 "L>S,A,A", // last not adding another one
@@ -184,9 +184,9 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
                 "R>S,M,M",
 
                 "R>S,M,M",
+                "R>S,A,A",
                 "R>S,I,M",
 
-                "R>S,A,A",
 
                 "R>S,E,M",
                 "R>S,O,M",
