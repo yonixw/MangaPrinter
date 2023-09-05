@@ -487,7 +487,7 @@
                         <CheckBox Name="cbAddStart" IsChecked="True">Add Start Page</CheckBox>
                         <CheckBox Name="cbAddEnd" IsChecked="True">Add End Page</CheckBox>
                         <Label Width="2" Padding="10" BorderThickness="1 0 0 0" BorderBrush="#FF7C7C7C"></Label>
-                        <CheckBox Name="cbUseAntiSpoiler" IsChecked="True">Anti-spoiler every:</CheckBox>
+                        <CheckBox Name="cbUseAntiSpoiler" IsChecked="True">Anti-spoiler every: ~</CheckBox>
                         <TextBox Width="50px" Name="txtSpoilerPgNm" TextAlignment="Center" TextChanged="txtSpoilerPgNm_TextChanged">
                             25</TextBox>
                         <TextBlock IsEnabled="False" >pages</TextBlock>
