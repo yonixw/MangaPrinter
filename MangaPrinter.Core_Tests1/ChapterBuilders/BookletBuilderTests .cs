@@ -128,6 +128,28 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
         }
 
         [TestMethod()]
+        public void xDoubleCoverAlwaysEndWithAS()
+        {
+            var input = "L1";
+            var additions = " /L1";
+            var endsWith = "L>S,A,A";
+            var bookletRtl = new BookletOptions()
+            {
+                isBookletRTL = false,
+                bookletCoverFirst = new MangaPage(),
+                bookletCoverLast = new MangaPage()
+            };
+
+            for (int i = 0; i < 100; i++)
+            {
+                input += additions;
+                var result = Utils.TestResultRaw(new BookletBinder(), input, true, false, 10, bookletRtl);
+                Assert.IsTrue(result.EndsWith(endsWith));
+            }
+
+        }
+
+        [TestMethod()]
         public void xSimpleNoDoubleEvenCoverEvenNoAddAS()
         {
             var input = "L1/L1/L1/L1/L1";

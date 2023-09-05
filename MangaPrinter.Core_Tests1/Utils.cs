@@ -51,7 +51,9 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
                 startPage, endPage, antiSpoiler, bookletOptions);
         }
 
-        public static void TestResult(IBindBuilder builder,string inputMangaChapters, string outputPrintFaces,
+
+
+        public static string TestResultRaw(IBindBuilder builder,string inputMangaChapters, 
             bool startPage, bool endPage, int antiSpoiler=0 , BookletOptions bookletOptions = null)
         {
             // ------------ MOCK INPUT --------------
@@ -99,11 +101,26 @@ namespace MangaPrinter.Core.ChapterBuilders_Tests
             // ------------ COMPARE --------------
 
             string resultOutputString = string.Join("/", quickLookArr).ToUpper();
-            string testOutputString = outputPrintFaces.Replace(" ", "").ToUpper();
+            
             Console.WriteLine(resultOutputString);
 
-            Assert.AreEqual(testOutputString, resultOutputString);
+            return  resultOutputString ;
         }
+
+        public static void TestResult(IBindBuilder builder, string inputMangaChapters, string outputPrintFaces,
+            bool startPage, bool endPage, int antiSpoiler = 0, BookletOptions bookletOptions = null)
+        {
+
+            string testOutputString = outputPrintFaces.Replace(" ", "").ToUpper();
+
+            string result = TestResultRaw(builder, inputMangaChapters, 
+                startPage, endPage, antiSpoiler, bookletOptions);
+
+            Assert.AreEqual(testOutputString, result);
+        }
+
+
+        
 
         static string reverseSide(SingleSideType type)
         {
