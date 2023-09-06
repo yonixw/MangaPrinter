@@ -5,23 +5,23 @@ The tool that will let you print your manga/comics images in the best way
 ## The problem:
 
 Downloading manga from the internet (**Legally of course, like from [MANGA Plus by SHUEISHA](https://mangaplus.shueisha.co.jp/)**) can result in complex situations:
-* You have some files with double panels and some with a single panel. 
-* Simply cutting every double page into 2 files of singles will not work because you need to consider whether the chapter is being read from right to left or vice versa. 
-* Also, since the chapter was stripped from any advertisement pages in between, some doubles will be split across printed pages if not treated correctly.
+
+* You have some files with double panels and some with a single panel. But, simply cutting every double page into 2 files of singles will not work because:
+    1. You need to consider whether the chapter is being read from right to left or vice versa. 
+    2. Since the chapter was stripped from any advertisement pages in between, some doubles will be split across printed pages if not ordered correctly.
+* At any point, you might give yourself a spoiler dealing with arranging and printing.
 
 ## The solution:
 
-Here is where MangaPrinter comes to help. It will let you:
+Here is where MangaPrinter comes to help. It will let you, among others, to:
 
-
-* Manage both chapters and pages
+* Manage both chapters, pages and binding in a single GUI
+* Get double panels to stay together on any bindings
 * Preview each step with blur built in to avoid spoilers!
-* Decide on the go whether a page is single or double
-* Add a special page at the start and end of each chapter 
-* Include page numbers and chapter names in the result
-* Manage double panels so they will stay together
-* Add anti-spoiler pages to help you when you cut or staple the printed pages
+* Add special pages such as a page at the start and end of each chapter with the chapter name
 * Add RTL\LTR arrows and page numbers to make reading a breeze.
+* Add anti-spoiler pages to help you when you cut or staple the printed pages
+* Get fast overview of the files and get alerted on common issues
 * Use many tools to solve common issues on manga files
 * Export to PDF without any extra installs\tools!
 * Run on Windows and Linux (with docker)

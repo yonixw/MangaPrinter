@@ -11,6 +11,7 @@
         Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <Window.Resources>
         <converts:LowerConvert x:Key="lowerConvert"/>
+        <converts:GreaterConvert x:Key="greaterConvert"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -31,9 +32,9 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="20"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                           <Border Grid.Column="1" CornerRadius="6" BorderBrush="Gray" BorderThickness="2">
+                            <Border Grid.Column="1" CornerRadius="6" BorderBrush="Gray" BorderThickness="2">
 
-                            <StackPanel  >
+                                <StackPanel  >
                                     <Border  Name="brdMain">
                                         <StackPanel>
                                             <Label  Padding="5,0" Content="{Binding Page.Chapter.Name}"></Label>
@@ -42,36 +43,39 @@
                                         </StackPanel>
                                     </Border>
 
-                                <StackPanel Name="stackFilePage" Orientation="Horizontal">
-                                    <Image Name="imgPage" Source="../Icons/1Page.png" />
+                                    <StackPanel Name="stackFilePage" Orientation="Horizontal">
+                                        <Image Name="imgPage" Source="../Icons/1Page.png" />
+                                        <Label Name="lblDouble" FontWeight="Bold" Visibility="Collapsed">
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}(p{0}-p{1}) ">
+                                                        <Binding Path="Page.ChildIndexStart"/>
+                                                        <Binding Path="Page.ChildIndexEnd"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Label>
 
-                                    <Label Name="lblDouble" FontWeight="Bold" Visibility="Collapsed">
-                                        <TextBlock>
-                                            <TextBlock.Text>
-                                                <MultiBinding StringFormat="{}(p{0}-p{1}) ">
-                                                    <Binding Path="Page.ChildIndexStart"/>
-                                                    <Binding Path="Page.ChildIndexEnd"/>
-                                                </MultiBinding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
-                                    </Label>
+                                        <Label Name="lblSingle" FontWeight="Bold" Visibility="Visible">
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}(p{0}) ">
+                                                        <Binding Path="Page.ChildIndexStart"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Label>
 
-                                    <Label Name="lblSingle" FontWeight="Bold" Visibility="Visible">
-                                        <TextBlock>
-                                            <TextBlock.Text>
-                                                <MultiBinding StringFormat="{}(p{0}) ">
-                                                    <Binding Path="Page.ChildIndexStart"/>
-                                                </MultiBinding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
-                                    </Label>
+                                        <StackPanel Orientation="Vertical">
+                                            <Label Content="{Binding Page.Name}" />
 
-                                    <Label Content="{Binding Page.Name}" />
-                                    <Label Name="lblWhiteRatio" Content="{Binding Page.WhiteBlackRatio}" ContentStringFormat=" 🔳{0:0.00}" Visibility="Collapsed" />
-                                    <Label Name="lblPageRatio" Content="{Binding Page.AspectRatio}" ContentStringFormat=" ➗{0:F3}" Visibility="Collapsed" />
+                                            <Label Name="lblPagesWhiteMinRatio" Content="{Binding Page.WhiteBlackRatio}" ContentStringFormat=" [🔳I/F&lt;{0:0.00}]" Visibility="Collapsed" />
+                                            <Label Name="lblPagesWhiteMaxRatio" Content="{Binding Page.WhiteBlackRatio}" ContentStringFormat=" [🔳I/F&gt;{0:0.00}]" Visibility="Collapsed" />
+                                            <Label Name="lblPagesMinRatio" Content="{Binding Page.AspectRatio}" ContentStringFormat=" ➗{0:F3}" Visibility="Collapsed" />
+                                        </StackPanel>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </Border>
+                            </Border>
                         </Grid>
                         <DataTemplate.Triggers>
                             <DataTrigger Binding="{Binding Result}" Value="True">
@@ -88,13 +92,17 @@
                                 <Setter TargetName="lblSingle" Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding Path=Page.AspectRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.33}" Value="True">
-                                <Setter TargetName="lblPageRatio" Property="Foreground" Value="Red"/>
-                                <Setter TargetName="lblPageRatio" Property="Visibility" Value="Visible"/>
+                            <DataTrigger Binding="{Binding Path=Page.AspectRatio, Converter={StaticResource lowerConvert}, ConverterParameter='Common_Alerts_TooVertical'}" Value="True">
+                                <Setter TargetName="lblPagesMinRatio" Property="Foreground" Value="Red"/>
+                                <Setter TargetName="lblPagesMinRatio" Property="Visibility" Value="Visible"/>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding Path=Page.WhiteBlackRatio, Converter={StaticResource lowerConvert}, ConverterParameter=0.10}" Value="True">
-                                <Setter TargetName="lblWhiteRatio" Property="Visibility" Value="Visible"/>
+                            <DataTrigger Binding="{Binding Path=Page.WhiteBlackRatio, Converter={StaticResource lowerConvert}, ConverterParameter='Common_Alerts_InkFillLow'}" Value="True">
+                                <Setter TargetName="lblPagesWhiteMinRatio" Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding Path=Page.WhiteBlackRatio, Converter={StaticResource greaterConvert}, ConverterParameter='Common_Alerts_InkFillHigh'}" Value="True">
+                                <Setter TargetName="lblPagesWhiteMaxRatio" Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </DataTemplate.Triggers>
                     </DataTemplate>
@@ -114,7 +122,7 @@
             </StatusBar>
             <StatusBar DockPanel.Dock="Bottom" Panel.ZIndex="2" >
                 <StatusBarItem>
-                    <Label>Switch: Enter / Mark Delete: (Delete/D/Backspace) </Label>
+                    <Label>Switch: Enter / Mark Delete: (Delete/D/Backspace)</Label>
                 </StatusBarItem>
                 <StatusBarItem HorizontalAlignment="Right">
                     <StackPanel Orientation="Horizontal">
