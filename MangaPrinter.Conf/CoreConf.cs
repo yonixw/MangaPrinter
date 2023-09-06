@@ -42,6 +42,14 @@ namespace MangaPrinter.Conf
             (P) => P >= 0 && P <= 100
         );
 
+        public JMetaT<bool> Common_RenderImageBorder { get; } = new JMetaT<bool>(false,
+           "Add black border for any image, good for troubleshooting import"
+        );
+
+        public JMetaT<bool> Common_RenderPaintAreaBorder { get; } = new JMetaT<bool>(false,
+           "Add red border for painting area, good for troubleshooting import"
+        );
+
         public JMetaT<int> Common_MaxPreviewBlurRadius { get; } = new JMetaT<int>(50,
             "Default Preview Blur radius (pixels) bigger than 10",
             (N) => N >= 10
@@ -233,7 +241,7 @@ namespace MangaPrinter.Conf
         );
 
 
-        /* ===============  Templates -> Duplex   =============== */
+        /* ===============  Templates (Duplex oriented)  =============== */
 
         public JMetaT<string> Templates_Render_Omited { get; } = new JMetaT<string>("(Manually Omited)",
            "Text template to use when ommiting files", CH.stringy

@@ -262,6 +262,23 @@ namespace MangaPrinter.Core.TemplateBuilders
                     scaleWidth,
                     scaleHeight);
 
+                if (CoreConf.I.Common_RenderImageBorder.Get())
+                {
+                    graph.DrawRectangle(Pens.Black,
+                        ((int)imageWidth - scaleWidth) / 2,
+                        ((int)imageHeight - scaleHeight) / 2,
+                        scaleWidth,
+                        scaleHeight
+                    );
+                }
+
+                if (CoreConf.I.Common_RenderPaintAreaBorder.Get())
+                {
+                    graph.DrawRectangle(Pens.Red,
+                       0,0, imageWidth, imageHeight
+                    );
+                }
+                
             }
 
             if(!reuse)
