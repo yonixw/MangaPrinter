@@ -32,6 +32,10 @@ Here is where MangaPrinter comes to help. It will let you, among others, to:
 ##  Running on Linux:
 ![](MangaPrinter.WpfGUI/Icons/More/linux.png) [Linux Readme](LinuxDockers/README.md)
 
+## ⚠ Warning
+
+Always test with a small printing sample, as there are many configurations (or even bugs) that may cause issues with the printing results.
+
 ## The process being explained with videos:
 
 1. [Importing and fixing common issues (23:35)](https://youtu.be/vAnB7fNV588&list=PLTgFnSZ6Uv8Cd-5Lfo8xkQ0hmPBe5zBbD)
