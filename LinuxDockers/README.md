@@ -23,7 +23,7 @@ docker run --rm -it --shm-size=256m -v "$(pwd)/Mangas:/root/Mangas" -p 15901:590
 
 # Fixing Names
 
-To fix linux names and paths after downloading Mangas, because this app assume windows only charactes (even when run by wine), use `detox` to run:
+To fix linux names and paths after downloading Mangas, because this app assume windows only characters (even when run by wine), use the `detox` cli and run:
 
 ```
 apt update && apt install -y detox && detox -r /root/Mangas/
