@@ -34,7 +34,7 @@ Here is where MangaPrinter comes to help. It will let you, among others, to:
 
 ## ⚠ Warning
 
-Always test with a small printing sample, as there are many configurations (or unknown edge-cases) that may cause issues with the printing results in this software or the printing software. And as written in the [LICENCE](https://github.com/yonixw/MangaPrinter/blob/master/LICENSE) file, this repo provide no warrenty and provided "AS IS".
+Always test with a small printing sample, as there are many configurations (or unknown edge-cases) that may cause issues with the printing results in this software, the printing driver or the printing device. And as written in the [LICENCE](https://github.com/yonixw/MangaPrinter/blob/master/LICENSE) file, this repo provide no warrenty and provided "AS IS".
 
 ## The process being explained with videos:
 
